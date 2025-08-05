@@ -3,6 +3,7 @@ import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import path from 'path';
 import fs from 'fs';
+import { useDarkMode } from '../_app';
 
 interface Question {
   question?: string;
@@ -43,6 +44,7 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+  const { darkMode } = useDarkMode();
 
   const currentQuestion = questions[currentIndex];
 
@@ -66,7 +68,7 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
     ).length;
     const score = Math.round((correctCount / total) * 1000);
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
         <h1 className="text-3xl font-bold mb-4">Exam Complete</h1>
         <p className="text-lg mb-2">
           You answered {correctCount} out of {total} questions correctly.
@@ -86,7 +88,7 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
   const isCorrect = showFeedback && userSelection === currentQuestion.answerIndex;
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
+    <div className={`min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
       <div className="max-w-3xl w-full flex flex-col items-center">
         <h1 className="text-2xl font-bold mb-4 text-center">
           {slug.toUpperCase()} Practice Exam
@@ -95,20 +97,23 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
           <p className="text-lg font-medium text-center">
             Question {currentIndex + 1} of {questions.length}
           </p>
-          <p className="mt-2 text-gray-800 text-center">
+          <p className={`mt-2 text-center ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}> 
             {currentQuestion.question}
           </p>
         </div>
         <div className="space-y-3 w-full flex flex-col items-center">
           {currentQuestion.options.map((opt, idx) => {
-            let style = 'border-gray-300 hover:bg-gray-100';
+            let style = darkMode
+              ? 'border-gray-600 hover:bg-gray-800'
+              : 'border-gray-300 hover:bg-gray-100';
             if (showFeedback && userSelection === idx) {
               style = idx === currentQuestion.answerIndex
-                ? 'border-green-500 bg-green-50'
-                : 'border-red-500 bg-red-50';
+                ? (darkMode ? 'border-green-400 bg-green-900' : 'border-green-500 bg-green-50')
+                : (darkMode ? 'border-red-400 bg-red-900' : 'border-red-500 bg-red-50');
             } else if (showFeedback && idx === currentQuestion.answerIndex) {
-              // highlight the correct answer even if not selected
-              style = 'border-green-500 bg-green-50';
+              style = darkMode
+                ? 'border-green-400 bg-green-900'
+                : 'border-green-500 bg-green-50';
             }
             return (
               <button
@@ -124,17 +129,17 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
           })}
         </div>
         {showFeedback && (
-          <div className="mt-6 p-4 border rounded-lg bg-gray-50 flex flex-col items-center w-full">
+          <div className={`mt-6 p-4 border rounded-lg flex flex-col items-center w-full ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
             <p className="font-semibold text-center">
               Correct answer: {currentQuestion.options[currentQuestion.answerIndex]}
             </p>
-            <p className="mt-2 text-gray-700 text-center">
+            <p className={`mt-2 text-center ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
               {currentQuestion.explanation}
             </p>
             {currentQuestion.link && (
               <a
                 href={currentQuestion.link}
-                className="mt-2 inline-block text-blue-600 underline text-center"
+                className={`mt-2 inline-block underline text-center ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}
                 target="_blank"
                 rel="noreferrer"
               >
