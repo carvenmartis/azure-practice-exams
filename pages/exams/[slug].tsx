@@ -5,6 +5,15 @@ import path from 'path';
 import fs from 'fs';
 
 interface Question {
+  question?: string;
+  options?: string[];
+  answer?: string;
+  answerIndex?: number;
+  explanation?: string;
+  link?: string;
+}
+
+interface ProcessedQuestion {
   question: string;
   options: string[];
   answerIndex: number;
@@ -14,7 +23,7 @@ interface Question {
 
 interface ExamPageProps {
   slug: string;
-  exam: Question[];
+  exam: ProcessedQuestion[];
 }
 
 /**
@@ -167,7 +176,27 @@ export const getStaticProps: GetStaticProps<ExamPageProps> = async ({ params }) 
   const slug = params?.slug as string;
   const dataPath = path.join(process.cwd(), 'data', `${slug}.json`);
   const raw = fs.readFileSync(dataPath, 'utf-8');
-  const exam = JSON.parse(raw) as Question[];
+  const rawData = JSON.parse(raw) as Question[];
+  
+  // Filter out incomplete entries and convert answer text to answerIndex
+  const exam = rawData
+    .filter(item => {
+      // Keep only entries that have all required fields
+      return item.question && item.options && item.answer && item.explanation;
+    })
+    .map(item => {
+      // Convert "answer" to "answerIndex"
+      const answerIndex = item.options!.findIndex(option => option === item.answer);
+      
+      return {
+        question: item.question!,
+        options: item.options!,
+        answerIndex: answerIndex >= 0 ? answerIndex : 0, // Default to 0 if not found
+        explanation: item.explanation!,
+        ...(item.link && { link: item.link })
+      } as ProcessedQuestion;
+    });
+    
   return {
     props: {
       slug,
