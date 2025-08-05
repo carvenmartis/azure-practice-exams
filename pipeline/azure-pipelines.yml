@@ -28,7 +28,7 @@ stages:
               containerRegistry: 'dockerHubServiceConnection'
               repository: '$(dockerHubNamespace)/$(imageName)'
               command: 'build'
-              Dockerfile: .
+              Dockerfile: Dockerfile
               tags: |
                 $(dockerImageTag)
 
