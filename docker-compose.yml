@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  nextjs-app:
+  azure-practice-exams:
     build:
       context: .
       dockerfile: Dockerfile
