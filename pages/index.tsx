@@ -26,23 +26,25 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">
-        Practice Exams Dashboard
-      </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {exams.map((exam) => (
-          <Link key={exam.slug} href={`/exams/${exam.slug}`}> 
-            <div className="cursor-pointer rounded-xl shadow-md bg-white p-6 hover:shadow-lg transition-shadow h-full flex flex-col justify-between">
-              <div>
-                <h2 className="text-xl font-semibold mb-2">{exam.name}</h2>
-                <p className="text-sm text-gray-600">
-                  Start the {exam.slug.toUpperCase()} practice exam
-                </p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+        <h1 className="text-3xl font-bold mb-8 text-center">
+          Practice Exams Dashboard
+        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full h-full">
+          {exams.map((exam) => (
+            <Link key={exam.slug} href={`/exams/${exam.slug}`}> 
+              <div className="cursor-pointer rounded-xl shadow-md bg-white p-6 hover:shadow-lg transition-shadow flex flex-col justify-between items-center h-full min-h-[180px]">
+                <div className="w-full flex flex-col items-center flex-1 justify-center">
+                  <h2 className="text-xl font-semibold mb-2 text-center">{exam.name}</h2>
+                  <p className="text-sm text-gray-600 text-center">
+                    Start the {exam.slug.toUpperCase()} practice exam
+                  </p>
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

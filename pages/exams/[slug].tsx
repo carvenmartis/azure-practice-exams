@@ -86,20 +86,20 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
   const isCorrect = showFeedback && userSelection === currentQuestion.answerIndex;
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
+      <div className="max-w-3xl w-full flex flex-col items-center">
+        <h1 className="text-2xl font-bold mb-4 text-center">
           {slug.toUpperCase()} Practice Exam
         </h1>
-        <div className="mb-6">
-          <p className="text-lg font-medium">
+        <div className="mb-6 w-full flex flex-col items-center">
+          <p className="text-lg font-medium text-center">
             Question {currentIndex + 1} of {questions.length}
           </p>
-          <p className="mt-2 text-gray-800">
+          <p className="mt-2 text-gray-800 text-center">
             {currentQuestion.question}
           </p>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-3 w-full flex flex-col items-center">
           {currentQuestion.options.map((opt, idx) => {
             let style = 'border-gray-300 hover:bg-gray-100';
             if (showFeedback && userSelection === idx) {
@@ -116,7 +116,7 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
                 type="button"
                 onClick={() => handleSelect(idx)}
                 disabled={showFeedback}
-                className={`answer-button ${style}`}
+                className={`answer-button ${style} w-full`}
               >
                 {opt}
               </button>
@@ -124,17 +124,17 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
           })}
         </div>
         {showFeedback && (
-          <div className="mt-6 p-4 border rounded-lg bg-gray-50">
-            <p className="font-semibold">
+          <div className="mt-6 p-4 border rounded-lg bg-gray-50 flex flex-col items-center w-full">
+            <p className="font-semibold text-center">
               Correct answer: {currentQuestion.options[currentQuestion.answerIndex]}
             </p>
-            <p className="mt-2 text-gray-700">
+            <p className="mt-2 text-gray-700 text-center">
               {currentQuestion.explanation}
             </p>
             {currentQuestion.link && (
               <a
                 href={currentQuestion.link}
-                className="mt-2 inline-block text-blue-600 underline"
+                className="mt-2 inline-block text-blue-600 underline text-center"
                 target="_blank"
                 rel="noreferrer"
               >
