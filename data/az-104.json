@@ -1,0 +1,134 @@
+[
+  {
+    "question": "What does Azure Resource Manager (ARM) provide?",
+    "options": [
+      "A management layer that enables you to create, update, and delete resources in your Azure subscription",
+      "A tool for managing on‑premises Windows Server deployments",
+      "A command‑line interface for Azure",
+      "A virtual machine image gallery"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Resource Manager is the deployment and management service for Azure. It provides a management layer that you use to create, update and delete resources in your Azure subscription as a single operation rather than managing each resource individually.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview"
+  },
+  {
+    "question": "Which Azure service is best for storing unstructured data such as blobs and files?",
+    "options": [
+      "Azure Blob Storage",
+      "Azure SQL Database",
+      "Azure Cosmos DB",
+      "Azure Cache for Redis"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Blob Storage is Microsoft’s object storage solution for the cloud. Blob storage is optimized for storing massive amounts of unstructured data such as images, videos, log files and backups.",
+    "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction"
+  },
+  {
+    "question": "To implement high availability for virtual machines, you should distribute them across which Azure construct?",
+    "options": [
+      "Availability Zones",
+      "Virtual Networks",
+      "Resource Groups",
+      "Subscription Levels"
+    ],
+    "answerIndex": 0,
+    "explanation": "Availability Zones are physically separate locations within an Azure region. Distributing VMs across zones protects your applications and data from datacenter failures.",
+    "link": "https://learn.microsoft.com/en-us/azure/availability-zones/az-overview"
+  },
+  {
+    "question": "Which service allows you to manage user access to multiple Azure services with single sign‑on?",
+    "options": [
+      "Azure Active Directory",
+      "Azure Key Vault",
+      "Azure Monitor",
+      "Azure Resource Manager"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Active Directory (Azure AD) is Microsoft’s cloud‑based identity and access management service. It provides single sign‑on and multi‑factor authentication to help protect your users.",
+    "link": "https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-whatis"
+  },
+  {
+    "question": "What is the purpose of Azure Monitor?",
+    "options": [
+      "Collect, analyze, and act on telemetry data from your environment",
+      "Host web applications",
+      "Create virtual machines",
+      "Provide user authentication"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Monitor maximizes the availability and performance of your applications by delivering a comprehensive solution for collecting, analyzing and acting on telemetry from cloud and on‑premises environments.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/overview"
+  },
+  {
+    "question": "Which command‑line tool is used to manage Azure resources and subscriptions?",
+    "options": [
+      "Azure CLI",
+      "PowerShell DSC",
+      "Bash",
+      "Azure DevOps"
+    ],
+    "answerIndex": 0,
+    "explanation": "The Azure command‑line interface (Azure CLI) is a set of commands used to create and manage Azure resources. It is available across platforms and is designed to get you working quickly with Azure services.",
+    "link": "https://learn.microsoft.com/en-us/cli/azure/overview"
+  },
+  {
+    "question": "What are Resource Groups used for in Azure?",
+    "options": [
+      "Organizing and managing related resources",
+      "Storing unstructured data",
+      "Creating user accounts",
+      "Running serverless functions"
+    ],
+    "answerIndex": 0,
+    "explanation": "A resource group is a container that holds related resources for an Azure solution. It allows you to manage and organize resources like virtual machines, databases and virtual networks as a single unit.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal"
+  },
+  {
+    "question": "Which Azure service provides a managed relational database service with built‑in high availability and scalability?",
+    "options": [
+      "Azure SQL Database",
+      "Azure Blob Storage",
+      "Azure Table Storage",
+      "Azure Queue Storage"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure SQL Database is a fully managed platform as a service (PaaS) database engine that handles most of the database management functions for you such as upgrading, patching, backups and monitoring.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview"
+  },
+  {
+    "question": "What does a Network Security Group (NSG) do?",
+    "options": [
+      "Filters network traffic to and from Azure resources",
+      "Stores encryption keys",
+      "Manages user identities",
+      "Hosts web applications"
+    ],
+    "answerIndex": 0,
+    "explanation": "A network security group contains security rules that allow or deny inbound network traffic to, or outbound network traffic from, several types of Azure resources. NSGs enable you to control access by filtering traffic based on IP address, port and protocol.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview"
+  },
+  {
+    "question": "Which Azure service provides identity protection and multi‑factor authentication?",
+    "options": [
+      "Azure Active Directory",
+      "Azure Firewall",
+      "Azure Monitor",
+      "Azure Advisor"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Active Directory includes security capabilities such as Conditional Access, identity protection and multi‑factor authentication (MFA) to safeguard access to resources.",
+    "link": "https://learn.microsoft.com/en-us/azure/active-directory/authentication/concept-mfa-howitworks"
+  },
+  {
+    "question": "What is Azure Key Vault used for?",
+    "options": [
+      "Safeguarding and managing cryptographic keys and secrets",
+      "Hosting web applications",
+      "Managing DNS records",
+      "Scheduling batch jobs"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Key Vault is a cloud service that provides a secure store for secrets such as API keys, passwords, certificates or cryptographic keys. It helps you control access to secrets using granular policies and centralizes the storage of application secrets.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/overview"
+  }
+]

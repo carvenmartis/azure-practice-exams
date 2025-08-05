@@ -1,0 +1,122 @@
+[
+  {
+    "question": "What does designing for high availability ensure?",
+    "options": [
+      "That the solution uses the least expensive resources",
+      "Minimal downtime by using redundant resources and failover capabilities",
+      "All data is stored on‑premises",
+      "Users can manually scale resources"
+    ],
+    "answerIndex": 1,
+    "explanation": "High availability design focuses on eliminating single points of failure by using redundant components, enabling failover and ensuring continuous service during maintenance or unexpected outages.",
+    "link": "https://learn.microsoft.com/en-us/azure/architecture/framework/resiliency/overview"
+  },
+  {
+    "question": "What is a key consideration when planning for disaster recovery in Azure?",
+    "options": [
+      "Replicating data and workloads to a secondary region",
+      "Encrypting network traffic",
+      "Using the cheapest storage tier",
+      "Choosing only Platform as a Service (PaaS) options"
+    ],
+    "answerIndex": 0,
+    "explanation": "Planning for disaster recovery involves replicating applications and data to a secondary region to ensure business continuity in the event of a regional outage.",
+    "link": "https://learn.microsoft.com/en-us/azure/architecture/resiliency/recovery-migrate-services"
+  },
+  {
+    "question": "Which Azure service provides serverless integration and workflow orchestration?",
+    "options": [
+      "Azure Logic Apps",
+      "Azure Function Apps",
+      "Azure Virtual Network",
+      "Azure Blob Storage"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Logic Apps helps you build automated workflows that integrate apps, data, services and systems across enterprises without writing code.",
+    "link": "https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-overview"
+  },
+  {
+    "question": "What is the primary purpose of Azure Front Door?",
+    "options": [
+      "A global HTTP/HTTPS load balancer that ensures high availability and performance",
+      "A tool for managing encryption keys",
+      "A database migration service",
+      "A batch processing service"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Front Door provides dynamic site acceleration and global HTTP/HTTPS load balancing with instant failover. It enables you to build, operate and scale out your websites, services and APIs worldwide.",
+    "link": "https://learn.microsoft.com/en-us/azure/frontdoor/front-door-overview"
+  },
+  {
+    "question": "Which Azure service provides a fully managed Kubernetes cluster?",
+    "options": [
+      "Azure Kubernetes Service",
+      "Azure Container Registry",
+      "Azure DevTest Labs",
+      "Azure Service Bus"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Kubernetes Service (AKS) allows you to deploy and manage containerized applications using Kubernetes without needing to install or operate your own Kubernetes control plane or nodes.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/intro-kubernetes"
+  },
+  {
+    "question": "What is a benefit of using Azure Cosmos DB?",
+    "options": [
+      "Globally distributed, multi‑model database with low latency",
+      "On‑premises file storage",
+      "Manual scaling of resources",
+      "Rigid schema enforcement"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Cosmos DB is a fully managed NoSQL database service for modern app development. It offers turnkey global distribution, elastic scaling of throughput and storage, automatic indexing and low latency.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/introduction"
+  },
+  {
+    "question": "What is the Azure Well‑Architected Framework used for?",
+    "options": [
+      "Guidance for designing, building and improving workloads in Azure",
+      "A tool for scanning networks",
+      "A programming language",
+      "A type of storage account"
+    ],
+    "answerIndex": 0,
+    "explanation": "The Azure Well‑Architected Framework provides a set of guiding tenets and best practices to help you design, build and continually improve secure, scalable and resilient workloads in Azure.",
+    "link": "https://learn.microsoft.com/en-us/azure/architecture/framework/overview"
+  },
+  {
+    "question": "How can you secure communication between microservices in Azure?",
+    "options": [
+      "Using Azure API Management with OAuth2 or mutual TLS (mTLS)",
+      "By running them in the same virtual machine",
+      "Allowing anonymous access",
+      "Saving credentials in plain text"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure API Management acts as a facade for your microservices and supports securing APIs using OAuth2, OpenID Connect and mutual TLS for client authentication.",
+    "link": "https://learn.microsoft.com/en-us/azure/api-management/api-management-key-concepts"
+  },
+  {
+    "question": "What does scaling vertically (scale‑up) mean?",
+    "options": [
+      "Increasing the resources (CPU/RAM) of an existing instance",
+      "Adding more instances of the same size",
+      "Distributing traffic across regions",
+      "Moving from PaaS to IaaS"
+    ],
+    "answerIndex": 0,
+    "explanation": "Vertical scaling (scale‑up) involves adding more CPU, memory or storage to an existing compute instance to increase its capacity, whereas horizontal scaling adds more instances.",
+    "link": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/auto-scaling"
+  },
+  {
+    "question": "Which service provides real‑time analytics on streaming data from events or devices?",
+    "options": [
+      "Azure Stream Analytics",
+      "Azure Table Storage",
+      "Azure App Service",
+      "Azure DevOps Pipelines"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Stream Analytics is a real‑time analytics and complex event‑processing engine designed to analyze and process high volumes of fast streaming data from multiple sources simultaneously.",
+    "link": "https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-introduction"
+  }
+]

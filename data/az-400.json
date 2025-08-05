@@ -1,0 +1,122 @@
+[
+  {
+    "question": "What does Continuous Integration (CI) refer to?",
+    "options": [
+      "Monitoring application performance in real time",
+      "Automatically building and testing code whenever changes are committed",
+      "Deploying infrastructure as code",
+      "Performing manual code reviews"
+    ],
+    "answerIndex": 1,
+    "explanation": "Continuous Integration is the practice of automatically building and testing software each time code is committed to version control, allowing teams to detect problems early.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/pipelines/"
+  },
+  {
+    "question": "What is Continuous Deployment?",
+    "options": [
+      "Automatically deploying changes that pass tests into production",
+      "Manually deploying code after approval",
+      "Testing code in isolation",
+      "Running performance tests only"
+    ],
+    "answerIndex": 0,
+    "explanation": "Continuous Deployment is an extension of Continuous Delivery where every change that passes automated tests is automatically deployed to production without manual intervention.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/pipelines/release/definitions/cd"
+  },
+  {
+    "question": "Which tool can automate the provisioning of infrastructure in Azure using declarative templates?",
+    "options": [
+      "Azure Resource Manager (ARM) templates",
+      "Azure Blob Storage",
+      "Azure Monitor",
+      "Azure Boards"
+    ],
+    "answerIndex": 0,
+    "explanation": "ARM templates allow you to define your infrastructure as code in a JSON file that can be used to deploy resources consistently and repeatedly.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview"
+  },
+  {
+    "question": "What is Azure Boards used for in Azure DevOps?",
+    "options": [
+      "Plan, track and discuss work across teams",
+      "Store container images",
+      "Monitor application performance",
+      "Manage virtual networks"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Boards provides a suite of agile tools to support planning and tracking work, code defects and issues using Kanban and Scrum methods.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/boards/about-boards"
+  },
+  {
+    "question": "Which service provides private package hosting for npm, NuGet and Maven packages?",
+    "options": [
+      "Azure Artifacts",
+      "Azure Repos",
+      "Azure Test Plans",
+      "Azure Policy"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Artifacts enables teams to share packages from public registries such as npm, NuGet and Maven as well as create private feeds to share packages internally.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/artifacts/overview"
+  },
+  {
+    "question": "What is the purpose of Azure Pipelines?",
+    "options": [
+      "Continuously build, test and deploy code to any platform and cloud",
+      "Host web applications",
+      "Monitor database performance",
+      "Manage identity and access"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Pipelines combines continuous integration and continuous delivery to automatically build, test and deploy your code to any platform or cloud.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines"
+  },
+  {
+    "question": "Which practice involves automatically deploying infrastructure using code?",
+    "options": [
+      "Infrastructure as Code",
+      "Manual provisioning",
+      "Software as a Service",
+      "Platform as a Service"
+    ],
+    "answerIndex": 0,
+    "explanation": "Infrastructure as Code (IaC) is the process of managing and provisioning computing resources through machine-readable definition files rather than manual hardware configuration.",
+    "link": "https://learn.microsoft.com/en-us/devops/deliver/software-definitions#infrastructure-as-code"
+  },
+  {
+    "question": "What is a pull request?",
+    "options": [
+      "A request to merge code changes into a repository branch with review",
+      "A backup of the repository",
+      "An automated test run",
+      "A branch that has no changes"
+    ],
+    "answerIndex": 0,
+    "explanation": "A pull request lets you tell others about changes you've pushed to a branch in a Git repository. Once created, you can discuss and review the potential changes with collaborators before merging the updates.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/repos/git/pull-requests"
+  },
+  {
+    "question": "Which tool helps implement static application security testing in your pipeline?",
+    "options": [
+      "SonarCloud",
+      "Azure Functions",
+      "Azure Monitor",
+      "Azure Virtual Machines"
+    ],
+    "answerIndex": 0,
+    "explanation": "SonarCloud and similar static code analysis tools integrate into CI/CD pipelines to detect code quality issues and security vulnerabilities as part of the build process.",
+    "link": "https://sonarcloud.io/features/continuous-code-inspection"
+  },
+  {
+    "question": "What is GitOps?",
+    "options": [
+      "A methodology that uses Git as the single source of truth for declarative infrastructure and application code",
+      "A managed database service",
+      "A tool for monitoring website uptime",
+      "An Azure storage option"
+    ],
+    "answerIndex": 0,
+    "explanation": "GitOps uses Git pull requests to manage infrastructure and application configurations. The desired state is stored in Git and automated tooling ensures that the actual state converges to this desired state.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/concepts/gitops"
+  }
+]

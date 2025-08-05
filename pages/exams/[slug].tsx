@@ -1,0 +1,177 @@
+import { useMemo, useState } from 'react';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
+import path from 'path';
+import fs from 'fs';
+
+interface Question {
+  question: string;
+  options: string[];
+  answerIndex: number;
+  explanation: string;
+  link?: string;
+}
+
+interface ExamPageProps {
+  slug: string;
+  exam: Question[];
+}
+
+/**
+ * The ExamPage component displays a quiz for a given exam. It
+ * randomly selects up to 60 questions from the loaded JSON file
+ * and walks the user through them one at a time. After each answer
+ * selection the correct answer, explanation and documentation link
+ * are revealed. When all questions have been answered a score out
+ * of 1000 points is calculated and shown.
+ */
+export default function ExamPage({ slug, exam }: ExamPageProps) {
+  // Shuffle the questions and limit to 60.
+  const questions = useMemo(() => {
+    const shuffled = [...exam].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 60);
+  }, [exam]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
+
+  const currentQuestion = questions[currentIndex];
+
+  const handleSelect = (optionIndex: number) => {
+    // Prevent changing an answer once selected
+    if (selectedAnswers[currentIndex] !== undefined) return;
+    const newSelections = [...selectedAnswers];
+    newSelections[currentIndex] = optionIndex;
+    setSelectedAnswers(newSelections);
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => prev + 1);
+  };
+
+  // Once we have answered all questions, calculate the result
+  if (currentIndex >= questions.length) {
+    const total = questions.length;
+    const correctCount = selectedAnswers.filter(
+      (sel, idx) => sel === questions[idx].answerIndex
+    ).length;
+    const score = Math.round((correctCount / total) * 1000);
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <h1 className="text-3xl font-bold mb-4">Exam Complete</h1>
+        <p className="text-lg mb-2">
+          You answered {correctCount} out of {total} questions correctly.
+        </p>
+        <p className="text-2xl font-semibold mb-6">Score: {score} / 1000</p>
+        <Link href="/">
+          <div className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">
+            Back to Dashboard
+          </div>
+        </Link>
+      </div>
+    );
+  }
+
+  const userSelection = selectedAnswers[currentIndex];
+  const showFeedback = userSelection !== undefined;
+  const isCorrect = showFeedback && userSelection === currentQuestion.answerIndex;
+
+  return (
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-2xl font-bold mb-4">
+          {slug.toUpperCase()} Practice Exam
+        </h1>
+        <div className="mb-6">
+          <p className="text-lg font-medium">
+            Question {currentIndex + 1} of {questions.length}
+          </p>
+          <p className="mt-2 text-gray-800">
+            {currentQuestion.question}
+          </p>
+        </div>
+        <div className="space-y-3">
+          {currentQuestion.options.map((opt, idx) => {
+            let style = 'border-gray-300 hover:bg-gray-100';
+            if (showFeedback && userSelection === idx) {
+              style = idx === currentQuestion.answerIndex
+                ? 'border-green-500 bg-green-50'
+                : 'border-red-500 bg-red-50';
+            } else if (showFeedback && idx === currentQuestion.answerIndex) {
+              // highlight the correct answer even if not selected
+              style = 'border-green-500 bg-green-50';
+            }
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleSelect(idx)}
+                disabled={showFeedback}
+                className={`answer-button ${style}`}
+              >
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+        {showFeedback && (
+          <div className="mt-6 p-4 border rounded-lg bg-gray-50">
+            <p className="font-semibold">
+              Correct answer: {currentQuestion.options[currentQuestion.answerIndex]}
+            </p>
+            <p className="mt-2 text-gray-700">
+              {currentQuestion.explanation}
+            </p>
+            {currentQuestion.link && (
+              <a
+                href={currentQuestion.link}
+                className="mt-2 inline-block text-blue-600 underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Learn more
+              </a>
+            )}
+            <button
+              type="button"
+              onClick={handleNext}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              {currentIndex < questions.length - 1 ? 'Next Question' : 'View Results'}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Generate static paths for each predefined exam. If you add new exam JSON
+ * files to the `data` directory you should also include their slug here.
+ */
+export const getStaticPaths: GetStaticPaths = async () => {
+  const slugs = ['az-104', 'az-204', 'az-400', 'az-304'];
+  return {
+    paths: slugs.map((slug) => ({ params: { slug } })),
+    fallback: false
+  };
+};
+
+/**
+ * Load the exam data from disk at build time. The slug corresponds to
+ * the file name under the `data` directory. JSON imports are enabled
+ * via the TypeScript configuration.
+ */
+export const getStaticProps: GetStaticProps<ExamPageProps> = async ({ params }) => {
+  const slug = params?.slug as string;
+  const dataPath = path.join(process.cwd(), 'data', `${slug}.json`);
+  const raw = fs.readFileSync(dataPath, 'utf-8');
+  const exam = JSON.parse(raw) as Question[];
+  return {
+    props: {
+      slug,
+      exam
+    }
+  };
+};

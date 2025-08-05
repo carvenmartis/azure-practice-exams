@@ -1,0 +1,122 @@
+[
+  {
+    "question": "What is Azure Functions used for?",
+    "options": [
+      "Running event‑driven, serverless code without provisioning infrastructure",
+      "Hosting a traditional web application on dedicated VMs",
+      "Managing SQL databases",
+      "Configuring virtual networks"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Functions is a serverless compute service that lets you run event‑triggered code without explicitly provisioning or managing servers.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview"
+  },
+  {
+    "question": "Which Azure service would you use to host a web application without managing infrastructure?",
+    "options": [
+      "Azure App Service",
+      "Azure Virtual Machines",
+      "Azure Kubernetes Service",
+      "Azure Batch"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure App Service is a fully managed platform for building, deploying and scaling web apps. You don't need to manage the underlying infrastructure and can deploy via Git or CI/CD.",
+    "link": "https://learn.microsoft.com/en-us/azure/app-service/overview"
+  },
+  {
+    "question": "What is the purpose of Azure Logic Apps?",
+    "options": [
+      "Automating workflows and integrating systems",
+      "Hosting virtual machines",
+      "Providing source control",
+      "Monitoring network traffic"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Logic Apps is a cloud service that helps you automate and orchestrate tasks, business processes and workflows by integrating with over 200 services via connectors.",
+    "link": "https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-overview"
+  },
+  {
+    "question": "Which service is best for building and deploying containers at scale?",
+    "options": [
+      "Azure Kubernetes Service",
+      "Azure Container Instances",
+      "Azure Batch",
+      "Azure Functions"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Kubernetes Service (AKS) provides a managed Kubernetes environment that simplifies deploying, managing and scaling containerized applications.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/intro-kubernetes"
+  },
+  {
+    "question": "What is Azure Key Vault used for?",
+    "options": [
+      "Safeguarding and managing cryptographic keys and secrets",
+      "Hosting web applications",
+      "Storing large files",
+      "Monitoring application performance"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Key Vault securely stores and controls access to tokens, passwords, certificates, API keys and other secrets.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/overview"
+  },
+  {
+    "question": "Which programming languages are supported by Azure Functions?",
+    "options": [
+      "Multiple languages including C#, Java, JavaScript, Python and PowerShell",
+      "Only C#",
+      "Only Java and Python",
+      "Only Node.js"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Functions supports several programming languages such as C#, Java, JavaScript, Python, PowerShell and custom handlers, allowing developers to choose the language they are most comfortable with.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/supported-languages"
+  },
+  {
+    "question": "What is the main benefit of using Azure Content Delivery Network (CDN)?",
+    "options": [
+      "Deliver content to users faster by caching data at global edge nodes",
+      "Manage user identities",
+      "Store unstructured data",
+      "Provide relational database services"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure CDN caches static content closer to end users via a global network of edge nodes, which reduces latency and improves load times for websites and applications.",
+    "link": "https://learn.microsoft.com/en-us/azure/cdn/cdn-overview"
+  },
+  {
+    "question": "What is the purpose of Azure Queue Storage?",
+    "options": [
+      "Store and retrieve messages for asynchronous processing",
+      "Host container workloads",
+      "Manage user access",
+      "Stream video content"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Queue Storage provides cloud messaging for communication between components of a distributed application. It enables asynchronous processing by allowing messages to be stored until the receiving component processes them.",
+    "link": "https://learn.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction"
+  },
+  {
+    "question": "Which service would you use to build event‑driven applications based on publish/subscribe messaging?",
+    "options": [
+      "Azure Event Grid",
+      "Azure File Storage",
+      "Azure DevOps",
+      "Azure Databricks"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure Event Grid is a fully managed event routing service that enables you to easily build event‑driven applications using a publish/subscribe model.",
+    "link": "https://learn.microsoft.com/en-us/azure/event-grid/overview"
+  },
+  {
+    "question": "What is Azure API Management used for?",
+    "options": [
+      "Publishing, securing, transforming, maintaining and monitoring APIs",
+      "Running virtual machines",
+      "Scaling containers",
+      "Hosting databases"
+    ],
+    "answerIndex": 0,
+    "explanation": "Azure API Management helps organizations publish APIs to external and internal customers. It provides features to secure, transform, throttle, monitor and analyze API usage.",
+    "link": "https://learn.microsoft.com/en-us/azure/api-management/api-management-key-concepts"
+  }
+]
