@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useDarkMode } from './_app';
+import { useEffect } from 'react';
 
 /**
  * Home page renders a dashboard of available practice exams. The exams
@@ -26,7 +27,14 @@ export default function Home() {
     }
   ];
 
-  const { darkMode } = useDarkMode();
+  const { darkMode, setDarkMode } = useDarkMode();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && setDarkMode) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setDarkMode(prefersDark);
+    }
+  }, [setDarkMode]);
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center py-10 px-4 ${darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
