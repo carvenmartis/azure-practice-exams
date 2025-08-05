@@ -3,3 +3,4 @@ variables:
   dockerHubNamespace: carvenmartisit 
   dockerImageTag: latest
   DOCKER_HUB_REPO: carvenmartisit/azure-practice-exams
+  dockerHubServiceConnection: DockerHubServiceConnection 
