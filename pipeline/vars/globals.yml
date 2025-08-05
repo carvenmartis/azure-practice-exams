@@ -1,0 +1,5 @@
+variables:
+  imageName: azurepracticeexams
+  dockerHubNamespace: carvenmartisit 
+  dockerImageTag: latest
+  DOCKER_HUB_REPO: carvenmartisit/azure-practice-exams
