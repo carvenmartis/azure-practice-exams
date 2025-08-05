@@ -29,13 +29,27 @@ stages:
               tags: |
                 ${{ variables.dockerImageTag }}
 
+          - script: |
+              docker save ${{ variables.dockerHubNamespace }}/${{ variables.imageName }}:${{ variables.dockerImageTag }} -o $(Build.ArtifactStagingDirectory)/${{ variables.imageName }}.tar
+            displayName: 'Save Docker image as tar'
+
+          - publish: $(Build.ArtifactStagingDirectory)/${{ variables.imageName }}.tar
+            artifact: drop
+
   - stage: Deploy
     displayName: Deploy Docker Image to Artifact
     dependsOn: Build
     jobs:
       - job: Deploy
-        displayName: Save Docker Image to Drop
+        displayName: Load and Push Docker Image
         steps:
+          - download: current
+            artifact: drop
+
+          - script: |
+              docker load -i $(Pipeline.Workspace)/drop/${{ variables.imageName }}.tar
+            displayName: 'Load Docker image from artifact'
+
           - task: Docker@2
             displayName: 'Push Docker Image'
             inputs:
