@@ -2,22 +2,24 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
-import { useDarkMode } from '../pages/_app';
-import { canLeave } from '../lib/leaveGuard';
+import { canLeave } from '@/lib/leave-guard';
+import { cn, focusRing } from '@/lib/utils';
 
 const menuItems = [
   { href: '/', label: 'Dashboard' },
   { href: '/settings', label: 'Settings' }
 ];
 
+const lineClass = 'absolute left-0 block h-0.5 w-5 rounded-full bg-gray-900 dark:bg-white';
+const lineTransition = { duration: 0.25, ease: 'easeInOut' } as const;
+
 /**
  * Burger button that opens a full-height drawer with the site's pages. The
  * drawer slides in from the right edge and closes on navigation, Escape or a
  * click outside it.
  */
-export default function NavMenu() {
+export function NavMenu() {
   const [open, setOpen] = useState(false);
-  const { darkMode } = useDarkMode();
   const router = useRouter();
 
   useEffect(() => {
@@ -41,9 +43,6 @@ export default function NavMenu() {
     };
   }, [open]);
 
-  const lineClass = `absolute left-0 block h-0.5 w-5 rounded-full ${darkMode ? 'bg-white' : 'bg-gray-900'}`;
-  const lineTransition = { duration: 0.25, ease: 'easeInOut' } as const;
-
   return (
     <MotionConfig reducedMotion="user">
       <button
@@ -52,25 +51,24 @@ export default function NavMenu() {
         aria-expanded={open}
         aria-controls="site-menu"
         onClick={() => setOpen((isOpen) => !isOpen)}
-        className={`relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-offset-2 ${
-          darkMode
-            ? 'hover:bg-gray-800 focus-visible:outline-blue-400'
-            : 'hover:bg-gray-100 focus-visible:outline-blue-600'
-        }`}
+        className={cn(
+          'relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] hover:bg-gray-100 dark:hover:bg-gray-800',
+          focusRing
+        )}
       >
         <span className="relative block h-3.5 w-5" aria-hidden="true">
           <motion.span
-            className={`${lineClass} top-0`}
+            className={cn(lineClass, 'top-0')}
             animate={open ? { y: 6, rotate: 45 } : { y: 0, rotate: 0 }}
             transition={lineTransition}
           />
           <motion.span
-            className={`${lineClass} top-1.5`}
+            className={cn(lineClass, 'top-1.5')}
             animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
             transition={lineTransition}
           />
           <motion.span
-            className={`${lineClass} top-3`}
+            className={cn(lineClass, 'top-3')}
             animate={open ? { y: -6, rotate: -45 } : { y: 0, rotate: 0 }}
             transition={lineTransition}
           />
@@ -93,9 +91,7 @@ export default function NavMenu() {
               key="panel"
               id="site-menu"
               aria-label="Site"
-              className={`fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l p-4 shadow-xl ${
-                darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-white'
-              }`}
+              className="fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-gray-200 bg-white p-4 shadow-xl dark:border-gray-800 dark:bg-gray-900"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -118,11 +114,13 @@ export default function NavMenu() {
                           if (!canLeave()) event.preventDefault();
                           setOpen(false);
                         }}
-                        className={`block rounded-lg px-4 py-3 text-base font-medium transition-colors focus-visible:outline-2 ${
+                        className={cn(
+                          'block rounded-lg px-4 py-3 text-base font-medium transition-colors',
+                          focusRing,
                           active
-                            ? (darkMode ? 'bg-blue-950 text-blue-300' : 'bg-blue-50 text-blue-700')
-                            : (darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100')
-                        } ${darkMode ? 'focus-visible:outline-blue-400' : 'focus-visible:outline-blue-600'}`}
+                            ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                        )}
                       >
                         {item.label}
                       </Link>

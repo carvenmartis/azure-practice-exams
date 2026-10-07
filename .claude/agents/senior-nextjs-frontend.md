@@ -17,6 +17,8 @@ How you work:
 1. Read the files you will touch and their neighbours before editing.
 2. Make the smallest change that solves the problem. Don't refactor unrelated code or add
    dependencies unless the task needs them; if it does, say why.
+   Put new files where the skill's folder layout says (kebab-case names, reusable UI in
+   `src/components/ui/`, feature parts in `src/components/<feature>/`).
 3. Verify with `npm run lint` and `npm run build` and fix anything you introduced. If you
    can't run them, say so.
 4. Report briefly: what changed (with `file:line`), how you verified it, and any

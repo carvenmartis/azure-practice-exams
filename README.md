@@ -13,6 +13,26 @@ npm run lint
 npm run build
 ```
 
+## Project structure
+
+```
+src/
+  pages/           routes (Pages Router): index, settings, exams/[slug], api/version
+  components/
+    ui/            reusable UI: button, card, badge, stat-card, radio-card, confirm-dialog
+    layout/        page-layout, course-header, nav-menu, update-notice, version-badge
+    dashboard/     exam-card
+    exam/          answer-option, answer-feedback, exam-results
+    settings/      theme-picker
+  contexts/        theme-context (Light / Dark / System)
+  lib/             exams list, theme colours, version, leave-guard, utils
+  styles/          globals.css (Tailwind v4)
+data/              exam questions (JSON)
+scripts/           build-exam-data.mjs: data/ -> public/exam-data/ before dev and build
+```
+
+Files and folders use kebab-case, and imports from `src/` use the `@/` alias.
+
 ## Docker
 
 ```bash
@@ -36,4 +56,4 @@ Add these repository secrets in GitHub (Settings > Secrets and variables > Actio
 
 ## Adding an exam
 
-Add `data/<slug>.json`, then add `{ slug, name, description }` to the `exams` list in `lib/exams.ts`. The dashboard, the exam page header and the static exam paths all read from it.
+Add `data/<slug>.json`, then add `{ slug, name, description }` to the `exams` list in `src/lib/exams.ts`. The dashboard, the exam page header and the static exam paths all read from it.

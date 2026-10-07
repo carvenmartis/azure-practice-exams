@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+/* dark: utilities follow the theme setting (the .dark class on <html>), not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Tailwind v4 changed the default border color to currentColor.
+  Keep the v3 default (gray-200) so existing borders look the same.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+/* Global styles for the application */
+html,
+body {
+  @apply bg-white text-gray-900 dark:bg-black dark:text-white;
+}

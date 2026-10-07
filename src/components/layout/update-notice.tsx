@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { buildId } from '../lib/version';
-import type { VersionResponse } from '../lib/version';
+import { buildId } from '@/lib/version';
+import type { VersionResponse } from '@/lib/version';
+import { cn, focusRing } from '@/lib/utils';
 
 const pollInterval = 5 * 60 * 1000;
 
@@ -10,7 +11,7 @@ const pollInterval = 5 * 60 * 1000;
  * view. When the server runs a newer build than the one this page loaded
  * with, it shows a notice; clicking it reloads the page onto the new version.
  */
-export default function UpdateNotice() {
+export function UpdateNotice() {
   const [newVersion, setNewVersion] = useState<string | null>(null);
 
   useEffect(() => {
@@ -67,7 +68,10 @@ export default function UpdateNotice() {
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="flex w-full items-center gap-3 rounded-xl bg-blue-600 px-4 py-3 text-left text-white shadow-lg transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-400"
+            className={cn(
+              'flex w-full items-center gap-3 rounded-xl bg-blue-600 px-4 py-3 text-left text-white shadow-lg transition-colors hover:bg-blue-700',
+              focusRing
+            )}
           >
             <span className="flex-1">
               <span className="block font-semibold">A new version is available</span>

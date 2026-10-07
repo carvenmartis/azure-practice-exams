@@ -8,12 +8,16 @@ services:
       - "3002:3000"
     restart: unless-stopped
     labels:
-      # Lets the watchtower service below update this container
+      # Lets watchtower pull new :latest images and restart this container,
+      # so open pages show the "new version available" notice.
       - com.centurylinklabs.watchtower.enable=true
+    # Starting the app always starts watchtower too
+    depends_on:
+      - watchtower
 
-  # Pulls a new :latest image from Docker Hub every 5 minutes and restarts the
-  # app with it, so open pages show the "new version available" notice.
-  # Only touches containers labelled above. Maintained fork of containrrr/watchtower.
+  # Checks Docker Hub every 5 minutes for a new :latest image and restarts the
+  # app with it. Docker restarts it if it ever stops. Only touches containers
+  # labelled above. Maintained fork of the archived containrrr/watchtower.
   watchtower:
     image: nickfedor/watchtower:latest
     volumes:
@@ -22,4 +26,4 @@ services:
       WATCHTOWER_LABEL_ENABLE: "true"
       WATCHTOWER_POLL_INTERVAL: "300"
       WATCHTOWER_CLEANUP: "true"
-    restart: unless-stopped
+    restart: always
