@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useDarkMode } from '../pages/_app';
 import { siteName } from '../lib/exams';
 import NavMenu from './NavMenu';
+import { canLeave } from '../lib/leaveGuard';
 
 interface CourseHeaderProps {
   /** Course name to show; defaults to the site name. */
@@ -23,6 +24,9 @@ export default function CourseHeader({ title = siteName, eyebrow }: CourseHeader
       <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
         <Link
           href="/"
+          onClick={(event) => {
+            if (!canLeave()) event.preventDefault();
+          }}
           aria-label={`${siteName} home`}
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 ${
             darkMode ? 'focus-visible:outline-blue-400' : 'focus-visible:outline-blue-600'

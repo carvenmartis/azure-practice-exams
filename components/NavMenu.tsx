@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { useDarkMode } from '../pages/_app';
+import { canLeave } from '../lib/leaveGuard';
 
 const menuItems = [
   { href: '/', label: 'Dashboard' },
@@ -113,7 +114,10 @@ export default function NavMenu() {
                       <Link
                         href={item.href}
                         aria-current={active ? 'page' : undefined}
-                        onClick={() => setOpen(false)}
+                        onClick={(event) => {
+                          if (!canLeave()) event.preventDefault();
+                          setOpen(false);
+                        }}
                         className={`block rounded-lg px-4 py-3 text-base font-medium transition-colors focus-visible:outline-2 ${
                           active
                             ? (darkMode ? 'bg-blue-950 text-blue-300' : 'bg-blue-50 text-blue-700')
