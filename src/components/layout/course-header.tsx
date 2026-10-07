@@ -27,7 +27,7 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-40 transform-gpu border-b border-line bg-header">
-        <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
+        <div className="relative mx-auto flex h-(--header-height) max-w-6xl items-center gap-3 px-4 sm:px-6">
           <Link
             href="/"
             aria-label={`${siteName} home`}
@@ -54,8 +54,8 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
           <NavMenu />
         </div>
       </header>
-      {/* Same height as the header (h-16 plus its 1px border) */}
-      <div aria-hidden className="h-16 border-b border-transparent" />
+      {/* Same height as the header (--header-height plus its 1px border) */}
+      <div aria-hidden className="h-[calc(var(--header-height)+1px)]" />
     </>
   );
 }

@@ -24,7 +24,7 @@ export function PageLayout({ pageTitle, headerTitle, eyebrow, className, childre
         <title>{pageTitle ? `${pageTitle} | ${siteName}` : siteName}</title>
       </Head>
       <CourseHeader title={headerTitle} eyebrow={eyebrow} />
-      <main className={cn('min-h-[calc(100dvh-4rem)]', className)}>{children}</main>
+      <main className={cn('min-h-[calc(100dvh-var(--header-height))]', className)}>{children}</main>
     </>
   );
 }

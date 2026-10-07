@@ -10,6 +10,9 @@
   src/lib/theme.ts (the iOS status bar).
 */
 :root {
+  /* Header bar height; taller on iOS (the 'ios' class from src/lib/theme.ts) */
+  --header-height: 4rem;
+
   --canvas: #f7f5f0;
   --surface: #ffffff;
   --surface-muted: #f1ede4;
@@ -30,6 +33,10 @@
   --danger: #a23b3b;
   --danger-soft: #f9ecea;
   --shadow-color: 32 26 14;
+}
+
+.ios {
+  --header-height: 5rem;
 }
 
 .dark {

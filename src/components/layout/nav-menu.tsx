@@ -93,7 +93,7 @@ export function NavMenu() {
                 {/* Dims the page below the header only, so the header keeps matching the status bar */}
                 <motion.div
                   key="backdrop"
-                  className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/45"
+                  className="fixed inset-x-0 top-(--header-height) bottom-0 z-40 bg-black/45"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -103,7 +103,7 @@ export function NavMenu() {
                   key="panel"
                   id="site-menu"
                   aria-label="Site"
-                  className="fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted"
+                  className="fixed top-(--header-height) right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted"
                   initial={{ x: '100%' }}
                   animate={{ x: 0 }}
                   exit={{ x: '100%' }}
