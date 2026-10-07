@@ -4,10 +4,10 @@ import { buildId } from '@/lib/version';
 import type { VersionResponse } from '@/lib/version';
 import { cn, focusRing } from '@/lib/utils';
 
-const pollInterval = 5 * 60 * 1000;
+const pollInterval = 60 * 1000;
 
 /**
- * Checks /api/version every few minutes and whenever the tab comes back into
+ * Checks /api/version every minute and whenever the tab comes back into
  * view. When the server runs a newer build than the one this page loaded
  * with, it shows a notice; clicking it reloads the page onto the new version.
  */

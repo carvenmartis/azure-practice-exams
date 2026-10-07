@@ -15,7 +15,7 @@ services:
     depends_on:
       - watchtower
 
-  # Checks Docker Hub every 5 minutes for a new :latest image and restarts the
+  # Checks Docker Hub every minute for a new :latest image and restarts the
   # app with it. Docker restarts it if it ever stops. Only touches containers
   # labelled above. Maintained fork of the archived containrrr/watchtower.
   watchtower:
@@ -24,6 +24,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       WATCHTOWER_LABEL_ENABLE: "true"
-      WATCHTOWER_POLL_INTERVAL: "300"
+      WATCHTOWER_POLL_INTERVAL: "60"
       WATCHTOWER_CLEANUP: "true"
     restart: always
