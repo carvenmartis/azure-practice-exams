@@ -80,3 +80,46 @@ jobs:
             GIT_SHA=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Keep latest plus the newest KEEP version builds on Docker Hub and
+      # delete older tags. Needs a token with Read, Write, Delete access.
+      - name: Clean up old tags on Docker Hub
+        if: github.event_name != 'pull_request'
+        continue-on-error: true
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          KEEP: 5
+        run: |
+          set -euo pipefail
+          api=https://hub.docker.com/v2
+          ns="$DOCKERHUB_NAMESPACE"
+          repo="$IMAGE_NAME"
+
+          jwt=$(jq -n --arg u "$DOCKERHUB_USERNAME" --arg p "$DOCKERHUB_TOKEN" '{identifier: $u, secret: $p}' \
+            | curl -fsS -X POST "$api/auth/token" -H 'Content-Type: application/json' -d @- | jq -r .access_token)
+
+          # Collect every tag (name + digest), following pagination
+          url="$api/namespaces/$ns/repositories/$repo/tags?page_size=100"
+          tags='[]'
+          while [ -n "$url" ] && [ "$url" != "null" ]; do
+            page=$(curl -fsS -H "Authorization: Bearer $jwt" "$url")
+            tags=$(jq -c --argjson acc "$tags" '$acc + [.results[] | {name, digest}]' <<<"$page")
+            url=$(jq -r '.next' <<<"$page")
+          done
+
+          # Images of the newest KEEP version tags (x.y.z), newest first
+          keep_digests=$(jq -r '.[] | select(.name | test("^[0-9]+\\.[0-9]+\\.[0-9]+$")) | "\(.name) \(.digest)"' <<<"$tags" \
+            | sort -V -r | head -n "$KEEP" | awk '{print $2}' | jq -R . | jq -sc .)
+          if [ "$keep_digests" = "[]" ]; then
+            echo "No version tags found, nothing to clean up"
+            exit 0
+          fi
+
+          # Delete every tag except latest and tags pointing at a kept image
+          jq -r --argjson keep "$keep_digests" \
+            '.[] | select(.name != "latest" and ((.digest as $d | $keep | index($d)) | not)) | .name' <<<"$tags" \
+            | while read -r tag; do
+                echo "Deleting $ns/$repo:$tag"
+                curl -fsS -X DELETE -H "Authorization: Bearer $jwt" "$api/repositories/$ns/$repo/tags/$tag/"
+              done
