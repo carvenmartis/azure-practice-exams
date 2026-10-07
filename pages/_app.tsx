@@ -33,6 +33,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           {darkMode ? 'Light Mode' : 'Dark Mode'}
         </button>
         <Component {...pageProps} />
+        <div className="fixed bottom-2 right-3 z-50 text-xs text-gray-500 dark:text-gray-400 select-none">
+          v{process.env.NEXT_PUBLIC_APP_VERSION}
+          {process.env.NEXT_PUBLIC_COMMIT_SHA && ` (${process.env.NEXT_PUBLIC_COMMIT_SHA})`}
+        </div>
       </div>
     </DarkModeContext.Provider>
   );
