@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { exams } from '@/lib/exams';
 import { setLeaveGuard } from '@/lib/leave-guard';
+import { shuffleAllOptions } from '@/lib/shuffle-options';
 
 interface ProcessedQuestion {
   question: string;
@@ -34,7 +35,7 @@ interface ExamPageProps {
  * header or menu links, Back) asks first and then shows the results so far.
  */
 export default function ExamPage({ slug }: ExamPageProps) {
-  // Load the questions in the browser, then shuffle and limit to 60.
+  // Load the questions in the browser, then shuffle, limit to 60 and shuffle each question's answers.
   const [questions, setQuestions] = useState<ProcessedQuestion[] | null>(null);
   const [loadError, setLoadError] = useState(false);
 
@@ -52,7 +53,8 @@ export default function ExamPage({ slug }: ExamPageProps) {
           const j = Math.floor(Math.random() * (i + 1));
           [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
-        setQuestions(shuffled.slice(0, 60));
+        // Each question's answers are reshuffled too, so the correct one moves around.
+        setQuestions(shuffleAllOptions(shuffled.slice(0, 60)));
       })
       .catch(() => {
         if (!cancelled) setLoadError(true);
