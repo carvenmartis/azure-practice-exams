@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useDarkMode } from './_app';
-import { useEffect } from 'react';
 import CourseHeader from '../components/CourseHeader';
 import { exams, siteName, splitExamName } from '../lib/exams';
 
@@ -11,14 +10,7 @@ import { exams, siteName, splitExamName } from '../lib/exams';
  * Selecting a card navigates to the corresponding exam page.
  */
 export default function Home() {
-  const { darkMode, setDarkMode } = useDarkMode();
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && setDarkMode) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setDarkMode(prefersDark);
-    }
-  }, [setDarkMode]);
+  const { darkMode } = useDarkMode();
 
   const facts = [
     { label: 'Practice exams', value: exams.length },
