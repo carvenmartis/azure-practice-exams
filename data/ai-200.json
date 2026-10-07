@@ -1,0 +1,722 @@
+[
+  {
+    "question": "Which Azure service stores and versions private container images for your AI back end?",
+    "options": [
+      "Azure Key Vault",
+      "Azure App Configuration",
+      "Azure Blob Storage static website",
+      "Azure Container Registry"
+    ],
+    "answer": "Azure Container Registry",
+    "explanation": "Azure Container Registry is a managed private registry for container images and OCI artifacts, with tags and repositories for versioning.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-intro"
+  },
+  {
+    "question": "You want images built in the cloud whenever code is pushed, without a local Docker daemon. What should you use?",
+    "options": [
+      "Azure Event Grid",
+      "Azure Container Registry Tasks",
+      "Azure Batch",
+      "Azure Functions Premium plan"
+    ],
+    "answer": "Azure Container Registry Tasks",
+    "explanation": "ACR Tasks build, test and push images in Azure, and can trigger on source commits or base image updates.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tasks-overview"
+  },
+  {
+    "question": "Which Azure CLI command builds an image from a Dockerfile in the current folder and pushes it to a registry in one step?",
+    "options": [
+      "az acr import --name myreg",
+      "az acr repository list --name myreg",
+      "az acr build --registry myreg --image app:v1 .",
+      "az acr login --name myreg"
+    ],
+    "answer": "az acr build --registry myreg --image app:v1 .",
+    "explanation": "az acr build uploads the build context, builds the image with ACR Tasks and pushes it to the registry.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-quickstart-task-cli"
+  },
+  {
+    "question": "An App Service web app runs a custom container that needs a database connection string. How should you supply it without baking it into the image?",
+    "options": [
+      "Put it in the image label",
+      "Store it in a public blob",
+      "Hard-code it in the Dockerfile",
+      "Set it as an app setting, ideally as a Key Vault reference"
+    ],
+    "answer": "Set it as an app setting, ideally as a Key Vault reference",
+    "explanation": "App settings are injected into the container as environment variables. Key Vault references let App Service resolve secrets from Key Vault at run time.",
+    "link": "https://learn.microsoft.com/en-us/azure/app-service/app-service-key-vault-references"
+  },
+  {
+    "question": "Which Azure service runs containerized microservices with built-in revisions, HTTP ingress and scale-to-zero, without managing Kubernetes?",
+    "options": [
+      "Azure Container Apps",
+      "Azure Batch",
+      "Azure Kubernetes Service",
+      "Azure Virtual Machines"
+    ],
+    "answer": "Azure Container Apps",
+    "explanation": "Azure Container Apps is a serverless container platform built on Kubernetes, KEDA and Envoy, with revisions and scale to zero.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-apps/overview"
+  },
+  {
+    "question": "You deploy a new version of a container app and want to send 10% of traffic to it. What should you configure?",
+    "options": [
+      "Multiple revision mode with traffic splitting",
+      "A new Container Apps environment",
+      "A Key Vault access policy",
+      "Single revision mode"
+    ],
+    "answer": "Multiple revision mode with traffic splitting",
+    "explanation": "In multiple revision mode you can keep several revisions active and split ingress traffic between them by percentage.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-apps/revisions"
+  },
+  {
+    "question": "A container app processes messages from a Service Bus queue and should scale with queue length. What should you configure?",
+    "options": [
+      "A KEDA scale rule for Azure Service Bus",
+      "An Event Grid filter",
+      "A CPU-only scale rule",
+      "Manual replica count of 1"
+    ],
+    "answer": "A KEDA scale rule for Azure Service Bus",
+    "explanation": "Container Apps uses KEDA scalers. An azure-servicebus scale rule adds replicas based on message count and can scale to zero.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-apps/scale-app"
+  },
+  {
+    "question": "Two container apps must share a virtual network and Log Analytics workspace. Where are these settings defined?",
+    "options": [
+      "Each revision",
+      "The container registry",
+      "The Container Apps environment",
+      "The App Configuration store"
+    ],
+    "answer": "The Container Apps environment",
+    "explanation": "A Container Apps environment is the secure boundary for a group of apps and defines the shared virtual network and logging destination.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-apps/environment"
+  },
+  {
+    "question": "Which command applies a Kubernetes manifest to deploy an app to AKS?",
+    "options": [
+      "kubectl apply -f deployment.yaml",
+      "az acr build deployment.yaml",
+      "docker run deployment.yaml",
+      "az aks create -f deployment.yaml"
+    ],
+    "answer": "kubectl apply -f deployment.yaml",
+    "explanation": "kubectl apply creates or updates the resources described in a manifest file on the cluster.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-cli"
+  },
+  {
+    "question": "Which Kubernetes object keeps a desired number of identical pods running and handles rolling updates?",
+    "options": [
+      "Service",
+      "ConfigMap",
+      "Namespace",
+      "Deployment"
+    ],
+    "answer": "Deployment",
+    "explanation": "A Deployment manages a ReplicaSet to keep the desired pod count and performs rolling updates when the pod template changes.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/concepts-clusters-workloads"
+  },
+  {
+    "question": "AKS must pull images from a private Azure Container Registry without image pull secrets. What should you do?",
+    "options": [
+      "Make the registry public",
+      "Store the admin password in a ConfigMap",
+      "Copy images to every node",
+      "Attach the registry to the cluster so the kubelet identity gets the AcrPull role"
+    ],
+    "answer": "Attach the registry to the cluster so the kubelet identity gets the AcrPull role",
+    "explanation": "az aks update --attach-acr grants the cluster kubelet managed identity AcrPull on the registry.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/cluster-container-registry-integration"
+  },
+  {
+    "question": "A pod in AKS is stuck in CrashLoopBackOff. Which command shows the output of the failed container?",
+    "options": [
+      "kubectl logs <pod> --previous",
+      "kubectl get nodes",
+      "kubectl apply -f pod.yaml",
+      "az aks list"
+    ],
+    "answer": "kubectl logs <pod> --previous",
+    "explanation": "kubectl logs with --previous shows logs from the last terminated container instance, which usually reveals why it crashed.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/monitor-aks"
+  },
+  {
+    "question": "A container app fails to start. Where can you view its console output and system events?",
+    "options": [
+      "Azure Advisor",
+      "Azure Cost Management",
+      "Container Apps log streams and the ContainerAppConsoleLogs and ContainerAppSystemLogs tables in Log Analytics",
+      "The registry webhook history only"
+    ],
+    "answer": "Container Apps log streams and the ContainerAppConsoleLogs and ContainerAppSystemLogs tables in Log Analytics",
+    "explanation": "Container Apps sends console logs and system events to Log Analytics, and the portal offers a live log stream for troubleshooting.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-apps/log-monitoring"
+  },
+  {
+    "question": "Which kubectl command shows recent events, such as image pull errors, for a pod?",
+    "options": [
+      "kubectl scale deployment",
+      "kubectl config view",
+      "kubectl top nodes",
+      "kubectl describe pod <pod>"
+    ],
+    "answer": "kubectl describe pod <pod>",
+    "explanation": "kubectl describe shows the pod spec, status and recent events such as ErrImagePull or failed scheduling.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/monitor-aks"
+  },
+  {
+    "question": "Which Azure Cosmos DB consistency level provides the lowest latency and highest availability, with no ordering guarantee?",
+    "options": [
+      "Eventual",
+      "Bounded staleness",
+      "Strong",
+      "Session"
+    ],
+    "answer": "Eventual",
+    "explanation": "Eventual consistency offers the weakest guarantees but the lowest latency and RU cost for reads.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels"
+  },
+  {
+    "question": "Which Cosmos DB consistency level is the default and guarantees read-your-own-writes within a client session?",
+    "options": [
+      "Strong",
+      "Consistent prefix",
+      "Session",
+      "Eventual"
+    ],
+    "answer": "Session",
+    "explanation": "Session is the default level. Within a session token a client always reads its own writes, with good performance.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels"
+  },
+  {
+    "question": "Your Cosmos DB writes are expensive because every property is indexed. How can you reduce RU consumption for writes?",
+    "options": [
+      "Disable the partition key",
+      "Customize the indexing policy to exclude paths you never query",
+      "Switch to Strong consistency",
+      "Increase the item size"
+    ],
+    "answer": "Customize the indexing policy to exclude paths you never query",
+    "explanation": "By default every property is indexed. Excluding unused paths reduces the RU cost of writes and storage.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/index-policy"
+  },
+  {
+    "question": "You store embeddings in Azure Cosmos DB for NoSQL. What must you define to run efficient similarity searches?",
+    "options": [
+      "A time-to-live of zero",
+      "A container vector policy and a vector index on the embedding path",
+      "A stored procedure for each query",
+      "A unique key policy"
+    ],
+    "answer": "A container vector policy and a vector index on the embedding path",
+    "explanation": "Cosmos DB for NoSQL vector search requires a vector embedding policy (dimensions, data type, distance) and a vector index such as diskANN or quantizedFlat.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/vector-search"
+  },
+  {
+    "question": "Which Cosmos DB NoSQL query function returns how similar a stored vector is to a query vector?",
+    "options": [
+      "IS_DEFINED",
+      "VectorDistance",
+      "ST_DISTANCE",
+      "ARRAY_CONTAINS"
+    ],
+    "answer": "VectorDistance",
+    "explanation": "VectorDistance computes the similarity score between two vectors and is used with ORDER BY to return the nearest items.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/vectordistance"
+  },
+  {
+    "question": "Each time a product document is added or updated in Cosmos DB, you must regenerate its embedding. What should you use?",
+    "options": [
+      "The change feed processor or an Azure Functions Cosmos DB trigger",
+      "Event Grid custom topic polling",
+      "A scheduled full table scan",
+      "A unique key constraint"
+    ],
+    "answer": "The change feed processor or an Azure Functions Cosmos DB trigger",
+    "explanation": "The change feed exposes inserts and updates in order. The change feed processor or Functions Cosmos DB trigger reacts to each change.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/change-feed"
+  },
+  {
+    "question": "What is the main factor when choosing a partition key for a Cosmos DB container?",
+    "options": [
+      "The shortest property name",
+      "A boolean flag",
+      "A property that never appears in queries",
+      "High cardinality and even distribution of requests and storage"
+    ],
+    "answer": "High cardinality and even distribution of requests and storage",
+    "explanation": "A good partition key has many distinct values and spreads reads and writes evenly, avoiding hot partitions.",
+    "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/partitioning-overview"
+  },
+  {
+    "question": "Which PostgreSQL extension adds a vector data type and similarity search to Azure Database for PostgreSQL?",
+    "options": [
+      "PostGIS",
+      "pg_stat_statements",
+      "pgvector (vector)",
+      "hstore"
+    ],
+    "answer": "pgvector (vector)",
+    "explanation": "The pgvector extension (enabled as vector) adds the vector type, distance operators and approximate indexes such as HNSW and IVFFlat.",
+    "link": "https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-use-pgvector"
+  },
+  {
+    "question": "Which pgvector operator returns cosine distance between two vectors?",
+    "options": [
+      "<->",
+      "||",
+      "<=>",
+      "<#>"
+    ],
+    "answer": "<=>",
+    "explanation": "In pgvector, <=> is cosine distance, <-> is Euclidean (L2) distance and <#> is negative inner product.",
+    "link": "https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-use-pgvector"
+  },
+  {
+    "question": "Vector queries on a large pgvector table are slow because they scan every row. What should you add?",
+    "options": [
+      "A CHECK constraint",
+      "A B-tree index on the vector column",
+      "A foreign key",
+      "An approximate nearest neighbor index such as HNSW"
+    ],
+    "answer": "An approximate nearest neighbor index such as HNSW",
+    "explanation": "HNSW and IVFFlat indexes provide approximate nearest neighbor search and avoid full scans, trading a little recall for large speedups.",
+    "link": "https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-optimize-performance-pgvector"
+  },
+  {
+    "question": "A RAG query must return only documents from a given tenant that are most similar to the question. How should you write it in PostgreSQL?",
+    "options": [
+      "Combine a WHERE filter on tenant_id with ORDER BY embedding distance and LIMIT",
+      "Create a separate database per query",
+      "Use a full text search only",
+      "Run the vector search, then filter in the app across all rows"
+    ],
+    "answer": "Combine a WHERE filter on tenant_id with ORDER BY embedding distance and LIMIT",
+    "explanation": "Metadata filtering in the WHERE clause together with ORDER BY distance and LIMIT returns the nearest matching rows for that tenant.",
+    "link": "https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-use-pgvector"
+  },
+  {
+    "question": "An app opens a new PostgreSQL connection for every request and hits connection limits. What should you implement?",
+    "options": [
+      "A new server per request",
+      "Strong consistency",
+      "A larger vector dimension",
+      "Connection pooling, for example with the built-in PgBouncer"
+    ],
+    "answer": "Connection pooling, for example with the built-in PgBouncer",
+    "explanation": "Connection pooling reuses connections, reducing overhead and avoiding max_connections limits. Flexible server includes PgBouncer.",
+    "link": "https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-pgbouncer"
+  },
+  {
+    "question": "Vector index builds on Azure Database for PostgreSQL run out of memory. Which setting should you raise for the build session?",
+    "options": [
+      "timezone",
+      "maintenance_work_mem",
+      "max_connections",
+      "log_statement"
+    ],
+    "answer": "maintenance_work_mem",
+    "explanation": "HNSW and IVFFlat index builds use maintenance_work_mem. Increasing it (and choosing an adequate compute tier) speeds builds and avoids spilling to disk.",
+    "link": "https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-optimize-performance-pgvector"
+  },
+  {
+    "question": "You want to reduce latency and cost by returning cached answers for repeated LLM prompts. Which service fits?",
+    "options": [
+      "Azure Service Bus",
+      "Azure Managed Redis as a cache",
+      "Azure Container Registry",
+      "Azure Blob archive tier"
+    ],
+    "answer": "Azure Managed Redis as a cache",
+    "explanation": "Azure Managed Redis provides in-memory caching, which can store previous responses (including semantic caching with vector search).",
+    "link": "https://learn.microsoft.com/en-us/azure/redis/overview"
+  },
+  {
+    "question": "Cached product prices in Redis must disappear automatically after 10 minutes. What should you set?",
+    "options": [
+      "An expiration (TTL) on each key",
+      "A larger cache size",
+      "Geo-replication",
+      "A Lua script that runs hourly"
+    ],
+    "answer": "An expiration (TTL) on each key",
+    "explanation": "Setting a time-to-live with EXPIRE or the SET EX option makes Redis remove keys automatically after the given time.",
+    "link": "https://learn.microsoft.com/en-us/azure/redis/overview"
+  },
+  {
+    "question": "When a product is updated in the database, the cached copy in Redis must not be served. What is the simplest pattern?",
+    "options": [
+      "Use a larger eviction policy",
+      "Delete (invalidate) the cache key when the record changes",
+      "Increase the TTL",
+      "Disable persistence"
+    ],
+    "answer": "Delete (invalidate) the cache key when the record changes",
+    "explanation": "Cache-aside with explicit invalidation removes the key on update so the next read reloads fresh data from the database.",
+    "link": "https://learn.microsoft.com/en-us/azure/architecture/patterns/cache-aside"
+  },
+  {
+    "question": "Which Azure Managed Redis capability lets you store embeddings and run similarity search for semantic caching?",
+    "options": [
+      "Pub/Sub channels only",
+      "Geo commands",
+      "Keyspace notifications",
+      "Vector search with the RediSearch module"
+    ],
+    "answer": "Vector search with the RediSearch module",
+    "explanation": "The RediSearch module in Azure Managed Redis supports vector indexes and similarity queries, enabling semantic caching and retrieval.",
+    "link": "https://learn.microsoft.com/en-us/azure/redis/overview"
+  },
+  {
+    "question": "Long-running document summarization jobs must be processed reliably by background workers, with each job handled once. Which service fits?",
+    "options": [
+      "Azure Service Bus queue",
+      "Azure Front Door",
+      "Azure CDN",
+      "Azure Event Grid"
+    ],
+    "answer": "Azure Service Bus queue",
+    "explanation": "Service Bus queues provide durable, ordered (with sessions) messaging with competing consumers, locks and dead-lettering.",
+    "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview"
+  },
+  {
+    "question": "Several independent services need their own copy of each order message. Which Service Bus feature should you use?",
+    "options": [
+      "A partitioned queue",
+      "A single queue",
+      "A topic with one subscription per service",
+      "Duplicate detection"
+    ],
+    "answer": "A topic with one subscription per service",
+    "explanation": "Topics publish each message to every subscription, so each consumer gets its own copy and can filter with rules.",
+    "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-queues-topics-subscriptions"
+  },
+  {
+    "question": "A Service Bus message fails processing more times than the MaxDeliveryCount. What happens to it?",
+    "options": [
+      "It is moved to Event Grid",
+      "It is sent back to the sender",
+      "It is deleted permanently",
+      "It is moved to the dead-letter queue"
+    ],
+    "answer": "It is moved to the dead-letter queue",
+    "explanation": "After the maximum delivery count, Service Bus moves the message to the dead-letter subqueue for inspection.",
+    "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
+  },
+  {
+    "question": "A consumer must process a message and only remove it from the queue after success. Which receive mode should it use?",
+    "options": [
+      "Auto-forwarding",
+      "Scheduled messages",
+      "ReceiveAndDelete",
+      "PeekLock, then complete the message"
+    ],
+    "answer": "PeekLock, then complete the message",
+    "explanation": "PeekLock locks the message while it is processed; the consumer completes it on success or abandons it to retry.",
+    "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-transfers-locks-settlement"
+  },
+  {
+    "question": "When a new blob is uploaded you want to start an embedding pipeline with near real-time, push-based notification. Which service should deliver the event?",
+    "options": [
+      "Azure Monitor autoscale",
+      "Azure Event Grid",
+      "Azure Service Bus polling",
+      "Azure Container Registry"
+    ],
+    "answer": "Azure Event Grid",
+    "explanation": "Event Grid pushes Blob Storage events such as BlobCreated to handlers like Functions, webhooks or queues.",
+    "link": "https://learn.microsoft.com/en-us/azure/event-grid/overview"
+  },
+  {
+    "question": "You only want Event Grid to deliver BlobCreated events for files ending in .pdf. What should you configure?",
+    "options": [
+      "An event subscription filter on subject ends with .pdf",
+      "A larger retry count",
+      "A KEDA scaler",
+      "A Service Bus rule"
+    ],
+    "answer": "An event subscription filter on subject ends with .pdf",
+    "explanation": "Event subscriptions support event type, subject begins with or ends with, and advanced filters to limit delivered events.",
+    "link": "https://learn.microsoft.com/en-us/azure/event-grid/event-filtering"
+  },
+  {
+    "question": "An Event Grid handler is temporarily unavailable. What does Event Grid do by default?",
+    "options": [
+      "Drops the event immediately",
+      "Retries delivery with exponential backoff, and can dead-letter after retries expire",
+      "Converts it to email",
+      "Stores it in Cosmos DB"
+    ],
+    "answer": "Retries delivery with exponential backoff, and can dead-letter after retries expire",
+    "explanation": "Event Grid retries with backoff according to the retry policy. Configure a dead-letter storage location to keep undeliverable events.",
+    "link": "https://learn.microsoft.com/en-us/azure/event-grid/delivery-and-retry"
+  },
+  {
+    "question": "Your app publishes its own \"DocumentIndexed\" events for other services. What should you create in Event Grid?",
+    "options": [
+      "A system topic for Blob Storage",
+      "An Azure Monitor alert",
+      "A custom topic (or namespace topic)",
+      "A Service Bus queue"
+    ],
+    "answer": "A custom topic (or namespace topic)",
+    "explanation": "Custom topics let your application publish its own events that subscribers can filter and handle.",
+    "link": "https://learn.microsoft.com/en-us/azure/event-grid/custom-topics"
+  },
+  {
+    "question": "You need a lightweight HTTP API that calls an LLM and scales automatically with no servers to manage. Which option fits best?",
+    "options": [
+      "Azure Data Factory pipeline",
+      "Azure Batch pool",
+      "Azure Functions with an HTTP trigger",
+      "A dedicated virtual machine"
+    ],
+    "answer": "Azure Functions with an HTTP trigger",
+    "explanation": "HTTP-triggered Functions provide serverless APIs that scale with demand and bill per execution on consumption-based plans.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview"
+  },
+  {
+    "question": "In Azure Functions, what lets a function write to a Service Bus queue without writing SDK connection code?",
+    "options": [
+      "A deployment slot",
+      "An input trigger",
+      "An output binding",
+      "A host.json log level"
+    ],
+    "answer": "An output binding",
+    "explanation": "Bindings connect functions to other services declaratively. An output binding sends the return value or parameter to the target, such as a queue.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings"
+  },
+  {
+    "question": "Each function can have how many triggers?",
+    "options": [
+      "None",
+      "Up to five",
+      "Unlimited",
+      "Exactly one"
+    ],
+    "answer": "Exactly one",
+    "explanation": "A function must have exactly one trigger, which defines how it is invoked. It can have multiple input and output bindings.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-triggers-bindings"
+  },
+  {
+    "question": "A function app needs fast cold starts, virtual network integration and scale to zero with per-execution billing. Which hosting plan should you choose?",
+    "options": [
+      "Flex Consumption plan",
+      "Azure Batch",
+      "Legacy Consumption plan on Windows",
+      "Free App Service plan"
+    ],
+    "answer": "Flex Consumption plan",
+    "explanation": "The Flex Consumption plan offers event-driven scale to zero, always-ready instances to reduce cold starts and virtual network integration.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/flex-consumption-plan"
+  },
+  {
+    "question": "Where are app-wide settings such as logging and extension configuration for all functions in a function app stored?",
+    "options": [
+      "package.json",
+      "local.settings.json in production",
+      "function.json of each trigger only",
+      "host.json"
+    ],
+    "answer": "host.json",
+    "explanation": "host.json contains global configuration that applies to all functions in the app, such as logging and extension settings.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-host-json"
+  },
+  {
+    "question": "How do function apps read connection strings in production?",
+    "options": [
+      "From application settings, which appear as environment variables",
+      "From the README",
+      "From the function URL",
+      "From local.settings.json deployed with the code"
+    ],
+    "answer": "From application settings, which appear as environment variables",
+    "explanation": "local.settings.json is only for local development. In Azure, application settings provide configuration as environment variables, and can reference Key Vault.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings"
+  },
+  {
+    "question": "Where should you store the API key of a third-party AI service used by your back end?",
+    "options": [
+      "In the source repository",
+      "Azure Key Vault",
+      "In the container image",
+      "In an App Configuration plain key-value"
+    ],
+    "answer": "Azure Key Vault",
+    "explanation": "Key Vault securely stores secrets with access control, auditing and versioning.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/overview"
+  },
+  {
+    "question": "Your app should read secrets from Key Vault without any stored credentials. What should you use?",
+    "options": [
+      "The vault access key",
+      "A managed identity with an RBAC role such as Key Vault Secrets User",
+      "A shared admin password",
+      "Anonymous access"
+    ],
+    "answer": "A managed identity with an RBAC role such as Key Vault Secrets User",
+    "explanation": "Managed identities authenticate to Key Vault with Microsoft Entra ID. Grant Key Vault Secrets User for read-only secret access.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide"
+  },
+  {
+    "question": "A secret must change every 90 days with minimal app impact. What should you implement?",
+    "options": [
+      "Store two copies in the app",
+      "Key Vault rotation, and have apps read the latest version rather than a pinned one",
+      "Disable soft delete",
+      "Hard-code the secret and redeploy"
+    ],
+    "answer": "Key Vault rotation, and have apps read the latest version rather than a pinned one",
+    "explanation": "Key Vault supports rotation policies and event notifications. Apps that reference the latest version pick up rotated secrets without code changes.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/secrets/tutorial-rotation"
+  },
+  {
+    "question": "Which service centrally stores feature flags and non-secret settings for many microservices?",
+    "options": [
+      "Azure App Configuration",
+      "Azure Key Vault only",
+      "Azure Container Registry",
+      "Azure Event Grid"
+    ],
+    "answer": "Azure App Configuration",
+    "explanation": "App Configuration stores key-values and feature flags centrally, with labels per environment and Key Vault references for secrets.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-app-configuration/overview"
+  },
+  {
+    "question": "In App Configuration, how do you keep separate values of the same key for development and production?",
+    "options": [
+      "Use tags on the resource group",
+      "Use different regions",
+      "Use different key vaults",
+      "Use labels"
+    ],
+    "answer": "Use labels",
+    "explanation": "Labels let one key have multiple values, commonly one per environment, selected by the app at startup.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-app-configuration/concept-key-value"
+  },
+  {
+    "question": "An App Configuration value must point at a database password stored in Key Vault. What should you create?",
+    "options": [
+      "A snapshot",
+      "A Key Vault reference",
+      "A feature flag",
+      "A plain key-value with the password"
+    ],
+    "answer": "A Key Vault reference",
+    "explanation": "Key Vault references store the secret URI in App Configuration; the client library resolves the secret from Key Vault using the app identity.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-app-configuration/use-key-vault-references-dotnet-core"
+  },
+  {
+    "question": "Which open standard should you use to emit distributed traces across your API, functions and database calls?",
+    "options": [
+      "Syslog only",
+      "FTP",
+      "SNMP",
+      "OpenTelemetry"
+    ],
+    "answer": "OpenTelemetry",
+    "explanation": "OpenTelemetry is the vendor-neutral standard for traces, metrics and logs. The Azure Monitor OpenTelemetry Distro sends it to Application Insights.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable"
+  },
+  {
+    "question": "In a distributed trace, what links spans from different services into one request?",
+    "options": [
+      "The function app name",
+      "A shared trace ID propagated through context headers",
+      "The subscription ID",
+      "The container image tag"
+    ],
+    "answer": "A shared trace ID propagated through context headers",
+    "explanation": "W3C trace context headers carry the trace ID between services so each span is correlated into one end-to-end trace.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/app/opentelemetry-enable"
+  },
+  {
+    "question": "Which KQL query returns failed requests in the last hour from Application Insights?",
+    "options": [
+      "requests | where timestamp > ago(1h) and success == false",
+      "GET /requests?failed=true",
+      "SELECT * FROM requests WHERE failed",
+      "requests.filter(success=false)"
+    ],
+    "answer": "requests | where timestamp > ago(1h) and success == false",
+    "explanation": "Kusto Query Language uses the pipe operator and where clauses. ago(1h) filters by time and success == false finds failures.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries"
+  },
+  {
+    "question": "Which KQL operator counts rows grouped by a column, for example requests per operation?",
+    "options": [
+      "project count by operation_Name",
+      "summarize count() by operation_Name",
+      "join count",
+      "extend group operation_Name"
+    ],
+    "answer": "summarize count() by operation_Name",
+    "explanation": "summarize aggregates rows, for example summarize count() by operation_Name returns a count per operation.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries"
+  },
+  {
+    "question": "You need to chart the average duration of requests in 5-minute buckets. Which KQL expression fits?",
+    "options": [
+      "project duration, 5m",
+      "where duration > 5m",
+      "summarize avg(duration) by bin(timestamp, 5m)",
+      "top 5 by duration"
+    ],
+    "answer": "summarize avg(duration) by bin(timestamp, 5m)",
+    "explanation": "bin() groups timestamps into fixed buckets, and summarize avg() computes the average per bucket, ready for a time chart.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/get-started-queries"
+  },
+  {
+    "question": "Which Azure Monitor feature collects telemetry such as requests, dependencies and exceptions from your application code?",
+    "options": [
+      "Cost Management",
+      "Azure Advisor",
+      "Azure Policy",
+      "Application Insights"
+    ],
+    "answer": "Application Insights",
+    "explanation": "Application Insights is the application performance monitoring feature of Azure Monitor.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview"
+  },
+  {
+    "question": "A dependency call to the LLM endpoint sometimes takes 20 seconds. Where can you see which downstream call caused a slow request?",
+    "options": [
+      "The container registry tags",
+      "The end-to-end transaction view in Application Insights",
+      "The Azure status page",
+      "The Key Vault audit log"
+    ],
+    "answer": "The end-to-end transaction view in Application Insights",
+    "explanation": "The transaction view shows the request and each dependency span with durations, making slow downstream calls easy to find.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/app/transaction-search-and-diagnostics"
+  },
+  {
+    "question": "You want an alert when the exception rate of your API exceeds a threshold. What should you create?",
+    "options": [
+      "A container registry webhook",
+      "An App Configuration label",
+      "A Key Vault access policy",
+      "An Azure Monitor alert rule on an Application Insights metric or log query"
+    ],
+    "answer": "An Azure Monitor alert rule on an Application Insights metric or log query",
+    "explanation": "Azure Monitor alert rules evaluate metrics or KQL log queries on a schedule and notify through action groups when thresholds are crossed.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview"
+  },
+  {
+    "question": "An app must authenticate to Azure services in both local development and Azure without code changes. Which credential type should you use?",
+    "options": [
+      "A storage account key",
+      "A shared access signature in code",
+      "A hard-coded client secret",
+      "DefaultAzureCredential"
+    ],
+    "answer": "DefaultAzureCredential",
+    "explanation": "DefaultAzureCredential tries several sources in order, such as environment, managed identity and developer tool sign-in, so the same code works locally and in Azure.",
+    "link": "https://learn.microsoft.com/en-us/azure/developer/python/sdk/authentication/overview"
+  }
+]

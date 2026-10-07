@@ -32,6 +32,21 @@ export const exams: Exam[] = [
     slug: 'az-304',
     name: 'AZ‑304: Microsoft Azure Architect Design',
     description: 'Designing reliable, secure and cost-effective Azure architectures.'
+  },
+  {
+    slug: 'ai-103',
+    name: 'AI‑103: Developing AI Apps and Agents on Azure',
+    description: 'Foundry models and agents, RAG, vision, speech and document extraction.'
+  },
+  {
+    slug: 'ai-200',
+    name: 'AI‑200: Developing AI Cloud Solutions on Azure',
+    description: 'Containers, vector data in Cosmos DB, PostgreSQL and Redis, messaging and monitoring.'
+  },
+  {
+    slug: 'ai-300',
+    name: 'AI‑300: Operationalizing Machine Learning and Generative AI Solutions',
+    description: 'MLOps and GenAIOps: training, deployment, evaluation and RAG tuning.'
   }
 ];
 

@@ -1,0 +1,734 @@
+[
+  {
+    "question": "Which resources are created alongside an Azure Machine Learning workspace by default?",
+    "options": [
+      "A Kubernetes cluster and a SQL database",
+      "An Event Hubs namespace",
+      "A storage account, a key vault and Application Insights (plus optional container registry)",
+      "A virtual machine scale set"
+    ],
+    "answer": "A storage account, a key vault and Application Insights (plus optional container registry)",
+    "explanation": "A workspace depends on a storage account, key vault and Application Insights; a container registry is created when first needed or can be attached.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-workspace"
+  },
+  {
+    "question": "What is a datastore in Azure Machine Learning?",
+    "options": [
+      "A copy of all your training data inside the workspace",
+      "A reference to an Azure storage service that holds connection information",
+      "A registered model",
+      "A compute cluster"
+    ],
+    "answer": "A reference to an Azure storage service that holds connection information",
+    "explanation": "Datastores securely store connection information to storage such as Blob or ADLS Gen2 so jobs can access data without embedding credentials.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-data"
+  },
+  {
+    "question": "You need compute that scales from 0 to 10 nodes for training jobs and stops when idle. What should you create?",
+    "options": [
+      "A compute cluster with minimum nodes set to 0",
+      "A managed online endpoint",
+      "A serverless API",
+      "A compute instance"
+    ],
+    "answer": "A compute cluster with minimum nodes set to 0",
+    "explanation": "Compute clusters autoscale between min and max nodes. Setting minimum to 0 avoids cost when no jobs are running.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-attach-compute-cluster"
+  },
+  {
+    "question": "A data scientist needs a personal cloud workstation with Jupyter and VS Code for experimentation. Which compute type should you provide?",
+    "options": [
+      "Batch endpoint",
+      "Compute instance",
+      "Kubernetes compute",
+      "Compute cluster"
+    ],
+    "answer": "Compute instance",
+    "explanation": "A compute instance is a managed single-node development workstation with notebooks and IDE integration.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-compute-instance"
+  },
+  {
+    "question": "Training jobs must access a storage account without storing keys. What should you configure?",
+    "options": [
+      "Make the container public",
+      "Identity-based data access with a managed identity granted Storage Blob Data Reader",
+      "Use a SAS token in source control",
+      "Store the account key in the training script"
+    ],
+    "answer": "Identity-based data access with a managed identity granted Storage Blob Data Reader",
+    "explanation": "Datastores and jobs can use identity-based access, so the compute managed identity or user identity is authorized through RBAC.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-identity-based-service-authentication"
+  },
+  {
+    "question": "Which asset type packages the Python packages and Docker base image a training job needs, so runs are reproducible?",
+    "options": [
+      "Data asset",
+      "Endpoint",
+      "Environment",
+      "Datastore"
+    ],
+    "answer": "Environment",
+    "explanation": "Environments define the Docker image and conda or pip dependencies, and are versioned for reproducible training and inference.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-environments"
+  },
+  {
+    "question": "You want to reuse the same data-prep step across many pipelines with defined inputs and outputs. What should you create?",
+    "options": [
+      "A component",
+      "A workspace",
+      "A compute instance",
+      "A datastore"
+    ],
+    "answer": "A component",
+    "explanation": "Components are self-contained, versioned pipeline steps with defined interfaces that can be reused across pipelines.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-component"
+  },
+  {
+    "question": "Models and environments trained in a dev workspace must be promoted to a prod workspace in another subscription. What should you use?",
+    "options": [
+      "A single workspace for all stages",
+      "An Azure Machine Learning registry",
+      "Manual file copy to a local laptop",
+      "A shared compute instance"
+    ],
+    "answer": "An Azure Machine Learning registry",
+    "explanation": "Registries share models, environments, components and data across workspaces, regions and subscriptions, supporting promotion across environments.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-machine-learning-registries-mlops"
+  },
+  {
+    "question": "Which approach should you use to deploy an Azure Machine Learning workspace and its dependencies repeatably?",
+    "options": [
+      "Clicking through the portal for each environment",
+      "A Jupyter notebook run manually",
+      "A PowerShell script stored on a laptop only",
+      "A Bicep template deployed with Azure CLI or a GitHub Actions workflow"
+    ],
+    "answer": "A Bicep template deployed with Azure CLI or a GitHub Actions workflow",
+    "explanation": "Infrastructure as code (Bicep with az deployment) gives repeatable, reviewable workspace deployments that can run in CI/CD.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/tutorial-create-secure-workspace-template"
+  },
+  {
+    "question": "A GitHub Actions workflow must run az ml commands against your workspace without storing a client secret. What should you configure?",
+    "options": [
+      "The storage account key",
+      "Anonymous access to the workspace",
+      "OpenID Connect federated credentials for a Microsoft Entra app or managed identity",
+      "A personal access token in the workflow file"
+    ],
+    "answer": "OpenID Connect federated credentials for a Microsoft Entra app or managed identity",
+    "explanation": "Workload identity federation (OIDC) lets GitHub Actions obtain Azure tokens without long-lived secrets.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-github-actions-machine-learning"
+  },
+  {
+    "question": "Policy requires that the Machine Learning workspace is reachable only from your corporate network. What should you configure?",
+    "options": [
+      "A managed virtual network or private endpoint and disable public network access",
+      "A data drift monitor",
+      "MLflow tracking",
+      "A larger compute cluster"
+    ],
+    "answer": "A managed virtual network or private endpoint and disable public network access",
+    "explanation": "Private endpoints and managed virtual network isolation restrict workspace access to private networks.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-configure-private-link"
+  },
+  {
+    "question": "Which open source framework does Azure Machine Learning use natively to track metrics, parameters and models from training runs?",
+    "options": [
+      "TensorBoard only",
+      "MLflow",
+      "Kubeflow Pipelines only",
+      "Airflow"
+    ],
+    "answer": "MLflow",
+    "explanation": "Azure Machine Learning workspaces are MLflow-compatible tracking servers, so mlflow.log_metric and autologging work out of the box.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-mlflow"
+  },
+  {
+    "question": "Which MLflow call automatically logs parameters, metrics and the model for supported libraries such as scikit-learn?",
+    "options": [
+      "mlflow.set_tracking_uri()",
+      "mlflow.autolog()",
+      "mlflow.delete_run()",
+      "mlflow.end_run()"
+    ],
+    "answer": "mlflow.autolog()",
+    "explanation": "mlflow.autolog() enables automatic logging for supported frameworks so you do not need explicit log calls.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-log-view-metrics"
+  },
+  {
+    "question": "You want Azure Machine Learning to try many algorithms and featurization settings and pick the best model for a tabular classification problem. What should you use?",
+    "options": [
+      "A data drift monitor",
+      "Automated machine learning (AutoML)",
+      "A manual training script only",
+      "A batch endpoint"
+    ],
+    "answer": "Automated machine learning (AutoML)",
+    "explanation": "AutoML iterates over algorithms and hyperparameters, ranks the models by your primary metric and returns the best one.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-automated-ml"
+  },
+  {
+    "question": "Which feature runs many trials of a training script with different learning rates and batch sizes and stops poor trials early?",
+    "options": [
+      "A pipeline with a single step",
+      "A sweep job with an early termination policy",
+      "A compute instance schedule",
+      "A model registry"
+    ],
+    "answer": "A sweep job with an early termination policy",
+    "explanation": "Sweep jobs perform hyperparameter tuning with random, grid or Bayesian sampling, and early termination policies like Bandit stop weak trials.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "Which early termination policy stops trials whose primary metric is not within a slack factor of the best trial?",
+    "options": [
+      "Grid sampling",
+      "No termination policy",
+      "Bandit policy",
+      "Truncation selection policy"
+    ],
+    "answer": "Bandit policy",
+    "explanation": "The Bandit policy compares each trial to the best one using a slack factor or slack amount and cancels those that fall behind.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "You need to train a large deep learning model across multiple GPU nodes. What should you configure in the command job?",
+    "options": [
+      "Distributed training with instance_count greater than 1 and a distribution such as PyTorch",
+      "A larger datastore",
+      "A compute instance",
+      "A batch endpoint"
+    ],
+    "answer": "Distributed training with instance_count greater than 1 and a distribution such as PyTorch",
+    "explanation": "Command jobs support distributed training by setting the number of instances and a distribution type such as PyTorch, TensorFlow or MPI.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-train-distributed-gpu"
+  },
+  {
+    "question": "What is the main advantage of building training as an Azure Machine Learning pipeline rather than a single script?",
+    "options": [
+      "Pipelines remove the need for data",
+      "Pipelines need no compute",
+      "Steps are reusable, can run on different compute and can be scheduled and rerun independently",
+      "Pipelines automatically fine-tune LLMs"
+    ],
+    "answer": "Steps are reusable, can run on different compute and can be scheduled and rerun independently",
+    "explanation": "Pipelines split a workflow into components that can be reused, cached, run on suitable compute and automated.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+  },
+  {
+    "question": "How can you compare metrics such as AUC across several training jobs in a workspace?",
+    "options": [
+      "Download each log file manually",
+      "Use Azure Advisor",
+      "Check the compute cluster quota",
+      "Select the jobs in studio and compare them, or query them with MLflow"
+    ],
+    "answer": "Select the jobs in studio and compare them, or query them with MLflow",
+    "explanation": "Studio and the MLflow client let you list runs and compare metrics and parameters side by side.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-track-experiments-mlflow"
+  },
+  {
+    "question": "Which model format lets Azure Machine Learning deploy a model to an online endpoint without a scoring script or environment?",
+    "options": [
+      "MLflow model format",
+      "A pickle file with no metadata",
+      "A ZIP of the training notebook",
+      "A Docker image without a manifest"
+    ],
+    "answer": "MLflow model format",
+    "explanation": "MLflow models carry their signature and dependencies, enabling no-code deployment to online and batch endpoints.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-deploy-mlflow-models"
+  },
+  {
+    "question": "Before releasing a loan approval model, you must check performance differences across demographic groups. What should you use?",
+    "options": [
+      "A batch endpoint",
+      "A larger compute cluster",
+      "Prompt Shields",
+      "The Responsible AI dashboard with fairness assessment"
+    ],
+    "answer": "The Responsible AI dashboard with fairness assessment",
+    "explanation": "The Responsible AI dashboard includes error analysis, fairness, interpretability and counterfactual analysis for models.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai-dashboard"
+  },
+  {
+    "question": "An old model version should no longer be selectable for new deployments but kept for audit. What should you do?",
+    "options": [
+      "Archive the model version",
+      "Delete the workspace",
+      "Remove the datastore",
+      "Stop the compute instance"
+    ],
+    "answer": "Archive the model version",
+    "explanation": "Archiving hides a model version from default lists and new use while keeping it for lineage and audit.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-models"
+  },
+  {
+    "question": "A fraud model must score each transaction within milliseconds. Which deployment option fits?",
+    "options": [
+      "A compute instance notebook",
+      "A batch endpoint",
+      "A pipeline schedule",
+      "A managed online endpoint"
+    ],
+    "answer": "A managed online endpoint",
+    "explanation": "Managed online endpoints serve real-time, low-latency predictions over HTTPS with autoscaling.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-endpoints-online"
+  },
+  {
+    "question": "Every night you need to score 50 million rows stored in a data lake. Which deployment option fits best?",
+    "options": [
+      "A batch endpoint",
+      "A managed online endpoint",
+      "A serverless API for chat",
+      "A compute instance"
+    ],
+    "answer": "A batch endpoint",
+    "explanation": "Batch endpoints run asynchronous, parallel scoring jobs over large datasets on compute clusters.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-endpoints-batch"
+  },
+  {
+    "question": "You deploy a new model as the green deployment on an online endpoint. How do you send 10% of live traffic to it?",
+    "options": [
+      "Use a batch endpoint",
+      "Create a second workspace",
+      "Set the endpoint traffic split to blue 90 and green 10",
+      "Change the compute instance size"
+    ],
+    "answer": "Set the endpoint traffic split to blue 90 and green 10",
+    "explanation": "Online endpoints support multiple deployments with traffic allocation, enabling safe rollout and quick rollback by changing percentages.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "You want to test a new deployment with a copy of production traffic without affecting responses to users. What should you use?",
+    "options": [
+      "A larger instance type",
+      "Mirrored traffic to the new deployment",
+      "A batch endpoint",
+      "Delete the old deployment first"
+    ],
+    "answer": "Mirrored traffic to the new deployment",
+    "explanation": "Traffic mirroring copies a percentage of live requests to a deployment while users still receive responses from the primary deployment.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "An online endpoint returns errors after deployment. Which command retrieves the container logs?",
+    "options": [
+      "az ml workspace show",
+      "az ml online-deployment get-logs",
+      "az ml compute list",
+      "az ml data create"
+    ],
+    "answer": "az ml online-deployment get-logs",
+    "explanation": "get-logs returns logs from the inference server container, which helps diagnose scoring script or dependency errors.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-troubleshoot-online-endpoints"
+  },
+  {
+    "question": "Production input features have shifted compared with the training data. What is this called and what should you monitor?",
+    "options": [
+      "Prompt injection; add Prompt Shields",
+      "Overfitting; add more epochs",
+      "Data drift; configure model monitoring with drift signals",
+      "Throttling; raise quota"
+    ],
+    "answer": "Data drift; configure model monitoring with drift signals",
+    "explanation": "Data drift is a change in the distribution of production data. Model monitoring computes drift signals and alerts when thresholds are exceeded.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "You want retraining to start automatically when model monitoring detects drift above a threshold. What should you set up?",
+    "options": [
+      "An alert on the monitoring signal that triggers a retraining pipeline",
+      "A manual weekly email",
+      "A larger compute instance",
+      "A new workspace"
+    ],
+    "answer": "An alert on the monitoring signal that triggers a retraining pipeline",
+    "explanation": "Monitoring alerts can trigger automation, such as an Event Grid or Azure Monitor action that starts a retraining pipeline job.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "Which resource do you create to host projects, model deployments and agents for generative AI apps in Microsoft Foundry?",
+    "options": [
+      "A SQL managed instance",
+      "An Azure Batch account",
+      "An Event Hubs namespace",
+      "A Foundry resource with one or more projects"
+    ],
+    "answer": "A Foundry resource with one or more projects",
+    "explanation": "A Foundry resource hosts projects, where teams deploy models, build agents and run evaluations.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/"
+  },
+  {
+    "question": "A generative AI app must call a Foundry model without keys. Which configuration should you apply?",
+    "options": [
+      "Give the app a managed identity and an appropriate Foundry RBAC role",
+      "Share the resource key in the app config",
+      "Use the subscription ID as a key",
+      "Enable anonymous access"
+    ],
+    "answer": "Give the app a managed identity and an appropriate Foundry RBAC role",
+    "explanation": "Managed identities with RBAC roles provide keyless access and are the recommended production pattern.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/rbac-azure-ai-foundry"
+  },
+  {
+    "question": "How should you deploy Foundry resources, projects and model deployments consistently across environments?",
+    "options": [
+      "Portal configuration per environment",
+      "A shared spreadsheet",
+      "Copying settings by hand",
+      "Bicep templates deployed with Azure CLI from a pipeline"
+    ],
+    "answer": "Bicep templates deployed with Azure CLI from a pipeline",
+    "explanation": "Bicep templates make Foundry infrastructure repeatable and reviewable, and fit into CI/CD with Azure CLI.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/"
+  },
+  {
+    "question": "You need to restrict Foundry traffic to your virtual network. What should you configure?",
+    "options": [
+      "A content filter",
+      "A larger model",
+      "Private endpoints and disable public network access",
+      "Prompt variants"
+    ],
+    "answer": "Private endpoints and disable public network access",
+    "explanation": "Private networking keeps inference and management traffic on private IPs within your network.",
+    "link": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+  },
+  {
+    "question": "Which deployment option charges per token and requires no infrastructure to manage for supported foundation models?",
+    "options": [
+      "Batch endpoint on a compute cluster",
+      "Provisioned throughput",
+      "Standard (serverless, pay-as-you-go) deployment",
+      "Managed compute with dedicated VMs"
+    ],
+    "answer": "Standard (serverless, pay-as-you-go) deployment",
+    "explanation": "Standard or serverless API deployments bill per token and Microsoft manages the hosting infrastructure.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/deployments-overview"
+  },
+  {
+    "question": "An open-weight model is not available as a serverless API. How can you still host it in Foundry?",
+    "options": [
+      "Use a batch endpoint for chat",
+      "Call it through Azure Translator",
+      "Deploy it to managed compute on dedicated virtual machines",
+      "Store it in Key Vault"
+    ],
+    "answer": "Deploy it to managed compute on dedicated virtual machines",
+    "explanation": "Managed compute deployments run models on dedicated VMs in your subscription, billed by compute time.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/deployments-overview"
+  },
+  {
+    "question": "A high-volume app needs predictable latency for a model. Which capacity option should you configure?",
+    "options": [
+      "A larger temperature",
+      "A smaller chunk size",
+      "Provisioned throughput units (PTUs)",
+      "More prompt variants"
+    ],
+    "answer": "Provisioned throughput units (PTUs)",
+    "explanation": "Provisioned throughput reserves model capacity measured in PTUs, giving consistent latency for steady high-volume workloads.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/provisioned-throughput"
+  },
+  {
+    "question": "How should you upgrade a production app to a newer model version safely?",
+    "options": [
+      "Let auto-upgrade happen silently in production",
+      "Deploy the new version side by side, evaluate it, then switch traffic",
+      "Delete the old deployment first",
+      "Replace the deployment in place without testing"
+    ],
+    "answer": "Deploy the new version side by side, evaluate it, then switch traffic",
+    "explanation": "Side-by-side deployments and evaluation before switching reduce risk; pin versions in production and control upgrades.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/model-versions"
+  },
+  {
+    "question": "Which factor is most important when selecting a foundation model for a use case?",
+    "options": [
+      "Model name length",
+      "The newest model regardless of cost",
+      "The number of parameters only",
+      "Quality on your evaluation data balanced against cost and latency"
+    ],
+    "answer": "Quality on your evaluation data balanced against cost and latency",
+    "explanation": "Use model benchmarks and your own evaluations to choose the model that meets quality targets at acceptable cost and latency.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/model-benchmarks"
+  },
+  {
+    "question": "Your team edits prompts often and needs to know which prompt version produced which results. What should you do?",
+    "options": [
+      "Edit prompts directly in production",
+      "Embed prompts in the model weights",
+      "Store prompts as files in a Git repository and version them with the app",
+      "Keep prompts only in chat history"
+    ],
+    "answer": "Store prompts as files in a Git repository and version them with the app",
+    "explanation": "Versioning prompts in Git (for example as prompty files) gives history, reviews and links between prompt versions and evaluation results.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/"
+  },
+  {
+    "question": "You want to compare two system prompts on the same test dataset. What should you create?",
+    "options": [
+      "A new private endpoint",
+      "A larger quota",
+      "Prompt variants evaluated against the same dataset and metrics",
+      "Two separate workspaces"
+    ],
+    "answer": "Prompt variants evaluated against the same dataset and metrics",
+    "explanation": "Prompt variants run against the same inputs and evaluators let you compare quality objectively before choosing one.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Which file format bundles a prompt template with model configuration and sample inputs in a source-controlled file?",
+    "options": [
+      "host.json",
+      "Dockerfile",
+      "requirements.txt",
+      "Prompty"
+    ],
+    "answer": "Prompty",
+    "explanation": "Prompty is a markdown-based format that holds the prompt template, model settings and sample inputs, which is easy to version in Git.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/"
+  },
+  {
+    "question": "A Foundry project is shared by several teams. How do you limit what each team can change?",
+    "options": [
+      "Share one owner account",
+      "Give everyone Owner on the subscription",
+      "Assign RBAC roles at the narrowest scope for each team",
+      "Disable authentication"
+    ],
+    "answer": "Assign RBAC roles at the narrowest scope for each team",
+    "explanation": "Role-based access control at resource or project scope enforces least privilege for each team.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/rbac-azure-ai-foundry"
+  },
+  {
+    "question": "Your production app gets HTTP 429 errors from a standard model deployment during peaks. What is the most direct fix?",
+    "options": [
+      "Disable logging",
+      "Lower the temperature",
+      "Increase the deployment tokens-per-minute quota or add provisioned capacity",
+      "Shorten the deployment name"
+    ],
+    "answer": "Increase the deployment tokens-per-minute quota or add provisioned capacity",
+    "explanation": "HTTP 429 means the rate limit was exceeded. Raise quota, distribute load, retry with backoff or move to provisioned throughput.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits"
+  },
+  {
+    "question": "What do you need before running an automated evaluation of a RAG app?",
+    "options": [
+      "A test dataset of queries, with context and ground truth where relevant, mapped to evaluator inputs",
+      "A compute instance",
+      "Only the model name",
+      "A container registry"
+    ],
+    "answer": "A test dataset of queries, with context and ground truth where relevant, mapped to evaluator inputs",
+    "explanation": "Evaluations run over a dataset. Column mapping connects fields such as query, context, response and ground truth to evaluator inputs.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Which evaluator checks whether a response is logically organized and reads naturally as a whole?",
+    "options": [
+      "Hate and unfairness",
+      "Latency",
+      "Coherence",
+      "Groundedness"
+    ],
+    "answer": "Coherence",
+    "explanation": "Coherence measures logical flow and organization. Fluency measures grammar and readability; groundedness measures support by context.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "You need to check that your app does not produce violent or self-harm content when attacked. What should you run?",
+    "options": [
+      "A hyperparameter sweep",
+      "A data drift monitor",
+      "Risk and safety evaluations, including adversarial simulation",
+      "A fluency evaluation only"
+    ],
+    "answer": "Risk and safety evaluations, including adversarial simulation",
+    "explanation": "Risk and safety evaluators score harmful content categories, and adversarial simulators generate attack prompts to test the app.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Your domain needs a metric that the built-in evaluators do not cover. What should you do?",
+    "options": [
+      "Increase max tokens",
+      "Skip evaluation",
+      "Use only BLEU",
+      "Create a custom code-based or prompt-based evaluator"
+    ],
+    "answer": "Create a custom code-based or prompt-based evaluator",
+    "explanation": "Foundry supports custom evaluators written as code or as LLM-judged prompts alongside built-in metrics.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "How can evaluations run automatically whenever prompts or code change?",
+    "options": [
+      "Evaluate only in production",
+      "Use a compute instance schedule",
+      "Run them manually once a year",
+      "Run the evaluation SDK in a CI pipeline and fail the build when metrics drop"
+    ],
+    "answer": "Run the evaluation SDK in a CI pipeline and fail the build when metrics drop",
+    "explanation": "Automating evaluations in CI/CD catches quality regressions before deployment.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Which signal helps you control the cost of a generative AI app in production?",
+    "options": [
+      "Number of Git branches",
+      "Token consumption by deployment and operation",
+      "Number of evaluators",
+      "Disk size of the workspace"
+    ],
+    "answer": "Token consumption by deployment and operation",
+    "explanation": "Most model billing is per token, so tracking prompt and completion tokens shows where to optimize cost.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Users report slow answers. Which observability data shows whether retrieval or the model call is the bottleneck?",
+    "options": [
+      "Distributed traces with spans for retrieval, tool calls and model calls",
+      "The quota page only",
+      "The resource group tags",
+      "The evaluation dataset"
+    ],
+    "answer": "Distributed traces with spans for retrieval, tool calls and model calls",
+    "explanation": "Tracing (OpenTelemetry into Application Insights) breaks down latency per step so you can find the slow component.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Where does Foundry send traces and monitoring data for deployed apps and agents?",
+    "options": [
+      "The storage account archive tier",
+      "Azure Key Vault",
+      "The container registry",
+      "A connected Application Insights resource"
+    ],
+    "answer": "A connected Application Insights resource",
+    "explanation": "Connecting Application Insights to a Foundry project enables tracing and continuous monitoring dashboards.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "What does continuous evaluation in production provide that offline evaluation does not?",
+    "options": [
+      "Quality and safety scores on real, sampled production traffic over time",
+      "Lower token prices",
+      "Faster model training",
+      "Automatic fine-tuning"
+    ],
+    "answer": "Quality and safety scores on real, sampled production traffic over time",
+    "explanation": "Continuous evaluation samples live interactions and scores them, revealing regressions that test datasets missed.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Retrieved chunks often cut sentences in half and lose context. Which change is most likely to help?",
+    "options": [
+      "Use a smaller top_k of 0",
+      "Remove the embedding model",
+      "Tune chunk size and add overlap between chunks",
+      "Raise the temperature"
+    ],
+    "answer": "Tune chunk size and add overlap between chunks",
+    "explanation": "Chunk size and overlap strongly affect retrieval quality; overlap keeps context that would otherwise be split across chunks.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-chunk-documents"
+  },
+  {
+    "question": "Queries with exact product codes perform poorly with pure vector search. What should you implement?",
+    "options": [
+      "Hybrid search combining keyword and vector retrieval",
+      "A smaller embedding dimension",
+      "A higher temperature",
+      "Disabling the index"
+    ],
+    "answer": "Hybrid search combining keyword and vector retrieval",
+    "explanation": "Keyword search matches exact terms such as codes while vector search handles meaning. Hybrid search combines both.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview"
+  },
+  {
+    "question": "Your RAG app retrieves loosely related passages that confuse the model. Which tuning can help?",
+    "options": [
+      "Lower max tokens",
+      "Apply a reranker and a minimum relevance threshold before passing results to the model",
+      "Remove the system prompt",
+      "Retrieve more passages without filtering"
+    ],
+    "answer": "Apply a reranker and a minimum relevance threshold before passing results to the model",
+    "explanation": "Reranking and score thresholds keep only the most relevant passages, reducing noise in the context.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/semantic-search-overview"
+  },
+  {
+    "question": "General-purpose embeddings perform poorly on your medical terminology. What can improve retrieval accuracy?",
+    "options": [
+      "Remove metadata filters",
+      "Evaluate domain-suited embedding models and fine-tune one on domain pairs if needed",
+      "Use a smaller LLM for generation",
+      "Increase the temperature"
+    ],
+    "answer": "Evaluate domain-suited embedding models and fine-tune one on domain pairs if needed",
+    "explanation": "Choosing or fine-tuning embedding models for the domain improves similarity for specialist vocabulary.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/understand-embeddings"
+  },
+  {
+    "question": "How should you decide whether a new retrieval configuration is better in production?",
+    "options": [
+      "Ask one user",
+      "Deploy it and stop monitoring",
+      "Compare token prices only",
+      "A/B test it with relevance metrics against the current configuration"
+    ],
+    "answer": "A/B test it with relevance metrics against the current configuration",
+    "explanation": "A/B testing with relevance and quality metrics gives evidence that a change improves results for real traffic.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "When should you consider fine-tuning a model rather than improving prompts or retrieval?",
+    "options": [
+      "Before trying any prompt engineering",
+      "When facts change daily",
+      "When you have no training data",
+      "When you need consistent style or task behavior that prompting cannot reach and you have quality training examples"
+    ],
+    "answer": "When you need consistent style or task behavior that prompting cannot reach and you have quality training examples",
+    "explanation": "Fine-tuning suits consistent format, tone or task skills. Changing facts are better handled by RAG.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "You have too few real examples to fine-tune a model. What can you do?",
+    "options": [
+      "Use test data for training",
+      "Generate synthetic training data with a larger model and review it for quality",
+      "Skip validation data",
+      "Duplicate the same example 1,000 times"
+    ],
+    "answer": "Generate synthetic training data with a larger model and review it for quality",
+    "explanation": "Synthetic data generated by a stronger model, then filtered and reviewed, can expand training sets for fine-tuning or distillation.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "Which fine-tuning method trains the model using preferred versus rejected responses?",
+    "options": [
+      "Retrieval-augmented generation",
+      "Supervised fine-tuning with single answers",
+      "Direct preference optimization (DPO)",
+      "Prompt caching"
+    ],
+    "answer": "Direct preference optimization (DPO)",
+    "explanation": "DPO learns from pairs of preferred and non-preferred outputs to align responses with human preferences.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "After fine-tuning, how should you confirm the model is better before production?",
+    "options": [
+      "Evaluate it against the base model on a held-out test set and monitor after release",
+      "Deploy it to all users immediately",
+      "Check only the training loss",
+      "Compare the model file sizes"
+    ],
+    "answer": "Evaluate it against the base model on a held-out test set and monitor after release",
+    "explanation": "Compare against a baseline on held-out data with the same evaluators, then deploy gradually and monitor.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  }
+]

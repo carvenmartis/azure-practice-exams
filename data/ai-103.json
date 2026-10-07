@@ -1,0 +1,722 @@
+[
+  {
+    "question": "You need a model to classify short support tickets into five categories at very high volume and low cost. Accuracy from a large frontier model is not required. Which model choice is most appropriate?",
+    "options": [
+      "A small language model deployed in Foundry",
+      "A text-to-speech model",
+      "The largest available reasoning model",
+      "An image generation model"
+    ],
+    "answer": "A small language model deployed in Foundry",
+    "explanation": "Small language models are cheaper and faster per call and are well suited to narrow, high-volume tasks such as classification where a frontier model would add cost without adding much value.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/foundry-models-overview"
+  },
+  {
+    "question": "An app must answer questions about a photo of a damaged part that a user uploads, and reply in text. Which kind of model should you deploy?",
+    "options": [
+      "A text-to-image model",
+      "A speech-to-text model",
+      "A text-only embedding model",
+      "A multimodal model that accepts image and text input"
+    ],
+    "answer": "A multimodal model that accepts image and text input",
+    "explanation": "A multimodal (vision-capable) chat model accepts images together with text prompts and produces a text answer grounded in the image.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "Your organization wants to pay for guaranteed model processing capacity with predictable latency for a steady, high-volume workload. Which deployment option should you choose?",
+    "options": [
+      "Batch deployment",
+      "Standard pay-per-token deployment",
+      "A local model on a developer laptop",
+      "Provisioned throughput deployment"
+    ],
+    "answer": "Provisioned throughput deployment",
+    "explanation": "Provisioned throughput reserves model processing capacity (PTUs), which gives predictable latency and throughput for consistent high-volume workloads.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/provisioned-throughput"
+  },
+  {
+    "question": "You must process 2 million documents overnight with a chat model. Results are not needed for 24 hours and cost must be minimized. Which deployment type fits best?",
+    "options": [
+      "Global batch deployment",
+      "Standard deployment called synchronously",
+      "Real-time managed online endpoint",
+      "Provisioned throughput deployment"
+    ],
+    "answer": "Global batch deployment",
+    "explanation": "Batch deployments process large asynchronous jobs within a target turnaround window at a lower price than standard real-time calls.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/batch"
+  },
+  {
+    "question": "Calls to a model deployment start returning HTTP 429 responses during peak hours. What does this most likely indicate?",
+    "options": [
+      "The deployment has exceeded its tokens-per-minute or requests-per-minute rate limit",
+      "The model has been retired",
+      "The API key has been revoked",
+      "The prompt contains blocked content"
+    ],
+    "answer": "The deployment has exceeded its tokens-per-minute or requests-per-minute rate limit",
+    "explanation": "HTTP 429 means too many requests. Each deployment has a tokens-per-minute and requests-per-minute quota; exceeding it causes throttling. Retry with backoff, raise the quota or spread load across deployments.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/quotas-limits"
+  },
+  {
+    "question": "You want an app running in Azure Container Apps to call a Foundry model without storing any API keys. What should you configure?",
+    "options": [
+      "Embed the key in the container image",
+      "A managed identity for the app with an appropriate role on the Foundry resource, using Microsoft Entra ID authentication",
+      "Store the key in an environment variable",
+      "Allow anonymous access on the resource"
+    ],
+    "answer": "A managed identity for the app with an appropriate role on the Foundry resource, using Microsoft Entra ID authentication",
+    "explanation": "Keyless authentication uses Microsoft Entra ID. Give the app a managed identity and assign it a role such as Cognitive Services User or Azure AI User on the resource, then authenticate with DefaultAzureCredential.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/managed-identity"
+  },
+  {
+    "question": "Security policy requires that your Foundry resource is not reachable from the public internet. What should you implement?",
+    "options": [
+      "A private endpoint and disable public network access",
+      "A content filter",
+      "A semantic ranker",
+      "A larger quota"
+    ],
+    "answer": "A private endpoint and disable public network access",
+    "explanation": "Private endpoints give the resource a private IP in your virtual network. Disabling public network access then ensures traffic only arrives over the private link.",
+    "link": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview"
+  },
+  {
+    "question": "A team wants each environment (dev, test, prod) of a Foundry solution to be deployed the same way from source control. What should they implement?",
+    "options": [
+      "A single shared project for all environments",
+      "Manual configuration in the portal for each environment",
+      "A CI/CD pipeline that deploys infrastructure and agent or model configuration as code",
+      "Copying the API key between environments"
+    ],
+    "answer": "A CI/CD pipeline that deploys infrastructure and agent or model configuration as code",
+    "explanation": "Integrating Foundry projects with CI/CD (for example GitHub Actions or Azure Pipelines with Bicep) makes deployments repeatable and reviewable across environments.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/"
+  },
+  {
+    "question": "You need to reduce the cost footprint of a chatbot that sends a long, identical system prompt with every request. Which approach helps most?",
+    "options": [
+      "Disable streaming",
+      "Increase temperature",
+      "Take advantage of prompt caching by keeping the repeated prefix identical",
+      "Switch to a larger model"
+    ],
+    "answer": "Take advantage of prompt caching by keeping the repeated prefix identical",
+    "explanation": "Prompt caching discounts and speeds up repeated identical prompt prefixes, so keeping a long system prompt stable at the start of the request reduces cost and latency.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/prompt-caching"
+  },
+  {
+    "question": "Which service should you use to filter harmful content categories such as hate, sexual, violence and self-harm in model inputs and outputs?",
+    "options": [
+      "Azure Translator",
+      "Azure Monitor autoscale",
+      "Content filters backed by Azure AI Content Safety",
+      "Azure Key Vault"
+    ],
+    "answer": "Content filters backed by Azure AI Content Safety",
+    "explanation": "Foundry model deployments apply content filters, built on Azure AI Content Safety, that classify prompts and completions for hate, sexual, violence and self-harm at configurable severity thresholds.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/content-filter"
+  },
+  {
+    "question": "Users try to override your assistant instructions with prompts such as \"ignore all previous instructions\". Which safeguard detects this?",
+    "options": [
+      "Semantic ranking",
+      "Groundedness evaluation",
+      "Token analytics",
+      "Prompt Shields for user prompt attacks"
+    ],
+    "answer": "Prompt Shields for user prompt attacks",
+    "explanation": "Prompt Shields detect user prompt attacks (jailbreaks) and indirect attacks embedded in documents, and can block them before the model responds.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection"
+  },
+  {
+    "question": "You want to confirm that answers produced by a RAG app are supported by the retrieved sources. Which evaluator measures this?",
+    "options": [
+      "BLEU score",
+      "Fluency",
+      "Groundedness",
+      "Latency"
+    ],
+    "answer": "Groundedness",
+    "explanation": "Groundedness checks whether the claims in a response are supported by the provided context. Low groundedness indicates fabricated or unsupported content.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "An agent can issue refunds through a tool. Policy says refunds over $500 need human sign-off. How should you design this?",
+    "options": [
+      "Increase the model temperature",
+      "Let the agent decide and log the result",
+      "Remove the refund tool entirely",
+      "Require an approval step before the agent can execute the refund tool for amounts over the threshold"
+    ],
+    "answer": "Require an approval step before the agent can execute the refund tool for amounts over the threshold",
+    "explanation": "Governing agent behavior includes human-in-the-loop approval flows and tool-access controls, so high-impact actions wait for an approver before execution.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "Auditors need to see which documents and tool calls produced each agent answer. What should you implement?",
+    "options": [
+      "A smaller model",
+      "Tracing with provenance metadata for each run",
+      "A higher rate limit",
+      "Content filter severity set to high"
+    ],
+    "answer": "Tracing with provenance metadata for each run",
+    "explanation": "Trace logging records each step of a run (model calls, retrieval, tool calls) so you can show provenance and audit how an answer was produced.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Over several weeks the relevance of retrieved passages in your RAG app drops after new documents are added. What should you monitor to catch this early?",
+    "options": [
+      "The number of API keys",
+      "Index health and retrieval relevance metrics",
+      "Only CPU usage of the web app",
+      "Image resolution"
+    ],
+    "answer": "Index health and retrieval relevance metrics",
+    "explanation": "Monitoring data ingestion quality, search index health and relevance performance reveals when new content or indexing changes degrade retrieval.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/search-what-is-azure-search"
+  },
+  {
+    "question": "Which Azure RBAC approach follows least privilege for a developer who only needs to call deployed models in a Foundry project?",
+    "options": [
+      "Assign Owner on the subscription",
+      "Assign Contributor on the tenant root group",
+      "Assign a user-level data-plane role on the project or resource rather than Owner",
+      "Share the resource key"
+    ],
+    "answer": "Assign a user-level data-plane role on the project or resource rather than Owner",
+    "explanation": "Least privilege means granting only the data-plane role needed to use models (for example Azure AI User or Cognitive Services OpenAI User) on the narrowest scope.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/rbac-azure-ai-foundry"
+  },
+  {
+    "question": "Which pattern grounds a model response in your own company documents without retraining the model?",
+    "options": [
+      "Lowering top_p",
+      "Full fine-tuning",
+      "Retrieval-augmented generation (RAG)",
+      "Increasing max tokens"
+    ],
+    "answer": "Retrieval-augmented generation (RAG)",
+    "explanation": "RAG retrieves relevant passages from an index at query time and passes them to the model as context, so answers are grounded in current company data without changing model weights.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/retrieval-augmented-generation-overview"
+  },
+  {
+    "question": "In a RAG app, what is the role of an embedding model?",
+    "options": [
+      "To detect harmful content",
+      "To translate the answer",
+      "To convert text into vectors so similar content can be found by vector search",
+      "To generate the final answer"
+    ],
+    "answer": "To convert text into vectors so similar content can be found by vector search",
+    "explanation": "Embedding models map text (or images) to numeric vectors. Similar meanings produce nearby vectors, enabling vector similarity search for retrieval.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/understand-embeddings"
+  },
+  {
+    "question": "You need the model to always return output that matches a strict JSON schema so it can be parsed by downstream code. What should you use?",
+    "options": [
+      "A higher temperature",
+      "Streaming responses",
+      "A longer system message only",
+      "Structured outputs with a JSON schema"
+    ],
+    "answer": "Structured outputs with a JSON schema",
+    "explanation": "Structured outputs constrain the model to produce JSON that conforms to the schema you supply, which is more reliable than asking for JSON in the prompt.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/structured-outputs"
+  },
+  {
+    "question": "A model must look up the current order status from your API when a user asks. Which capability lets the model request that call?",
+    "options": [
+      "Function (tool) calling",
+      "Embeddings",
+      "Prompt caching",
+      "Content filtering"
+    ],
+    "answer": "Function (tool) calling",
+    "explanation": "With function calling you describe tools by name and JSON schema. The model returns a structured request to call a function, your code runs it and sends the result back.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/function-calling"
+  },
+  {
+    "question": "When you define a tool for an agent, what should the tool definition include so the model can call it correctly?",
+    "options": [
+      "The full source code of the function",
+      "Only the function name",
+      "A clear name, a description of when to use it and a parameter schema",
+      "The API key of the backing service"
+    ],
+    "answer": "A clear name, a description of when to use it and a parameter schema",
+    "explanation": "Agents choose tools based on their descriptions and fill arguments from the parameter schema, so clear descriptions and precise schemas drive correct tool use.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "Which Foundry capability lets you build an agent that keeps conversation state across turns, calls tools and retrieves knowledge, without you writing the orchestration loop?",
+    "options": [
+      "Azure Translator",
+      "Azure Batch",
+      "Azure Data Factory",
+      "Foundry Agent Service"
+    ],
+    "answer": "Foundry Agent Service",
+    "explanation": "Foundry Agent Service hosts agents with instructions, tools, knowledge and conversation threads, and runs the tool-calling loop for you.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "A customer service solution uses one agent to triage requests and hands billing questions to a specialist billing agent. What is this design called?",
+    "options": [
+      "A batch inference job",
+      "A single-turn completion",
+      "A fine-tuned classifier",
+      "A multi-agent (orchestrated) solution"
+    ],
+    "answer": "A multi-agent (orchestrated) solution",
+    "explanation": "Multi-agent orchestration splits work across specialized agents, with a coordinator or handoff pattern routing tasks between them.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "An agent must answer from a SharePoint library and an Azure AI Search index. How should you give it this data?",
+    "options": [
+      "Paste all documents into the system prompt",
+      "Increase the context window only",
+      "Attach them as knowledge sources or search tools to the agent",
+      "Fine-tune the model on the documents"
+    ],
+    "answer": "Attach them as knowledge sources or search tools to the agent",
+    "explanation": "Agents connect to knowledge through tools such as Azure AI Search or file and SharePoint connectors, retrieving only relevant content at run time.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "Your evaluation shows the assistant sometimes states facts that are not in the retrieved documents. What is this problem commonly called?",
+    "options": [
+      "Data drift",
+      "Fabrication (hallucination)",
+      "Throttling",
+      "Tokenization"
+    ],
+    "answer": "Fabrication (hallucination)",
+    "explanation": "Fabrications, or hallucinations, are confident statements not supported by sources. Groundedness evaluators and better retrieval help detect and reduce them.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "You want more deterministic, less creative answers from a chat model for a compliance assistant. Which parameter change helps?",
+    "options": [
+      "Lower the temperature",
+      "Raise the temperature to 1.5",
+      "Remove the system message",
+      "Raise frequency penalty to maximum"
+    ],
+    "answer": "Lower the temperature",
+    "explanation": "Lower temperature makes sampling less random so outputs are more consistent and focused, which suits factual or compliance scenarios.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "Which prompt engineering technique gives the model a few input and output examples inside the prompt to show the expected format?",
+    "options": [
+      "Retrieval",
+      "Few-shot prompting",
+      "Fine-tuning",
+      "Zero-shot prompting"
+    ],
+    "answer": "Few-shot prompting",
+    "explanation": "Few-shot prompting includes a small number of worked examples in the prompt so the model imitates the format and style.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "You want a second model pass to review the first draft answer against the sources and fix unsupported claims before returning it. What technique is this?",
+    "options": [
+      "Load balancing",
+      "Reflection or self-critique loop",
+      "Content filtering",
+      "Prompt caching"
+    ],
+    "answer": "Reflection or self-critique loop",
+    "explanation": "Reflection or self-critique has the model (or another model) evaluate and revise its own output, improving accuracy at the cost of extra calls.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "Which set of evaluators is most suitable for judging the quality of answers from a generative app?",
+    "options": [
+      "Groundedness, relevance, coherence and fluency",
+      "Number of deployments",
+      "Precision of an image classifier only",
+      "CPU, memory and disk"
+    ],
+    "answer": "Groundedness, relevance, coherence and fluency",
+    "explanation": "Foundry provides AI-assisted quality evaluators such as groundedness, relevance, coherence and fluency, plus risk and safety evaluators.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "A deployed agent sometimes calls the wrong tool. What is the best first step to diagnose it?",
+    "options": [
+      "Delete the conversation thread",
+      "Switch the region",
+      "Inspect run traces to see the model reasoning inputs and tool-call arguments",
+      "Increase the quota"
+    ],
+    "answer": "Inspect run traces to see the model reasoning inputs and tool-call arguments",
+    "explanation": "Tracing shows each step of an agent run, including which tool was selected and with what arguments, which is the basis for error analysis.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Which SDK approach should an application use to connect to models and agents in a Foundry project?",
+    "options": [
+      "Use the Azure Storage SDK",
+      "Use FTP to upload prompts",
+      "Use the Foundry project endpoint with the Azure AI Projects SDK and Entra ID credentials",
+      "Call the Azure Resource Manager API for each chat message"
+    ],
+    "answer": "Use the Foundry project endpoint with the Azure AI Projects SDK and Entra ID credentials",
+    "explanation": "Applications connect to a Foundry project through its endpoint using the Azure AI Projects (Foundry) SDK, typically with DefaultAzureCredential.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/"
+  },
+  {
+    "question": "You need responses to start appearing in the UI before the full answer is generated. What should you enable?",
+    "options": [
+      "Provisioned throughput",
+      "Batch mode",
+      "Streaming",
+      "Structured outputs"
+    ],
+    "answer": "Streaming",
+    "explanation": "Streaming returns tokens as they are generated so users see the response immediately, improving perceived latency.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/chatgpt"
+  },
+  {
+    "question": "You want to route simple requests to a cheap model and complex ones to a larger model. What is this called?",
+    "options": [
+      "Model routing or orchestration across multiple models",
+      "Fine-tuning",
+      "Vector indexing",
+      "Content filtering"
+    ],
+    "answer": "Model routing or orchestration across multiple models",
+    "explanation": "Orchestrating multiple models, for example with a model router or rules, balances cost and quality by sending each request to the most suitable model.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/model-router"
+  },
+  {
+    "question": "Which metric helps you understand and control the cost of a generative AI app in production?",
+    "options": [
+      "DNS query count",
+      "Number of resource groups",
+      "Token usage per request and per user",
+      "Disk IOPS of the database"
+    ],
+    "answer": "Token usage per request and per user",
+    "explanation": "Token analytics (prompt and completion tokens) drive cost for most model deployments, so tracking them shows where to optimize.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "An autonomous agent can send emails to customers. Which safeguard reduces risk most?",
+    "options": [
+      "Disable logging",
+      "Give the agent full mailbox access",
+      "Raise temperature for more natural emails",
+      "Constrain the tool to approved templates and require approval for sending"
+    ],
+    "answer": "Constrain the tool to approved templates and require approval for sending",
+    "explanation": "Safeguards for autonomous or semiautonomous workflows include restricting tool scope and adding approval flow controls before irreversible actions.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "A multistep pipeline must extract data, call an API, then summarize. Where should you define these steps for an agent solution?",
+    "options": [
+      "In a workflow that orchestrates the steps and tools",
+      "In the private endpoint",
+      "In the quota settings",
+      "In the content filter configuration"
+    ],
+    "answer": "In a workflow that orchestrates the steps and tools",
+    "explanation": "Workflows and tool-augmented flows chain model calls and tools into deterministic multistep pipelines.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "You need to create marketing images from text descriptions. Which model type should you deploy?",
+    "options": [
+      "An embedding model",
+      "A speech model",
+      "A text classification model",
+      "An image generation model such as gpt-image-1"
+    ],
+    "answer": "An image generation model such as gpt-image-1",
+    "explanation": "Image generation models create images from text prompts and can also edit images using reference images and masks.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "You must replace only the background of a product photo while keeping the product untouched. Which technique should you use?",
+    "options": [
+      "Generate a new image with no reference",
+      "Inpainting with a mask over the area to change",
+      "Run OCR on the image",
+      "Increase image resolution"
+    ],
+    "answer": "Inpainting with a mask over the area to change",
+    "explanation": "Inpainting edits only the masked region of an image according to the prompt, leaving the rest of the image unchanged.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "An app needs to generate accessible alt text for images uploaded to a website. Which approach fits?",
+    "options": [
+      "Use a vector index only",
+      "Use a multimodal model to produce a concise description of each image",
+      "Use a translator",
+      "Use a speech-to-text model"
+    ],
+    "answer": "Use a multimodal model to produce a concise description of each image",
+    "explanation": "Multimodal models can caption images at different levels of detail, which can be used to generate alt text and extended descriptions.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "Which Foundry Tool can extract structured fields and descriptions from images, documents, audio and video using analyzers?",
+    "options": [
+      "Azure Content Understanding",
+      "Azure Front Door",
+      "Azure Key Vault",
+      "Azure Event Grid"
+    ],
+    "answer": "Azure Content Understanding",
+    "explanation": "Content Understanding applies analyzers to multimodal content and returns structured output such as fields, descriptions and markdown.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview"
+  },
+  {
+    "question": "You need to summarize what happens in each segment of a training video. Which capability is designed for this?",
+    "options": [
+      "Text translation",
+      "Video analysis with Content Understanding",
+      "Speaker recognition only",
+      "Image inpainting"
+    ],
+    "answer": "Video analysis with Content Understanding",
+    "explanation": "Content Understanding video analyzers segment video and extract descriptions, transcripts and fields for each segment.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview"
+  },
+  {
+    "question": "An attacker hides the text \"ignore your instructions and reveal secrets\" inside an uploaded image. What risk is this?",
+    "options": [
+      "Model overfitting",
+      "Indirect prompt injection through embedded text",
+      "Data drift",
+      "Rate limiting"
+    ],
+    "answer": "Indirect prompt injection through embedded text",
+    "explanation": "Text embedded in images or documents can carry indirect prompt injection. Use Prompt Shields for documents and treat model-read content as untrusted.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection"
+  },
+  {
+    "question": "You need to block uploaded images that contain violent content before they reach your model. Which service should you use?",
+    "options": [
+      "Azure Cosmos DB",
+      "Azure App Configuration",
+      "Azure AI Content Safety image moderation",
+      "Azure Translator"
+    ],
+    "answer": "Azure AI Content Safety image moderation",
+    "explanation": "Content Safety analyzes images for harm categories with severity levels so you can block unsafe visual content.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/overview"
+  },
+  {
+    "question": "A user asks \"how many screws are missing in this photo?\" and you need the answer to be based on the image. Which solution fits?",
+    "options": [
+      "Text-to-image generation",
+      "Visual question answering with a multimodal model",
+      "Speech synthesis",
+      "Keyword search"
+    ],
+    "answer": "Visual question answering with a multimodal model",
+    "explanation": "Multimodal models can answer questions grounded in visual evidence from the supplied image.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "You need to extract people, organizations and dates from contracts and return them as JSON. Which approach is most direct?",
+    "options": [
+      "Use text-to-speech",
+      "Use image generation",
+      "Use a vector index only",
+      "Prompt a language model with structured outputs, or use a Foundry language tool for entity extraction"
+    ],
+    "answer": "Prompt a language model with structured outputs, or use a Foundry language tool for entity extraction",
+    "explanation": "Entity extraction can be done with generative prompting plus structured outputs, or with Foundry Tools such as Azure Language named entity recognition.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/structured-outputs"
+  },
+  {
+    "question": "Which service translates text between languages and supports custom terminology?",
+    "options": [
+      "Azure Monitor",
+      "Azure Content Safety",
+      "Azure Translator",
+      "Azure AI Search"
+    ],
+    "answer": "Azure Translator",
+    "explanation": "Azure Translator provides text and document translation, with custom translation for domain terminology.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/translator/translator-overview"
+  },
+  {
+    "question": "You need to detect whether customer reviews are positive, negative or neutral. Which capability should you use?",
+    "options": [
+      "Object detection",
+      "Vector search",
+      "Sentiment analysis",
+      "Speech synthesis"
+    ],
+    "answer": "Sentiment analysis",
+    "explanation": "Sentiment analysis classifies text as positive, negative, neutral or mixed. It can be done with Azure Language or by prompting a language model.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/sentiment-opinion-mining/overview"
+  },
+  {
+    "question": "A voice agent must hear the caller, reason, and reply in a natural voice. Which pair of capabilities is required?",
+    "options": [
+      "Image captioning and sentiment",
+      "OCR and translation",
+      "Speech to text and text to speech",
+      "Embeddings and inpainting"
+    ],
+    "answer": "Speech to text and text to speech",
+    "explanation": "Voice agents transcribe audio with speech to text, process the text with a model, then speak the answer with text to speech.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview"
+  },
+  {
+    "question": "Callers often use product names that the standard speech model mistranscribes. What should you do?",
+    "options": [
+      "Lower the model temperature",
+      "Switch to image generation",
+      "Increase the token limit",
+      "Use a custom speech model or phrase list with the product vocabulary"
+    ],
+    "answer": "Use a custom speech model or phrase list with the product vocabulary",
+    "explanation": "Custom speech models and phrase lists improve recognition accuracy for domain-specific vocabulary.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview"
+  },
+  {
+    "question": "You need to translate a live spoken presentation into Spanish speech in near real time. Which capability fits?",
+    "options": [
+      "Text sentiment analysis",
+      "Image captioning",
+      "Batch document translation",
+      "Speech translation"
+    ],
+    "answer": "Speech translation",
+    "explanation": "Speech translation converts spoken audio in one language into text or synthesized speech in another language in real time.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview"
+  },
+  {
+    "question": "You need to detect personal data such as phone numbers and remove it from chat transcripts. Which capability should you use?",
+    "options": [
+      "PII detection and redaction",
+      "Text to speech",
+      "Model routing",
+      "Image generation"
+    ],
+    "answer": "PII detection and redaction",
+    "explanation": "PII detection finds sensitive entities and can return redacted text, which helps meet privacy requirements.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/personally-identifiable-information/overview"
+  },
+  {
+    "question": "Legal teams want short compliance summaries in a fixed house format. What is the most practical way to customize the output?",
+    "options": [
+      "Switch to a speech model",
+      "Use a system prompt with the required format and few-shot examples, then evaluate",
+      "Use OCR",
+      "Train a new model from scratch"
+    ],
+    "answer": "Use a system prompt with the required format and few-shot examples, then evaluate",
+    "explanation": "Domain customization usually starts with prompt design and examples. Fine-tuning is considered only if prompting cannot reach the required quality.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "Which search approach combines keyword (BM25) and vector results in a single query?",
+    "options": [
+      "Hybrid search",
+      "Pure vector search",
+      "Pure keyword search",
+      "Faceted navigation only"
+    ],
+    "answer": "Hybrid search",
+    "explanation": "Hybrid search runs full-text and vector queries in parallel and merges the results with Reciprocal Rank Fusion, often giving the best relevance for RAG.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview"
+  },
+  {
+    "question": "After retrieving results, you want a model-based reranker to put the most relevant passages first. What should you enable in Azure AI Search?",
+    "options": [
+      "Scoring profile with freshness only",
+      "Semantic ranker",
+      "Indexer schedule",
+      "Synonym maps"
+    ],
+    "answer": "Semantic ranker",
+    "explanation": "The semantic ranker re-scores the top results with a language understanding model and can return captions and answers.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/semantic-search-overview"
+  },
+  {
+    "question": "You want Azure AI Search to chunk documents and generate embeddings automatically during indexing. What should you use?",
+    "options": [
+      "A manual upload of vectors only",
+      "A CORS rule",
+      "Synonym maps",
+      "Integrated vectorization with an indexer and skillset"
+    ],
+    "answer": "Integrated vectorization with an indexer and skillset",
+    "explanation": "Integrated vectorization uses the Text Split skill and an embedding skill in a skillset so the indexer chunks and vectorizes content automatically.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/vector-search-integrated-vectorization"
+  },
+  {
+    "question": "Scanned PDFs must be searchable in your RAG index. What enrichment is required?",
+    "options": [
+      "Sentiment analysis",
+      "Text to speech",
+      "Image generation",
+      "Optical character recognition (OCR)"
+    ],
+    "answer": "Optical character recognition (OCR)",
+    "explanation": "Scanned PDFs are images. OCR extracts their text so it can be chunked, embedded and indexed.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/cognitive-search-skill-ocr"
+  },
+  {
+    "question": "Which Azure AI Search feature applies built-in or custom AI skills to content during indexing?",
+    "options": [
+      "An index alias",
+      "A query key",
+      "A semantic configuration",
+      "A skillset (AI enrichment)"
+    ],
+    "answer": "A skillset (AI enrichment)",
+    "explanation": "A skillset attached to an indexer runs built-in skills (OCR, language, embeddings) or custom web API skills to enrich content before it is indexed.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/cognitive-search-concept-intro"
+  },
+  {
+    "question": "You need to extract invoice number, vendor and line items from invoices of many layouts and feed clean output to an agent. Which approach fits best?",
+    "options": [
+      "Text to speech",
+      "A pure keyword search",
+      "Sentiment analysis",
+      "Content Understanding or Document Intelligence analyzers that combine OCR, layout and field extraction"
+    ],
+    "answer": "Content Understanding or Document Intelligence analyzers that combine OCR, layout and field extraction",
+    "explanation": "Document analyzers combine OCR, layout analysis and field extraction to produce structured fields that downstream agents can use.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/overview"
+  },
+  {
+    "question": "Downstream reasoning works best when documents keep headings and tables. Which output format should your extraction produce?",
+    "options": [
+      "Plain text with all formatting removed",
+      "Markdown that preserves structure",
+      "An audio file",
+      "A JPEG image"
+    ],
+    "answer": "Markdown that preserves structure",
+    "explanation": "Content Understanding and Document Intelligence layout can output markdown with headings and tables preserved, which improves chunking and grounding.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview"
+  },
+  {
+    "question": "How can an agent use your Azure AI Search index during a conversation?",
+    "options": [
+      "Export the index to CSV and attach it",
+      "Add the index as an Azure AI Search tool or knowledge source on the agent",
+      "Use a content filter",
+      "Copy the index into the system prompt"
+    ],
+    "answer": "Add the index as an Azure AI Search tool or knowledge source on the agent",
+    "explanation": "Connecting the index as a tool lets the agent query it at run time and cite the retrieved results.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  }
+]
