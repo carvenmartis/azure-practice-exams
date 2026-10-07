@@ -1,18 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
-import path from 'path';
-import fs from 'fs';
 import { useDarkMode } from '../_app';
-
-interface Question {
-  question?: string;
-  options?: string[];
-  answer?: string;
-  answerIndex?: number;
-  explanation?: string;
-  link?: string;
-}
 
 interface ProcessedQuestion {
   question: string;
@@ -24,32 +13,45 @@ interface ProcessedQuestion {
 
 interface ExamPageProps {
   slug: string;
-  exam: ProcessedQuestion[];
 }
 
 /**
  * The ExamPage component displays a quiz for a given exam. It
- * randomly selects up to 60 questions from the loaded JSON file
+ * downloads the questions from public/exam-data/<slug>.json (generated
+ * by scripts/build-exam-data.mjs), randomly selects up to 60 of them
  * and walks the user through them one at a time. After each answer
  * selection the correct answer, explanation and documentation link
  * are revealed. When all questions have been answered a score out
  * of 1000 points is calculated and shown.
  */
-export default function ExamPage({ slug, exam }: ExamPageProps) {
-  // Shuffle the questions and limit to 60. This runs after mount so the
-  // server-rendered HTML and the first client render match.
+export default function ExamPage({ slug }: ExamPageProps) {
+  // Load the questions in the browser, then shuffle and limit to 60.
   const [questions, setQuestions] = useState<ProcessedQuestion[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
-    const shuffled = [...exam];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    // Randomness must stay client-only to avoid a hydration mismatch.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setQuestions(shuffled.slice(0, 60));
-  }, [exam]);
+    let cancelled = false;
+    fetch(`/exam-data/${slug}.json`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json() as Promise<ProcessedQuestion[]>;
+      })
+      .then((exam) => {
+        if (cancelled) return;
+        const shuffled = [...exam];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        setQuestions(shuffled.slice(0, 60));
+      })
+      .catch(() => {
+        if (!cancelled) setLoadError(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
@@ -58,7 +60,11 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
   if (!questions) {
     return (
       <div className={`min-h-screen flex items-center justify-center p-4 ${darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
-        <p className="text-lg">Loading {slug.toUpperCase()} questions...</p>
+        <p className="text-lg">
+          {loadError
+            ? `Could not load the ${slug.toUpperCase()} questions. Please refresh the page.`
+            : `Loading ${slug.toUpperCase()} questions...`}
+        </p>
       </div>
     );
   }
@@ -189,39 +195,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 /**
- * Load the exam data from disk at build time. The slug corresponds to
- * the file name under the `data` directory. JSON imports are enabled
- * via the TypeScript configuration.
+ * Only the slug is passed to the page. The questions are downloaded in the
+ * browser so they don't bloat the page data.
  */
 export const getStaticProps: GetStaticProps<ExamPageProps> = async ({ params }) => {
-  const slug = params?.slug as string;
-  const dataPath = path.join(process.cwd(), 'data', `${slug}.json`);
-  const raw = fs.readFileSync(dataPath, 'utf-8');
-  const rawData = JSON.parse(raw) as Question[];
-  
-  // Filter out incomplete entries and convert answer text to answerIndex
-  const exam = rawData
-    .filter(item => {
-      // Keep only entries that have all required fields
-      return item.question && item.options && item.answer && item.explanation;
-    })
-    .map(item => {
-      // Convert "answer" to "answerIndex"
-      const answerIndex = item.options!.findIndex(option => option === item.answer);
-      
-      return {
-        question: item.question!,
-        options: item.options!,
-        answerIndex: answerIndex >= 0 ? answerIndex : 0, // Default to 0 if not found
-        explanation: item.explanation!,
-        ...(item.link && { link: item.link })
-      } as ProcessedQuestion;
-    });
-    
   return {
     props: {
-      slug,
-      exam
+      slug: params?.slug as string
     }
   };
 };

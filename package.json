@@ -6,7 +6,10 @@
     "node": ">=20.9.0"
   },
   "scripts": {
+    "exam-data": "node scripts/build-exam-data.mjs",
+    "predev": "npm run exam-data",
     "dev": "next dev",
+    "prebuild": "npm run exam-data",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
