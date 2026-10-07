@@ -10,8 +10,9 @@ const menuItems = [
 ];
 
 /**
- * Burger button that opens an animated dropdown with the site's pages.
- * Closes on navigation, Escape or a click outside the panel.
+ * Burger button that opens a full-height drawer with the site's pages. The
+ * drawer slides in from the left edge and closes on navigation, Escape or a
+ * click outside it.
  */
 export default function NavMenu() {
   const [open, setOpen] = useState(false);
@@ -29,8 +30,14 @@ export default function NavMenu() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setOpen(false);
     };
+    // Keep the page behind the drawer from scrolling while it's open.
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [open]);
 
   const lineClass = `absolute left-0 block h-0.5 w-5 rounded-full ${darkMode ? 'bg-white' : 'bg-gray-900'}`;
@@ -75,7 +82,7 @@ export default function NavMenu() {
             {/* Dims the page below the header only, so the header keeps matching the status bar */}
             <motion.div
               key="backdrop"
-              className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/20"
+              className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -85,29 +92,29 @@ export default function NavMenu() {
               key="panel"
               id="site-menu"
               aria-label="Site"
-              className={`absolute right-4 top-full z-50 mt-2 w-56 origin-top-right rounded-xl border p-2 shadow-lg sm:right-6 ${
+              className={`fixed top-16 left-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-r p-4 shadow-xl ${
                 darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-white'
               }`}
-              initial={{ opacity: 0, y: -8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.96 }}
-              transition={{ duration: 0.18, ease: 'easeOut' }}
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
-              <ul>
+              <ul className="space-y-1">
                 {menuItems.map((item, index) => {
                   const active = router.pathname === item.href;
                   return (
                     <motion.li
                       key={item.href}
-                      initial={{ opacity: 0, x: 8 }}
+                      initial={{ opacity: 0, x: -12 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.05 + index * 0.04 }}
+                      transition={{ delay: 0.15 + index * 0.06 }}
                     >
                       <Link
                         href={item.href}
                         aria-current={active ? 'page' : undefined}
                         onClick={() => setOpen(false)}
-                        className={`block rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 ${
+                        className={`block rounded-lg px-4 py-3 text-base font-medium transition-colors focus-visible:outline-2 ${
                           active
                             ? (darkMode ? 'bg-blue-950 text-blue-300' : 'bg-blue-50 text-blue-700')
                             : (darkMode ? 'hover:bg-gray-800' : 'hover:bg-gray-100')

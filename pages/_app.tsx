@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { createContext, useContext, useEffect, useSyncExternalStore } from 'react';
 import { themeColors } from '../lib/theme';
+import UpdateNotice from '../components/UpdateNotice';
 
 /** The theme the user picked on the Settings page; 'system' follows the OS. */
 export type ThemePreference = 'light' | 'dark' | 'system';
@@ -99,6 +100,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeContext.Provider value={{ darkMode, theme, setTheme: writeTheme }}>
       <div className="min-h-screen bg-white text-gray-900 dark:bg-black dark:text-white">
         <Component {...pageProps} />
+        <UpdateNotice />
         <div className="fixed bottom-2 right-3 z-50 rounded-sm bg-white/85 px-1.5 py-0.5 text-xs text-gray-500 backdrop-blur-sm dark:bg-black/85 dark:text-gray-400 select-none">
           v{process.env.NEXT_PUBLIC_APP_VERSION}
           {process.env.NEXT_PUBLIC_COMMIT_SHA && ` (${process.env.NEXT_PUBLIC_COMMIT_SHA})`}
