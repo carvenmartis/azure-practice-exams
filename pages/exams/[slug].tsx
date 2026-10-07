@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import path from 'path';
@@ -36,15 +36,32 @@ interface ExamPageProps {
  * of 1000 points is calculated and shown.
  */
 export default function ExamPage({ slug, exam }: ExamPageProps) {
-  // Shuffle the questions and limit to 60.
-  const questions = useMemo(() => {
-    const shuffled = [...exam].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 60);
+  // Shuffle the questions and limit to 60. This runs after mount so the
+  // server-rendered HTML and the first client render match.
+  const [questions, setQuestions] = useState<ProcessedQuestion[] | null>(null);
+
+  useEffect(() => {
+    const shuffled = [...exam];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    // Randomness must stay client-only to avoid a hydration mismatch.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setQuestions(shuffled.slice(0, 60));
   }, [exam]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const { darkMode } = useDarkMode();
+
+  if (!questions) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center p-4 ${darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
+        <p className="text-lg">Loading {slug.toUpperCase()} questions...</p>
+      </div>
+    );
+  }
 
   const currentQuestion = questions[currentIndex];
 
@@ -85,7 +102,6 @@ export default function ExamPage({ slug, exam }: ExamPageProps) {
 
   const userSelection = selectedAnswers[currentIndex];
   const showFeedback = userSelection !== undefined;
-  const isCorrect = showFeedback && userSelection === currentQuestion.answerIndex;
 
   return (
     <div className={`min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center ${darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>

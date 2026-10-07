@@ -1,4 +1,12 @@
 node_modules
 .next
+.git
+.github
+.vscode
+pipeline
 npm-debug.log
 .env
+.env*.local
+Dockerfile
+docker-compose.yml
+README.md

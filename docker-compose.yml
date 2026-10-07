@@ -1,11 +1,9 @@
-version: '3.8'
 services:
   azure-practice-exams:
+    image: carvenmartisit/azure-practice-exams:latest
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "3002:3000"
-    environment:
-      - NODE_ENV=production
     restart: unless-stopped

@@ -1,20 +1,39 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Azure Practice Exams
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+A Next.js website for practising Microsoft Azure certification exams (AZ-104, AZ-204, AZ-304 and AZ-400). Each exam draws up to 60 random questions from the JSON files in `data/` and scores you out of 1000.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Getting started
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Requires Node.js 20.9 or newer.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+```bash
+npm install
+npm run dev     # http://localhost:3000
+npm run lint
+npm run build
+```
+
+## Docker
+
+```bash
+docker compose up --build   # http://localhost:3002
+```
+
+The image uses Next.js standalone output, so it only contains the server and the packages it needs.
+
+## Deployment
+
+`.github/workflows/docker.yml` runs on every pull request and push to `main`:
+
+1. Lints and builds the app.
+2. Builds the Docker image.
+3. On `main` only, pushes it to Docker Hub as `carvenmartisit/azure-practice-exams` with the tags `latest` and `sha-<commit>`.
+
+Add these repository secrets in GitHub (Settings > Secrets and variables > Actions):
+
+- `DOCKERHUB_USERNAME`: your Docker Hub username
+- `DOCKERHUB_TOKEN`: a Docker Hub access token with Read & Write access
+
+## Adding an exam
+
+Add `data/<slug>.json`, then add the slug to `getStaticPaths` in `pages/exams/[slug].tsx` and to the list in `pages/index.tsx`.
