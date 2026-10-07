@@ -9,9 +9,11 @@ RUN npm ci
 # ---- Build ----
 FROM node:22-alpine AS builder
 WORKDIR /app
-# Commit SHA shown next to the version in the site footer
+# Version and commit SHA shown in the site footer
+ARG APP_VERSION=""
 ARG GIT_SHA=""
 ENV NEXT_TELEMETRY_DISABLED=1 \
+    APP_VERSION=$APP_VERSION \
     GIT_SHA=$GIT_SHA
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
