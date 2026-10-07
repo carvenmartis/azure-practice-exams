@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { createContext, useContext, useState } from 'react';
+import Head from 'next/head';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 // Create a context for dark mode
 const DarkModeContext = createContext<{
@@ -20,8 +21,20 @@ export function useDarkMode() {
 function MyApp({ Component, pageProps }: AppProps) {
   const [darkMode, setDarkMode] = useState(false);
 
+  // Apply the theme to <html> as well, so the page background, scrollbars
+  // and browser UI (e.g. the tablet status bar) follow the toggle.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('dark', darkMode);
+    root.style.colorScheme = darkMode ? 'dark' : 'light';
+  }, [darkMode]);
+
   return (
     <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
+      <Head>
+        {/* Colors the browser's status bar / toolbar on mobile and tablets */}
+        <meta name="theme-color" content={darkMode ? '#000000' : '#ffffff'} />
+      </Head>
       <div className={darkMode
         ? 'dark bg-gray-900 text-white min-h-screen'
         : 'bg-white text-gray-900 min-h-screen'}>

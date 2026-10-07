@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* dark: utilities follow the app's Dark Mode toggle (the .dark class), not the OS setting */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
   Tailwind v4 changed the default border color to currentColor.
   Keep the v3 default (gray-200) so existing borders look the same.
@@ -15,8 +18,9 @@
 }
 
 /* Global styles for the application */
+html,
 body {
-  @apply bg-gray-50 text-gray-900;
+  @apply bg-white text-gray-900 dark:bg-black dark:text-white;
 }
 
 /* Utility classes for the quiz component */
