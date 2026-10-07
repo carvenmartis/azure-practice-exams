@@ -7,6 +7,11 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# A newer run on the same branch (or PR) cancels the one still in progress
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   # Docker Hub account the image is published under
   DOCKERHUB_NAMESPACE: carvenmartisit
