@@ -36,4 +36,4 @@ Add these repository secrets in GitHub (Settings > Secrets and variables > Actio
 
 ## Adding an exam
 
-Add `data/<slug>.json`, then add the slug to `getStaticPaths` in `pages/exams/[slug].tsx` and to the list in `pages/index.tsx`.
+Add `data/<slug>.json`, then add `{ slug, name, description }` to the `exams` list in `lib/exams.ts`. The dashboard, the exam page header and the static exam paths all read from it.
