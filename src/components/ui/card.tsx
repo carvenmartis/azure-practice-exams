@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 /** Card surface classes, also for a Link that should look like a card. */
 export function cardClasses(className?: string) {
   return cn(
-    'rounded-xl border border-gray-200 bg-white shadow-xs dark:border-gray-800 dark:bg-gray-900',
+    'rounded-2xl border border-line bg-surface shadow-card',
     className
   );
 }

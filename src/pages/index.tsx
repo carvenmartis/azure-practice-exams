@@ -16,20 +16,21 @@ const facts = [
  */
 export default function Home() {
   return (
-    <PageLayout className="bg-gray-50 dark:bg-black">
-      <div className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20">
-        <section className="mb-10">
-          <p className="text-sm font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-400">
+    <PageLayout>
+      <div className="mx-auto max-w-6xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20 sm:pb-24">
+        <section className="mb-14 sm:mb-16">
+          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            <span aria-hidden="true" className="h-px w-8 bg-accent" />
             Dashboard
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-            Prepare for your Microsoft Azure certification
+          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-[1.1] font-semibold tracking-tight sm:text-6xl">
+            Prepare for your Microsoft Azure <span className="text-accent italic">certification</span>
           </h1>
-          <p className="mt-3 max-w-2xl text-base text-gray-600 dark:text-gray-300">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
             Pick an exam to start an untimed practice run. Each question shows the correct
             answer, an explanation and a link to the Microsoft documentation.
           </p>
-          <dl className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
+          <dl className="mt-10 grid grid-cols-3 gap-3 sm:gap-5">
             {facts.map((fact) => (
               <StatCard key={fact.label} label={fact.label} value={fact.value} />
             ))}
@@ -37,9 +38,12 @@ export default function Home() {
         </section>
 
         <section aria-labelledby="exams-heading">
-          <h2 id="exams-heading" className="mb-4 text-xl font-semibold">
-            Available exams
-          </h2>
+          <div className="mb-6 flex items-end justify-between gap-4 border-b border-line pb-4">
+            <h2 id="exams-heading" className="font-display text-2xl font-semibold sm:text-3xl">
+              Available exams
+            </h2>
+            <p className="text-sm text-ink-subtle">{exams.length} exams</p>
+          </div>
           <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {exams.map((exam) => (
               <li key={exam.slug}>

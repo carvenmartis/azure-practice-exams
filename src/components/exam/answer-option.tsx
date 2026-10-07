@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import { cn, focusRing } from '@/lib/utils';
 
 /** 'correct' and 'incorrect' are shown once the question has been answered. */
 export type AnswerState = 'default' | 'correct' | 'incorrect';
 
 const stateClasses: Record<AnswerState, string> = {
-  default: 'border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800',
-  correct: 'border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900',
-  incorrect: 'border-red-500 bg-red-50 dark:border-red-400 dark:bg-red-900'
+  default: 'border-line bg-surface enabled:hover:border-accent/60 enabled:hover:shadow-card',
+  correct: 'border-success bg-success-soft',
+  incorrect: 'border-danger bg-danger-soft'
 };
 
 interface AnswerOptionProps {
@@ -25,7 +25,8 @@ export function AnswerOption({ state, disabled, onSelect, children }: AnswerOpti
       onClick={onSelect}
       disabled={disabled}
       className={cn(
-        'w-full rounded-lg border px-4 py-2 text-left transition-colors duration-200',
+        'w-full rounded-xl border px-5 py-3.5 text-left leading-relaxed transition-all duration-200 disabled:cursor-default',
+        focusRing,
         stateClasses[state]
       )}
     >

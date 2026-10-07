@@ -14,11 +14,11 @@ export function RadioCard({ name, value, checked, label, description, onChange }
   return (
     <label
       className={cn(
-        'flex cursor-pointer flex-col rounded-xl border p-4 transition-colors',
-        'has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blue-600 dark:has-[:focus-visible]:outline-blue-400',
+        'flex cursor-pointer flex-col rounded-2xl border p-5 transition-colors',
+        'has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent',
         checked
-          ? 'border-blue-600 bg-blue-50 dark:border-blue-500 dark:bg-blue-950'
-          : 'border-gray-200 bg-white hover:border-gray-400 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-600'
+          ? 'border-accent bg-accent-soft shadow-card'
+          : 'border-line bg-surface hover:border-line-strong'
       )}
     >
       <input
@@ -34,15 +34,13 @@ export function RadioCard({ name, value, checked, label, description, onChange }
         <span
           aria-hidden="true"
           className={cn(
-            'h-4 w-4 rounded-full border-2',
-            checked
-              ? 'border-blue-600 bg-blue-600 dark:border-blue-400 dark:bg-blue-400'
-              : 'border-gray-300 dark:border-gray-600'
+            'h-4 w-4 rounded-full border-2 transition-colors',
+            checked ? 'border-accent bg-accent shadow-[inset_0_0_0_2px_var(--color-surface)]' : 'border-line-strong'
           )}
         />
       </span>
       {description && (
-        <span className="mt-1 text-sm text-gray-600 dark:text-gray-400">{description}</span>
+        <span className="mt-1.5 text-sm text-ink-muted">{description}</span>
       )}
     </label>
   );

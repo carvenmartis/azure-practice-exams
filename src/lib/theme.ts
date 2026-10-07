@@ -1,8 +1,8 @@
 /**
  * Browser UI colours (theme-color meta, iOS status bar) for each theme. They
- * match the solid header background in src/components/layout/course-header.tsx.
+ * match the solid header background (--header in src/styles/globals.css).
  */
-export const themeColors = { light: '#ffffff', dark: '#000000' };
+export const themeColors = { light: '#fbfaf7', dark: '#0a0f19' };
 
 /**
  * Runs in <head> before the first paint (see src/pages/_document.tsx). It applies

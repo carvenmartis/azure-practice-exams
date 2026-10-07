@@ -14,8 +14,8 @@ export function ThemePicker() {
 
   return (
     <fieldset>
-      <legend className="text-lg font-semibold">Theme</legend>
-      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+      <legend className="font-display text-xl font-semibold">Theme</legend>
+      <p className="mt-1 text-sm text-ink-muted">
         Choose how the site looks. Your choice is saved on this device.
       </p>
       <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">

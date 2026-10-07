@@ -77,14 +77,25 @@ public/                  static files; public/exam-data/ is generated
   for keyboard focus.
 - Reuse the UI components instead of repeating their classes; for a Link that should look
   like a button or card use `buttonClasses()` / `cardClasses()`.
-- Palette: `gray` surfaces/text, `blue-600`/`blue-700` primary actions, `green-*` correct,
-  `red-*` wrong. `rounded-lg` buttons/panels, `rounded-xl` cards, `transition-colors`.
-- Use v4 names: `shadow-xs`/`shadow-sm`, `rounded-sm`, `outline-hidden`, `bg-black/50`.
-- Dark mode: always `dark:` variants. `globals.css` maps `dark:` to the `.dark` class on
-  `<html>`, which the script in `_document.tsx` sets before first paint and
-  `ThemeProvider` keeps in sync. Don't branch on `useTheme().darkMode` for styling.
-- The header and status bar are solid (`bg-white` / `dark:bg-black`, matching
-  `themeColors` in `src/lib/theme.ts`); keep them in step.
+- Design tokens, not raw palette colours. `globals.css` defines each colour once per theme
+  (`:root` and `.dark`) and exposes it to Tailwind: `bg-canvas` (page), `bg-surface` /
+  `bg-surface-muted` (cards, panels), `bg-header`, `text-ink` / `text-ink-muted` /
+  `text-ink-subtle`, `border-line` / `border-line-strong`, `text-accent` / `bg-accent-soft`
+  (muted gold), `bg-primary` + `text-on-primary` (navy, gold in dark mode), and
+  `success` / `danger` (+ `-soft`) for right and wrong answers. A new colour gets a token
+  in both themes; don't use `gray-*`, `blue-*` and so on in components.
+- Because the tokens switch with the theme, components rarely need `dark:`. `dark:` still
+  follows the `.dark` class on `<html>` (set by the script in `_document.tsx` before first
+  paint, kept in sync by `ThemeProvider`). Don't branch on `useTheme().darkMode` for styling.
+- Look: `font-display` (Playfair Display) for page titles, card titles and big numbers
+  (add `lining-nums` to numbers); `font-sans` (Inter) for everything else. Fonts load
+  with `next/font/google` in `_app.tsx`. Eyebrow labels are `text-xs font-semibold
+  uppercase tracking-[0.2em] text-accent`. `rounded-2xl` cards and panels, `rounded-xl`
+  options and menu items, `rounded-full` buttons and badges; `shadow-card` at rest,
+  `shadow-lifted` for hover, drawers and dialogs. Keep gold as an accent, not a fill.
+- Use v4 names: `rounded-sm`, `outline-hidden`, `bg-black/50`.
+- The header and status bar are solid and the same colour: `--header` in `globals.css`
+  must equal `themeColors` in `src/lib/theme.ts`; change both together.
 
 ## Style and accessibility
 - 2-space indent, single quotes, semicolons, no trailing commas, JSDoc above components

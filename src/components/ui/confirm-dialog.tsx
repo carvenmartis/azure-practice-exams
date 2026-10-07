@@ -41,7 +41,7 @@ export function ConfirmDialog({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4 backdrop-blur-[2px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -52,20 +52,20 @@ export function ConfirmDialog({
             aria-modal="true"
             aria-labelledby="confirm-dialog-title"
             aria-describedby="confirm-dialog-message"
-            className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-6 text-gray-900 shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:text-white"
+            className="w-full max-w-sm rounded-2xl border border-line bg-surface p-7 text-ink shadow-lifted"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.15 }}
             onClick={(event) => event.stopPropagation()}
           >
-            <h2 id="confirm-dialog-title" className="text-lg font-semibold">
+            <h2 id="confirm-dialog-title" className="font-display text-2xl font-semibold">
               {title}
             </h2>
-            <p id="confirm-dialog-message" className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+            <p id="confirm-dialog-message" className="mt-3 text-sm leading-relaxed text-ink-muted">
               {message}
             </p>
-            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <Button ref={cancelRef} variant="secondary" onClick={onCancel}>
                 {cancelLabel}
               </Button>

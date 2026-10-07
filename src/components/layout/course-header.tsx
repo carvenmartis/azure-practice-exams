@@ -21,7 +21,7 @@ interface CourseHeaderProps {
 export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-black">
+      <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-header">
         <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
           <Link
             href="/"
@@ -30,19 +30,19 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
               if (!canLeave()) event.preventDefault();
             }}
             className={cn(
-              'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-600 text-sm font-bold text-white transition-colors hover:bg-blue-700',
+              'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-display text-base font-semibold text-on-primary ring-1 ring-accent/50 ring-offset-2 ring-offset-header transition-colors hover:bg-primary-hover',
               focusRing
             )}
           >
             Az
           </Link>
-          <div className="min-w-0 flex-1">
+          <div className="ml-1 min-w-0 flex-1">
             {eyebrow && (
-              <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-accent">
                 {eyebrow}
               </p>
             )}
-            <p className="truncate text-sm font-semibold sm:text-base" title={title}>
+            <p className="truncate font-display text-base font-semibold sm:text-lg" title={title}>
               {title}
             </p>
           </div>

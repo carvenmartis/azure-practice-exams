@@ -111,13 +111,13 @@ export default function ExamPage({ slug }: ExamPageProps) {
   const layoutProps = {
     pageTitle: courseName,
     headerTitle: courseName,
-    className: 'flex flex-col items-center justify-center bg-white px-4 py-10 sm:px-6 lg:px-8 dark:bg-black'
+    className: 'flex flex-col items-center px-4 pt-8 pb-16 sm:px-6 sm:pt-14 lg:px-8'
   };
 
   if (!questions) {
     return (
       <PageLayout {...layoutProps}>
-        <p className="text-lg">
+        <p className="text-lg text-ink-muted">
           {loadError
             ? `Could not load the ${slug.toUpperCase()} questions. Please refresh the page.`
             : `Loading ${slug.toUpperCase()} questions...`}
@@ -170,19 +170,38 @@ export default function ExamPage({ slug }: ExamPageProps) {
   return (
     <PageLayout {...layoutProps} eyebrow={`Question ${currentIndex + 1} of ${questions.length}`}>
       <div className="flex w-full max-w-3xl flex-col items-center">
-        <div className="mb-2 flex w-full justify-end">
-          <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)}>
-            Exit exam
-          </Button>
+        <div className="mb-8 w-full">
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+              {slug.toUpperCase()} practice exam
+            </p>
+            <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)}>
+              Exit exam
+            </Button>
+          </div>
+          <div
+            className="mt-3 h-1 w-full overflow-hidden rounded-full bg-surface-muted"
+            role="progressbar"
+            aria-label="Exam progress"
+            aria-valuemin={0}
+            aria-valuemax={questions.length}
+            aria-valuenow={answeredCount}
+          >
+            <div
+              className="h-full rounded-full bg-accent transition-[width] duration-500"
+              style={{ width: `${(answeredCount / questions.length) * 100}%` }}
+            />
+          </div>
         </div>
-        <h1 className="mb-4 text-center text-2xl font-bold">{slug.toUpperCase()} Practice Exam</h1>
-        <div className="mb-6 flex w-full flex-col items-center">
-          <p className="text-center text-lg font-medium">
-            Question {currentIndex + 1} of {questions.length}
+        <div className="mb-8 w-full">
+          <p className="text-sm font-medium text-ink-subtle">
+            Question {currentIndex + 1} <span className="text-ink-subtle/70">of {questions.length}</span>
           </p>
-          <p className="mt-2 text-center text-gray-800 dark:text-gray-200">{currentQuestion.question}</p>
+          <h1 className="mt-3 text-lg leading-relaxed font-semibold sm:text-xl">
+            {currentQuestion.question}
+          </h1>
         </div>
-        <div className="flex w-full flex-col items-center space-y-3">
+        <div className="flex w-full flex-col space-y-3">
           {currentQuestion.options.map((option, idx) => (
             <AnswerOption
               key={idx}

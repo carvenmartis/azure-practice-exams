@@ -10,7 +10,7 @@ const menuItems = [
   { href: '/settings', label: 'Settings' }
 ];
 
-const lineClass = 'absolute left-0 block h-0.5 w-5 rounded-full bg-gray-900 dark:bg-white';
+const lineClass = 'absolute left-0 block h-0.5 w-5 rounded-full bg-ink';
 const lineTransition = { duration: 0.25, ease: 'easeInOut' } as const;
 
 /**
@@ -52,7 +52,7 @@ export function NavMenu() {
         aria-controls="site-menu"
         onClick={() => setOpen((isOpen) => !isOpen)}
         className={cn(
-          'relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] hover:bg-gray-100 dark:hover:bg-gray-800',
+          'relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] hover:bg-surface-muted',
           focusRing
         )}
       >
@@ -81,7 +81,7 @@ export function NavMenu() {
             {/* Dims the page below the header only, so the header keeps matching the status bar */}
             <motion.div
               key="backdrop"
-              className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/40"
+              className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/45"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -91,12 +91,15 @@ export function NavMenu() {
               key="panel"
               id="site-menu"
               aria-label="Site"
-              className="fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-gray-200 bg-white p-4 shadow-xl dark:border-gray-800 dark:bg-gray-900"
+              className="fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
+              <p className="mb-3 px-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-ink-subtle">
+                Menu
+              </p>
               <ul className="space-y-1">
                 {menuItems.map((item, index) => {
                   const active = router.pathname === item.href;
@@ -115,11 +118,11 @@ export function NavMenu() {
                           setOpen(false);
                         }}
                         className={cn(
-                          'block rounded-lg px-4 py-3 text-base font-medium transition-colors',
+                          'block rounded-xl border-l-2 px-4 py-3 text-base font-medium transition-colors',
                           focusRing,
                           active
-                            ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                            ? 'border-accent bg-accent-soft text-accent-strong'
+                            : 'border-transparent text-ink-muted hover:bg-surface-muted hover:text-ink'
                         )}
                       >
                         {item.label}

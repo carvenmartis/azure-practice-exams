@@ -4,21 +4,98 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
-  Tailwind v4 changed the default border color to currentColor.
-  Keep the v3 default (gray-200) so existing borders look the same.
+  Design tokens. Components use these names (bg-canvas, text-ink, border-line,
+  text-accent, ...) instead of raw palette colours, so each colour is chosen
+  once per theme here. The header colour must match themeColors in
+  src/lib/theme.ts (the iOS status bar).
 */
+:root {
+  --canvas: #f7f5f0;
+  --surface: #ffffff;
+  --surface-muted: #f1ede4;
+  --header: #fbfaf7;
+  --ink: #101828;
+  --ink-muted: #4b5565;
+  --ink-subtle: #7a8291;
+  --line: #e7e1d4;
+  --line-strong: #cfc6b3;
+  --accent: #9a7536;
+  --accent-strong: #7d5d27;
+  --accent-soft: #f6efe1;
+  --primary: #13213a;
+  --primary-hover: #1e3156;
+  --on-primary: #fbf7ee;
+  --success: #2f6b4f;
+  --success-soft: #eaf3ed;
+  --danger: #a23b3b;
+  --danger-soft: #f9ecea;
+  --shadow-color: 32 26 14;
+}
+
+.dark {
+  --canvas: #0a0f19;
+  --surface: #111827;
+  --surface-muted: #172034;
+  --header: #0a0f19;
+  --ink: #f4efe4;
+  --ink-muted: #b4b9c4;
+  --ink-subtle: #858c9a;
+  --line: #222c3e;
+  --line-strong: #364258;
+  --accent: #d2b177;
+  --accent-strong: #e3c690;
+  --accent-soft: #231e14;
+  --primary: #d2b177;
+  --primary-hover: #e3c690;
+  --on-primary: #0e1626;
+  --success: #7dc19d;
+  --success-soft: #11251c;
+  --danger: #e58f8f;
+  --danger-soft: #2a1517;
+  --shadow-color: 0 0 0;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-header: var(--header);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  /* Set by next/font in src/pages/_app.tsx */
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-heading), ui-serif, Georgia, serif;
+
+  --shadow-card: 0 1px 2px rgb(var(--shadow-color) / 0.04), 0 4px 16px -4px rgb(var(--shadow-color) / 0.08);
+  --shadow-lifted: 0 2px 4px rgb(var(--shadow-color) / 0.05), 0 18px 40px -12px rgb(var(--shadow-color) / 0.22);
+}
+
 @layer base {
+  /* Hairline borders use the theme's line colour unless a class says otherwise */
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--color-line);
   }
-}
 
-/* Global styles for the application */
-html,
-body {
-  @apply bg-white text-gray-900 dark:bg-black dark:text-white;
+  html,
+  body {
+    @apply bg-canvas text-ink antialiased;
+  }
 }

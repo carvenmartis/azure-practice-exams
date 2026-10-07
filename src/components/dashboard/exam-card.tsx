@@ -18,18 +18,26 @@ export function ExamCard({ exam }: ExamCardProps) {
       href={`/exams/${exam.slug}`}
       className={cardClasses(
         cn(
-          'group flex h-full flex-col p-6 shadow-sm transition-colors hover:border-blue-600 dark:hover:border-blue-500',
+          'group relative flex h-full flex-col overflow-hidden p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-lifted motion-reduce:transform-none',
           focusRing
         )
       )}
     >
+      {/* Gold rule that draws in along the top edge on hover */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100"
+      />
       <Badge className="self-start">{code}</Badge>
-      <h3 className="mt-4 text-lg font-semibold leading-snug">{title}</h3>
+      <h3 className="mt-5 font-display text-xl font-semibold leading-snug">{title}</h3>
       {exam.description && (
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{exam.description}</p>
+        <p className="mt-3 mb-6 text-sm leading-relaxed text-ink-muted">{exam.description}</p>
       )}
-      <span className="mt-auto pt-6 text-sm font-semibold text-blue-700 group-hover:text-blue-800 dark:text-blue-400 dark:group-hover:text-blue-300">
-        Start practice exam <span aria-hidden="true">→</span>
+      <span className="mt-auto flex items-center gap-2 border-t border-line pt-5 text-sm font-semibold text-ink transition-colors group-hover:text-accent-strong">
+        Start practice exam
+        <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+          →
+        </span>
       </span>
     </Link>
   );
