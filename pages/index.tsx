@@ -22,7 +22,7 @@ export default function Home() {
 
   const facts = [
     { label: 'Practice exams', value: exams.length },
-    { label: 'Questions per attempt', value: 'Up to 60' },
+    { label: 'Questions per attempt', value: 60 },
     { label: 'Scored out of', value: 1000 }
   ];
 
@@ -32,7 +32,7 @@ export default function Home() {
         <title>{siteName}</title>
       </Head>
       <CourseHeader />
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+      <main className="mx-auto max-w-6xl px-4 pt-10 pb-16 sm:px-6 sm:pt-14 sm:pb-20">
         <section className="mb-10">
           <p className={`text-sm font-semibold uppercase tracking-wide ${darkMode ? 'text-blue-400' : 'text-blue-700'}`}>
             Dashboard
@@ -44,16 +44,16 @@ export default function Home() {
             Pick an exam to start an untimed practice run. Each question shows the correct
             answer, an explanation and a link to the Microsoft documentation.
           </p>
-          <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <dl className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
             {facts.map((fact) => (
               <div
                 key={fact.label}
-                className={`rounded-xl border px-5 py-4 ${
+                className={`rounded-xl border px-3 py-3 sm:px-5 sm:py-4 ${
                   darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-white shadow-xs'
                 }`}
               >
-                <dt className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{fact.label}</dt>
-                <dd className="mt-1 text-2xl font-semibold">{fact.value}</dd>
+                <dt className={`text-xs sm:text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{fact.label}</dt>
+                <dd className="mt-1 text-xl font-semibold sm:text-2xl">{fact.value}</dd>
               </div>
             ))}
           </dl>
