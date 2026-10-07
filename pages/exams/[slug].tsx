@@ -73,7 +73,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
       <>
         {pageHead}
         <CourseHeader title={courseName} />
-        <div className={`min-h-[calc(100dvh-4rem)] flex items-center justify-center p-4 ${darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
+        <div className={`min-h-[calc(100dvh-4rem)] flex items-center justify-center p-4 bg-white text-gray-900 dark:bg-black dark:text-white`}>
           <p className="text-lg">
             {loadError
               ? `Could not load the ${slug.toUpperCase()} questions. Please refresh the page.`
@@ -109,7 +109,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
       <>
         {pageHead}
         <CourseHeader title={courseName} eyebrow="Results" />
-        <div className={`min-h-[calc(100dvh-4rem)] flex flex-col items-center justify-center p-4 ${darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
+        <div className={`min-h-[calc(100dvh-4rem)] flex flex-col items-center justify-center p-4 bg-white text-gray-900 dark:bg-black dark:text-white`}>
           <h1 className="text-3xl font-bold mb-4">Exam Complete</h1>
           <p className="text-lg mb-2">
             You answered {correctCount} out of {total} questions correctly.
@@ -132,7 +132,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
     <>
       {pageHead}
       <CourseHeader title={courseName} eyebrow={`Question ${currentIndex + 1} of ${questions.length}`} />
-      <div className={`min-h-[calc(100dvh-4rem)] py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center ${darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
+      <div className={`min-h-[calc(100dvh-4rem)] py-10 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center bg-white text-gray-900 dark:bg-black dark:text-white`}>
         <div className="max-w-3xl w-full flex flex-col items-center">
           <h1 className="text-2xl font-bold mb-4 text-center">
             {slug.toUpperCase()} Practice Exam

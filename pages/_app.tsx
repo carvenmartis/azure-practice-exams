@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import Head from 'next/head';
 import { createContext, useContext, useEffect, useSyncExternalStore } from 'react';
+import { themeColors } from '../lib/theme';
 
 /** The theme the user picked on the Settings page; 'system' follows the OS. */
 export type ThemePreference = 'light' | 'dark' | 'system';
@@ -83,23 +83,21 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
   const darkMode = theme === 'system' ? systemDark : theme === 'dark';
 
-  // Apply the theme to <html> as well, so the page background, scrollbars
-  // and browser UI (e.g. the tablet status bar) follow the setting.
+  // Apply the theme to <html> and the theme-color meta (both first set before
+  // paint by the script in _document.tsx), so the page background, scrollbars
+  // and the iOS status bar follow the setting.
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle('dark', darkMode);
     root.style.colorScheme = darkMode ? 'dark' : 'light';
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', darkMode ? themeColors.dark : themeColors.light);
   }, [darkMode]);
 
   return (
     <ThemeContext.Provider value={{ darkMode, theme, setTheme: writeTheme }}>
-      <Head>
-        {/* Colors the browser's status bar / toolbar on mobile and tablets */}
-        <meta name="theme-color" content={darkMode ? '#000000' : '#ffffff'} />
-      </Head>
-      <div className={darkMode
-        ? 'dark bg-gray-900 text-white min-h-screen'
-        : 'bg-white text-gray-900 min-h-screen'}>
+      <div className="min-h-screen bg-white text-gray-900 dark:bg-black dark:text-white">
         <Component {...pageProps} />
         <div className="fixed bottom-2 right-3 z-50 rounded-sm bg-white/85 px-1.5 py-0.5 text-xs text-gray-500 backdrop-blur-sm dark:bg-black/85 dark:text-gray-400 select-none">
           v{process.env.NEXT_PUBLIC_APP_VERSION}

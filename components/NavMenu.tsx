@@ -72,9 +72,10 @@ export default function NavMenu() {
       <AnimatePresence>
         {open && (
           <>
+            {/* Dims the page below the header only, so the header keeps matching the status bar */}
             <motion.div
               key="backdrop"
-              className="fixed inset-0 z-40 bg-black/20"
+              className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/20"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

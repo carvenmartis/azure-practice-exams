@@ -19,7 +19,7 @@ export default function Home() {
   ];
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
+    <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-black dark:text-white">
       <Head>
         <title>{siteName}</title>
       </Head>

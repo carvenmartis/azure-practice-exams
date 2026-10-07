@@ -12,18 +12,14 @@ interface CourseHeaderProps {
 
 /**
  * Sticky top bar that names the current course, with the site menu on the
- * right. The blur sits on its own layer: backdrop-filter on the header itself
- * would trap the menu's full-screen backdrop inside the header.
+ * right. Its solid background matches the iOS status bar colour in
+ * lib/theme.ts, so the two read as one bar.
  */
 export default function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
   const { darkMode } = useDarkMode();
 
   return (
-    <header className={`sticky top-0 z-40 border-b ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
-      <div
-        aria-hidden="true"
-        className={`absolute inset-0 -z-10 backdrop-blur-md ${darkMode ? 'bg-black/80' : 'bg-white/85'}`}
-      />
+    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-black">
       <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
         <Link
           href="/"
