@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { canLeave } from '@/lib/leave-guard';
 import { cn, focusRing } from '@/lib/utils';
@@ -13,14 +14,23 @@ const menuItems = [
 const lineClass = 'absolute left-0 block h-0.5 w-5 rounded-full bg-ink';
 const lineTransition = { duration: 0.25, ease: 'easeInOut' } as const;
 
+const subscribeNever = () => () => {};
+
+/** False during the server render and hydration, true afterwards (document exists). */
+function useIsClient() {
+  return useSyncExternalStore(subscribeNever, () => true, () => false);
+}
+
 /**
  * Burger button that opens a full-height drawer with the site's pages. The
  * drawer slides in from the right edge and closes on navigation, Escape or a
- * click outside it.
+ * click outside it. The drawer is portalled to <body> so the header's
+ * transform doesn't confine it to the header bar.
  */
 export function NavMenu() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const isClient = useIsClient();
 
   useEffect(() => {
     const handleRouteChange = () => setOpen(false);
@@ -75,66 +85,70 @@ export function NavMenu() {
         </span>
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            {/* Dims the page below the header only, so the header keeps matching the status bar */}
-            <motion.div
-              key="backdrop"
-              className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/45"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setOpen(false)}
-            />
-            <motion.nav
-              key="panel"
-              id="site-menu"
-              aria-label="Site"
-              className="fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted"
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <p className="mb-3 px-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-ink-subtle">
-                Menu
-              </p>
-              <ul className="space-y-1">
-                {menuItems.map((item, index) => {
-                  const active = router.pathname === item.href;
-                  return (
-                    <motion.li
-                      key={item.href}
-                      initial={{ opacity: 0, x: 12 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.15 + index * 0.06 }}
-                    >
-                      <Link
-                        href={item.href}
-                        aria-current={active ? 'page' : undefined}
-                        onClick={(event) => {
-                          if (!canLeave()) event.preventDefault();
-                          setOpen(false);
-                        }}
-                        className={cn(
-                          'block rounded-xl border-l-2 px-4 py-3 text-base font-medium transition-colors',
-                          focusRing,
-                          active
-                            ? 'border-accent bg-accent-soft text-accent-strong'
-                            : 'border-transparent text-ink-muted hover:bg-surface-muted hover:text-ink'
-                        )}
-                      >
-                        {item.label}
-                      </Link>
-                    </motion.li>
-                  );
-                })}
-              </ul>
-            </motion.nav>
-          </>
+      {isClient &&
+        createPortal(
+          <AnimatePresence>
+            {open && (
+              <>
+                {/* Dims the page below the header only, so the header keeps matching the status bar */}
+                <motion.div
+                  key="backdrop"
+                  className="fixed inset-x-0 top-16 bottom-0 z-40 bg-black/45"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setOpen(false)}
+                />
+                <motion.nav
+                  key="panel"
+                  id="site-menu"
+                  aria-label="Site"
+                  className="fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted"
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '100%' }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <p className="mb-3 px-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-ink-subtle">
+                    Menu
+                  </p>
+                  <ul className="space-y-1">
+                    {menuItems.map((item, index) => {
+                      const active = router.pathname === item.href;
+                      return (
+                        <motion.li
+                          key={item.href}
+                          initial={{ opacity: 0, x: 12 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.15 + index * 0.06 }}
+                        >
+                          <Link
+                            href={item.href}
+                            aria-current={active ? 'page' : undefined}
+                            onClick={(event) => {
+                              if (!canLeave()) event.preventDefault();
+                              setOpen(false);
+                            }}
+                            className={cn(
+                              'block rounded-xl border-l-2 px-4 py-3 text-base font-medium transition-colors',
+                              focusRing,
+                              active
+                                ? 'border-accent bg-accent-soft text-accent-strong'
+                                : 'border-transparent text-ink-muted hover:bg-surface-muted hover:text-ink'
+                            )}
+                          >
+                            {item.label}
+                          </Link>
+                        </motion.li>
+                      );
+                    })}
+                  </ul>
+                </motion.nav>
+              </>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </MotionConfig>
   );
 }

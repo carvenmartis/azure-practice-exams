@@ -69,13 +69,13 @@ export function UpdateNotice() {
             type="button"
             onClick={() => window.location.reload()}
             className={cn(
-              'flex w-full items-center gap-3 rounded-xl bg-blue-600 px-4 py-3 text-left text-white shadow-lg transition-colors hover:bg-blue-700',
+              'flex w-full items-center gap-3 rounded-2xl bg-primary px-5 py-3.5 text-left text-on-primary shadow-lifted transition-colors hover:bg-primary-hover',
               focusRing
             )}
           >
             <span className="flex-1">
               <span className="block font-semibold">A new version is available</span>
-              <span className="block text-sm text-blue-100">
+              <span className="block text-sm text-on-primary/80">
                 Version {newVersion}. Tap to refresh.
               </span>
             </span>

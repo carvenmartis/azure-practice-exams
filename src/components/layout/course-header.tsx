@@ -17,11 +17,16 @@ interface CourseHeaderProps {
  * because iOS 26 Safari ignores theme-color and only paints the status bar
  * solid when a fixed bar sits at the top; otherwise page content shows through
  * it. Its solid background matches the colours in src/lib/theme.ts.
+ *
+ * transform-gpu gives the bar its own compositing layer; without it iOS Safari
+ * can stop painting a fixed bar while the page is scrolling, so it seems to
+ * vanish. The transform also makes the header the containing block for fixed
+ * children, which is why NavMenu portals its drawer to <body>.
  */
 export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-header">
+      <header className="fixed inset-x-0 top-0 z-40 transform-gpu border-b border-line bg-header">
         <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
           <Link
             href="/"
