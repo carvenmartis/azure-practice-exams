@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
           --font-heading: ${headingFont.style.fontFamily};
         }
       `}</style>
-      <div className="min-h-screen bg-canvas font-sans text-ink">
+      <div className="flex h-dvh flex-col overflow-hidden bg-canvas font-sans text-ink">
         <Component {...pageProps} />
         <UpdateNotice />
         <VersionBadge />

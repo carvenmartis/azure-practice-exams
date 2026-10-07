@@ -10,7 +10,7 @@ const facts = [
 ];
 
 /**
- * Home page renders a dashboard of available practice exams under a sticky
+ * Home page renders a dashboard of available practice exams under an always-visible
  * header with the site name. The exams are presented in a responsive grid.
  * Selecting a card navigates to the corresponding exam page.
  */

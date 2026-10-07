@@ -24,8 +24,8 @@ function useIsClient() {
 /**
  * Burger button that opens a full-height drawer with the site's pages. The
  * drawer slides in from the right edge and closes on navigation, Escape or a
- * click outside it. The drawer is portalled to <body> so the header's
- * transform doesn't confine it to the header bar.
+ * click outside it. The drawer is portalled to <body> so it overlays the page
+ * rather than the header's stacking context.
  */
 export function NavMenu() {
   const [open, setOpen] = useState(false);
@@ -43,14 +43,8 @@ export function NavMenu() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setOpen(false);
     };
-    // Keep the page behind the drawer from scrolling while it's open.
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [open]);
 
   return (

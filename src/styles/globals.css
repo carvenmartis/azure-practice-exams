@@ -101,8 +101,13 @@
     border-color: var(--color-line);
   }
 
+  /*
+    The page never scrolls; <main> in PageLayout does (see course-header.tsx).
+    The document background is the header colour, which is what Safari shows
+    behind the status bar; the app wrapper in _app.tsx paints the canvas.
+  */
   html,
   body {
-    @apply bg-canvas text-ink antialiased;
+    @apply h-full overflow-hidden overscroll-none bg-header text-ink antialiased;
   }
 }

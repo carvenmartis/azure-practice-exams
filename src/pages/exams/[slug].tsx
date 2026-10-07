@@ -106,7 +106,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
     setEndedEarly(true);
   };
 
-  // The sticky header shows the full course name, falling back to the slug.
+  // The header shows the full course name, falling back to the slug.
   const courseName = exams.find((exam) => exam.slug === slug)?.name ?? slug.toUpperCase();
   const layoutProps = {
     pageTitle: courseName,

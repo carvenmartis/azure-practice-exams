@@ -42,7 +42,10 @@ public/                  static files; public/exam-data/ is generated
 - Put a UI element in `components/ui/` as soon as a second place needs it; put a piece of
   a feature in `components/<feature>/` when it makes a page easier to read. Pages compose
   components and own the page state.
-- Every page renders inside `<PageLayout>` (tab title, sticky `CourseHeader`, `<main>`).
+- Every page renders inside `<PageLayout>` (tab title, `CourseHeader`, `<main>`). The
+  document never scrolls: `<main>` is the scroll area below a header that never moves,
+  because iOS 26 Safari misplaces `fixed`/`sticky` bars. Don't make the header fixed or
+  sticky, and scroll `<main>`, not `window`.
 
 ## Data and pages
 - `src/lib/exams.ts` is the single exam list: dashboard cards, header titles and
