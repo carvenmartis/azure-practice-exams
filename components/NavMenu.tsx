@@ -11,7 +11,7 @@ const menuItems = [
 
 /**
  * Burger button that opens a full-height drawer with the site's pages. The
- * drawer slides in from the left edge and closes on navigation, Escape or a
+ * drawer slides in from the right edge and closes on navigation, Escape or a
  * click outside it.
  */
 export default function NavMenu() {
@@ -51,10 +51,10 @@ export default function NavMenu() {
         aria-expanded={open}
         aria-controls="site-menu"
         onClick={() => setOpen((isOpen) => !isOpen)}
-        className={`relative z-50 flex h-10 w-10 items-center justify-center rounded-lg border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
+        className={`relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] focus-visible:outline-2 focus-visible:outline-offset-2 ${
           darkMode
-            ? 'border-gray-700 hover:bg-gray-800 focus-visible:outline-blue-400'
-            : 'border-gray-200 hover:bg-gray-100 focus-visible:outline-blue-600'
+            ? 'hover:bg-gray-800 focus-visible:outline-blue-400'
+            : 'hover:bg-gray-100 focus-visible:outline-blue-600'
         }`}
       >
         <span className="relative block h-3.5 w-5" aria-hidden="true">
@@ -92,12 +92,12 @@ export default function NavMenu() {
               key="panel"
               id="site-menu"
               aria-label="Site"
-              className={`fixed top-16 left-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-r p-4 shadow-xl ${
+              className={`fixed top-16 right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l p-4 shadow-xl ${
                 darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-white'
               }`}
-              initial={{ x: '-100%' }}
+              initial={{ x: '100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              exit={{ x: '100%' }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
               <ul className="space-y-1">
@@ -106,7 +106,7 @@ export default function NavMenu() {
                   return (
                     <motion.li
                       key={item.href}
-                      initial={{ opacity: 0, x: -12 }}
+                      initial={{ opacity: 0, x: 12 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.15 + index * 0.06 }}
                     >
