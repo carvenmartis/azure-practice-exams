@@ -7,3 +7,19 @@ services:
     ports:
       - "3002:3000"
     restart: unless-stopped
+    labels:
+      # Lets the watchtower service below update this container
+      - com.centurylinklabs.watchtower.enable=true
+
+  # Pulls a new :latest image from Docker Hub every 5 minutes and restarts the
+  # app with it, so open pages show the "new version available" notice.
+  # Only touches containers labelled above. Maintained fork of containrrr/watchtower.
+  watchtower:
+    image: nickfedor/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_LABEL_ENABLE: "true"
+      WATCHTOWER_POLL_INTERVAL: "300"
+      WATCHTOWER_CLEANUP: "true"
+    restart: unless-stopped

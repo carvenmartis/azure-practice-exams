@@ -18,7 +18,8 @@ export default function UpdateNotice() {
 
     const checkVersion = async () => {
       try {
-        const res = await fetch('/api/version', { cache: 'no-store' });
+        // The timestamp keeps iOS from answering with a cached response.
+        const res = await fetch(`/api/version?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) return;
         const latest = (await res.json()) as VersionResponse;
         if (!cancelled && latest.buildId && latest.buildId !== buildId) {
@@ -33,14 +34,22 @@ export default function UpdateNotice() {
       if (document.visibilityState === 'visible') checkVersion();
     };
 
+    // iOS Safari restores pages from the back/forward cache and resumes
+    // home-screen apps without always firing focus or visibilitychange, so
+    // also check on load, on pageshow and when the connection comes back.
+    checkVersion();
     const timer = window.setInterval(checkVersion, pollInterval);
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('focus', checkVersion);
+    window.addEventListener('pageshow', checkVersion);
+    window.addEventListener('online', checkVersion);
     return () => {
       cancelled = true;
       window.clearInterval(timer);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('focus', checkVersion);
+      window.removeEventListener('pageshow', checkVersion);
+      window.removeEventListener('online', checkVersion);
     };
   }, []);
 
