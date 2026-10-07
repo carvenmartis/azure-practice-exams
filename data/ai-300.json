@@ -344,7 +344,7 @@
       "A new workspace"
     ],
     "answer": "An alert on the monitoring signal that triggers a retraining pipeline",
-    "explanation": "Monitoring alerts can trigger automation, such as an Event Grid or Azure Monitor action that starts a retraining pipeline job.",
+    "explanation": "Model monitoring sends alerts and emits events to Azure Event Grid, which can start a retraining pipeline job when a threshold is exceeded.",
     "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
   },
   {
@@ -730,5 +730,713 @@
     "answer": "Evaluate it against the base model on a held-out test set and monitor after release",
     "explanation": "Compare against a baseline on held-out data with the same evaluators, then deploy gradually and monitor.",
     "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "You want to attach an existing storage account to a new Machine Learning workspace. Which account type is rejected as the workspace default storage?",
+    "options": [
+      "An account with soft delete enabled",
+      "A general-purpose v2 standard account",
+      "A premium account or one with hierarchical namespace enabled",
+      "An account in the same region"
+    ],
+    "answer": "A premium account or one with hierarchical namespace enabled",
+    "explanation": "The workspace storage account cannot be BlobStorage, premium or hierarchical namespace enabled. You can add those later as datastores.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-workspace"
+  },
+  {
+    "question": "A new workspace has no container registry yet. When is one created automatically?",
+    "options": [
+      "Immediately at workspace creation",
+      "When a custom Docker environment is first built",
+      "Never, you must always bring one",
+      "Only when you deploy to AKS"
+    ],
+    "answer": "When a custom Docker environment is first built",
+    "explanation": "Azure Container Registry is provisioned lazily when you build custom images, for example for a custom environment or AutoML deployment.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-workspace"
+  },
+  {
+    "question": "Your subscription policy requires tags on every resource, and the workspace build of a custom environment fails. Why?",
+    "options": [
+      "The automatically created container registry cannot be tagged, so policy blocks it; bring your own registry",
+      "Environments cannot use Docker",
+      "Compute clusters need tags",
+      "Workspaces cannot be tagged"
+    ],
+    "answer": "The automatically created container registry cannot be tagged, so policy blocks it; bring your own registry",
+    "explanation": "If tags are required, the registry that Azure Machine Learning creates fails because tags cannot be set on it. Attach your own registry instead.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-workspace"
+  },
+  {
+    "question": "Several project workspaces must share network settings, connections and compute. What should you create?",
+    "options": [
+      "A hub workspace with project workspaces under it",
+      "A registry",
+      "One workspace per user",
+      "Separate standalone workspaces with copied settings"
+    ],
+    "answer": "A hub workspace with project workspaces under it",
+    "explanation": "A hub workspace groups project workspaces and shares security settings, connections and compute. Hubs are the same resource type as Foundry hubs.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-workspace"
+  },
+  {
+    "question": "A workspace uses managed virtual network isolation set to allow only approved outbound traffic. Which feature will not work?",
+    "options": [
+      "Model monitoring",
+      "MLflow tracking",
+      "Compute clusters",
+      "Registered models"
+    ],
+    "answer": "Model monitoring",
+    "explanation": "Model monitoring is not supported with the AllowOnlyApprovedOutbound managed virtual network isolation mode.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "Model monitoring must read production data from a datastore without stored credentials. What should you configure?",
+    "options": [
+      "Anonymous blob access",
+      "A user-assigned managed identity with datastore access and systemDatastoresAuthMode set to identity",
+      "An account key in the monitoring job",
+      "A SAS token in the schedule"
+    ],
+    "answer": "A user-assigned managed identity with datastore access and systemDatastoresAuthMode set to identity",
+    "explanation": "Attach a user-assigned managed identity, grant it access to the datastore and set the workspace property systemDatastoresAuthMode to identity.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "Training costs are high and jobs tolerate interruption. Which compute choice reduces cost?",
+    "options": [
+      "Low-priority (spot) VMs in a compute cluster",
+      "A dedicated compute instance per job",
+      "A managed online endpoint",
+      "More always-on nodes"
+    ],
+    "answer": "Low-priority (spot) VMs in a compute cluster",
+    "explanation": "Low-priority VMs are much cheaper but can be preempted, which suits restartable training jobs.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-create-attach-compute-cluster"
+  },
+  {
+    "question": "You want to run a training job without creating or managing any compute cluster. What should you use?",
+    "options": [
+      "A compute instance",
+      "An attached VM",
+      "A Kubernetes cluster",
+      "Serverless compute"
+    ],
+    "answer": "Serverless compute",
+    "explanation": "Serverless compute lets jobs run on managed on-demand compute without creating a cluster.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-use-serverless-compute"
+  },
+  {
+    "question": "A sweep uses Bandit with slack_factor 0.2. The best run reports accuracy 0.8. Below which accuracy are runs cancelled?",
+    "options": [
+      "About 0.667 (0.8 / 1.2)",
+      "0.6 (0.8 - 0.2)",
+      "0.2",
+      "0.64 (0.8 x 0.8)"
+    ],
+    "answer": "About 0.667 (0.8 / 1.2)",
+    "explanation": "slack_factor is a ratio: runs below best / (1 + slack_factor) are cancelled. slack_amount would be an absolute gap.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "You want conservative early termination that saves compute with almost no loss on the primary metric. Which policy does Microsoft recommend?",
+    "options": [
+      "Median stopping with evaluation_interval 1 and delay_evaluation 5",
+      "Truncation selection with 80 percent",
+      "No termination",
+      "Bandit with slack_factor 0.01"
+    ],
+    "answer": "Median stopping with evaluation_interval 1 and delay_evaluation 5",
+    "explanation": "Median stopping with those settings is the conservative recommendation. Bandit with small slack or truncation selection is more aggressive.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "A sweep space uses a loguniform learning rate and Bayesian sampling fails validation. Why?",
+    "options": [
+      "loguniform requires early termination",
+      "Bayesian sampling needs grid search",
+      "Learning rates must be integers",
+      "Bayesian sampling supports only choice, uniform and quniform"
+    ],
+    "answer": "Bayesian sampling supports only choice, uniform and quniform",
+    "explanation": "Bayesian sampling supports only choice, uniform and quniform distributions. Use random sampling for other distributions.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "A grid sweep fails because one hyperparameter is defined with uniform(0.01, 0.1). What is the fix?",
+    "options": [
+      "Switch to quniform",
+      "Add an early termination policy",
+      "Use choice values, because grid sampling supports only choice",
+      "Use more concurrent trials"
+    ],
+    "answer": "Use choice values, because grid sampling supports only choice",
+    "explanation": "Grid sampling enumerates combinations, so it supports only discrete choice parameters.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "You tune four hyperparameters with Bayesian sampling. How many total trials are recommended at minimum?",
+    "options": [
+      "10",
+      "About 80 (20 times the number of hyperparameters)",
+      "4",
+      "1,000"
+    ],
+    "answer": "About 80 (20 times the number of hyperparameters)",
+    "explanation": "For best Bayesian results, set max_total_trials to at least 20 times the number of hyperparameters.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "Why does Bayesian sampling often perform better with fewer concurrent trials?",
+    "options": [
+      "Each new trial can learn from more completed results",
+      "It forces grid search",
+      "It reduces the search space",
+      "Concurrency is not supported at all"
+    ],
+    "answer": "Each new trial can learn from more completed results",
+    "explanation": "Bayesian sampling chooses new points based on previous results, so fewer parallel trials means each choice uses more information.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "A sweep sets max_total_trials 100 and timeout 3600 seconds. When does it stop?",
+    "options": [
+      "When the best trial reaches the target",
+      "Only after one hour",
+      "When the first of the two limits is reached",
+      "Only after 100 trials"
+    ],
+    "answer": "When the first of the two limits is reached",
+    "explanation": "When both limits are set the sweep stops at whichever is reached first.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters"
+  },
+  {
+    "question": "A feature pipeline must use the same lookup logic in training and inference. What should you package with the model?",
+    "options": [
+      "The training notebook",
+      "The sweep job YAML",
+      "The feature retrieval specification",
+      "The compute cluster ID"
+    ],
+    "answer": "The feature retrieval specification",
+    "explanation": "Packaging the feature retrieval specification with the model artifact keeps features consistent between training and serving.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-what-is-managed-feature-store"
+  },
+  {
+    "question": "You log a model with MLflow and want it registered in the same call. What should you pass?",
+    "options": [
+      "The datastore URI",
+      "An environment name",
+      "A run tag named register",
+      "registered_model_name in log_model"
+    ],
+    "answer": "registered_model_name in log_model",
+    "explanation": "mlflow.<flavor>.log_model accepts registered_model_name, which logs and registers a new model version at once.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-models-mlflow"
+  },
+  {
+    "question": "A pipeline re-runs an unchanged data-prep step every time and wastes compute. What should you check?",
+    "options": [
+      "That the pipeline has a schedule",
+      "That component reuse is enabled and inputs, code and environment are unchanged",
+      "That MLflow autolog is on",
+      "That the step uses a GPU"
+    ],
+    "answer": "That component reuse is enabled and inputs, code and environment are unchanged",
+    "explanation": "Pipelines reuse outputs of steps whose component, inputs and settings have not changed, unless reuse is disabled.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+  },
+  {
+    "question": "You create a green deployment on an online endpoint without --all-traffic. What traffic does it receive?",
+    "options": [
+      "50 percent",
+      "100 percent",
+      "10 percent by default",
+      "0 percent until you change the endpoint traffic"
+    ],
+    "answer": "0 percent until you change the endpoint traffic",
+    "explanation": "A new deployment starts with 0 percent of live traffic unless created with --all-traffic.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "Testers must call the green deployment directly while it has 0 percent traffic. How?",
+    "options": [
+      "Use a batch endpoint",
+      "Send requests with the azureml-model-deployment header set to green",
+      "Temporarily delete blue",
+      "Set traffic to green=1"
+    ],
+    "answer": "Send requests with the azureml-model-deployment header set to green",
+    "explanation": "The azureml-model-deployment header (or --deployment-name in the CLI) bypasses traffic rules and targets a specific deployment.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "You try to mirror 70 percent of traffic to green. What happens?",
+    "options": [
+      "It is rejected, because mirrored traffic is capped at 50 percent",
+      "It works and halves bandwidth",
+      "Mirrored responses replace blue",
+      "Mirroring requires 100 percent"
+    ],
+    "answer": "It is rejected, because mirrored traffic is capped at 50 percent",
+    "explanation": "Mirroring is limited to 50 percent to protect the endpoint bandwidth quota. You can mirror to only one deployment.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "During mirroring, which responses do clients receive?",
+    "options": [
+      "Responses from both deployments",
+      "The fastest response",
+      "Responses from the mirrored deployment",
+      "Only responses from the live deployment; mirrored responses are discarded"
+    ],
+    "answer": "Only responses from the live deployment; mirrored responses are discarded",
+    "explanation": "Mirroring does not change what clients receive. The mirrored deployment is used only for metrics and logs.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "You set traffic to blue=60 green=30. Why is the update rejected?",
+    "options": [
+      "Traffic percentages must add up to 0 or 100",
+      "Only two deployments are allowed",
+      "Green must be created with --all-traffic",
+      "Traffic must be in steps of 25"
+    ],
+    "answer": "Traffic percentages must add up to 0 or 100",
+    "explanation": "Endpoint traffic allocation must total 100 to serve traffic, or 0 to disable it.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "Can you mirror traffic on a Kubernetes online endpoint?",
+    "options": [
+      "Only with GPU nodes",
+      "No, mirroring is not supported for Kubernetes online endpoints",
+      "Only to two deployments",
+      "Yes, up to 100 percent"
+    ],
+    "answer": "No, mirroring is not supported for Kubernetes online endpoints",
+    "explanation": "Traffic mirroring is a managed online endpoint feature and is not supported on Kubernetes online endpoints.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "Which reference data should you use for a prediction drift signal?",
+    "options": [
+      "Validation data or recent production outputs",
+      "The scoring script",
+      "The training script",
+      "Ground truth labels only"
+    ],
+    "answer": "Validation data or recent production outputs",
+    "explanation": "Prediction drift compares model outputs against validation data or recent production outputs.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "You want to track a classification model's accuracy in production. What does that signal require?",
+    "options": [
+      "Ground truth data joined to production predictions",
+      "A GPU compute",
+      "Only the training data",
+      "Only model inputs"
+    ],
+    "answer": "Ground truth data joined to production predictions",
+    "explanation": "Model performance signals compare predictions to ground truth, which you must collect and supply.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "Which data quality metrics does model monitoring compute?",
+    "options": [
+      "Groundedness and fluency",
+      "Accuracy, precision and recall",
+      "Null value rate, data type error rate and out-of-bounds rate",
+      "Latency and throughput"
+    ],
+    "answer": "Null value rate, data type error rate and out-of-bounds rate",
+    "explanation": "Data quality checks nulls, type mismatches and values outside the reference ranges or categories.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "Which drift metrics are available for a numerical feature in data drift monitoring?",
+    "options": [
+      "Groundedness and coherence",
+      "Jensen-Shannon distance, PSI, normalized Wasserstein distance and two-sample K-S test",
+      "RMSE and MAE",
+      "BLEU and ROUGE"
+    ],
+    "answer": "Jensen-Shannon distance, PSI, normalized Wasserstein distance and two-sample K-S test",
+    "explanation": "Data drift supports distribution distance metrics such as Jensen-Shannon, PSI, normalized Wasserstein and statistical tests such as K-S and chi-squared.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "A model deployed on a batch endpoint needs monitoring. How do you get production inference data?",
+    "options": [
+      "It is not possible to monitor",
+      "Enable the data collector on the batch endpoint",
+      "Collect it yourself, because automatic data collection applies to online endpoints",
+      "Monitoring reads it from MLflow"
+    ],
+    "answer": "Collect it yourself, because automatic data collection applies to online endpoints",
+    "explanation": "Automatic model data collection works for online endpoints. For batch endpoints or external deployments you collect inference data yourself.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "Monitoring runs weekly with a production lookback window of P7D. Which reference window offset avoids overlap?",
+    "options": [
+      "Exactly one day",
+      "P0D",
+      "It cannot be configured",
+      "At least the production window size plus its offset"
+    ],
+    "answer": "At least the production window size plus its offset",
+    "explanation": "To avoid overlapping windows, the reference offset should be at least the production window size plus its offset.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+  },
+  {
+    "question": "After green takes 100 percent of traffic you delete the blue deployment. What happens to green?",
+    "options": [
+      "Nothing, deleting one deployment does not affect others on the endpoint",
+      "Green is deleted too",
+      "The endpoint is deleted",
+      "Traffic resets to 0 percent"
+    ],
+    "answer": "Nothing, deleting one deployment does not affect others on the endpoint",
+    "explanation": "Deleting a deployment removes only that deployment. Deleting the endpoint removes all of its deployments.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-safely-rollout-online-endpoints"
+  },
+  {
+    "question": "A model was logged in a finished run but not registered. Which MLflow call registers it with lineage to the run?",
+    "options": [
+      "mlflow.set_experiment",
+      "mlflow.start_run",
+      "mlflow.log_metric",
+      "mlflow.register_model with a runs:/<run_id>/<path> URI"
+    ],
+    "answer": "mlflow.register_model with a runs:/<run_id>/<path> URI",
+    "explanation": "mlflow.register_model accepts a runs:/ URI and creates a registered model version linked to the run that produced it.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-manage-models-mlflow"
+  },
+  {
+    "question": "You need a ready-made environment with common ML frameworks that Microsoft maintains and patches. What should you use?",
+    "options": [
+      "A registry component",
+      "A compute instance image",
+      "A curated environment",
+      "A custom Dockerfile environment"
+    ],
+    "answer": "A curated environment",
+    "explanation": "Curated environments are prebuilt, Microsoft-maintained environments with popular frameworks, which speed up job start.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-environments"
+  },
+  {
+    "question": "A fine-tuning job must keep training data and weights in your region for compliance. Which training type should you choose?",
+    "options": [
+      "Global",
+      "Any type keeps data in region",
+      "Developer",
+      "Standard"
+    ],
+    "answer": "Standard",
+    "explanation": "Standard training runs in the resource region with data residency. Global is cheaper but may copy data to another region; Developer has no residency guarantee.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "You want the cheapest fine-tuning runs for experiments and can accept preemption. Which training type fits?",
+    "options": [
+      "Global",
+      "Developer",
+      "Provisioned",
+      "Standard"
+    ],
+    "answer": "Developer",
+    "explanation": "Developer training uses idle capacity, may be preempted and resumed, and has no SLA. It suits experimentation.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "Training loss keeps falling but validation loss starts rising after epoch 2 of 5. What should you do?",
+    "options": [
+      "Deploy an earlier checkpoint or reduce epochs, because the model is overfitting",
+      "Increase the learning rate multiplier",
+      "Remove the validation set",
+      "Train for more epochs"
+    ],
+    "answer": "Deploy an earlier checkpoint or reduce epochs, because the model is overfitting",
+    "explanation": "Diverging training and validation loss indicates overfitting. Checkpoints are created per epoch and the last three can be deployed.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "A fine-tuned deployment has received no calls for three weeks and has disappeared. Why?",
+    "options": [
+      "Fine-tuned models expire after 7 days",
+      "The quota was reduced",
+      "The training data was deleted",
+      "Deployments inactive for more than 15 days are deleted; the model can be redeployed"
+    ],
+    "answer": "Deployments inactive for more than 15 days are deleted; the model can be redeployed",
+    "explanation": "Inactive fine-tuned deployments are removed after 15 days. The underlying model remains and can be redeployed.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "A user can start fine-tuning jobs but cannot deploy the result. Which permission is missing?",
+    "options": [
+      "Storage Blob Data Reader",
+      "Key Vault Secrets User",
+      "A role with deployments/write, such as Foundry Owner",
+      "Reader on the subscription"
+    ],
+    "answer": "A role with deployments/write, such as Foundry Owner",
+    "explanation": "Deploying a fine-tuned model requires Microsoft.CognitiveServices/accounts/deployments/write, which Foundry Owner includes.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "Fine-tuned answers ignore the persona at inference time. Training examples all used a specific system message. What is the likely issue?",
+    "options": [
+      "The model is not deployed in a Data Zone",
+      "Prompt caching is on",
+      "Too many epochs",
+      "Inference uses a different system message than training"
+    ],
+    "answer": "Inference uses a different system message than training",
+    "explanation": "Use the same system message at inference that you used in training data so the model behaves as trained.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "In fine-tuning data, how do you exclude a specific assistant turn in a multi-turn example from training?",
+    "options": [
+      "Set weight to 0 on that assistant message",
+      "Set temperature to 0",
+      "Mark it as a system message",
+      "Delete the user message"
+    ],
+    "answer": "Set weight to 0 on that assistant message",
+    "explanation": "Assistant messages can carry a weight of 0 or 1 to control whether they are trained on.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "You need reward-based tuning where a grader scores outputs for a reasoning model. Which method fits?",
+    "options": [
+      "Reinforcement fine-tuning (RFT)",
+      "Prompt caching",
+      "Direct preference optimization",
+      "Supervised fine-tuning"
+    ],
+    "answer": "Reinforcement fine-tuning (RFT)",
+    "explanation": "Reinforcement fine-tuning uses reward signals from graders and is available for selected reasoning models.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "What is the training data format for chat model fine-tuning?",
+    "options": [
+      "A single JSON array",
+      "JSONL, one chat-format conversation per line",
+      "Parquet files",
+      "CSV with prompt and completion columns"
+    ],
+    "answer": "JSONL, one chat-format conversation per line",
+    "explanation": "Training files are JSONL with one conversation in the chat completions messages format per line, UTF-8 encoded.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "Evaluation must check that an agent understood what the user wanted and completed the task within its rules. Which evaluators fit?",
+    "options": [
+      "Latency and throughput",
+      "Intent resolution and task adherence",
+      "Accuracy and recall",
+      "Fluency and BLEU"
+    ],
+    "answer": "Intent resolution and task adherence",
+    "explanation": "Agent evaluators include intent resolution, task adherence and tool call accuracy, which assess agent behavior rather than text quality.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "A new prompt version passes quality evaluations but its safety evaluation shows more harmful outputs. What should the release gate do?",
+    "options": [
+      "Disable the safety evaluator",
+      "Block the release until risk and safety metrics meet the threshold",
+      "Ship because quality improved",
+      "Average the two scores"
+    ],
+    "answer": "Block the release until risk and safety metrics meet the threshold",
+    "explanation": "GenAIOps gates should require both quality and safety thresholds. A safety regression blocks the release even if quality improves.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "You want ongoing scoring of a sample of live agent conversations for quality and safety. What should you configure?",
+    "options": [
+      "A sweep job",
+      "A nightly fine-tuning job",
+      "Continuous evaluation on production traffic with Application Insights connected",
+      "A larger PTU deployment"
+    ],
+    "answer": "Continuous evaluation on production traffic with Application Insights connected",
+    "explanation": "Continuous evaluation samples production interactions and scores them, with results and traces in Application Insights.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Token costs suddenly double after a prompt change. Where would you confirm the cause?",
+    "options": [
+      "The model card",
+      "Token usage metrics and traces per prompt version",
+      "The registry",
+      "The Key Vault audit log"
+    ],
+    "answer": "Token usage metrics and traces per prompt version",
+    "explanation": "Tracking tokens per operation and version in traces shows which change increased prompt or completion size.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "A provisioned deployment shows high utilization and rising latency but no 429s yet. What should you watch to decide on more PTUs?",
+    "options": [
+      "The number of prompt variants",
+      "Index size",
+      "Disk IOPS",
+      "The provisioned-managed utilization metric"
+    ],
+    "answer": "The provisioned-managed utilization metric",
+    "explanation": "Provisioned utilization shows how much reserved capacity is used. Sustained high utilization signals the need for more PTUs or spillover.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/provisioned-throughput"
+  },
+  {
+    "question": "Quantized vectors cut index size but recall drops. Which query setting recovers recall without changing the index?",
+    "options": [
+      "Switch to keyword search",
+      "Lower k to 1",
+      "Disable rescoring",
+      "Raise oversampling so more candidates are rescored with original vectors"
+    ],
+    "answer": "Raise oversampling so more candidates are rescored with original vectors",
+    "explanation": "Oversampling retrieves k times the factor candidates from compressed vectors and rescores them. The default is 4.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-quantization"
+  },
+  {
+    "question": "With binary quantization you set rescoreStorageMethod to discardOriginals. What is the trade-off?",
+    "options": [
+      "Quality improves",
+      "Scalar quantization is enabled",
+      "Queries switch to exhaustive KNN",
+      "Storage drops further, and rescoring and oversampling settings can no longer be used"
+    ],
+    "answer": "Storage drops further, and rescoring and oversampling settings can no longer be used",
+    "explanation": "discardOriginals (binary only) removes full-precision vectors to save storage and disables enableRescoring and defaultOversampling.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-quantization"
+  },
+  {
+    "question": "Embeddings have 384 dimensions. Which quantization is the safer first choice?",
+    "options": [
+      "Binary quantization, which works best below 512 dimensions",
+      "Scalar (int8) quantization, testing quality carefully",
+      "No compression is possible",
+      "Truncation to 32 dimensions"
+    ],
+    "answer": "Scalar (int8) quantization, testing quality carefully",
+    "explanation": "Binary quantization works best above 1,024 dimensions. For smaller embeddings scalar quantization is the safer choice.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-quantization"
+  },
+  {
+    "question": "You enable rescoring but queries use exhaustive KNN. Why does oversampling have no effect?",
+    "options": [
+      "Rescoring needs binary quantization",
+      "Oversampling only works with filters",
+      "Exhaustive KNN needs k=50",
+      "Exhaustive KNN scans every vector, so rescoring and oversampling do not apply"
+    ],
+    "answer": "Exhaustive KNN scans every vector, so rescoring and oversampling do not apply",
+    "explanation": "Rescoring requires HNSW. Exhaustive KNN already compares against all vectors.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/vector-search-how-to-quantization"
+  },
+  {
+    "question": "Relevance improves only slightly with the semantic ranker. You use hybrid search with k=5. What should you change first?",
+    "options": [
+      "Add orderby",
+      "Lower k to 1",
+      "Raise k to about 50 so the ranker has more candidates",
+      "Remove the vector query"
+    ],
+    "answer": "Raise k to about 50 so the ranker has more candidates",
+    "explanation": "The semantic ranker reranks the top results. A k of 50 gives it enough inputs to improve ordering.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview"
+  },
+  {
+    "question": "A RAG A/B test compares two chunk sizes. Which metrics make the decision defensible?",
+    "options": [
+      "Only the number of chunks",
+      "Only index build time",
+      "Retrieval relevance and groundedness on the same query set, plus latency and cost",
+      "Only user count"
+    ],
+    "answer": "Retrieval relevance and groundedness on the same query set, plus latency and cost",
+    "explanation": "Compare retrieval quality, answer groundedness and operational cost on identical queries to decide which configuration wins.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "A domain embedding model is fine-tuned and deployed. What must happen before queries use it?",
+    "options": [
+      "Only query vectors change",
+      "Increase k",
+      "Nothing, old vectors are compatible",
+      "Re-embed and re-index all documents with the new model"
+    ],
+    "answer": "Re-embed and re-index all documents with the new model",
+    "explanation": "Query and document vectors must come from the same model. Changing the embedding model requires re-indexing.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/understand-embeddings"
+  },
+  {
+    "question": "Retrieval misses exact error codes but finds conceptually similar text. Which change helps most?",
+    "options": [
+      "Use exhaustive KNN only",
+      "Increase vector dimensions",
+      "Lower oversampling",
+      "Add the keyword side of a hybrid query"
+    ],
+    "answer": "Add the keyword side of a hybrid query",
+    "explanation": "Keyword search excels at exact terms like codes and names. Hybrid search adds that precision to vector recall.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-overview"
+  },
+  {
+    "question": "You need a fixed test set to compare RAG changes over time. What is the best practice?",
+    "options": [
+      "Evaluate only in production",
+      "Version a curated query set with expected sources and answers, and rerun evaluations on each change",
+      "Let the model generate new tests each run",
+      "Use whatever queries come in today"
+    ],
+    "answer": "Version a curated query set with expected sources and answers, and rerun evaluations on each change",
+    "explanation": "A versioned golden dataset gives repeatable comparisons and detects regressions between changes.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
+  },
+  {
+    "question": "Synthetic Q&A pairs are generated to fine-tune a model. What is a key risk to control?",
+    "options": [
+      "It always overfits",
+      "Errors or bias from the generator model copied into training data, so review and filter samples",
+      "Synthetic data cannot be JSONL",
+      "It needs a GPU cluster"
+    ],
+    "answer": "Errors or bias from the generator model copied into training data, so review and filter samples",
+    "explanation": "Synthetic data inherits the generator's mistakes. Filter, deduplicate and review samples, and keep a held-out real test set.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "Which fine-tuning method needs examples with a preferred and a non-preferred response to the same prompt?",
+    "options": [
+      "Continued pretraining",
+      "Supervised fine-tuning",
+      "Direct preference optimization (DPO)",
+      "Reinforcement fine-tuning"
+    ],
+    "answer": "Direct preference optimization (DPO)",
+    "explanation": "DPO learns from preference pairs to align responses with human preferences.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/fine-tuning"
+  },
+  {
+    "question": "You want to compare prompt variants in CI and fail the build if groundedness drops by more than 5 percent. Which approach fits?",
+    "options": [
+      "Check token counts only",
+      "Ask reviewers to read samples",
+      "Deploy both and wait for complaints",
+      "Run the evaluation SDK on a fixed dataset in the pipeline and compare against the baseline"
+    ],
+    "answer": "Run the evaluation SDK on a fixed dataset in the pipeline and compare against the baseline",
+    "explanation": "Automated evaluations in CI with thresholds against a baseline catch regressions before deployment.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/observability"
   }
 ]
