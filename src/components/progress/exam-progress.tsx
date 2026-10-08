@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { StartExamLink } from '@/components/exam/start-exam-link';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -71,9 +72,9 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
           <Badge>{code}</Badge>
           <h2 className="mt-3 font-display text-2xl font-semibold leading-snug">{title}</h2>
         </div>
-        <Link href={`/exams/${exam.slug}`} className={buttonClasses({ variant: 'secondary', size: 'sm' })}>
+        <StartExamLink slug={exam.slug} className={buttonClasses({ variant: 'secondary', size: 'sm' })}>
           New attempt
-        </Link>
+        </StartExamLink>
       </div>
 
       <dl className="mt-6 grid grid-cols-3 gap-3">

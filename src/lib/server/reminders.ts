@@ -9,9 +9,12 @@ import type { PushSubscription } from 'web-push';
  * zone; once a minute the scheduler sends a notification to every device
  * whose time has come and whose goal for today isn't reached yet.
  *
- * Everything lives in REMINDER_DATA_DIR (default ./reminder-data, a Docker
- * volume in docker-compose.yml): the VAPID keys, made on first use, and the
- * subscriptions. Web push only works for pages opened over https.
+ * Everything lives in REMINDER_DATA_DIR (default ./reminder-data): the VAPID
+ * keys, made on first use unless VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY are
+ * set, and the subscriptions. The NAS replaces the container on every image
+ * update, which empties the folder; devices then register again when the app
+ * opens (syncReminder in src/lib/reminders.ts). Web push only works for pages
+ * opened over https.
  */
 
 /** What the browser last told us about today's goal. */
@@ -71,6 +74,8 @@ async function writeJson(file: string, value: unknown) {
 /** The server's VAPID key pair, made and saved the first time it's needed. */
 function vapidKeys() {
   keys ??= (async () => {
+    const { VAPID_PUBLIC_KEY: publicKey, VAPID_PRIVATE_KEY: privateKey } = process.env;
+    if (publicKey && privateKey) return { publicKey, privateKey };
     const saved = await readJson<VapidKeys>(keysFile);
     if (saved?.publicKey && saved.privateKey) return saved;
     const made = webpush.generateVAPIDKeys();

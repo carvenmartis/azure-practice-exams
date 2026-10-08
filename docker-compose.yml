@@ -7,7 +7,8 @@ services:
     ports:
       - "3002:3000"
     # Daily goal reminders: the push keys and the devices that asked for one.
-    # Keeping them in a volume means reminders survive image updates.
+    # Only used when started with docker compose; without it, devices simply
+    # register again the next time the app is opened after an update.
     volumes:
       - reminder-data:/app/reminder-data
     environment:

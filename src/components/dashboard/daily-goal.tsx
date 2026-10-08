@@ -1,16 +1,22 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { dailyStatus, useProgress } from '@/lib/progress-store';
+import { syncReminder } from '@/lib/reminders';
 import { cn, focusRing } from '@/lib/utils';
 
 /**
  * Dashboard card with today's answered questions against the daily goal and
  * the streak of days the goal was reached. Every answered question counts:
- * exams, reviews, drills, bookmarks and study mode.
+ * exams, reviews, drills, bookmarks and study mode. Opening the dashboard
+ * (where the Home Screen app starts) also re-registers the daily reminder.
  */
 export function DailyGoal() {
+  useEffect(() => {
+    void syncReminder();
+  }, []);
   const status = dailyStatus(useProgress());
   const share = Math.min(status.today / status.goal, 1);
   const left = status.goal - status.today;

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { StartExamLink } from '@/components/exam/start-exam-link';
 import { Badge } from '@/components/ui/badge';
 import { cardClasses } from '@/components/ui/card';
 import { splitExamName } from '@/lib/exams';
@@ -9,13 +9,13 @@ interface ExamCardProps {
   exam: Exam;
 }
 
-/** Dashboard card that links to an exam: code badge, title and summary. */
+/** Dashboard card that starts an exam (after a confirm dialog): code badge, title and summary. */
 export function ExamCard({ exam }: ExamCardProps) {
   const { code, title } = splitExamName(exam);
 
   return (
-    <Link
-      href={`/exams/${exam.slug}`}
+    <StartExamLink
+      slug={exam.slug}
       className={cardClasses(
         cn(
           'group relative flex h-full flex-col overflow-hidden p-7 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-lifted motion-reduce:transform-none',
@@ -39,6 +39,6 @@ export function ExamCard({ exam }: ExamCardProps) {
           →
         </span>
       </span>
-    </Link>
+    </StartExamLink>
   );
 }

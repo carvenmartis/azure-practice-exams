@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { StartExamLink } from '@/components/exam/start-exam-link';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Badge } from '@/components/ui/badge';
 import { buttonClasses } from '@/components/ui/button';
@@ -62,9 +63,9 @@ export default async function GuidePage({ params }: GuidePageProps) {
             </li>
           ))}
           <li>
-            <Link href={`/exams/${slug}`} className={buttonClasses({ size: 'sm' })}>
+            <StartExamLink slug={slug} className={buttonClasses({ size: 'sm' })}>
               Start a practice exam
-            </Link>
+            </StartExamLink>
           </li>
         </ul>
 

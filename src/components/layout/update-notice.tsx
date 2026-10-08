@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { setServerReachable } from '@/lib/connection';
 import { buildId } from '@/lib/version';
@@ -13,9 +14,22 @@ const pollInterval = 60 * 1000;
  * Checks /api/version every minute and whenever the tab comes back into
  * view. When the server runs a newer build than the one this page loaded
  * with, it shows a notice; clicking it reloads the page onto the new version.
+ *
+ * The notice is absolute inside the app shell rather than fixed, because iOS
+ * Safari misplaces fixed elements over the scrolling <main>, so a tap meant
+ * for the notice could open the card underneath. After the tap a clear layer
+ * covers the page until the reload, so nothing else reacts to it.
  */
 export function UpdateNotice() {
   const [newVersion, setNewVersion] = useState<string | null>(null);
+  const [reloading, setReloading] = useState(false);
+
+  const reload = (event: MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setReloading(true);
+    window.location.reload();
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -60,34 +74,37 @@ export function UpdateNotice() {
   }, []);
 
   return (
-    <AnimatePresence>
-      {newVersion && (
-        <motion.div
-          role="status"
-          className="fixed inset-x-4 bottom-10 z-50 sm:left-auto sm:right-4 sm:w-96"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 24 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-        >
-          <button
-            type="button"
-            onClick={() => window.location.reload()}
-            className={cn(
-              'flex w-full items-center gap-3 rounded-2xl bg-primary px-5 py-3.5 text-left text-on-primary shadow-lifted transition-colors hover:bg-primary-hover',
-              focusRing
-            )}
+    <>
+      {reloading && <div aria-hidden="true" className="absolute inset-0 z-[60]" />}
+      <AnimatePresence>
+        {newVersion && (
+          <motion.div
+            role="status"
+            className="absolute inset-x-4 bottom-10 z-50 sm:left-auto sm:right-4 sm:w-96"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
           >
-            <span className="flex-1">
-              <span className="block font-semibold">A new version is available</span>
-              <span className="block text-sm text-on-primary/80">
-                Version {newVersion}. Tap to refresh.
+            <button
+              type="button"
+              onClick={reload}
+              className={cn(
+                'flex w-full items-center gap-3 rounded-2xl bg-primary px-5 py-3.5 text-left text-on-primary shadow-lifted transition-colors hover:bg-primary-hover',
+                focusRing
+              )}
+            >
+              <span className="flex-1">
+                <span className="block font-semibold">A new version is available</span>
+                <span className="block text-sm text-on-primary/80">
+                  Version {newVersion}. Tap to refresh.
+                </span>
               </span>
-            </span>
-            <span aria-hidden="true" className="text-xl">↻</span>
-          </button>
-        </motion.div>
-      )}
-    </AnimatePresence>
+              <span aria-hidden="true" className="text-xl">↻</span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

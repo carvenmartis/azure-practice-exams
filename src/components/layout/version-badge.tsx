@@ -7,7 +7,7 @@ import { appVersion, commitSha } from '@/lib/version';
 export function VersionBadge() {
   const online = useOnline();
   return (
-    <div className="fixed bottom-2 right-3 z-50 select-none rounded-full bg-canvas/85 px-2 py-0.5 text-[0.7rem] tracking-wide text-ink-subtle backdrop-blur-sm">
+    <div className="pointer-events-none absolute bottom-2 right-3 z-50 select-none rounded-full bg-canvas/85 px-2 py-0.5 text-[0.7rem] tracking-wide text-ink-subtle backdrop-blur-sm">
       {!online && <span className="font-semibold text-accent-strong">Offline · </span>}
       v{appVersion}
       {commitSha && ` (${commitSha})`}

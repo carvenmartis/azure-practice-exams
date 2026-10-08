@@ -5,11 +5,17 @@ import { dailyStatus, getProgress, localDay } from './progress-store';
  * server (src/lib/server/reminders.ts) at the chosen time when the goal isn't
  * reached yet. The push subscription belongs to this browser, so the setting
  * is saved here and not in backups.
+ *
+ * The NAS container keeps no data across image updates, so the server may
+ * forget the subscription or make new keys. syncReminder() runs when the app
+ * opens and registers the device again, subscribing anew when the key changed.
  */
 export interface ReminderSettings {
   enabled: boolean;
   /** Local time of day as '19:00'. */
   time: string;
+  /** The server key the subscription was made with. */
+  publicKey?: string;
 }
 
 export const defaultReminderTime = '19:00';
@@ -24,7 +30,8 @@ export function getReminderSettings(): ReminderSettings {
     const parsed = JSON.parse(window.localStorage.getItem(storageKey) ?? 'null');
     return {
       enabled: parsed?.enabled === true,
-      time: typeof parsed?.time === 'string' ? parsed.time : defaultReminderTime
+      time: typeof parsed?.time === 'string' ? parsed.time : defaultReminderTime,
+      publicKey: typeof parsed?.publicKey === 'string' ? parsed.publicKey : undefined
     };
   } catch {
     return { enabled: false, time: defaultReminderTime };
@@ -94,36 +101,56 @@ async function post(path: string, body: unknown) {
 }
 
 /**
- * Asks for notification permission (call it from a tap), subscribes this
- * device to push and tells the server when to remind.
+ * Subscribes this device to push with the server's current key (again, if
+ * the key changed since) and tells the server when to remind.
  */
-export async function enableReminder(time: string) {
-  const permission = await Notification.requestPermission();
-  if (permission !== 'granted') throw new Error('Notifications were not allowed.');
-  const registration = await serviceWorker();
+async function registerReminder(registration: ServiceWorkerRegistration, time: string) {
+  const res = await fetch('/api/push/key', { cache: 'no-store' });
+  if (!res.ok) throw new Error('The server cannot send reminders yet.');
+  const { publicKey } = (await res.json()) as { publicKey: string };
   let subscription = await registration.pushManager.getSubscription();
-  if (!subscription) {
-    const res = await fetch('/api/push/key');
-    if (!res.ok) throw new Error('The server cannot send reminders yet.');
-    const { publicKey } = await res.json();
-    subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: keyBytes(publicKey)
-    });
+  if (subscription && getReminderSettings().publicKey !== publicKey) {
+    await subscription.unsubscribe();
+    subscription = null;
   }
+  subscription ??= await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: keyBytes(publicKey)
+  });
   await post('/api/push/subscribe', {
     subscription: subscription.toJSON(),
     time,
     timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     progress: progressReport()
   });
-  saveReminderSettings({ enabled: true, time });
+  saveReminderSettings({ enabled: true, time, publicKey });
+}
+
+/** Asks for notification permission (call it from a tap) and turns the reminder on. */
+export async function enableReminder(time: string) {
+  const permission = await Notification.requestPermission();
+  if (permission !== 'granted') throw new Error('Notifications were not allowed.');
+  await registerReminder(await serviceWorker(), time);
+}
+
+/**
+ * Registers a turned-on reminder with the server again, in case an update
+ * of the server lost it. Runs when the app opens; never asks anything.
+ */
+export async function syncReminder() {
+  const settings = getReminderSettings();
+  if (!settings.enabled || reminderSupport() !== 'ok' || Notification.permission !== 'granted') return;
+  try {
+    const registration = await navigator.serviceWorker.getRegistration();
+    if (registration?.active) await registerReminder(registration, settings.time);
+  } catch {
+    // Offline or the server is restarting: try again next time.
+  }
 }
 
 /** Stops the reminders on this device. */
 export async function disableReminder() {
-  const time = getReminderSettings().time;
-  saveReminderSettings({ enabled: false, time });
+  saveReminderSettings({ enabled: false, time: getReminderSettings().time });
   const registration = await navigator.serviceWorker?.getRegistration();
   const subscription = await registration?.pushManager.getSubscription();
   if (!subscription) return;

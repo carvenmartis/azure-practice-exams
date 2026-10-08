@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from './button';
 
@@ -12,11 +13,17 @@ interface ConfirmDialogProps {
   cancelLabel: string;
   onConfirm: () => void;
   onCancel: () => void;
+  /** Button focused on open: 'cancel' (default, the safe choice) or 'confirm' (Enter confirms). */
+  initialFocus?: 'cancel' | 'confirm';
 }
 
+const subscribeNever = () => () => {};
+
 /**
- * Modal yes/no prompt. The safe choice (cancel) has focus when it opens,
- * and Escape or a click on the backdrop cancels.
+ * Modal yes/no prompt. The safe choice (cancel) has focus when it opens
+ * unless initialFocus says otherwise, and Escape or a click on the backdrop
+ * cancels. It is portalled to <body> so a transformed or scrolling ancestor
+ * can't shift the fixed overlay.
  */
 export function ConfirmDialog({
   open,
@@ -25,21 +32,26 @@ export function ConfirmDialog({
   confirmLabel,
   cancelLabel,
   onConfirm,
-  onCancel
+  onCancel,
+  initialFocus = 'cancel'
 }: ConfirmDialogProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const confirmRef = useRef<HTMLButtonElement>(null);
+  const isClient = useSyncExternalStore(subscribeNever, () => true, () => false);
 
   useEffect(() => {
     if (!open) return;
-    cancelRef.current?.focus();
+    (initialFocus === 'confirm' ? confirmRef : cancelRef).current?.focus();
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onCancel();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open, onCancel]);
+  }, [open, onCancel, initialFocus]);
 
-  return (
+  if (!isClient) return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -71,11 +83,14 @@ export function ConfirmDialog({
               <Button ref={cancelRef} variant="secondary" onClick={onCancel}>
                 {cancelLabel}
               </Button>
-              <Button onClick={onConfirm}>{confirmLabel}</Button>
+              <Button ref={confirmRef} onClick={onConfirm}>
+                {confirmLabel}
+              </Button>
             </div>
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

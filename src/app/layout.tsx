@@ -59,7 +59,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       </head>
       <body>
         <ThemeProvider>
-          <div className="flex h-dvh flex-col overflow-hidden bg-canvas font-sans text-ink">
+          <div className="relative flex h-dvh flex-col overflow-hidden bg-canvas font-sans text-ink">
             {children}
             <UpdateNotice />
             <VersionBadge />

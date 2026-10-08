@@ -14,6 +14,14 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   {
     date: '2026-10-08',
+    title: 'Safer taps and a start prompt',
+    changes: [
+      'Tapping the new version notice no longer also opens the category or exam card behind it.',
+      'Starting a practice exam now asks first, showing the exam, the number of questions and the clock. Enter starts, Escape cancels.'
+    ]
+  },
+  {
+    date: '2026-10-08',
     title: 'Topic drills, backups and a daily goal',
     changes: [
       'Topic drills: on My progress, each of your weakest skill areas has a short 10-question round on just that topic.',
