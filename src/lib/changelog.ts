@@ -14,6 +14,14 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   {
     date: '2026-10-08',
+    title: 'Four more AI exams',
+    changes: [
+      'New practice exams with 120 questions each: AI-901 Azure AI Fundamentals, SC-500 Cloud and AI Security Engineer, AB-620 AI Agent Builder and DP-800 SQL AI Developer.',
+      'Each new exam has its official skills outline in Exam guides, topic drills, and a note on every wrong answer.'
+    ]
+  },
+  {
+    date: '2026-10-08',
     title: 'Learn from the wrong answers too',
     changes: [
       'After answering, every wrong option now says why it is wrong, with your own pick at the top.',

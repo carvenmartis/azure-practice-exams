@@ -1,0 +1,1442 @@
+[
+  {
+    "question": "You are building an internal HR agent that employees will use in Microsoft Teams. You want sign-in to be handled automatically with Microsoft Entra ID and no manual app registration. Which authentication option should you select?",
+    "options": [
+      "Authenticate manually with Generic OAuth 2",
+      "No authentication",
+      "Authenticate with Microsoft",
+      "Authenticate manually with Microsoft Entra ID V2"
+    ],
+    "answer": "Authenticate with Microsoft",
+    "explanation": "Authenticate with Microsoft uses Microsoft Entra ID automatically for Teams and other Microsoft channels with no manual configuration.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-end-user-authentication"
+  },
+  {
+    "question": "A customer-facing agent on a custom website must call a downstream API on behalf of the signed-in user and needs the user's access token in topics. Which authentication option provides the User.AccessToken variable?",
+    "options": [
+      "Authenticate manually",
+      "Require users to sign in with Authenticate with Microsoft",
+      "Authenticate with Microsoft",
+      "No authentication"
+    ],
+    "answer": "Authenticate manually",
+    "explanation": "Authenticate manually is the only option that exposes an access token (User.AccessToken) to the agent, and it is the option used for non-Teams channels that need authentication.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/configuration-end-user-authentication"
+  },
+  {
+    "question": "A Power Platform admin wants to make sure that no agent in the tenant can be published without requiring user authentication. What should the admin do?",
+    "options": [
+      "Block the Direct Line channels connector in a tenant-wide data policy",
+      "Remove the Environment Maker role from all makers in production",
+      "Block the Chat without Microsoft Entra ID authentication in Copilot Studio connector in a data policy",
+      "Turn on Require users to sign in for every existing agent in every environment and audit the setting each month"
+    ],
+    "answer": "Block the Chat without Microsoft Entra ID authentication in Copilot Studio connector in a data policy",
+    "explanation": "Blocking the Chat without Microsoft Entra ID authentication in Copilot Studio connector in a data policy prevents agents from using No authentication, so authentication is enforced centrally.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-data-loss-prevention"
+  },
+  {
+    "question": "Your organization allows agents to use the HTTP connector, but security wants HTTP requests limited to a few approved API domains instead of blocking HTTP entirely. What should you configure?",
+    "options": [
+      "An Azure API Management policy in front of every endpoint",
+      "A Managed Environment IP firewall rule for the agent",
+      "A custom connector for each approved domain and a block on HTTP",
+      "Connector endpoint filtering for the HTTP connector in the data policy"
+    ],
+    "answer": "Connector endpoint filtering for the HTTP connector in the data policy",
+    "explanation": "Data policies support endpoint filtering for HTTP, public website knowledge and SharePoint or OneDrive knowledge, so you can allow or deny specific endpoints without blocking the connector.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-data-loss-prevention"
+  },
+  {
+    "question": "An admin blocked the Knowledge source with documents in Copilot Studio connector, yet makers can still add SharePoint sites as knowledge. Why?",
+    "options": [
+      "The policy only applies after every agent is republished",
+      "SharePoint knowledge is controlled only by SharePoint site permissions, not by Power Platform data policies",
+      "Data policies never apply to knowledge sources in Copilot Studio",
+      "SharePoint and OneDrive knowledge is a separate connector that must be blocked separately"
+    ],
+    "answer": "SharePoint and OneDrive knowledge is a separate connector that must be blocked separately",
+    "explanation": "Blocking the documents connector does not block SharePoint or OneDrive knowledge, which is governed by the Knowledge source with SharePoint and OneDrive in Copilot Studio connector.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-data-loss-prevention"
+  },
+  {
+    "question": "An autonomous agent runs on a schedule and uses a Dataverse connector tool. No user is present when it runs. Which credential setting should the tool use, and what is the main tradeoff?",
+    "options": [
+      "End-user credentials, with the risk that tokens expire between runs",
+      "Maker-provided credentials, with the risk that the tool can no longer be shared with other users in the org",
+      "End-user credentials, with the risk that each run prompts for sign-in",
+      "Maker-provided credentials, with the risk that every caller acts with the maker's access"
+    ],
+    "answer": "Maker-provided credentials, with the risk that every caller acts with the maker's access",
+    "explanation": "With no user present, the tool must run with maker-provided credentials, which means anyone who triggers or uses the agent acts with the maker's permissions.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-connectors"
+  },
+  {
+    "question": "Several teams build agents in the same environment and all need the same set of topics, tools and entities for handling company policies. What should you use to package these as reusable building blocks?",
+    "options": [
+      "A component collection",
+      "A connected agent for each team",
+      "A copy of the agent per team",
+      "A shared Dataverse table of topic definitions"
+    ],
+    "answer": "A component collection",
+    "explanation": "Component collections package topics, knowledge, tools, child agents, flows and entities so they can be shared across agents in the same environment without exporting.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-export-import-copilot-components"
+  },
+  {
+    "question": "An agent uses Authenticate manually with Generic OAuth 2. The owner now wants only members of a specific security group to be able to chat with it. What must change?",
+    "options": [
+      "Share the agent with the security group, because sharing already restricts chat access for this option",
+      "Turn on Require users to sign in while keeping Generic OAuth 2",
+      "Set the agent to No authentication and share it with the group",
+      "Use Microsoft Entra ID as the identity provider and turn on Require users to sign in"
+    ],
+    "answer": "Use Microsoft Entra ID as the identity provider and turn on Require users to sign in",
+    "explanation": "Sharing can control who chats with the agent only when it uses Microsoft Entra ID with Require users to sign in (or Authenticate with Microsoft). Generic OAuth 2 cannot restrict specific organization users through sharing.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-share-bots"
+  },
+  {
+    "question": "You plan an anonymous, public-facing support agent. A colleague suggests using an internal SharePoint site as its knowledge source. What is the problem with this design?",
+    "options": [
+      "SharePoint knowledge needs a Copilot connector to be configured by an admin before it can be added",
+      "SharePoint knowledge requires the agent user's Microsoft Entra ID authentication",
+      "SharePoint knowledge is limited to four sites in generative mode",
+      "SharePoint knowledge works only in classic orchestration"
+    ],
+    "answer": "SharePoint knowledge requires the agent user's Microsoft Entra ID authentication",
+    "explanation": "SharePoint, Dataverse and Copilot connector knowledge use the agent user's Entra ID authentication, so anonymous users cannot get answers from them.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio"
+  },
+  {
+    "question": "You published an update to an agent that is used in Microsoft Teams, but a user in an ongoing conversation still sees old behavior. What is the most likely explanation and quick fix?",
+    "options": [
+      "Teams caches agents for 24 hours, so the user must reinstall the app",
+      "Existing sessions keep old content, so the user can type start over to begin a new session",
+      "Publishing does not update Teams, so you must also publish the agent to the Teams channel again separately",
+      "The user lacks the ChatBotReaders privilege and needs it reassigned"
+    ],
+    "answer": "Existing sessions keep old content, so the user can type start over to begin a new session",
+    "explanation": "Existing conversations keep the old content until a new session starts. In persistent channels such as Teams, entering start over begins a new session with the latest content.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/publication-fundamentals-publish-channels"
+  },
+  {
+    "question": "A compliance team wants to review conversation transcripts for agents in an environment. By default only admins can see them. Which security role should be granted to the reviewers?",
+    "options": [
+      "Bot Transcript Viewer",
+      "Environment Maker",
+      "System Customizer",
+      "Agent Viewer"
+    ],
+    "answer": "Bot Transcript Viewer",
+    "explanation": "The Bot Transcript Viewer role lets users view conversation transcripts for agents they have access to. Grant it only to users with appropriate privacy training.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-share-bots"
+  },
+  {
+    "question": "A generative answers node in a public agent occasionally returns no answer for borderline but legitimate questions. A maker proposes setting content moderation to Lowest. What tradeoff should you explain?",
+    "options": [
+      "Lowest forces the agent to use only general knowledge",
+      "Lowest returns the most answers but may include harmful content",
+      "Lowest increases latency because more sources are searched",
+      "Lowest disables citations for all answers"
+    ],
+    "answer": "Lowest returns the most answers but may include harmful content",
+    "explanation": "Content moderation ranges from Lowest to Highest, with High as the default. Lowest produces the most answers but may include harmful content, so responsible AI review is needed.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-node"
+  },
+  {
+    "question": "You build an agent flow in Copilot Studio and want the agent to call it as a tool. Which trigger and final action must the flow include?",
+    "options": [
+      "When a HTTP request is received, and Response",
+      "Recurrence, and Send an email notification",
+      "When an agent calls the flow, and Respond to the agent",
+      "Manually trigger a flow, and Respond to a PowerApp or flow"
+    ],
+    "answer": "When an agent calls the flow, and Respond to the agent",
+    "explanation": "Flows that start with When an agent calls the flow and include Respond to the agent can be added to an agent as tools.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flow-agent"
+  },
+  {
+    "question": "An agent flow called from a topic sometimes takes about three minutes because it queries a slow system, and the agent reports a failure. What is the cause?",
+    "options": [
+      "The flow is not in a solution, so it times out",
+      "Agent flows cannot query external systems",
+      "The flow must respond to the agent within the 100-second action limit",
+      "The topic needs a Send HTTP request node instead"
+    ],
+    "answer": "The flow must respond to the agent within the 100-second action limit",
+    "explanation": "To be used as a tool, a flow must respond in real time within the 100-second action limit with asynchronous response turned off, so you should optimize the logic or the amount of data returned.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flow-agent"
+  },
+  {
+    "question": "A maker tries to fix a slow agent flow by turning on Asynchronous response in the Respond to the agent action. The flow now no longer works as a tool. Why?",
+    "options": [
+      "Asynchronous response requires a premium Power Automate license",
+      "Asynchronous response is only supported in classic orchestration",
+      "Asynchronous response must be paired with a Recurrence trigger",
+      "Flows used as agent tools must respond in real time with Asynchronous response off"
+    ],
+    "answer": "Flows used as agent tools must respond in real time with Asynchronous response off",
+    "explanation": "A flow used as a tool must respond in real time, so Asynchronous response under Networking in Respond to the agent must be off.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flow-agent"
+  },
+  {
+    "question": "An insurance claim agent flow must pause and ask a claims adjuster for the damage amount and inspection date before it continues. Which action should you use?",
+    "options": [
+      "Send an email with options",
+      "Post adaptive card and wait for a response in Teams",
+      "Run a multistage approval",
+      "Request for information"
+    ],
+    "answer": "Request for information",
+    "explanation": "The Request for information action in the Human review group pauses the agent flow, collects inputs such as Number and Date from reviewers by email in Outlook and passes the answers to later steps.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-request-for-information"
+  },
+  {
+    "question": "A Request for information action is assigned to three reviewers. Two of them submit different answers. What does the flow do?",
+    "options": [
+      "It uses the most common answer among the reviewers",
+      "It waits until all three reviewers respond before it continues",
+      "It fails because answers conflict",
+      "It uses only the first response and ignores later ones"
+    ],
+    "answer": "It uses only the first response and ignores later ones",
+    "explanation": "Only the first responder's answers are used. Later responses are not processed.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-request-for-information"
+  },
+  {
+    "question": "You design a Request for information action for a field technician. Which of these input types is NOT supported?",
+    "options": [
+      "Yes/No",
+      "Email",
+      "File attachment",
+      "Date"
+    ],
+    "answer": "File attachment",
+    "explanation": "Request for information supports Text, Yes/No, Email, Number and Date inputs. File uploads aren't one of the supported types.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-request-for-information"
+  },
+  {
+    "question": "A purchase request flow must have an AI model screen requests against a written policy and then send any request that passes to a finance manager for final sign-off. Which design fits best?",
+    "options": [
+      "A Run a multistage approval action with an AI stage followed by a manual stage",
+      "A connected agent that screens requests and then approves the passing ones automatically",
+      "Two Request for information actions in sequence",
+      "A prompt action followed by a Condition and an email"
+    ],
+    "answer": "A Run a multistage approval action with an AI stage followed by a manual stage",
+    "explanation": "Multistage approvals combine AI stages, which return Approve or Reject with a rationale, and manual stages where a human approver decides, with conditions between stages.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-advanced-approvals"
+  },
+  {
+    "question": "A multistage approval assigns the same manager as the approver in stage 1 and stage 3. What happens?",
+    "options": [
+      "The manager approves once and both stages complete",
+      "Stage 3 is skipped automatically",
+      "The flow fails",
+      "The approval converts to Everyone must approve"
+    ],
+    "answer": "The flow fails",
+    "explanation": "Assigning the same approver to multiple stages causes the flow to fail, so use different approvers per stage.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-advanced-approvals"
+  },
+  {
+    "question": "A Power Automate admin asks how agent flows created in Copilot Studio are billed. What is correct?",
+    "options": [
+      "Each run requires a Power Automate Premium license for the caller",
+      "Agent flows are free and have no capacity impact",
+      "Each run consumes Power Automate API request limits only",
+      "Each action the agent flow runs consumes Copilot Studio capacity"
+    ],
+    "answer": "Each action the agent flow runs consumes Copilot Studio capacity",
+    "explanation": "Agent flows consume Copilot Studio capacity instead of Power Automate billing, and new runs are blocked when prepaid capacity is consumed.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-overview"
+  },
+  {
+    "question": "While developing, a maker runs an agent flow many times from the agent's test chat. How does this affect Copilot Studio capacity?",
+    "options": [
+      "Test runs are blocked until capacity is purchased",
+      "Test runs don't consume agent flow capacity",
+      "Each test run consumes double capacity",
+      "Test runs consume capacity only for premium connectors"
+    ],
+    "answer": "Test runs don't consume agent flow capacity",
+    "explanation": "Test runs from the flow designer or the agent's embedded test chat don't consume agent flow capacity.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flows-overview"
+  },
+  {
+    "question": "An agent flow updates an ERP record. If the update fails, the agent should tell the user that the record was not saved instead of the flow simply failing. How should you design the flow?",
+    "options": [
+      "Add a Recurrence trigger that retries every five minutes",
+      "Wrap the update in a Scope and use Configure run after to send an error result through Respond to the agent",
+      "Turn on Asynchronous response so errors are hidden",
+      "Remove the Respond to the agent action so the flow ends quietly and the agent moves on without returning any result"
+    ],
+    "answer": "Wrap the update in a Scope and use Configure run after to send an error result through Respond to the agent",
+    "explanation": "Try and catch patterns with scopes and run-after settings let the flow handle failures and still return an outcome, such as an error status output, to the agent.",
+    "link": "https://learn.microsoft.com/en-us/power-automate/guidance/coding-guidelines/error-handling"
+  },
+  {
+    "question": "An agent flow returns an order status. You want the generative orchestrator to call it correctly and fill the order number from the conversation. What matters most?",
+    "options": [
+      "Storing the order number in a Dataverse table first",
+      "Clear names and descriptions for the flow and its input and output parameters",
+      "Setting the flow owner to a service account",
+      "Running the flow from a scheduled trigger"
+    ],
+    "answer": "Clear names and descriptions for the flow and its input and output parameters",
+    "explanation": "The orchestrator uses the tool description and parameter descriptions to decide when to call the flow and how to fill its inputs, so they must be clear and specific.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flow-agent"
+  },
+  {
+    "question": "A flow should run only when a specific topic reaches a confirmation step and never be chosen by the orchestrator in other situations. How should you add it?",
+    "options": [
+      "Add it in the topic with Add a tool so it is available only within that topic",
+      "Add it as an agent-level tool with a detailed description that names the confirmation step",
+      "Add it to a component collection",
+      "Add it as a connected agent"
+    ],
+    "answer": "Add it in the topic with Add a tool so it is available only within that topic",
+    "explanation": "Adding a flow with Add a tool inside a topic creates an Action node that is available only within that topic, giving deterministic invocation.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/flow-agent"
+  },
+  {
+    "question": "A topic calls a REST endpoint with a Send HTTP request node. When the API returns a 404, the topic should show a friendly message instead of triggering the On Error system topic. What should you configure?",
+    "options": [
+      "Raise an error, and then edit the On Error system topic to show the friendly message",
+      "A Request timeout of 0 milliseconds",
+      "Continue on error, with variables for the status code and error response",
+      "A Parse value node before the HTTP node"
+    ],
+    "answer": "Continue on error, with variables for the status code and error response",
+    "explanation": "With Continue on error, the topic keeps running and stores the HTTP status code and error body in variables you can test with a Condition node.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-http-node"
+  },
+  {
+    "question": "A Send HTTP request node stores the error body in Topic.ErrorResponse. A maker can't access fields in it with Power Fx. Why, and what is the fix?",
+    "options": [
+      "The variable is global, so change its scope to topic",
+      "The variable is of type Any, so use a Parse value node to convert it to a record",
+      "The variable is empty until the On Error topic runs",
+      "The variable is a String, so wrap it in Text()"
+    ],
+    "answer": "The variable is of type Any, so use a Parse value node to convert it to a record",
+    "explanation": "The error response variable has type Any. Use a Parse value node to convert it to a Power Fx record before reading fields.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-http-node"
+  },
+  {
+    "question": "A Send HTTP request node calls a slow API that usually takes 45 seconds, and requests keep failing. Which setting is most likely involved?",
+    "options": [
+      "The Response data type, which defaults to String",
+      "The content moderation level, which defaults to High",
+      "The reprompt count, which defaults to two",
+      "The Request timeout, which defaults to 30 seconds"
+    ],
+    "answer": "The Request timeout, which defaults to 30 seconds",
+    "explanation": "The Request timeout property is set in milliseconds and defaults to 30 seconds, so a 45-second call will time out unless you raise it.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-http-node"
+  },
+  {
+    "question": "A generative answers node has Search only selected sources turned on with one SharePoint site selected. That site has no answer, but agent-level knowledge does. What happens?",
+    "options": [
+      "The node routes the question to a connected agent",
+      "The node searches all public websites instead",
+      "The node doesn't search agent-level sources and returns no answer from them",
+      "The node falls back to agent-level knowledge sources"
+    ],
+    "answer": "The node doesn't search agent-level sources and returns no answer from them",
+    "explanation": "When Search only selected sources is on, the selected sources replace the agent-level sources for that node, and there is no fallback to them.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-node"
+  },
+  {
+    "question": "You want to show the generated answer inside an adaptive card with a disclaimer. The agent is deployed to Microsoft Teams. Which statement is correct?",
+    "options": [
+      "Set content moderation to Highest to enable card rendering",
+      "Keep Send a message on, and Teams wraps the generated answer in an adaptive card with the disclaimer",
+      "Use a Send HTTP request node to post the answer to Teams",
+      "Turn off Send a message, save the answer to a variable, and render citations yourself in Teams"
+    ],
+    "answer": "Turn off Send a message, save the answer to a variable, and render citations yourself in Teams",
+    "explanation": "Clearing Send a message lets you customize the answer, for example in an adaptive card. In Teams, citations are returned automatically only for non-customized answers, so you must render them yourself.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-node"
+  },
+  {
+    "question": "A topic retrieves a product description into Topic.ProductText. A generative answers node must answer only from that text, with no web or general knowledge. How should you configure the node?",
+    "options": [
+      "Search only selected sources on with none selected, and Classic data custom data set to the variable",
+      "Add the text as a public website source",
+      "Turn on web search and general knowledge, and pass the variable as the node input so it is prioritized",
+      "Upload the text as a file to agent-level knowledge"
+    ],
+    "answer": "Search only selected sources on with none selected, and Classic data custom data set to the variable",
+    "explanation": "To answer only from a variable's content, turn on Search only selected sources, leave sources unselected, set Classic data custom data to the variable and keep web search and general knowledge off.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-boost-node"
+  },
+  {
+    "question": "You need a form in a topic that collects a start date, end date and reason in one step and stores each in a variable. Which node should you use?",
+    "options": [
+      "A Message node with quick replies",
+      "An Adaptive Card node with a submit button",
+      "Three Question nodes with entity extraction",
+      "A Message node with a basic card"
+    ],
+    "answer": "An Adaptive Card node with a submit button",
+    "explanation": "The Adaptive Card node shows an interactive card and automatically creates output variables from its inputs when the user submits. The card needs at least one submit button.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-ask-with-adaptive-card"
+  },
+  {
+    "question": "You want an adaptive card to show Topic.CustomerName and the current order total. What should you do, and what caveat applies?",
+    "options": [
+      "Switch the card to Formula and use Power Fx, but you can't go back to the original JSON",
+      "Change the card version to 1.6 so variables are supported",
+      "Insert {Topic.CustomerName} into the card JSON, which Copilot Studio evaluates when the card is sent",
+      "Use a Parse value node to inject variables into the card"
+    ],
+    "answer": "Switch the card to Formula and use Power Fx, but you can't go back to the original JSON",
+    "explanation": "Switching to Formula converts the card JSON to a Power Fx formula so you can reference variables. After that you can't return to the original JSON, so save a copy first.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-ask-with-adaptive-card"
+  },
+  {
+    "question": "An adaptive card renders correctly in the test chat but not in Microsoft Teams. The card uses schema version 1.6. What is the likely cause?",
+    "options": [
+      "Teams requires the card to be sent from a Message node instead",
+      "Teams supports adaptive cards up to version 1.5",
+      "Teams doesn't support Action.Submit",
+      "Teams cards must be authored in Power Fx"
+    ],
+    "answer": "Teams supports adaptive cards up to version 1.5",
+    "explanation": "Microsoft Teams supports adaptive cards up to version 1.5, while the default web chat supports up to 1.6.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-ask-with-adaptive-card"
+  },
+  {
+    "question": "A topic named Check balance redirects to a topic named Verify identity, which asks for the account number. If the account number is already known, the second topic should skip the question. What should you set on its variable?",
+    "options": [
+      "Global (any topic can access)",
+      "Receive values from other topics",
+      "External sources can set values",
+      "Return values to original topics"
+    ],
+    "answer": "Receive values from other topics",
+    "explanation": "When a topic variable is set to Receive values from other topics, a redirecting topic can pass a value to it and the question is skipped.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables"
+  },
+  {
+    "question": "A website that embeds your agent must pass the user's loyalty tier when the chat starts. Which variable configuration supports this?",
+    "options": [
+      "An environment variable of type Text",
+      "A topic variable configured with Receive values from other topics",
+      "A system variable named Conversation.Tier",
+      "A global variable with External sources can set values"
+    ],
+    "answer": "A global variable with External sources can set values",
+    "explanation": "Global variables with External sources can set values can be set from the embedding page, for example through the URL query string or a pvaSetContext event.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables-bot"
+  },
+  {
+    "question": "A web page passes a value to a global variable named Global.Region by appending it to the agent URL. How should the parameter be named?",
+    "options": [
+      "Global.Region",
+      "Env.Region",
+      "Region",
+      "System.Region"
+    ],
+    "answer": "Region",
+    "explanation": "When referencing a global variable in a web URL or external source, use the name without the Global. prefix.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables-bot"
+  },
+  {
+    "question": "An admin changes the value of a Text environment variable that a published agent uses for an API base URL. Users still see the old behavior. Why?",
+    "options": [
+      "Environment variables of type Text are cached for 24 hours",
+      "Environment variables update in the agent only after the solution is exported and imported again",
+      "Environment variables are read at publish time, so the agent must be republished",
+      "Environment variables can only be changed in Copilot Studio"
+    ],
+    "answer": "Environment variables are read at publish time, so the agent must be republished",
+    "explanation": "Published agents include environment variable values set at publish time, so changes take effect after republishing. Secret-type variables are the exception because they're retrieved at runtime.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables-about"
+  },
+  {
+    "question": "You want a topic to summarize a customer email with a custom instruction and a specific model, using a Dataverse table as grounding. The agent allows anonymous users. Which statement is correct?",
+    "options": [
+      "It works in the topic, but Dataverse prompt knowledge isn't available to agents that allow anonymous users",
+      "Prompts can't be used inside topics",
+      "The prompt must be converted to an agent flow first",
+      "Anonymous agents can use prompts in topics, but only with the default model and the default temperature setting"
+    ],
+    "answer": "It works in the topic, but Dataverse prompt knowledge isn't available to agents that allow anonymous users",
+    "explanation": "You can add a prompt in a topic with Add a tool and New prompt. Agents that allow anonymous users can't use Dataverse tables as prompt knowledge, but they can still use inputs, model selection and temperature.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-prompt-node"
+  },
+  {
+    "question": "You add a Copilot connector that indexes your ServiceNow knowledge base as agent knowledge. Which additional configuration is required when you publish to a channel with manual authentication?",
+    "options": [
+      "Switch the agent to No authentication",
+      "Turn on Official source for the connector",
+      "Add the ExternalItem.Read.All scope",
+      "Add the Sites.Read.All scope"
+    ],
+    "answer": "Add the ExternalItem.Read.All scope",
+    "explanation": "When you publish an agent that uses Copilot connectors as knowledge, you must include the ExternalItem.Read.All scope in the manual authentication settings.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-connectors"
+  },
+  {
+    "question": "Users report that two employees asking the same question about Copilot connector content get different answers. What is the most likely reason?",
+    "options": [
+      "Copilot connector results are randomized for each user to improve the diversity of generated answers",
+      "Copilot connectors respect source permissions, so each user sees only content they can access",
+      "Copilot connectors cache answers per session",
+      "Copilot connectors index only the first user's content"
+    ],
+    "answer": "Copilot connectors respect source permissions, so each user sees only content they can access",
+    "explanation": "Copilot connectors fully respect source permissions, so users only see content they're authorized to view, which can produce different answers.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-connectors"
+  },
+  {
+    "question": "You plan to use the Salesforce Power Platform connector as a real-time knowledge source. A security reviewer worries about data being copied into Copilot Studio. What should you tell them?",
+    "options": [
+      "All records are copied into Dataverse nightly",
+      "Data is cached for 24 hours in the agent",
+      "Only metadata is indexed, and each query runs at runtime with the user's own token",
+      "Records are copied into a vector index in Azure AI Search and refreshed on a schedule"
+    ],
+    "answer": "Only metadata is indexed, and each query runs at runtime with the user's own token",
+    "explanation": "Real-time connector knowledge indexes only metadata. Each request runs at runtime against the source with the user's authentication, so source access controls still apply.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-graph-connections"
+  },
+  {
+    "question": "You connect Azure AI Search as a knowledge source and want to search three different indexes. How should you configure this?",
+    "options": [
+      "Add all three indexes to one Azure AI Search knowledge source",
+      "Merge the indexes into a skillset",
+      "Use a Send HTTP request node for each index",
+      "Add one Azure AI Search knowledge source per vector index"
+    ],
+    "answer": "Add one Azure AI Search knowledge source per vector index",
+    "explanation": "Only one vector index can be added per Azure AI Search knowledge source, so you add a source for each index.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-azure-ai-search"
+  },
+  {
+    "question": "Your Azure AI Search index was built with Import and vectorize data using an Azure OpenAI embedding model. What must you do so Copilot Studio vectorizes user questions at runtime?",
+    "options": [
+      "Nothing extra, Copilot Studio uses the same embedding model for queries",
+      "Write an Azure Function that embeds each question and call it from a topic",
+      "Export the embeddings to Dataverse",
+      "Add a prompt tool that generates embeddings"
+    ],
+    "answer": "Nothing extra, Copilot Studio uses the same embedding model for queries",
+    "explanation": "With integrated vectorization, Copilot Studio uses the same embedding model to vectorize prompts at runtime, so custom vectorization functions aren't needed.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-azure-ai-search"
+  },
+  {
+    "question": "Citations from your Azure AI Search knowledge source show unhelpful values. Which index field does Copilot Studio use for citations when it exists?",
+    "options": [
+      "content_vector",
+      "chunk_id",
+      "@search.score",
+      "metadata_storage_path"
+    ],
+    "answer": "metadata_storage_path",
+    "explanation": "If the index includes metadata_storage_path, Copilot Studio uses it as the citation. Otherwise it uses a field that contains a complete URL.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-azure-ai-search"
+  },
+  {
+    "question": "Your Azure AI Search service is reachable only through a private endpoint. What must be in place before Copilot Studio can use it as knowledge?",
+    "options": [
+      "VNet support for the Power Platform environment, plus the private endpoint",
+      "A public IP rule allowing Copilot Studio",
+      "A Copilot connector for the search service",
+      "A Send HTTP request node that calls the private endpoint with the search admin key"
+    ],
+    "answer": "VNet support for the Power Platform environment, plus the private endpoint",
+    "explanation": "Azure AI Search knowledge supports private endpoints when the Power Platform environment is configured for virtual network support.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-azure-ai-search"
+  },
+  {
+    "question": "An agent that uses generative orchestration has 40 knowledge sources, including 10 uploaded files. How does the agent choose which sources to search?",
+    "options": [
+      "An internal model filters the sources, and uploaded files don't count toward the 25",
+      "It searches all 40 sources for every question",
+      "It searches only the first 25 sources, in the order they appear on the Knowledge page",
+      "It fails to publish because the limit is 25"
+    ],
+    "answer": "An internal model filters the sources, and uploaded files don't count toward the 25",
+    "explanation": "When there are more than 25 knowledge sources, generative orchestration uses an internal model to filter which to search. Uploaded files don't count toward the 25.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio"
+  },
+  {
+    "question": "You want an HR policy site to be treated as an official source so answers from it are clearly marked. The agent uses generative orchestration. What is the problem?",
+    "options": [
+      "Official source requires Azure AI Search",
+      "Official source requires No authentication",
+      "Official source isn't compatible with generative orchestration",
+      "Official source works only for public websites"
+    ],
+    "answer": "Official source isn't compatible with generative orchestration",
+    "explanation": "Marking a source as official isn't compatible with generative orchestration, so you would have to turn generative orchestration off.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio"
+  },
+  {
+    "question": "You need a topic to use Bing Custom Search as grounding for one specific question type. How do you add it?",
+    "options": [
+      "Add it as a connected agent",
+      "Add it at agent level on the Knowledge page as a website source with the custom configuration ID",
+      "Add it in the generative answers node through the Classic data option",
+      "Add it as an MCP server"
+    ],
+    "answer": "Add it in the generative answers node through the Classic data option",
+    "explanation": "Bing Custom Search, Azure OpenAI and custom data aren't supported as regular knowledge sources and must be configured through Classic data in a generative answers node.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/knowledge-copilot-studio"
+  },
+  {
+    "question": "A topic's generative answers node uses an Azure OpenAI on your data connection, and the agent also has SharePoint knowledge. Which sources are used first?",
+    "options": [
+      "Agent-level sources always take priority, and node sources are used only if they return nothing",
+      "Both are merged and ranked by date",
+      "The node's sources take priority, and agent-level sources act as the fallback",
+      "The source added most recently"
+    ],
+    "answer": "The node's sources take priority, and agent-level sources act as the fallback",
+    "explanation": "Knowledge sources defined in generative answers nodes take priority over agent-level knowledge sources, which act as a fallback.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-generative-answers-azure-openai"
+  },
+  {
+    "question": "An agent must enter invoices into a legacy web portal that has no API. Which tool should you use?",
+    "options": [
+      "An MCP server tool",
+      "A Copilot connector",
+      "Computer use",
+      "A REST API tool"
+    ],
+    "answer": "Computer use",
+    "explanation": "Computer use lets an agent interact with websites and desktop apps by selecting buttons, choosing menus and typing, so it works where no API exists.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/computer-use"
+  },
+  {
+    "question": "A maker adds the computer use tool, but it isn't available to the agent. Which agent setting is required?",
+    "options": [
+      "Require users to sign in",
+      "Asynchronous response",
+      "Generative orchestration",
+      "Official source"
+    ],
+    "answer": "Generative orchestration",
+    "explanation": "Computer use requires generative orchestration to be turned on.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/computer-use"
+  },
+  {
+    "question": "A team wants to quickly try computer use against a public website without setting up any machines. Which option fits, and what is its limitation?",
+    "options": [
+      "Power Automate hosted machine group, which supports only desktop apps",
+      "Hosted browser, which isn't Entra joined and is for experimentation, not production",
+      "Bring-your-own machine, which requires Intune enrollment and a Power Automate desktop license first",
+      "Cloud PC pool, which can't access the internet"
+    ],
+    "answer": "Hosted browser, which isn't Entra joined and is for experimentation, not production",
+    "explanation": "The hosted browser needs no setup and supports web automation with Edge, but it runs in a Microsoft-managed environment that isn't Entra joined or Intune managed and isn't recommended for production.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-where-computer-use-runs"
+  },
+  {
+    "question": "Computer use must operate a custom desktop app that's installed only on corporate-managed machines. Which option should you plan for?",
+    "options": [
+      "A REST API tool",
+      "A machine registered in Power Automate and enabled for computer use",
+      "Hosted browser",
+      "The demo website channel, which runs the app inside the hosted browser session"
+    ],
+    "answer": "A machine registered in Power Automate and enabled for computer use",
+    "explanation": "Bring-your-own machines registered through Power Automate can run custom desktop apps. The hosted browser doesn't support custom desktop apps or enterprise resources.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-where-computer-use-runs"
+  },
+  {
+    "question": "You registered a Windows machine to your environment with the Power Automate machine runtime app, but it doesn't appear as a target for computer use. What step is missing?",
+    "options": [
+      "Turn on Enable for computer use in the machine's settings in Power Automate",
+      "Join the machine to a Fabric workspace",
+      "Install Microsoft Teams on the machine",
+      "Add the machine to a component collection so the agent can reference it as a tool"
+    ],
+    "answer": "Turn on Enable for computer use in the machine's settings in Power Automate",
+    "explanation": "In Power Automate, open Machines, select the machine, open Settings, turn on Enable for computer use and save.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-where-computer-use-runs"
+  },
+  {
+    "question": "Three conversations trigger computer use runs that target the same registered machine at the same time. What happens?",
+    "options": [
+      "The runs move to the hosted browser automatically",
+      "All three run in parallel on separate desktops",
+      "The runs execute sequentially, and later runs show as Queued",
+      "The second and third runs fail immediately"
+    ],
+    "answer": "The runs execute sequentially, and later runs show as Queued",
+    "explanation": "Runs targeting the same machine execute one after another. Later runs show as Queued, and you can monitor them in the machine's run queue.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/configure-where-computer-use-runs"
+  },
+  {
+    "question": "You configure an allow list for computer use that includes only your ERP site. During testing, the model opens a news site through the browser search bar. What does the allow list do in this case?",
+    "options": [
+      "It has no effect on that site unless Enforce HTTPS is also turned on for computer use",
+      "It blocks navigation to the news site entirely",
+      "It ends the run and emails the maker",
+      "It blocks interaction with the news site but doesn't block navigating to it"
+    ],
+    "answer": "It blocks interaction with the news site but doesn't block navigating to it",
+    "explanation": "Access control blocks interaction but not navigation, so the model can open a non-listed site but can't act on it.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/computer-use"
+  },
+  {
+    "question": "A computer use agent detects potentially harmful instructions during a run and needs a person to decide. How does human supervision work?",
+    "options": [
+      "The run pauses until the maker opens the test pane",
+      "The run retries the action three times and then proceeds",
+      "A designated reviewer is emailed in Outlook, and the run stops if no reply arrives in time",
+      "The agent posts the request in a Teams channel and continues automatically after a short delay"
+    ],
+    "answer": "A designated reviewer is emailed in Outlook, and the run stops if no reply arrives in time",
+    "explanation": "The agent emails a designated reviewer through Outlook. Requests expire after a configured time limit and, if no response arrives, the run stops.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/human-supervision-computer-use"
+  },
+  {
+    "question": "While testing a computer use tool, how can a maker see what the agent is doing on the machine?",
+    "options": [
+      "Only by reading Application Insights logs after the run",
+      "A step-by-step log of reasoning and actions with a live preview of the machine",
+      "By connecting to the machine with Remote Desktop",
+      "By exporting the run to Power BI"
+    ],
+    "answer": "A step-by-step log of reasoning and actions with a live preview of the machine",
+    "explanation": "During testing, the left panel shows reasoning and actions step by step and the right panel previews actions on the machine. You can also stop testing immediately.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/computer-use"
+  },
+  {
+    "question": "Your MCP server exposes an endpoint that uses Server-Sent Events (SSE) transport. What must you do to use it from Copilot Studio?",
+    "options": [
+      "Register it as an A2A agent",
+      "Nothing, because SSE is the default transport for MCP in Copilot Studio",
+      "Wrap it in a Fabric data agent",
+      "Expose the server with the Streamable transport"
+    ],
+    "answer": "Expose the server with the Streamable transport",
+    "explanation": "Copilot Studio supports only the Streamable transport for MCP. SSE is deprecated and no longer supported.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent"
+  },
+  {
+    "question": "An MCP server supports OAuth 2.0 Dynamic Client Registration and publishes a discovery endpoint. Which authentication type is the simplest to configure in the MCP onboarding wizard?",
+    "options": [
+      "OAuth 2.0 Dynamic discovery",
+      "OAuth 2.0 Manual",
+      "API key in a header",
+      "OAuth 2.0 Dynamic"
+    ],
+    "answer": "OAuth 2.0 Dynamic discovery",
+    "explanation": "Dynamic discovery is for servers that support DCR with a discovery endpoint. The client finds the endpoints and registers itself automatically.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent"
+  },
+  {
+    "question": "You add an MCP server through a custom connector instead of the wizard. What must the OpenAPI definition include?",
+    "options": [
+      "A securityDefinitions entry of type basic",
+      "An OpenAPI 3.1 webhooks section",
+      "x-ms-visibility: important on every parameter of the operation",
+      "x-ms-agentic-protocol: mcp-streamable-1.0 on the operation"
+    ],
+    "answer": "x-ms-agentic-protocol: mcp-streamable-1.0 on the operation",
+    "explanation": "When you add MCP through a custom connector, the operation must include x-ms-agentic-protocol: mcp-streamable-1.0 in a Swagger 2.0 definition.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent"
+  },
+  {
+    "question": "An MCP server publishes tools, resources and prompts. Which of these can a Copilot Studio agent use?",
+    "options": [
+      "Tools, resources and prompts",
+      "Tools and resources",
+      "Prompts only",
+      "Tools only"
+    ],
+    "answer": "Tools and resources",
+    "explanation": "MCP defines tools, resources and prompts, but Copilot Studio currently supports tools and resources only.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/agent-extend-action-mcp"
+  },
+  {
+    "question": "An admin wants to stop makers from adding a specific MCP server to agents. Which control applies?",
+    "options": [
+      "Data policies, because MCP connectivity relies on connectors",
+      "Azure Policy assigned to the subscription that hosts the MCP server",
+      "The Official source setting",
+      "The agent's content moderation level"
+    ],
+    "answer": "Data policies, because MCP connectivity relies on connectors",
+    "explanation": "Access to MCP servers is governed by Power Platform data policies because connectivity relies on connectors.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/mcp-add-existing-server-to-agent"
+  },
+  {
+    "question": "You add a REST API tool and upload an OpenAPI 3.0 specification. What happens?",
+    "options": [
+      "The upload fails, because REST API tools accept only YAML specification files",
+      "You must rewrite the spec manually in v2",
+      "The specification is converted to OpenAPI v2 automatically",
+      "The tool is created as an MCP server"
+    ],
+    "answer": "The specification is converted to OpenAPI v2 automatically",
+    "explanation": "REST API tools are created from OpenAPI v2 because of how Power Platform processes specs. A v3 file is converted to v2 automatically, and the file must be JSON.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/agent-extend-action-rest-api"
+  },
+  {
+    "question": "While configuring a REST API tool, a maker wants to rename an input parameter from cust_id to customerId. What can they do?",
+    "options": [
+      "Change its type to String in the tool",
+      "Delete it and add a new parameter",
+      "Edit only its description, because names and types come from the spec",
+      "Rename it in the tool configuration, and the connector maps the new name automatically"
+    ],
+    "answer": "Edit only its description, because names and types come from the spec",
+    "explanation": "Parameter names and types come from the OpenAPI spec and can't be changed in Copilot Studio. Only their descriptions are editable.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/agent-extend-action-rest-api"
+  },
+  {
+    "question": "Your organization already has a custom connector for its ticketing API in the environment. A maker wants the agent to use one of its operations as a tool. Which approach fits best?",
+    "options": [
+      "Wrap it in a Send HTTP request node",
+      "Recreate the API as a REST API tool",
+      "Add the custom connector as a real-time knowledge source on the Knowledge page",
+      "Add it from Tools with Add a tool and select the connector operation"
+    ],
+    "answer": "Add it from Tools with Add a tool and select the connector operation",
+    "explanation": "Existing prebuilt or custom connectors can be added as tools from the Tools page and then configured, including connection and credentials.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-connectors"
+  },
+  {
+    "question": "A payroll agent is owned by another team, has its own authentication settings and is published on its own schedule. Your main HR agent must use it. Which approach fits?",
+    "options": [
+      "Add it as a knowledge source",
+      "Copy its topics into your agent",
+      "Add it as a connected agent",
+      "Add it as a child agent"
+    ],
+    "answer": "Add it as a connected agent",
+    "explanation": "Connected agents are separate agents with dedicated settings that can be published independently and reused across agents, which suits multi-team ownership.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-add-other-agents"
+  },
+  {
+    "question": "A single maker wants to split a large agent into focused subagents for billing and shipping, with no need for separate settings or publishing. Which design is simplest?",
+    "options": [
+      "A2A agents hosted in Azure",
+      "Connected Copilot Studio agents",
+      "Child agents in the main agent",
+      "Separate agents linked through a Send HTTP request node"
+    ],
+    "answer": "Child agents in the main agent",
+    "explanation": "Child agents are lightweight agents inside the main agent that share its configuration and deployment, which suits one developer or a small team.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-add-other-agents"
+  },
+  {
+    "question": "A team owns an expense agent and doesn't want other agents to call it. What should they configure?",
+    "options": [
+      "Delete its description",
+      "Switch the agent to classic orchestration",
+      "Remove the agent from all solutions",
+      "Turn off Let other agents connect to and use this one in its settings"
+    ],
+    "answer": "Turn off Let other agents connect to and use this one in its settings",
+    "explanation": "Let other agents connect to and use this one is on by default and can be turned off to block connections from other agents.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-copilot-studio-agent"
+  },
+  {
+    "question": "You update instructions in a connected agent and test the main agent, but the main agent still uses the old behavior. Why?",
+    "options": [
+      "The main agent must be exported again",
+      "Connected agents are cached for 24 hours",
+      "The main agent uses only the latest published version of the connected agent",
+      "Connected agents only pick up changes after a pipeline deploys them to the main environment"
+    ],
+    "answer": "The main agent uses only the latest published version of the connected agent",
+    "explanation": "A main agent can only use the latest published version of a connected agent, so you must publish the connected agent's changes.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-copilot-studio-agent"
+  },
+  {
+    "question": "A main agent hands a narrow task to a connected agent, and you don't want the earlier, sensitive parts of the conversation shared with it. What should you do?",
+    "options": [
+      "Mark the connected agent as an official source",
+      "Clear Pass conversation history to this agent when adding it",
+      "Turn on Require users to sign in",
+      "Use a child agent with no instructions"
+    ],
+    "answer": "Clear Pass conversation history to this agent when adding it",
+    "explanation": "Conversation history is passed by default. Clearing Pass conversation history to this agent limits what is sent to the explicit task.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-copilot-studio-agent"
+  },
+  {
+    "question": "Agent A already has its own connected agents. A different team wants to connect Agent A to their main agent B. What happens?",
+    "options": [
+      "It isn't supported, because an agent with connected agents can't itself be connected to a second main agent",
+      "It works, and B can call A's connected agents directly",
+      "It works only if A is in a different environment",
+      "It works only if B uses classic orchestration"
+    ],
+    "answer": "It isn't supported, because an agent with connected agents can't itself be connected to a second main agent",
+    "explanation": "An agent that has its own connected agents can't also be connected as a connected agent to a second main agent.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-add-other-agents"
+  },
+  {
+    "question": "After connecting an agent, the owning team improves its description in the original agent. The main agent still routes poorly. Why?",
+    "options": [
+      "The main agent ignores descriptions for connected agents and relies on their instructions instead",
+      "The description is managed locally in the main agent and doesn't sync automatically",
+      "The original agent must be republished twice",
+      "Descriptions update only after 30 minutes"
+    ],
+    "answer": "The description is managed locally in the main agent and doesn't sync automatically",
+    "explanation": "Once connected, the description is managed locally in the main agent, and updates to the original agent's description don't sync automatically.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-copilot-studio-agent"
+  },
+  {
+    "question": "A child agent should be the only component that calls a Get account balance tool, because the main agent keeps calling the tool directly. What should you change?",
+    "options": [
+      "Clear Allow agent to decide dynamically when to use this tool in the tool's settings",
+      "Delete the tool from the agent",
+      "Turn off generative orchestration",
+      "Move the tool into a component collection that only the child agent is connected to at runtime"
+    ],
+    "answer": "Clear Allow agent to decide dynamically when to use this tool in the tool's settings",
+    "explanation": "Clearing Allow agent to decide dynamically when to use this tool restricts the tool so only the child agent calls it, which avoids confusion with overlapping agents.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-child-agent"
+  },
+  {
+    "question": "A child agent finishes its task. You haven't changed the After running setting. What does the main agent do?",
+    "options": [
+      "It sends an adaptive card summary",
+      "It continues its plan without sending a message",
+      "It sends the child's raw output to the user",
+      "It ends the conversation"
+    ],
+    "answer": "It continues its plan without sending a message",
+    "explanation": "The default completion behavior is Don't respond, so the main agent continues its plan without messaging the user.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-child-agent"
+  },
+  {
+    "question": "You connect a partner's agent that implements the A2A protocol. What URL should you enter?",
+    "options": [
+      "The .well-known/agent.json agent card URL",
+      "The partner's MCP server URL",
+      "The agent's communication endpoint, not the agent card URL",
+      "The partner's OpenAPI definition URL"
+    ],
+    "answer": "The agent's communication endpoint, not the agent card URL",
+    "explanation": "Enter the agent's endpoint URL. Copilot Studio looks for the agent card at the standard .well-known path to fill in the name and description.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-agent-to-agent"
+  },
+  {
+    "question": "A legal team is concerned about connecting an external A2A agent. What data does Copilot Studio send to it on each request?",
+    "options": [
+      "The full chat history",
+      "Only the agent's instructions",
+      "Only the latest user message",
+      "Only the variables you map"
+    ],
+    "answer": "The full chat history",
+    "explanation": "Each A2A request includes the full chat history, not just the latest message, so consider what data the external agent receives.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-agent-to-agent"
+  },
+  {
+    "question": "Your company built an agent with an open source framework that already implements the A2A protocol. It runs on an internal network. Which integration is most appropriate?",
+    "options": [
+      "A REST API tool",
+      "An A2A connected agent",
+      "A Copilot connector",
+      "A child agent"
+    ],
+    "answer": "An A2A connected agent",
+    "explanation": "A2A suits agents built on external frameworks that already implement the protocol, and A2A connections use custom connector infrastructure, so on-premises agents can also be reached.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-agent-to-agent"
+  },
+  {
+    "question": "Which information do you need to connect a Microsoft Foundry agent to a Copilot Studio agent?",
+    "options": [
+      "The Foundry subscription key, the deployment region and the model name",
+      "The agent card URL",
+      "The Application Insights connection string",
+      "The Foundry project endpoint for the connection and the Agent Id"
+    ],
+    "answer": "The Foundry project endpoint for the connection and the Agent Id",
+    "explanation": "You create or select a connection by providing the Foundry project endpoint and then enter the Agent Id of the Foundry agent.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/add-agent-foundry-agent"
+  },
+  {
+    "question": "You plan to connect a Fabric data agent so sales users can ask questions about a lakehouse. Which requirement must be met?",
+    "options": [
+      "The Fabric data agent must be published and in the same tenant",
+      "The agent must use No authentication",
+      "The Fabric data agent must be exported in a Power Platform solution first",
+      "The lakehouse must be copied into Dataverse"
+    ],
+    "answer": "The Fabric data agent must be published and in the same tenant",
+    "explanation": "The Fabric data agent must be published, be in the same tenant as the Copilot Studio agent and be accessible to the signed-in account.",
+    "link": "https://learn.microsoft.com/en-us/fabric/data-science/data-agent-microsoft-copilot-studio"
+  },
+  {
+    "question": "You connected a Fabric data agent using user authentication and shared the main agent with the sales team. Some users get errors. What is the most likely cause?",
+    "options": [
+      "They don't have the Bot Transcript Viewer role in the Power Platform environment",
+      "They lack read access to the Fabric data agent and its data sources",
+      "They're using the Teams channel",
+      "They haven't enabled Application Insights"
+    ],
+    "answer": "They lack read access to the Fabric data agent and its data sources",
+    "explanation": "Anyone you share the agent with needs at least read access to the Fabric data agent and permissions on all underlying data sources.",
+    "link": "https://learn.microsoft.com/en-us/fabric/data-science/data-agent-microsoft-copilot-studio"
+  },
+  {
+    "question": "A main agent with a connected Fabric data agent will be deployed to Microsoft 365 Copilot. What should you plan for?",
+    "options": [
+      "It needs an A2A wrapper",
+      "It works the same as in Teams, because both channels use the same connection",
+      "The Fabric data agent doesn't currently work in that channel",
+      "It requires Azure AI Search"
+    ],
+    "answer": "The Fabric data agent doesn't currently work in that channel",
+    "explanation": "Fabric data agents don't currently work when the main agent is deployed to Microsoft 365 Copilot, while Teams is the validated channel.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-add-other-agents"
+  },
+  {
+    "question": "You want a prompt in Copilot Studio to use a Llama model that you deployed from the Microsoft Foundry model catalog. Where do you connect it?",
+    "options": [
+      "In the prompt's Model dropdown, by selecting + and entering the deployment details",
+      "In a Send HTTP request node",
+      "In Settings > Generative AI, by setting the Foundry model as the agent's primary model",
+      "In the Azure AI Search knowledge dialog"
+    ],
+    "answer": "In the prompt's Model dropdown, by selecting + and entering the deployment details",
+    "explanation": "In the prompt editor, open the Model dropdown, select the plus sign, enter the deployment name and base model name and select Connect.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/bring-your-own-model-prompts"
+  },
+  {
+    "question": "A maker connects a Foundry model to a prompt using an endpoint that ends in /openai/v1/responses and gets Resource not found. What is the fix?",
+    "options": [
+      "Switch to the Azure AI Search endpoint",
+      "Add the model as a child agent",
+      "Use an API key in the query string",
+      "Use the /chat/completions endpoint"
+    ],
+    "answer": "Use the /chat/completions endpoint",
+    "explanation": "Only chat completion models are supported. Change the URL to the /chat/completions endpoint to fix the Resource not found error.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/bring-your-own-model-prompts"
+  },
+  {
+    "question": "What must you enter to connect a Foundry model for prompts?",
+    "options": [
+      "The model's Hugging Face ID only",
+      "The Foundry agent ID",
+      "The deployment name and base model name as they appear in Foundry",
+      "The Application Insights instrumentation key"
+    ],
+    "answer": "The deployment name and base model name as they appear in Foundry",
+    "explanation": "You enter the model deployment name and base model name exactly as they appear in Foundry, along with the chat completions endpoint.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/bring-your-own-model-prompts"
+  },
+  {
+    "question": "You want telemetry from a Copilot Studio agent in Application Insights. Where do you configure it?",
+    "options": [
+      "In Settings > Advanced, by entering the connection string",
+      "On the Channels page",
+      "In the Azure portal, by linking the agent's bot ID to the Application Insights resource",
+      "In the Power Platform admin center data policy"
+    ],
+    "answer": "In Settings > Advanced, by entering the connection string",
+    "explanation": "Open the agent's Settings, select Advanced and enter the Application Insights connection string.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-bot-framework-composer-capture-telemetry"
+  },
+  {
+    "question": "Application Insights reports from your agent include test pane conversations. How do you query only production traffic?",
+    "options": [
+      "Filter customEvents where the designMode custom dimension is False",
+      "Filter on user_Id not empty",
+      "Query the traces table instead of customEvents, because test data is only in customEvents",
+      "Filter on channelId equals msteams"
+    ],
+    "answer": "Filter customEvents where the designMode custom dimension is False",
+    "explanation": "Test conversations are logged too. Filter on the designMode custom dimension to exclude test canvas conversations.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-bot-framework-composer-capture-telemetry"
+  },
+  {
+    "question": "A privacy officer asks whether user message text will be stored in Application Insights. Which settings determine this?",
+    "options": [
+      "The logging options for conversation details and sensitive properties",
+      "The Bot Transcript Viewer role",
+      "The data policy for the HTTP connector",
+      "The agent's authentication option, because only authenticated messages are logged"
+    ],
+    "answer": "The logging options for conversation details and sensitive properties",
+    "explanation": "Options such as logging conversation details (user ID, user name and message text) and sensitive activity properties control whether this data is sent to Application Insights.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/advanced-bot-framework-composer-capture-telemetry"
+  },
+  {
+    "question": "A team has an Azure OpenAI on your data configuration in Foundry backed by an Azure AI Search index. They want an agent to answer from it inside a specific topic. How do they configure this?",
+    "options": [
+      "In a generative answers node, choose Classic data and add the Azure OpenAI connection",
+      "Add a Copilot connector",
+      "Add the index endpoint to the agent as a public website knowledge source on the Knowledge page",
+      "Add an A2A agent"
+    ],
+    "answer": "In a generative answers node, choose Classic data and add the Azure OpenAI connection",
+    "explanation": "In a generative answers node, select Classic data and add the Azure OpenAI connection to use Azure OpenAI on your data.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/nlu-generative-answers-azure-openai"
+  },
+  {
+    "question": "You want an evaluation to check that answers convey the same meaning as an expected answer, even if the wording differs. Which test method should you use?",
+    "options": [
+      "Tool use",
+      "Compare meaning",
+      "Exact match",
+      "Keyword match"
+    ],
+    "answer": "Compare meaning",
+    "explanation": "Compare meaning scores how well the answer's meaning matches the expected answer, with a configurable pass score that defaults to 50.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "An agent must return a specific policy ID in a fixed format with no variation. Which test method fits?",
+    "options": [
+      "Text similarity",
+      "General quality",
+      "Exact match",
+      "Compare meaning"
+    ],
+    "answer": "Exact match",
+    "explanation": "Exact match checks whether the answer matches the expected answer character for character and gives pass or fail.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "You don't have expected answers yet but want to evaluate whether responses are relevant, grounded and complete. Which method should you use?",
+    "options": [
+      "Compare meaning",
+      "Exact match",
+      "Keyword match",
+      "General quality"
+    ],
+    "answer": "General quality",
+    "explanation": "General quality doesn't require an expected response and scores relevance, groundedness, completeness and abstention.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "A test set uses Keyword match. You want a case to pass only if the answer contains every listed keyword. What should you configure?",
+    "options": [
+      "The Any option for keyword matching",
+      "The All option for keyword matching",
+      "Exact match instead",
+      "A pass score of 100"
+    ],
+    "answer": "The All option for keyword matching",
+    "explanation": "Keyword match lets you choose Any or All keywords. All requires every keyword to appear.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "You want to verify that the agent invokes the Create ticket flow for requests to open a support ticket. Which test method should you use?",
+    "options": [
+      "Text similarity",
+      "General quality",
+      "Tool use",
+      "Content safety"
+    ],
+    "answer": "Tool use",
+    "explanation": "Tool use checks whether the agent used the expected tools or topics and returns pass or fail.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "A test set runs Compare meaning, but several test cases show Invalid. What is the most likely reason?",
+    "options": [
+      "Those test cases have no expected response",
+      "The pass score is set too low",
+      "The agent uses generative orchestration",
+      "The agent isn't published"
+    ],
+    "answer": "Those test cases have no expected response",
+    "explanation": "Methods such as Compare meaning, Tool use, Keyword match, Text similarity and Exact match return Invalid when a case lacks the required expected data.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "You want a numeric score of how closely an answer's wording matches the expected answer. Which method uses cosine similarity?",
+    "options": [
+      "Exact match",
+      "Compare meaning",
+      "Keyword match",
+      "Text similarity"
+    ],
+    "answer": "Text similarity",
+    "explanation": "Text similarity measures how closely the answer's wording matches the expected answer using cosine similarity, with a configurable pass score.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "You plan to import test cases from a spreadsheet. What format should the file follow?",
+    "options": [
+      "An Excel workbook with one sheet per test method and a column per expected answer",
+      "A JSON array with prompt and completion fields",
+      "A YAML file with topic names",
+      "A CSV or TXT file with Question and Expected response columns"
+    ],
+    "answer": "A CSV or TXT file with Question and Expected response columns",
+    "explanation": "Import a CSV or TXT file with the headings Question and Expected response. Expected response is optional for import but needed for match, similarity and compare meaning methods.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-create"
+  },
+  {
+    "question": "A maker just ran a useful conversation in the test chat and wants to turn it into a test set. What should they do?",
+    "options": [
+      "Use the test chat conversation option when creating the evaluation",
+      "Enable Application Insights and query it",
+      "Copy each message into a Dataverse table",
+      "Export the transcript from the test pane and import it as a CSV file of questions"
+    ],
+    "answer": "Use the test chat conversation option when creating the evaluation",
+    "explanation": "You can populate a test set from questions in your latest test chat, or use the evaluate icon in the test chat.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-create"
+  },
+  {
+    "question": "The agent's knowledge sources require authentication. How does automated evaluation access them?",
+    "options": [
+      "It skips knowledge sources that need authentication",
+      "It uses anonymous access",
+      "It uses the agent owner's credentials automatically for every knowledge source",
+      "It uses the authentication of the test account selected in the user profile"
+    ],
+    "answer": "It uses the authentication of the test account selected in the user profile",
+    "explanation": "Automated testing uses the authentication of the selected test account. Select an account with appropriate access under Additional configuration.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-create"
+  },
+  {
+    "question": "An agent uses Authenticate manually with Generic OAuth 2. The team can't run agent evaluations against it. Why?",
+    "options": [
+      "Evaluations require the agent to be published in Teams, which needs Authenticate with Microsoft",
+      "Evaluations only support agents set to No authentication or Authenticate with Microsoft",
+      "Evaluations require Application Insights",
+      "Evaluations require classic orchestration"
+    ],
+    "answer": "Evaluations only support agents set to No authentication or Authenticate with Microsoft",
+    "explanation": "Agent evaluation supports only agents set to No authentication or Authenticate with Microsoft.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-intro"
+  },
+  {
+    "question": "You need to check that agent responses don't contain violent or self-harm content, with a strict threshold. Which method and setting should you use?",
+    "options": [
+      "Keyword match with All selected",
+      "General quality with a pass score of 100",
+      "Custom method with a Fail label",
+      "Content safety with a low severity threshold"
+    ],
+    "answer": "Content safety with a low severity threshold",
+    "explanation": "Content safety evaluates hatefulness and unfairness, sexual content, violence and self-harm, and you choose a severity threshold from 0 (strictest) to 7.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-overview"
+  },
+  {
+    "question": "A team wants to evaluate an agent against questions that real users asked in production. What can they use?",
+    "options": [
+      "A theme from the agent's analytics, by selecting Evaluate",
+      "Application Insights customEvents exported to CSV and imported as a test set",
+      "The Conversational boosting topic",
+      "The demo website transcripts"
+    ],
+    "answer": "A theme from the agent's analytics, by selecting Evaluate",
+    "explanation": "You can create a test set from production data in a theme on the Monitor > Themes page by selecting Evaluate.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-create"
+  },
+  {
+    "question": "A QA analyst must view and run evaluations but must not see or edit the agent's content and configuration. Which role should the owner assign?",
+    "options": [
+      "Editor",
+      "Bot Transcript Viewer",
+      "Environment Maker",
+      "Agent Viewer"
+    ],
+    "answer": "Agent Viewer",
+    "explanation": "The Agent Viewer role gives access to the Evaluation page to view and run evaluations without access to the agent's content or configuration.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/admin-share-bots"
+  },
+  {
+    "question": "A team wants to evaluate a Fabric data agent on its own. What limitation applies?",
+    "options": [
+      "Only Exact match is supported",
+      "Only multi-turn tests are supported",
+      "Agent evaluation doesn't support Fabric data agents",
+      "Fabric data agents must first be imported into Copilot Studio as a CSV test set"
+    ],
+    "answer": "Agent evaluation doesn't support Fabric data agents",
+    "explanation": "Agent evaluation doesn't support Fabric data agents.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/analytics-agent-evaluation-intro"
+  },
+  {
+    "question": "You created an agent in the default solution and now want to move it with ALM. How do you add it to your custom solution?",
+    "options": [
+      "Use Add existing > Agent in the solution, then add required objects",
+      "Export the agent as a .zip file from its Overview page and import it into the solution",
+      "Copy the agent with Save as",
+      "Recreate the agent in the solution"
+    ],
+    "answer": "Use Add existing > Agent in the solution, then add required objects",
+    "explanation": "In the solution, select Add existing > Agent and choose the agent. Then use Advanced > Add required objects to include its components.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-import-export"
+  },
+  {
+    "question": "After adding new topics and a flow to an agent that's already in a solution, the next import in test is missing them. What step was missed?",
+    "options": [
+      "Republishing the agent in test",
+      "Clearing Pass conversation history",
+      "Running Add required objects on the agent in the solution",
+      "Enabling Application Insights"
+    ],
+    "answer": "Running Add required objects on the agent in the solution",
+    "explanation": "Components added in Copilot Studio after the agent was placed in a solution must also be added, for example with Advanced > Add required objects.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-import-export"
+  },
+  {
+    "question": "Makers keep creating new agents in the default solution. How can you have new agents created in your team's custom solution by default?",
+    "options": [
+      "Delete the default solution",
+      "Set the custom solution as the preferred solution",
+      "Create a pipeline from the default solution",
+      "Mark the custom solution as managed"
+    ],
+    "answer": "Set the custom solution as the preferred solution",
+    "explanation": "Agents are created in the default solution unless you set a preferred solution in the solution explorer.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-overview"
+  },
+  {
+    "question": "You imported an agent solution into a test environment. Users can't sign in to the agent. What should you do?",
+    "options": [
+      "Rename every topic",
+      "Reimport the solution as unmanaged so authentication settings are carried over",
+      "Reconfigure user authentication for the agent and then publish it",
+      "Remove the agent from the solution"
+    ],
+    "answer": "Reconfigure user authentication for the agent and then publish it",
+    "explanation": "After import you must reconfigure user authentication and publish the agent before sharing it.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-import-export"
+  },
+  {
+    "question": "A solution export fails for an agent. Which topic configuration can cause this?",
+    "options": [
+      "A topic name that contains a period",
+      "A topic with more than ten nodes",
+      "A topic that uses a global variable",
+      "A topic that uses an adaptive card"
+    ],
+    "answer": "A topic name that contains a period",
+    "explanation": "You can't export a solution if any topic name in the agent contains a period.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-import-export"
+  },
+  {
+    "question": "An agent calls different API base URLs in development, test and production. How should you design this for ALM?",
+    "options": [
+      "Hard-code each URL and edit topics after each import",
+      "Create a separate agent for each environment",
+      "Use an environment variable for the URL and set its value per environment",
+      "Store the URL in a global variable that the hosting website sets for each conversation"
+    ],
+    "answer": "Use an environment variable for the URL and set its value per environment",
+    "explanation": "Environment variables let you set environment-specific values, such as endpoints, that are provided per environment during deployment.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-variables-about"
+  },
+  {
+    "question": "A solution includes an agent that uses a custom connector. Import keeps failing in the target environment. What is the recommended order?",
+    "options": [
+      "Import the agent unmanaged and then patch it",
+      "Import the agent solution first, and then create the custom connector and fix each tool",
+      "Import the connector after publishing the agent",
+      "Import custom connectors first, then the connection reference with the agent solution"
+    ],
+    "answer": "Import custom connectors first, then the connection reference with the agent solution",
+    "explanation": "Import custom connectors first, then the connection reference with the agent solution.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-import-export"
+  },
+  {
+    "question": "You plan Power Platform pipelines for an agent solution. Which requirement applies to the target environments?",
+    "options": [
+      "They must be the same environment as the host",
+      "They must be developer environments",
+      "They must be Managed Environments",
+      "They must be the default environment"
+    ],
+    "answer": "They must be Managed Environments",
+    "explanation": "Target environments in pipelines must be managed. Developer environments used as sources don't need to be.",
+    "link": "https://learn.microsoft.com/en-us/power-platform/alm/pipelines"
+  },
+  {
+    "question": "A maker deploys an agent solution through a pipeline with dev, QA and production stages. What is true about the deployed artifact?",
+    "options": [
+      "Multiple solutions can be deployed in one request",
+      "Unmanaged solutions are deployed to every stage",
+      "The same exported artifact moves through stages in order, and stages can't be skipped",
+      "Each stage re-exports the solution from development, so fixes can be added between stages"
+    ],
+    "answer": "The same exported artifact moves through stages in order, and stages can't be skipped",
+    "explanation": "The solution is exported when Deploy is selected, and the same artifact moves through stages in order and can't be modified, so QA can't be skipped.",
+    "link": "https://learn.microsoft.com/en-us/power-platform/alm/pipelines"
+  },
+  {
+    "question": "Makers should be able to deploy to production without having elevated access in the production environment. Which pipelines feature fits?",
+    "options": [
+      "Pre-export step",
+      "Redeploy setting",
+      "Delegated deployment with a service principal or stage owner",
+      "Cross-geo deployment, which runs the import under the pipeline host's own identity"
+    ],
+    "answer": "Delegated deployment with a service principal or stage owner",
+    "explanation": "Delegated deployments run with a service principal or the pipeline stage owner's identity instead of the maker's, so makers don't need elevated access.",
+    "link": "https://learn.microsoft.com/en-us/power-platform/alm/extend-pipelines"
+  },
+  {
+    "question": "Before a solution is exported from development, your team wants an automated check that every agent in it has a description. Which pipelines extension should you use?",
+    "options": [
+      "Allow redeployments of older versions",
+      "Predeployment step required",
+      "Pre-export step required",
+      "Is delegated deployment"
+    ],
+    "answer": "Pre-export step required",
+    "explanation": "The pre-export step runs custom validation when a deployment is requested, and pipelines won't export until the step is marked complete.",
+    "link": "https://learn.microsoft.com/en-us/power-platform/alm/extend-pipelines"
+  },
+  {
+    "question": "You build a cloud flow that implements a pipeline pre-export step. Which trigger and action complete the step?",
+    "options": [
+      "When a row is added to the Deployment Stage Runs table, then Update a row on that record",
+      "The Dataverse action trigger for OnDeploymentRequested, then UpdatePreExportStepStatus",
+      "When an agent calls the flow, then Respond to the agent",
+      "Recurrence, then Run a child flow"
+    ],
+    "answer": "The Dataverse action trigger for OnDeploymentRequested, then UpdatePreExportStepStatus",
+    "explanation": "Extension flows use the Dataverse When an action is performed trigger. For a pre-export step, OnDeploymentRequested fires, and the flow calls UpdatePreExportStepStatus with 20 to complete or 30 to reject.",
+    "link": "https://learn.microsoft.com/en-us/power-platform/alm/extend-pipelines"
+  },
+  {
+    "question": "A managed agent in test has an unmanaged layer because someone edited it directly. How do you remove it?",
+    "options": [
+      "Publish the agent again",
+      "Delete the managed solution from test and reimport it, which discards all unmanaged edits",
+      "In the solution, see solution layers for the agent and select Remove unmanaged layer",
+      "Export the agent from test"
+    ],
+    "answer": "In the solution, see solution layers for the agent and select Remove unmanaged layer",
+    "explanation": "Open the solution, select the agent and go to Advanced > See solution layers, then select the unmanaged layer and Remove unmanaged layer.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-overview"
+  },
+  {
+    "question": "During a pipeline deployment of an agent solution, how are connection references and environment variables handled?",
+    "options": [
+      "They must be edited in each topic after deployment, because pipelines skip them",
+      "They're provided and validated before deployment starts",
+      "They're copied unchanged from development",
+      "They're ignored and must be recreated manually"
+    ],
+    "answer": "They're provided and validated before deployment starts",
+    "explanation": "Pipelines deploy solutions along with configuration such as connections, connection references and environment variables, which are provided and validated before deployment starts.",
+    "link": "https://learn.microsoft.com/en-us/power-platform/alm/pipelines"
+  },
+  {
+    "question": "A team wants to use their development environment as the pipelines host to save effort. What should you advise?",
+    "options": [
+      "It's supported only for managed solutions",
+      "It's recommended, because it reduces the number of environments that must be managed",
+      "It's supported if the environment is managed",
+      "Using the same environment for development and host isn't supported"
+    ],
+    "answer": "Using the same environment for development and host isn't supported",
+    "explanation": "Using the same environment as both development and pipelines host isn't supported. The host should be a production environment.",
+    "link": "https://learn.microsoft.com/en-us/power-platform/alm/pipelines"
+  }
+]

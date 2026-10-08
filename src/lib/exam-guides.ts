@@ -400,6 +400,159 @@ export const examGuides: ExamGuide[] = [
         keywords: ['rag', 'retrieval', 'chunk', 'embedding', 'vector', 'hybrid search', 'semantic rank', 'rerank', 'top k', 'top-k', 'ai search', 'fine-tun', 'lora', 'distillation', 'dpo', 'direct preference', 'reinforcement', 'supervised', 'epoch', 'learning rate', 'customiz']
       }
     ]
+  },
+  {
+    slug: 'ai-901',
+    studyGuide: `${studyGuideBase}ai-901`,
+    examPage: `${examPageBase}ai-901`,
+    note: 'AI-901 is now the required exam for Azure AI Fundamentals, in place of AI-900.',
+    areas: [
+      {
+        name: 'Identify AI concepts and capabilities',
+        weight: '40–45%',
+        skills: [
+          'Describe principles of responsible AI',
+          'Identify AI model components and configurations',
+          'Identify AI workloads'
+        ],
+        keywords: ['responsible ai', 'fairness', 'reliability', 'safety', 'privacy', 'inclusive', 'transparen', 'accountab', 'token', 'transformer', 'embedding', 'temperature', 'top_p', 'top-p', 'max tokens', 'deployment type', 'global standard', 'provisioned', 'workload', 'sentiment', 'key phrase', 'keyword', 'entit', 'summariz', 'speech recognition', 'speech synthesis', 'computer vision', 'image generation', 'generative', 'agentic', 'large language model', 'llm']
+      },
+      {
+        name: 'Implement AI solutions by using Microsoft Foundry',
+        weight: '55–60%',
+        skills: [
+          'Implement generative AI apps and agents by using Foundry',
+          'Implement AI solutions for text and speech by using Foundry',
+          'Implement AI solutions with computer vision and image-generation capabilities by using Foundry',
+          'Implement AI solutions for information extraction by using Foundry'
+        ],
+        keywords: ['foundry', 'portal', 'playground', 'sdk', 'project endpoint', 'system prompt', 'system message', 'user prompt', 'agent', 'instructions', 'client', 'azure language', 'azure speech', 'ssml', 'voice', 'multimodal', 'gpt-image', 'content understanding', 'analyzer', 'field schema', 'document', 'form', 'video', 'audio']
+      }
+    ]
+  },
+  {
+    slug: 'sc-500',
+    studyGuide: `${studyGuideBase}sc-500`,
+    examPage: `${examPageBase}sc-500`,
+    note: 'The Azure Security Engineer certification (AZ-500) retired on 31 August 2026. SC-500 covers the same ground plus security for AI.',
+    areas: [
+      {
+        name: 'Manage identity, access, and governance',
+        weight: '20–25%',
+        skills: [
+          'Secure access to resources by using Microsoft Entra ID',
+          'Secure secrets and keys by using Azure Key Vault',
+          'Implement governance to enforce security and regulatory compliance'
+        ],
+        keywords: ['entra', 'pim', 'privileged identity', 'conditional access', 'mfa', 'multifactor', 'passwordless', 'app registration', 'enterprise app', 'consent', 'oauth', 'managed identit', 'key vault', 'secret', 'certificate', 'azure policy', 'policy definition', 'initiative', 'resource lock', 'role assignment', 'custom role', 'rbac', 'backup', 'immutab', 'soft delete', 'infrastructure as code']
+      },
+      {
+        name: 'Secure storage, databases, and networking',
+        weight: '25–30%',
+        skills: [
+          'Implement security for storage accounts',
+          'Implement security for databases',
+          'Implement security for Azure network services'
+        ],
+        keywords: ['storage account', 'storage', 'sas', 'shared key', 'defender for storage', 'azure sql', 'sql database', 'managed instance', 'auditing', 'defender for databases', 'nsg', 'network security group', 'application security group', 'asg', 'virtual network manager', 'virtual wan', 'vpn', 'private access', 'private endpoint', 'private link', 'azure firewall', 'network watcher', 'ip flow']
+      },
+      {
+        name: 'Secure compute',
+        weight: '20–25%',
+        skills: [
+          'Implement security for AI',
+          'Implement security for servers and virtual machines (VMs)',
+          'Implement security for application platform services'
+        ],
+        keywords: ['agent id', 'copilot studio', 'sharepoint', 'dspm', 'ai gateway', 'defender for ai', 'guardrail', 'foundry', 'disk encryption', 'encryption at host', 'bastion', 'just-in-time', 'jit', 'azure arc', 'defender for servers', 'agentless', 'trusted launch', 'secure boot', 'vtpm', 'machine configuration', 'defender for containers', 'aks', 'kubernetes', 'container registry', 'container apps', 'container instances', 'functions', 'logic apps', 'app service', 'web application firewall', 'waf', 'api management']
+      },
+      {
+        name: 'Manage and monitor security posture',
+        weight: '20–25%',
+        skills: [
+          'Manage security posture by using Defender for Cloud',
+          'Implement activity and event collection in Microsoft Sentinel',
+          'Implement Microsoft Security Copilot'
+        ],
+        keywords: ['defender cspm', 'cspm', 'attack path', 'secure score', 'regulatory compliance', 'workload protection', 'aws', 'gcp', 'multicloud', 'vulnerability management', 'easm', 'external attack surface', 'sentinel', 'content hub', 'data connector', 'syslog', 'cef', 'data collection rule', 'dcr', 'windows event forwarding', 'custom log', 'automation rule', 'playbook', 'retention', 'purview audit', 'security copilot', 'plugin']
+      }
+    ]
+  },
+  {
+    slug: 'ab-620',
+    studyGuide: `${studyGuideBase}ab-620`,
+    examPage: `${examPageBase}ab-620`,
+    areas: [
+      {
+        name: 'Plan and configure agent solutions',
+        weight: '30–35%',
+        skills: [
+          'Plan an agent solution',
+          'Create and monitor agent flows in Copilot Studio',
+          'Configure topics'
+        ],
+        keywords: ['plan', 'identity', 'authentication', 'channel', 'publish', 'responsible ai', 'governance', 'dlp', 'data policy', 'reusable', 'component', 'external', 'agent flow', 'human-in-the-loop', 'approval', 'request for information', 'error handling', 'input parameter', 'output parameter', 'topic', 'trigger phrase', 'adaptive card', 'variable', 'send http', 'http request', 'generative answers node', 'prompt tool', 'response format']
+      },
+      {
+        name: 'Integrate and extend agents in Copilot Studio',
+        weight: '40–45%',
+        skills: [
+          'Connect to enterprise knowledge sources',
+          'Add tools to agents',
+          'Configure multi-agent collaboration from Copilot Studio',
+          'Integrate agents with Azure'
+        ],
+        keywords: ['knowledge', 'copilot connector', 'graph connector', 'power platform connector', 'connector', 'azure ai search', 'computer use', 'mcp', 'custom connector', 'rest api', 'openapi', 'multi-agent', 'child agent', 'connected agent', 'foundry agent', 'fabric data agent', 'a2a', 'agent2agent', 'model catalog', 'bring your own model', 'application insights']
+      },
+      {
+        name: 'Test and manage agents',
+        weight: '20–25%',
+        skills: [
+          'Evaluate agent performance',
+          'Implement application lifecycle management (ALM) for agents in Copilot Studio'
+        ],
+        keywords: ['test set', 'evaluat', 'test result', 'exact match', 'similarity', 'alm', 'solution', 'environment variable', 'pipeline', 'managed solution', 'unmanaged', 'export', 'import', 'development environment', 'production environment']
+      }
+    ]
+  },
+  {
+    slug: 'dp-800',
+    studyGuide: `${studyGuideBase}dp-800`,
+    examPage: `${examPageBase}dp-800`,
+    areas: [
+      {
+        name: 'Design and develop database solutions',
+        weight: '35–40%',
+        skills: [
+          'Design and implement database objects',
+          'Implement programmability objects',
+          'Write advanced T-SQL code',
+          'Design and implement SQL solutions by using AI-assisted tools'
+        ],
+        keywords: ['table', 'data type', 'columnstore', 'in-memory', 'temporal', 'ledger', 'graph', 'match', 'json', 'openjson', 'constraint', 'foreign key', 'sequence', 'partition', 'view', 'function', 'stored procedure', 'trigger', 'cte', 'common table expression', 'window function', 'over (', 'regexp', 'edit_distance', 'jaro', 'correlated', 'try...catch', 'throw', 'github copilot', 'copilot in fabric', 'mcp', 'instruction file', 'copilot-instructions']
+      },
+      {
+        name: 'Secure, optimize, and deploy database solutions',
+        weight: '35–40%',
+        skills: [
+          'Implement data security and compliance',
+          'Optimize database performance',
+          'Implement CI/CD by using SQL Database Projects',
+          'Integrate SQL solutions with Azure services'
+        ],
+        keywords: ['always encrypted', 'encrypt', 'dynamic data masking', 'mask', 'row-level security', 'rls', 'security policy', 'permission', 'grant', 'passwordless', 'managed identit', 'audit', 'isolation level', 'snapshot', 'rcsi', 'lock', 'blocking', 'deadlock', 'execution plan', 'dmv', 'query store', 'query performance insight', 'database project', 'sqlproj', 'dacpac', 'sqlpackage', 'schema drift', 'pipeline', 'data api builder', 'dab', 'graphql', 'rest endpoint', 'change data capture', 'cdc', 'change tracking', 'change event streaming', 'sql trigger binding', 'logic apps', 'application insights', 'log analytics']
+      },
+      {
+        name: 'Implement AI capabilities in database solutions',
+        weight: '25–30%',
+        skills: [
+          'Design and implement models and embeddings',
+          'Design and implement intelligent search',
+          'Design and implement retrieval-augmented generation (RAG)'
+        ],
+        keywords: ['external model', 'embedding', 'ai_generate', 'chunk', 'vector', 'vector_distance', 'vector_search', 'vector_normalize', 'vectorproperty', 'diskann', 'ann', 'knn', 'nearest neighbor', 'cosine', 'euclidean', 'dot product', 'full-text', 'semantic search', 'hybrid search', 'reciprocal rank fusion', 'rrf', 'rag', 'retrieval', 'sp_invoke_external_rest_endpoint', 'language model', 'prompt', 'completion']
+      }
+    ]
   }
 ];
 

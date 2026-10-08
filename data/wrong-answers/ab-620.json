@@ -1,0 +1,602 @@
+{
+  "856e40091f34": {
+    "No authentication": "No authentication lets anyone with the link chat and gives the agent no user identity, which is not appropriate for an internal HR agent.",
+    "Authenticate manually with Generic OAuth 2": "Generic OAuth 2 requires you to configure an identity provider manually, which the requirement explicitly wants to avoid.",
+    "Authenticate manually with Microsoft Entra ID V2": "Manual Entra ID V2 works but requires an app registration and manual settings, so it is not the zero-configuration choice."
+  },
+  "d421b20d09e5": {
+    "Authenticate with Microsoft": "Authenticate with Microsoft provides User.ID and User.DisplayName but not an access token, and it targets Microsoft channels.",
+    "No authentication": "No authentication provides no user identity or token at all.",
+    "Require users to sign in with Authenticate with Microsoft": "Require users to sign in is not configurable with Authenticate with Microsoft, and that option still would not expose an access token."
+  },
+  "e8d57da9fdf2": {
+    "Turn on Require users to sign in for every existing agent in every environment and audit the setting each month": "Changing each agent manually is not enforced centrally, and makers could switch the setting back.",
+    "Remove the Environment Maker role from all makers in production": "Removing Environment Maker stops makers from using Copilot Studio at all rather than enforcing authentication.",
+    "Block the Direct Line channels connector in a tenant-wide data policy": "Blocking Direct Line channels restricts channels but does not by itself force authentication, and if no channel is allowed agents cannot be published at all."
+  },
+  "f83b8d2a564b": {
+    "A custom connector for each approved domain and a block on HTTP": "Building custom connectors and blocking HTTP is far more work and is not how the requirement to limit HTTP destinations is met.",
+    "A Managed Environment IP firewall rule for the agent": "An IP firewall controls inbound access to Dataverse and does not restrict the URLs that the HTTP connector calls.",
+    "An Azure API Management policy in front of every endpoint": "API Management can secure APIs you own but cannot stop makers from pointing HTTP requests at other domains."
+  },
+  "8879cf57f58a": {
+    "The policy only applies after every agent is republished": "Data policy enforcement is real time and does not wait for republishing.",
+    "Data policies never apply to knowledge sources in Copilot Studio": "Data policies do govern knowledge sources, which is why the documents connector can be blocked in the first place.",
+    "SharePoint knowledge is controlled only by SharePoint site permissions, not by Power Platform data policies": "Site permissions control what users can see, but data policies decide whether makers can add SharePoint knowledge at all."
+  },
+  "868beb5bf171": {
+    "End-user credentials, with the risk that each run prompts for sign-in": "End-user credentials need a user to sign in, which is impossible for an unattended scheduled run.",
+    "End-user credentials, with the risk that tokens expire between runs": "End-user credentials still require an interactive user, so token expiry is not the deciding issue.",
+    "Maker-provided credentials, with the risk that the tool can no longer be shared with other users in the org": "Maker-provided credentials do not block sharing, and the real risk is privilege exposure rather than shareability."
+  },
+  "c25a46dd6d3e": {
+    "A connected agent for each team": "A connected agent is a separate agent that is called at runtime, not a package of reusable topics and entities.",
+    "A shared Dataverse table of topic definitions": "Storing topic definitions in a custom table is not a supported reuse mechanism in Copilot Studio.",
+    "A copy of the agent per team": "Copying the agent duplicates components and leaves each team maintaining its own diverging copy."
+  },
+  "bf33c16fd22b": {
+    "Share the agent with the security group, because sharing already restricts chat access for this option": "With Generic OAuth 2, sharing cannot restrict specific users, so sharing alone does not enforce the group limit.",
+    "Turn on Require users to sign in while keeping Generic OAuth 2": "Even with sign-in turned on, Generic OAuth 2 does not let sharing restrict access to specific organization users.",
+    "Set the agent to No authentication and share it with the group": "No authentication makes the agent available to anyone with the link, the opposite of the requirement."
+  },
+  "f6fd309c713d": {
+    "SharePoint knowledge is limited to four sites in generative mode": "Generative orchestration supports up to 25 SharePoint URLs, and the count is not the real problem here.",
+    "SharePoint knowledge works only in classic orchestration": "SharePoint knowledge works with generative orchestration, so the orchestration mode is not the issue.",
+    "SharePoint knowledge needs a Copilot connector to be configured by an admin before it can be added": "SharePoint is a native knowledge source and does not need a Copilot connector."
+  },
+  "5cfe2eeb1946": {
+    "Teams caches agents for 24 hours, so the user must reinstall the app": "There is no 24-hour reinstall requirement. Updates appear in a new session, or within about an hour in persistent channels.",
+    "Publishing does not update Teams, so you must also publish the agent to the Teams channel again separately": "Publishing applies changes to all connected channels, including Teams.",
+    "The user lacks the ChatBotReaders privilege and needs it reassigned": "A missing privilege would block chatting entirely rather than show stale content."
+  },
+  "06e74068ec2e": {
+    "Environment Maker": "Environment Maker lets users build in the environment but does not grant transcript access.",
+    "Agent Viewer": "Agent Viewer gives access to the Evaluation page without access to the agent's content, not transcripts.",
+    "System Customizer": "System Customizer allows solution customization but is not the role designed for transcript review."
+  },
+  "9f0759214592": {
+    "Lowest disables citations for all answers": "Moderation level does not control whether citations are produced.",
+    "Lowest forces the agent to use only general knowledge": "Moderation level filters responses and does not change which knowledge sources are used.",
+    "Lowest increases latency because more sources are searched": "Moderation level does not change the number of sources searched, so latency is not the tradeoff."
+  },
+  "d240d10560d9": {
+    "When a HTTP request is received, and Response": "The HTTP request trigger and Response action are for HTTP-invoked flows, not agent tools.",
+    "Manually trigger a flow, and Respond to a PowerApp or flow": "The PowerApp response action pairs with app or flow triggers and doesn't make the flow available as an agent tool.",
+    "Recurrence, and Send an email notification": "A recurrence trigger runs on a schedule and can't be called by the agent."
+  },
+  "3faf024dc6cb": {
+    "The flow is not in a solution, so it times out": "Being in a solution adds versioning and ALM features but has nothing to do with the response limit.",
+    "Agent flows cannot query external systems": "Agent flows can use connectors to reach external systems.",
+    "The topic needs a Send HTTP request node instead": "Replacing the flow with an HTTP node does not fix a slow back end, and the HTTP node also has a timeout."
+  },
+  "c68ce16c5547": {
+    "Asynchronous response is only supported in classic orchestration": "The requirement is about real-time response for tools, not about the orchestration mode.",
+    "Asynchronous response requires a premium Power Automate license": "Licensing is not the cause, and agent flows are billed against Copilot Studio capacity.",
+    "Asynchronous response must be paired with a Recurrence trigger": "A Recurrence trigger would stop the agent from calling the flow at all."
+  },
+  "7889c286e66f": {
+    "Run a multistage approval": "A multistage approval returns approve or reject decisions, not structured data like an amount and a date.",
+    "Post adaptive card and wait for a response in Teams": "A Teams adaptive card can collect data, but the built-in human-in-the-loop action for agent flows is Request for information.",
+    "Send an email with options": "Send an email with options captures a single choice and does not collect typed values like amounts and dates."
+  },
+  "5683f2a52311": {
+    "It waits until all three reviewers respond before it continues": "The action doesn't wait for everyone. It resumes after the first submission.",
+    "It uses the most common answer among the reviewers": "There is no voting or majority logic in Request for information.",
+    "It fails because answers conflict": "Conflicting answers don't fail the flow because later responses are simply ignored."
+  },
+  "63b9bd1eba13": {
+    "Yes/No": "Yes/No is one of the supported input types.",
+    "Date": "Date is one of the supported input types.",
+    "Email": "Email is one of the supported input types."
+  },
+  "cf3751db7382": {
+    "A prompt action followed by a Condition and an email": "A prompt plus email can be built but lacks the tracked approval stages and history that multistage approvals provide.",
+    "Two Request for information actions in sequence": "Request for information collects data and doesn't produce approval decisions.",
+    "A connected agent that screens requests and then approves the passing ones automatically": "A connected agent doesn't provide a human sign-off stage or approval history."
+  },
+  "40ba423e7a49": {
+    "The manager approves once and both stages complete": "A single approval does not satisfy two stages. The documented behavior is a failure.",
+    "Stage 3 is skipped automatically": "There is no automatic stage skipping for duplicate approvers.",
+    "The approval converts to Everyone must approve": "The approval type is set per manual stage and doesn't change because of duplicate approvers."
+  },
+  "6022c7349dbf": {
+    "Each run requires a Power Automate Premium license for the caller": "Agent flows don't use Power Automate per-user licensing.",
+    "Agent flows are free and have no capacity impact": "Agent flow actions consume capacity, except in cases such as test runs.",
+    "Each run consumes Power Automate API request limits only": "Billing is against Copilot Studio capacity rather than Power Automate request limits."
+  },
+  "75aff5c8186c": {
+    "Each test run consumes double capacity": "There is no double charge for tests. They are not billed for agent flow actions.",
+    "Test runs consume capacity only for premium connectors": "Connector tier doesn't change the fact that test runs are excluded.",
+    "Test runs are blocked until capacity is purchased": "Test runs are not blocked and don't need purchased capacity."
+  },
+  "573b666b81c8": {
+    "Turn on Asynchronous response so errors are hidden": "Asynchronous response stops the flow from working as a tool, and it doesn't handle errors.",
+    "Add a Recurrence trigger that retries every five minutes": "A recurrence trigger would prevent the agent from calling the flow.",
+    "Remove the Respond to the agent action so the flow ends quietly and the agent moves on without returning any result": "Without Respond to the agent the flow can't be used as a tool or return a result."
+  },
+  "8848b17e3031": {
+    "Running the flow from a scheduled trigger": "A scheduled trigger would stop the agent from calling the flow on demand.",
+    "Setting the flow owner to a service account": "Flow ownership doesn't help the orchestrator understand when or how to call it.",
+    "Storing the order number in a Dataverse table first": "Pre-storing the value isn't needed. The agent can pass it as an input parameter."
+  },
+  "451f9ee66292": {
+    "Add it as an agent-level tool with a detailed description that names the confirmation step": "An agent-level tool can be chosen by the orchestrator at runtime, which is what you want to avoid.",
+    "Add it as a connected agent": "A flow isn't added as a connected agent, which is a separate agent.",
+    "Add it to a component collection": "Component collections package components for reuse and don't control when the flow runs."
+  },
+  "22bd02f04f7c": {
+    "Raise an error, and then edit the On Error system topic to show the friendly message": "Raise an error is the default, and it stops the topic and triggers On Error.",
+    "A Request timeout of 0 milliseconds": "Changing the timeout doesn't handle HTTP error responses.",
+    "A Parse value node before the HTTP node": "Parse value converts data but can't run before a response exists."
+  },
+  "4e70553ce8c8": {
+    "The variable is a String, so wrap it in Text()": "The type is Any, not String, and Text() wouldn't expose record fields.",
+    "The variable is global, so change its scope to topic": "Scope doesn't affect whether you can read fields of the value.",
+    "The variable is empty until the On Error topic runs": "With Continue on error the variable is filled immediately, and On Error isn't triggered."
+  },
+  "eaeb5e07ab07": {
+    "The Response data type, which defaults to String": "The response data type doesn't cause requests to fail because of duration.",
+    "The reprompt count, which defaults to two": "Reprompts apply to questions and adaptive cards, not HTTP calls.",
+    "The content moderation level, which defaults to High": "Content moderation applies to generative answers, not HTTP calls."
+  },
+  "831f6bf4a0e7": {
+    "The node falls back to agent-level knowledge sources": "There is no fallback to agent-level sources when the node is restricted to selected sources.",
+    "The node searches all public websites instead": "The node doesn't automatically add web search when the selected source has no answer.",
+    "The node routes the question to a connected agent": "The node doesn't route to other agents. That would be an orchestration decision."
+  },
+  "12215f66565f": {
+    "Keep Send a message on, and Teams wraps the generated answer in an adaptive card with the disclaimer": "With Send a message on, the answer is sent immediately as-is and you can't wrap it in a custom card.",
+    "Use a Send HTTP request node to post the answer to Teams": "Posting to Teams through HTTP bypasses the conversation and isn't how you customize answers.",
+    "Set content moderation to Highest to enable card rendering": "Moderation level filters content and has nothing to do with rendering cards."
+  },
+  "13ab97a26220": {
+    "Add the text as a public website source": "A variable's content isn't a public website, so it can't be added as one.",
+    "Turn on web search and general knowledge, and pass the variable as the node input so it is prioritized": "Turning on web search and general knowledge violates the requirement to answer only from the text.",
+    "Upload the text as a file to agent-level knowledge": "Uploading a static file doesn't use the dynamic value retrieved at runtime."
+  },
+  "970ab6d22f52": {
+    "A Message node with a basic card": "Message node cards are non-interactive and don't collect inputs into variables.",
+    "Three Question nodes with entity extraction": "Three Question nodes would work but use three turns, not one form step.",
+    "A Message node with quick replies": "Quick replies are suggestion buttons and can't collect multiple typed fields."
+  },
+  "38af5c8ba8fd": {
+    "Insert {Topic.CustomerName} into the card JSON, which Copilot Studio evaluates when the card is sent": "Plain JSON in the card editor isn't evaluated as Power Fx, so this doesn't bind variables.",
+    "Use a Parse value node to inject variables into the card": "Parse value converts data into records and doesn't populate card templates.",
+    "Change the card version to 1.6 so variables are supported": "The schema version doesn't enable variable binding."
+  },
+  "2746dc484d31": {
+    "Teams doesn't support Action.Submit": "Teams supports Action.Submit. The problem is the schema version.",
+    "Teams requires the card to be sent from a Message node instead": "Adaptive Card nodes work in Teams, so a Message node isn't required.",
+    "Teams cards must be authored in Power Fx": "JSON and Power Fx authoring both produce the same card, so authoring style isn't the cause."
+  },
+  "77478eb498a1": {
+    "Return values to original topics": "Return values to original topics sends values back to the caller, not into the called topic.",
+    "External sources can set values": "External sources can set values is for values passed in from outside the agent, such as a web page.",
+    "Global (any topic can access)": "Making the variable global would work differently and isn't the designed way to pass inputs between topics."
+  },
+  "a25e49037a78": {
+    "A topic variable configured with Receive values from other topics": "Receive values from other topics only accepts values from redirecting topics.",
+    "An environment variable of type Text": "Environment variables are set by admins per environment, not per conversation.",
+    "A system variable named Conversation.Tier": "You can't create custom system variables, which are built in."
+  },
+  "3b30ba85870f": {
+    "Global.Region": "The prefix isn't included when the variable is set externally.",
+    "Env.Region": "Env. is for environment variables, which can't be set from the page.",
+    "System.Region": "System. is for built-in system variables, not custom ones."
+  },
+  "ba2f5d37b839": {
+    "Environment variables can only be changed in Copilot Studio": "Environment variables are read-only in Copilot Studio and are changed in Power Apps.",
+    "Environment variables update in the agent only after the solution is exported and imported again": "Exporting a solution doesn't refresh the published agent.",
+    "Environment variables of type Text are cached for 24 hours": "There is no 24-hour cache. Republishing is what applies the change."
+  },
+  "727eb6ce72ce": {
+    "Prompts can't be used inside topics": "Prompts can be added as nodes in topics.",
+    "Anonymous agents can use prompts in topics, but only with the default model and the default temperature setting": "Anonymous agents can still select models. The limit is Dataverse knowledge.",
+    "The prompt must be converted to an agent flow first": "A prompt can be used directly in a topic without an agent flow."
+  },
+  "2261d2f249cd": {
+    "Add the Sites.Read.All scope": "Sites.Read.All is for SharePoint sites, not external items indexed by Copilot connectors.",
+    "Turn on Official source for the connector": "Official source changes how answers are presented and doesn't grant access.",
+    "Switch the agent to No authentication": "Copilot connector knowledge requires user authentication, so No authentication won't work."
+  },
+  "723252546c71": {
+    "Copilot connector results are randomized for each user to improve the diversity of generated answers": "Results aren't randomized per user.",
+    "Copilot connectors cache answers per session": "Session caching doesn't explain consistent differences between users.",
+    "Copilot connectors index only the first user's content": "Indexing isn't tied to the first user. Access is trimmed per user."
+  },
+  "6aa818173fd7": {
+    "All records are copied into Dataverse nightly": "Records aren't copied into Dataverse. There's no data movement between systems.",
+    "Records are copied into a vector index in Azure AI Search and refreshed on a schedule": "No vector index of records is created for real-time connector knowledge.",
+    "Data is cached for 24 hours in the agent": "Queries run at runtime and there is no 24-hour data cache."
+  },
+  "0fc7b7791992": {
+    "Add all three indexes to one Azure AI Search knowledge source": "A single knowledge source supports only one vector index.",
+    "Merge the indexes into a skillset": "Skillsets enrich content during indexing and don't merge indexes for querying.",
+    "Use a Send HTTP request node for each index": "HTTP calls bypass the knowledge integration and its citations."
+  },
+  "b96b4b0caa2d": {
+    "Write an Azure Function that embeds each question and call it from a topic": "A custom function is unnecessary when integrated vectorization is used.",
+    "Export the embeddings to Dataverse": "Embeddings don't need to be in Dataverse for Azure AI Search knowledge.",
+    "Add a prompt tool that generates embeddings": "Prompts don't generate embeddings for search queries."
+  },
+  "4d6fdf1cdcaa": {
+    "chunk_id": "chunk_id identifies a chunk, not a document location.",
+    "@search.score": "The search score is a relevance value, not a citation.",
+    "content_vector": "The vector field holds embeddings and can't be shown as a citation."
+  },
+  "8fb3c437ee6e": {
+    "A public IP rule allowing Copilot Studio": "Opening a public IP rule defeats the purpose of a private endpoint.",
+    "A Copilot connector for the search service": "Copilot connectors index content into Microsoft Graph and aren't how you reach a private search service.",
+    "A Send HTTP request node that calls the private endpoint with the search admin key": "Embedding an admin key in an HTTP node is insecure and doesn't solve private network access."
+  },
+  "a5aeec962a51": {
+    "It searches all 40 sources for every question": "Above the threshold the agent doesn't search everything. It filters sources first.",
+    "It fails to publish because the limit is 25": "The agent still publishes. The threshold changes how sources are selected.",
+    "It searches only the first 25 sources, in the order they appear on the Knowledge page": "Sources aren't selected by list order."
+  },
+  "620bff577554": {
+    "Official source works only for public websites": "The setting isn't limited to public websites.",
+    "Official source requires Azure AI Search": "Official source doesn't depend on Azure AI Search.",
+    "Official source requires No authentication": "Authentication isn't the conflict. Orchestration mode is."
+  },
+  "3bb51dbde457": {
+    "Add it at agent level on the Knowledge page as a website source with the custom configuration ID": "Bing Custom Search isn't supported as an agent-level knowledge source.",
+    "Add it as a connected agent": "It isn't an agent and can't be connected as one.",
+    "Add it as an MCP server": "Bing Custom Search isn't exposed as an MCP server in Copilot Studio."
+  },
+  "548a0a9accbf": {
+    "Agent-level sources always take priority, and node sources are used only if they return nothing": "Agent-level sources are the fallback, not the priority.",
+    "Both are merged and ranked by date": "Results aren't merged and ranked by date.",
+    "The source added most recently": "Priority doesn't depend on when the source was added."
+  },
+  "2d7d66d5ad37": {
+    "A REST API tool": "A REST API tool requires an API and OpenAPI definition, which the portal lacks.",
+    "An MCP server tool": "An MCP tool also requires a server exposing operations, which doesn't exist here.",
+    "A Copilot connector": "Copilot connectors index content for knowledge and don't perform UI actions."
+  },
+  "9dfb00fa7370": {
+    "Official source": "Official source is a knowledge setting and is unrelated.",
+    "Require users to sign in": "Sign-in controls access to the agent, not tool availability.",
+    "Asynchronous response": "Asynchronous response is a setting on agent flows, not computer use."
+  },
+  "475b3929b9fb": {
+    "Bring-your-own machine, which requires Intune enrollment and a Power Automate desktop license first": "Bringing your own machine requires registering it through Power Automate, which is more setup than needed for a quick trial.",
+    "Cloud PC pool, which can't access the internet": "Cloud PC pools can access the web and organizational resources.",
+    "Power Automate hosted machine group, which supports only desktop apps": "Hosted machine groups aren't the zero-setup option described for quick experimentation."
+  },
+  "04e88c61e22a": {
+    "Hosted browser": "The hosted browser doesn't support custom desktop apps.",
+    "A REST API tool": "A REST API tool needs an API, which a desktop app may not expose.",
+    "The demo website channel, which runs the app inside the hosted browser session": "The demo website is a channel for chatting with the agent, not a place where computer use runs."
+  },
+  "441275f3c539": {
+    "Install Microsoft Teams on the machine": "Teams isn't required for computer use.",
+    "Add the machine to a component collection so the agent can reference it as a tool": "Component collections package agent components, not machines.",
+    "Join the machine to a Fabric workspace": "Fabric workspaces are unrelated to computer use machines."
+  },
+  "8dabf2f9f418": {
+    "All three run in parallel on separate desktops": "A single machine doesn't run multiple computer use sessions in parallel.",
+    "The second and third runs fail immediately": "Runs are queued rather than failed.",
+    "The runs move to the hosted browser automatically": "There is no automatic failover to the hosted browser."
+  },
+  "825bdd86df6f": {
+    "It blocks navigation to the news site entirely": "The allow list doesn't prevent navigation.",
+    "It ends the run and emails the maker": "Opening the site doesn't automatically end the run.",
+    "It has no effect on that site unless Enforce HTTPS is also turned on for computer use": "The allow list works independently of Enforce HTTPS."
+  },
+  "3b5e9eccca58": {
+    "The run pauses until the maker opens the test pane": "The maker opening the test pane isn't the supervision mechanism.",
+    "The agent posts the request in a Teams channel and continues automatically after a short delay": "The run doesn't continue automatically past a supervision request.",
+    "The run retries the action three times and then proceeds": "There's no retry-and-proceed behavior for harmful-instruction detection."
+  },
+  "e143024a254b": {
+    "Only by reading Application Insights logs after the run": "The test experience shows activity live, not only after the run.",
+    "By connecting to the machine with Remote Desktop": "Remote Desktop isn't required to monitor runs.",
+    "By exporting the run to Power BI": "Exporting to Power BI isn't how runs are monitored during testing."
+  },
+  "9b9fabea3615": {
+    "Nothing, because SSE is the default transport for MCP in Copilot Studio": "SSE is no longer supported for MCP in Copilot Studio.",
+    "Wrap it in a Fabric data agent": "Fabric data agents are unrelated to MCP transport.",
+    "Register it as an A2A agent": "A2A is a different protocol for agents, not a workaround for MCP transport."
+  },
+  "90a6928b5ae1": {
+    "OAuth 2.0 Manual": "Manual requires entering client ID, secret and URLs yourself, which is unnecessary here.",
+    "API key in a header": "An API key doesn't use the server's OAuth capability.",
+    "OAuth 2.0 Dynamic": "Dynamic is for servers that support DCR but not discovery, so you'd enter URLs manually."
+  },
+  "61da6846505d": {
+    "x-ms-visibility: important on every parameter of the operation": "x-ms-visibility controls parameter display and doesn't mark MCP support.",
+    "An OpenAPI 3.1 webhooks section": "Custom connectors use Swagger 2.0, and webhooks don't mark MCP support.",
+    "A securityDefinitions entry of type basic": "Basic auth isn't what identifies the operation as an MCP endpoint."
+  },
+  "510865b0762a": {
+    "Tools only": "Resources are also supported, not only tools.",
+    "Prompts only": "Prompts aren't currently supported.",
+    "Tools, resources and prompts": "Prompts aren't supported, so all three isn't correct."
+  },
+  "30b905e4a516": {
+    "Azure Policy assigned to the subscription that hosts the MCP server": "Azure Policy governs Azure resources, not which connectors makers can use in Copilot Studio.",
+    "The Official source setting": "Official source applies to knowledge sources.",
+    "The agent's content moderation level": "Content moderation filters generated answers."
+  },
+  "e4a1af355dff": {
+    "The upload fails, because REST API tools accept only YAML specification files": "The tool requires a JSON file, not YAML.",
+    "The tool is created as an MCP server": "REST API tools aren't created as MCP servers.",
+    "You must rewrite the spec manually in v2": "Manual conversion isn't required because it's automatic."
+  },
+  "26bbd6f6ef00": {
+    "Rename it in the tool configuration, and the connector maps the new name automatically": "Parameter names can't be renamed in the tool configuration.",
+    "Change its type to String in the tool": "Parameter types are also read-only.",
+    "Delete it and add a new parameter": "You can exclude operations, but you can't add parameters outside the spec."
+  },
+  "b6ada57d7535": {
+    "Recreate the API as a REST API tool": "Recreating the API duplicates work that the existing connector already covers.",
+    "Add the custom connector as a real-time knowledge source on the Knowledge page": "Knowledge sources are for retrieval, not for running ticket operations.",
+    "Wrap it in a Send HTTP request node": "An HTTP node bypasses the connector and its governed connection."
+  },
+  "a6fe3413ea66": {
+    "Add it as a child agent": "Child agents live within the main agent and share its settings and deployment.",
+    "Copy its topics into your agent": "Copying topics breaks ownership and leaves two diverging copies.",
+    "Add it as a knowledge source": "Agents can't be added as knowledge sources."
+  },
+  "5a2f86dadc92": {
+    "Connected Copilot Studio agents": "Connected agents add separate publishing and settings that aren't needed here.",
+    "A2A agents hosted in Azure": "A2A agents are for agents built and hosted outside Copilot Studio.",
+    "Separate agents linked through a Send HTTP request node": "Calling agents through HTTP is unsupported for this purpose and adds complexity."
+  },
+  "52a47f26f9c5": {
+    "Remove the agent from all solutions": "Solution membership doesn't control connections.",
+    "Switch the agent to classic orchestration": "Orchestration mode isn't the setting that controls connections.",
+    "Delete its description": "Deleting the description hurts routing but doesn't block connections."
+  },
+  "bc2ab13012c7": {
+    "Connected agents are cached for 24 hours": "There is no 24-hour cache. Publishing is what matters.",
+    "The main agent must be exported again": "Exporting the main agent doesn't change which version of the connected agent is used.",
+    "Connected agents only pick up changes after a pipeline deploys them to the main environment": "Pipelines aren't required. Publishing the connected agent is enough."
+  },
+  "1a6635848c8a": {
+    "Turn on Require users to sign in": "Requiring sign-in doesn't limit what context is passed to connected agents.",
+    "Mark the connected agent as an official source": "Official source is a knowledge setting.",
+    "Use a child agent with no instructions": "A child agent shares the main agent's context and doesn't solve the requirement."
+  },
+  "991cb2be4f8b": {
+    "It works, and B can call A's connected agents directly": "This nesting isn't supported.",
+    "It works only if A is in a different environment": "Connected Copilot Studio agents must be in the same environment, not different ones.",
+    "It works only if B uses classic orchestration": "Orchestration mode doesn't lift this limitation."
+  },
+  "e26d85a5f604": {
+    "Descriptions update only after 30 minutes": "There is no timed sync of descriptions.",
+    "The original agent must be republished twice": "Republishing the original agent doesn't update the local description.",
+    "The main agent ignores descriptions for connected agents and relies on their instructions instead": "Descriptions are what the main agent uses to decide when to call the agent."
+  },
+  "efd03b75b2fb": {
+    "Delete the tool from the agent": "Deleting the tool would stop the child agent from using it too.",
+    "Move the tool into a component collection that only the child agent is connected to at runtime": "Component collections are for reuse and don't control invocation.",
+    "Turn off generative orchestration": "Turning off generative orchestration would disable the child agent routing too."
+  },
+  "a37d8dba65ee": {
+    "It sends the child's raw output to the user": "Sending raw output isn't the default behavior.",
+    "It sends an adaptive card summary": "Sending an adaptive card is an option you must choose.",
+    "It ends the conversation": "The conversation doesn't end when a child agent completes."
+  },
+  "cee3734226d8": {
+    "The .well-known/agent.json agent card URL": "The agent card URL isn't the endpoint to call.",
+    "The partner's OpenAPI definition URL": "An OpenAPI definition is for REST tools, not A2A agents.",
+    "The partner's MCP server URL": "An MCP server is a different integration type."
+  },
+  "7a3ff2f97eb9": {
+    "Only the latest user message": "More than the latest message is sent.",
+    "Only the variables you map": "A2A doesn't send only mapped variables.",
+    "Only the agent's instructions": "The agent's own instructions aren't what's sent to the external agent."
+  },
+  "8c42d4158809": {
+    "A Copilot connector": "Copilot connectors index content for knowledge, not agents.",
+    "A REST API tool": "A REST API tool is for plain APIs rather than agents that implement A2A.",
+    "A child agent": "Child agents are built inside Copilot Studio."
+  },
+  "9d2f9092d420": {
+    "The Foundry subscription key, the deployment region and the model name": "A subscription key and model name identify a model, not an agent.",
+    "The agent card URL": "An agent card URL is part of A2A, not the Foundry integration.",
+    "The Application Insights connection string": "Application Insights is for telemetry, not agent connection."
+  },
+  "c76ea752d227": {
+    "The Fabric data agent must be exported in a Power Platform solution first": "Fabric data agents aren't moved through Power Platform solutions to be connected.",
+    "The lakehouse must be copied into Dataverse": "The data stays in Fabric. There's no need to copy it to Dataverse.",
+    "The agent must use No authentication": "Users need access to the data agent and its sources, which requires identity."
+  },
+  "d3819f4d80bf": {
+    "They don't have the Bot Transcript Viewer role in the Power Platform environment": "Transcript access doesn't affect data agent queries.",
+    "They're using the Teams channel": "Teams is the formally validated channel for this scenario.",
+    "They haven't enabled Application Insights": "Telemetry doesn't affect whether queries succeed."
+  },
+  "9fa4a627cf03": {
+    "It works the same as in Teams, because both channels use the same connection": "The behavior differs from Teams for this channel.",
+    "It needs an A2A wrapper": "An A2A wrapper isn't the documented fix.",
+    "It requires Azure AI Search": "Azure AI Search isn't related to Fabric data agent support."
+  },
+  "834ca2ddf9f1": {
+    "In Settings > Generative AI, by setting the Foundry model as the agent's primary model": "The agent's primary model setting doesn't connect Foundry models for prompts.",
+    "In a Send HTTP request node": "An HTTP node bypasses the prompt integration.",
+    "In the Azure AI Search knowledge dialog": "Azure AI Search is for knowledge, not models."
+  },
+  "21f7cc795792": {
+    "Switch to the Azure AI Search endpoint": "The search endpoint isn't a model endpoint.",
+    "Add the model as a child agent": "Models aren't added as child agents.",
+    "Use an API key in the query string": "The key location doesn't fix the wrong endpoint type."
+  },
+  "8ab57b9fc36c": {
+    "The model's Hugging Face ID only": "A Hugging Face ID isn't used.",
+    "The Foundry agent ID": "An agent ID is for connecting a Foundry agent, not a model.",
+    "The Application Insights instrumentation key": "Telemetry keys aren't used for model connections."
+  },
+  "73249539634c": {
+    "On the Channels page": "Channels aren't where telemetry is configured.",
+    "In the Power Platform admin center data policy": "Data policies can block the Application Insights connector but don't configure it.",
+    "In the Azure portal, by linking the agent's bot ID to the Application Insights resource": "The connection is configured in Copilot Studio, not by linking a bot ID in Azure."
+  },
+  "50532ffa252e": {
+    "Filter on channelId equals msteams": "Filtering by channel excludes legitimate production traffic from other channels.",
+    "Filter on user_Id not empty": "Test conversations can also have user IDs.",
+    "Query the traces table instead of customEvents, because test data is only in customEvents": "Copilot Studio events are in customEvents, and switching tables doesn't remove test data."
+  },
+  "8be8f9863981": {
+    "The agent's authentication option, because only authenticated messages are logged": "Authentication affects identity, not what telemetry includes.",
+    "The data policy for the HTTP connector": "The HTTP connector policy doesn't control telemetry contents.",
+    "The Bot Transcript Viewer role": "Roles control access in Copilot Studio, not what's sent to Application Insights."
+  },
+  "88564b203af8": {
+    "Add a Copilot connector": "A Copilot connector indexes content into Graph and doesn't use the Azure OpenAI configuration.",
+    "Add the index endpoint to the agent as a public website knowledge source on the Knowledge page": "An index isn't a public website.",
+    "Add an A2A agent": "A2A connects agents, not data configurations."
+  },
+  "21d44e245822": {
+    "Exact match": "Exact match requires character-for-character equality.",
+    "Keyword match": "Keyword match only checks for keywords or phrases.",
+    "Tool use": "Tool use checks which tools or topics were used, not answer meaning."
+  },
+  "740b1f48d561": {
+    "General quality": "General quality scores relevance, groundedness, completeness and abstention, not exact format.",
+    "Compare meaning": "Compare meaning tolerates wording differences.",
+    "Text similarity": "Text similarity gives a similarity score and allows variations."
+  },
+  "141acd89f6f2": {
+    "Compare meaning": "Compare meaning needs an expected answer.",
+    "Exact match": "Exact match needs an expected answer.",
+    "Keyword match": "Keyword match needs expected keywords."
+  },
+  "a9de14b065ff": {
+    "A pass score of 100": "Keyword match doesn't use a numeric pass score.",
+    "Exact match instead": "Exact match requires the whole response to be identical, which is too strict.",
+    "The Any option for keyword matching": "Any passes if just one keyword appears."
+  },
+  "3d7802b1bac1": {
+    "General quality": "General quality evaluates the answer, not which tool ran.",
+    "Text similarity": "Text similarity compares wording.",
+    "Content safety": "Content safety checks for harmful content."
+  },
+  "f5978b219d85": {
+    "The agent uses generative orchestration": "Generative orchestration doesn't cause Invalid results.",
+    "The pass score is set too low": "A low pass score would produce more passes, not Invalid results.",
+    "The agent isn't published": "Publishing status isn't what makes a result Invalid."
+  },
+  "a6f103415b3b": {
+    "Compare meaning": "Compare meaning focuses on meaning rather than wording.",
+    "Keyword match": "Keyword match is pass or fail on keywords.",
+    "Exact match": "Exact match is pass or fail on identical text."
+  },
+  "d82a4fdc3004": {
+    "A JSON array with prompt and completion fields": "JSON with prompt and completion fields isn't the import format.",
+    "An Excel workbook with one sheet per test method and a column per expected answer": "An Excel workbook isn't the supported import format.",
+    "A YAML file with topic names": "YAML isn't the supported import format."
+  },
+  "56e0d7198c8a": {
+    "Export the transcript from the test pane and import it as a CSV file of questions": "Exporting and reimporting is unnecessary because the option exists directly.",
+    "Copy each message into a Dataverse table": "Dataverse tables aren't used to build test sets.",
+    "Enable Application Insights and query it": "Telemetry isn't how you build a test set from a test chat."
+  },
+  "0d1cc8cc3e30": {
+    "It uses the agent owner's credentials automatically for every knowledge source": "The owner's credentials aren't used automatically.",
+    "It skips knowledge sources that need authentication": "Sources aren't skipped. The selected account is used.",
+    "It uses anonymous access": "Anonymous access wouldn't reach authenticated sources."
+  },
+  "2164d4143e07": {
+    "Evaluations require classic orchestration": "Evaluations aren't limited to classic orchestration.",
+    "Evaluations require Application Insights": "Application Insights isn't required for evaluation.",
+    "Evaluations require the agent to be published in Teams, which needs Authenticate with Microsoft": "Publishing to Teams isn't required for evaluation."
+  },
+  "bd96522c0ae6": {
+    "General quality with a pass score of 100": "General quality doesn't evaluate safety categories.",
+    "Keyword match with All selected": "Keyword lists don't reliably detect harmful content.",
+    "Custom method with a Fail label": "Custom labels require your own criteria and aren't the built-in safety evaluator."
+  },
+  "54050f5114b0": {
+    "The demo website transcripts": "The demo website isn't a source for test sets.",
+    "Application Insights customEvents exported to CSV and imported as a test set": "Exporting telemetry isn't the built-in path from production questions to test sets.",
+    "The Conversational boosting topic": "Conversational boosting is a system topic, not a test set source."
+  },
+  "64b5741c73df": {
+    "Editor": "Editor (collaborative authoring) grants edit rights.",
+    "Environment Maker": "Environment Maker allows building in the environment.",
+    "Bot Transcript Viewer": "Bot Transcript Viewer grants transcript access, not evaluations."
+  },
+  "d7f4b572ce4c": {
+    "Only Exact match is supported": "There isn't a method restriction like this. It's unsupported.",
+    "Only multi-turn tests are supported": "Multi-turn isn't a special mode for Fabric data agents.",
+    "Fabric data agents must first be imported into Copilot Studio as a CSV test set": "Importing as CSV isn't a thing for agents."
+  },
+  "b4623c390ecf": {
+    "Recreate the agent in the solution": "Recreating the agent is unnecessary.",
+    "Export the agent as a .zip file from its Overview page and import it into the solution": "Agents are moved through solutions rather than standalone .zip export from the overview.",
+    "Copy the agent with Save as": "Save as isn't the ALM method for adding an agent to a solution."
+  },
+  "684356b3a9ae": {
+    "Republishing the agent in test": "Republishing in test doesn't add missing components to the solution.",
+    "Clearing Pass conversation history": "Conversation history settings are unrelated.",
+    "Enabling Application Insights": "Telemetry is unrelated to solution contents."
+  },
+  "f778017f8c85": {
+    "Delete the default solution": "The default solution can't be deleted.",
+    "Create a pipeline from the default solution": "Pipelines can't run from the default solution.",
+    "Mark the custom solution as managed": "Managed solutions can't be edited, so new agents can't go into one."
+  },
+  "132605905397": {
+    "Reimport the solution as unmanaged so authentication settings are carried over": "Changing managed or unmanaged state doesn't restore authentication settings.",
+    "Rename every topic": "Topic names aren't related to sign-in.",
+    "Remove the agent from the solution": "Removing the agent from the solution doesn't fix authentication."
+  },
+  "596e027a5481": {
+    "A topic that uses a global variable": "Global variables don't block export.",
+    "A topic with more than ten nodes": "The number of nodes in a topic doesn't block export.",
+    "A topic that uses an adaptive card": "Adaptive cards don't block export."
+  },
+  "0736ab454515": {
+    "Hard-code each URL and edit topics after each import": "Editing topics after import creates unmanaged changes and breaks ALM.",
+    "Store the URL in a global variable that the hosting website sets for each conversation": "A web page value is per conversation and not appropriate for environment configuration.",
+    "Create a separate agent for each environment": "Separate agents duplicate work and drift apart."
+  },
+  "1bf4ba612acd": {
+    "Import the agent solution first, and then create the custom connector and fix each tool": "The agent depends on the connector, so the connector must already exist.",
+    "Import the agent unmanaged and then patch it": "Patching doesn't address the dependency order.",
+    "Import the connector after publishing the agent": "The agent can't be published if its connector is missing."
+  },
+  "54af9e28bfbc": {
+    "They must be developer environments": "Targets such as production aren't developer environments.",
+    "They must be the same environment as the host": "Using the same environment for development and host isn't supported.",
+    "They must be the default environment": "The default environment isn't a requirement for targets."
+  },
+  "46474bf2ff19": {
+    "Each stage re-exports the solution from development, so fixes can be added between stages": "The artifact isn't re-exported per stage.",
+    "Unmanaged solutions are deployed to every stage": "Unmanaged solutions can't be deployed through pipelines.",
+    "Multiple solutions can be deployed in one request": "Only one solution can be deployed per request."
+  },
+  "b8a26e875f8a": {
+    "Pre-export step": "A pre-export step adds validation but doesn't change the deployment identity.",
+    "Redeploy setting": "Redeploy lets older versions be redeployed and doesn't affect access.",
+    "Cross-geo deployment, which runs the import under the pipeline host's own identity": "Cross-geo deployment is about region, not identity."
+  },
+  "e787dc44bd56": {
+    "Predeployment step required": "The predeployment step runs after approval, so it's too late to block export.",
+    "Is delegated deployment": "Delegated deployment changes the deploying identity and doesn't add validation.",
+    "Allow redeployments of older versions": "Redeployment settings don't run validation logic."
+  },
+  "3258ad0dfc7d": {
+    "When a row is added to the Deployment Stage Runs table, then Update a row on that record": "The documented pattern uses the action trigger and unbound actions, not row-level triggers.",
+    "Recurrence, then Run a child flow": "A recurrence trigger doesn't respond to deployment events.",
+    "When an agent calls the flow, then Respond to the agent": "Agent flow triggers are for agents, not pipelines."
+  },
+  "5b36d0d8b5d5": {
+    "Delete the managed solution from test and reimport it, which discards all unmanaged edits": "Deleting and reimporting is disruptive and unnecessary.",
+    "Publish the agent again": "Publishing doesn't remove unmanaged layers.",
+    "Export the agent from test": "Exporting from test doesn't remove the layer."
+  },
+  "611620d286d5": {
+    "They're copied unchanged from development": "Values aren't simply copied from development.",
+    "They must be edited in each topic after deployment, because pipelines skip them": "Editing topics after deployment creates unmanaged changes.",
+    "They're ignored and must be recreated manually": "They aren't ignored. Pipelines handle them as part of deployment."
+  },
+  "378c08a7df4c": {
+    "It's recommended, because it reduces the number of environments that must be managed": "This isn't recommended. It's unsupported.",
+    "It's supported only for managed solutions": "Solution type doesn't make it supported.",
+    "It's supported if the environment is managed": "Managed status doesn't make it supported."
+  }
+}

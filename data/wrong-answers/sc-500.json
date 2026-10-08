@@ -1,0 +1,602 @@
+{
+  "3b72bc53ea5c": {
+    "A Conditional Access policy that requires MFA for all admins": "Conditional Access can require MFA at sign-in but does not remove standing role membership or add time-bound activation with approval.",
+    "An access package in entitlement management for directory roles": "Entitlement management grants access packages for groups, apps and sites, but just-in-time activation of directory roles is a PIM capability.",
+    "Microsoft Entra ID Protection sign-in risk policy": "ID Protection reacts to risky sign-ins and does not control how or when a privileged role is held."
+  },
+  "08c6742885c4": {
+    "A dynamic membership rule on the group": "Dynamic rules add members based on attributes and give standing membership, not on-demand activation.",
+    "An Azure Policy assignment with a Modify effect": "Azure Policy governs resource properties and cannot control group membership.",
+    "A role-assignable group with a permanent owner": "Making a group role-assignable protects who can change it, but members still hold permanent access."
+  },
+  "b076fa4936e3": {
+    "Require multifactor authentication": "The generic MFA control can be satisfied by SMS or voice, which are not phishing resistant.",
+    "Require device to be marked as compliant in Intune before access": "Device compliance checks the device state, not the authentication method used.",
+    "Require approved client app": "Approved client app applies to mobile apps and does not set the MFA method."
+  },
+  "94723bdc9163": {
+    "A one-time SMS code": "SMS sign-in requires a phone method already registered and is not designed to bootstrap passwordless registration.",
+    "A temporary password with forced change": "Issuing a password defeats the goal of a passwordless-from-day-one onboarding.",
+    "A software OATH token": "An OATH token must first be registered and assigned, so it does not solve the first-day bootstrap problem."
+  },
+  "640e1ad087c8": {
+    "On the app registration Manifest page": "The manifest describes the global application object, not per-tenant user assignment.",
+    "On the app registration Expose an API page": "Expose an API defines scopes the app offers, not who may sign in.",
+    "On the app registration Certificates and secrets page": "Certificates and secrets hold the app's own credentials, not user access."
+  },
+  "e5a35c37614a": {
+    "Disable user consent completely, plus Assignment required on every enterprise application": "Disabling consent entirely blocks the low-impact verified apps you want to allow, and assignment does not handle consent requests.",
+    "Allow user consent for all apps, plus app instance property lock": "Allowing consent for all apps keeps the risk, and app instance property lock protects app properties, not consent.",
+    "Block user consent, plus a Conditional Access policy for all cloud apps": "Blocking consent stops the allowed scenario, and Conditional Access does not govern permission grants."
+  },
+  "3cc87488218d": {
+    "Reset the passwords of all affected users": "A password reset does not remove an OAuth consent grant, so the app keeps its delegated access.",
+    "Delete the app registration from your own tenant's App registrations list": "A multitenant attacker app is registered in the attacker's tenant, so it does not appear in your App registrations list.",
+    "Enable security defaults for the tenant": "Security defaults enforce baseline MFA but do not revoke existing consent grants."
+  },
+  "87a5311dfe58": {
+    "Vault access policy": "Access policies apply to the whole vault, cannot scope to a single secret and do not integrate with PIM.",
+    "Shared access signature tokens": "Key Vault does not use SAS tokens for data plane access.",
+    "Storage account key authorization": "Storage account keys are unrelated to Key Vault authorization."
+  },
+  "a91402ed4c4e": {
+    "Key Vault Secrets Officer": "Secrets Officer can create, update and delete secrets, which is more than required.",
+    "Key Vault Contributor": "Key Vault Contributor manages the vault resource on the management plane and does not grant data plane access to secrets.",
+    "Key Vault Reader": "Key Vault Reader can read vault metadata but cannot read secret values."
+  },
+  "39f22ab164eb": {
+    "The role grants direct read access to every key and secret": "Key Vault Contributor does not grant data plane access by itself; the risk is that the user can add an access policy.",
+    "The role allows purging the vault even when purge protection is enabled": "Purge protection prevents purging during the retention period for every role.",
+    "The role bypasses the Key Vault firewall": "Role assignments do not exempt callers from the vault's network rules."
+  },
+  "ab4a0ef0685c": {
+    "Soft delete with 90-day retention and a CanNotDelete lock": "A resource lock protects the vault resource from deletion but not objects inside it from being purged.",
+    "Purge protection disabled and an Azure Backup policy": "Without purge protection, an administrator can purge a soft-deleted key immediately.",
+    "Soft delete with 7-day retention and RBAC enabled": "A 7-day retention does not meet the 90-day requirement."
+  },
+  "8316cd43872c": {
+    "Allow public access from all networks": "Allowing all networks removes the firewall protection you just configured.",
+    "A service endpoint on the SQL server's subnet": "An Azure SQL logical server is a PaaS resource and is not deployed into your subnet, so a service endpoint there does not help it.",
+    "A Key Vault access policy for the SQL server's IP address": "Access policies grant permissions, not network access, and are not based on IP address."
+  },
+  "47fb03982615": {
+    "An Event Grid subscription that recreates the key": "Event Grid can deliver near-expiry events but does not rotate keys on its own.",
+    "An Azure Policy with a DeployIfNotExists effect": "Azure Policy can audit key expiration settings, but rotation is configured in the key's rotation policy.",
+    "A certificate issuance policy": "Issuance policies apply to certificates, not to standalone keys."
+  },
+  "a6b57179f822": {
+    "Foundational CSPM": "The free foundational CSPM tier does not include agentless secrets scanning or attack path analysis.",
+    "Defender for Storage": "Defender for Storage protects storage accounts from threats and malware, not secrets on VMs.",
+    "Defender for Key Vault": "Defender for Key Vault detects unusual access to vaults, not secrets left on machines."
+  },
+  "c7b34079d66f": {
+    "It scans secret values to detect weak passwords": "The plan does not evaluate the strength of secret values.",
+    "It must be enabled separately on each key vault through its diagnostic settings": "The plan is enabled per subscription in Defender for Cloud and does not depend on diagnostic settings.",
+    "It blocks the suspicious caller automatically": "Defender for Key Vault alerts and recommends response steps; it does not block callers by itself."
+  },
+  "b3f186549bd5": {
+    "Audit": "Audit only logs noncompliance and does not stop new noncompliant accounts.",
+    "Modify": "Modify changes resource properties and would alter accounts instead of just blocking creation.",
+    "DeployIfNotExists": "DeployIfNotExists deploys related resources and does not block a noncompliant request."
+  },
+  "1407e51359b9": {
+    "Modify effects cannot run on existing resources": "Existing resources are remediated through remediation tasks, so Modify does apply to them.",
+    "Remediation tasks require the Deny effect": "Deny cannot be remediated; remediation tasks exist for Modify and DeployIfNotExists.",
+    "The policy must be assigned at the tenant root to remediate": "Remediation works at any assignment scope as long as the identity has permissions."
+  },
+  "7e8951dbe10c": {
+    "Deny": "Deny evaluates create and update requests, not delete operations.",
+    "Audit": "Audit only records noncompliance and does not stop a delete.",
+    "Append": "Append adds fields during create or update and cannot block deletion."
+  },
+  "bee54e46d1ea": {
+    "A new assignment with enforcement mode set to DoNotEnforce": "DoNotEnforce disables enforcement for the whole assignment, not just one resource group.",
+    "A notScopes entry on the assignment": "notScopes permanently excludes the scope with no reason, category or expiry.",
+    "A resource lock on the resource group": "Locks protect resources from changes and have nothing to do with policy compliance."
+  },
+  "f933afde009f": {
+    "Assign the Microsoft cloud security benchmark at the management group level": "The Microsoft cloud security benchmark is the default standard but does not present results mapped to PCI DSS controls.",
+    "Create a custom role with Microsoft.Security read permissions": "A custom role only controls who can view data; it does not add a compliance standard.",
+    "Enable Defender for Servers Plan 1 only": "A workload protection plan does not add a regulatory standard to the dashboard."
+  },
+  "0411510ff573": {
+    "A custom Azure Policy initiative only": "An Azure Policy initiative works for Azure-only custom recommendations, but it is not a KQL query against the security graph.",
+    "Foundational CSPM with the Microsoft cloud security benchmark enabled": "Foundational CSPM does not allow KQL-based custom recommendations.",
+    "A workbook in Azure Monitor": "A workbook visualizes data but does not create a recommendation."
+  },
+  "aa1018f0801d": {
+    "ReadOnly locks block all data plane reads": "Locks apply to the management plane and do not directly block data plane reads such as Entra-authorized blob access.",
+    "Contributor cannot read blob data under any lock": "Contributor can list keys normally; it is the lock that prevents the listKeys call.",
+    "ReadOnly locks revoke existing SAS tokens and account key sessions": "Locks do not invalidate SAS tokens that were already issued."
+  },
+  "690a9f5c10b6": {
+    "No, because NotActions blocks the operation across all assigned roles": "NotActions is not a deny assignment and does not override other roles.",
+    "No, because custom roles take precedence over built-in roles": "Azure RBAC has no precedence between custom and built-in roles; permissions are summed.",
+    "Yes, but only after a PIM activation": "Nothing in the scenario involves PIM; the permission is already granted by Contributor."
+  },
+  "7fbfe482cdcf": {
+    "An Azure custom role assigned at the subscription": "Azure custom roles control Azure resources, not Entra objects such as app registrations.",
+    "The Application Administrator role assigned for the whole tenant directory": "Application Administrator tenant wide manages all applications, which is broader than required.",
+    "The Cloud Application Administrator role assigned tenant wide": "Cloud Application Administrator tenant wide also covers all apps, which violates least privilege."
+  },
+  "ee782834b045": {
+    "Keep Owner but add a CanNotDelete lock on the subscription to stop damage": "A lock prevents deletion but leaves Owner's ability to manage access and all resources.",
+    "Replace Owner with Contributor at the subscription scope for all 40 users": "Contributor is still far broader than needed for VM management.",
+    "Create a deny assignment for Microsoft.Authorization/*": "You cannot create custom deny assignments directly, and that approach would not right-size access."
+  },
+  "2ef14c484911": {
+    "User Access Administrator at the subscription": "User Access Administrator can assign any role, including Owner.",
+    "Owner with a CanNotDelete lock": "Owner can assign any role and a lock does not change that.",
+    "A Microsoft Entra custom role scoped to the subscription with role permissions": "Entra custom roles do not control Azure resource role assignments."
+  },
+  "d1b68cc60eef": {
+    "Cross Region Restore": "Cross Region Restore helps with regional outages, not with malicious deletion.",
+    "Instant restore snapshots": "Instant restore snapshots speed up restores but can be deleted along with backups.",
+    "Geo-redundant storage": "Geo-redundant storage replicates data but deletions are replicated too."
+  },
+  "6e8b1a9cbc8d": {
+    "Immutable vault in the Unlocked state": "In the Unlocked state immutability can still be disabled, so it is not irreversible.",
+    "Multi-user authorization with Resource Guard": "Multi-user authorization requires a second approver but does not make the protection permanent.",
+    "Soft delete with 14-day retention": "Soft delete protects deleted data for a period but does not stop retention from being reduced."
+  },
+  "e7011b32682e": {
+    "A CanNotDelete lock on the vault": "A lock blocks vault deletion but not operations such as disabling soft delete.",
+    "PIM eligible assignment of Backup Contributor": "PIM limits standing access but the backup admin could still perform the operation alone after activation.",
+    "An Azure Policy with the Deny effect assigned to the vault's subscription": "Azure Policy does not provide a separate approval step for vault operations."
+  },
+  "42fcd6bd8c4d": {
+    "Enable Defender for Resource Manager on the deployment subscriptions": "Defender for Resource Manager detects suspicious management operations at runtime, not template issues before deployment.",
+    "Assign Azure Policy definitions with the Audit effect to the subscriptions": "Azure Policy evaluates deployed or deploying resources, not templates in pull requests.",
+    "Enable Azure Monitor change analysis": "Change analysis tracks changes after deployment and does not scan code."
+  },
+  "34f2c4a41cdc": {
+    "Account SAS": "An account SAS is signed with the account key, so it is rejected once Shared Key is disallowed.",
+    "Service SAS": "A service SAS is also signed with the account key and is rejected.",
+    "Service SAS tied to a stored access policy": "Associating a service SAS with a stored access policy does not change that it is signed with the account key."
+  },
+  "ab6bff92f93a": {
+    "Delete the container's stored access policies": "The SAS is not linked to a stored access policy, so deleting policies does not revoke it.",
+    "Remove the partner's RBAC role assignment": "SAS access does not depend on RBAC assignments, so removing a role has no effect on the token.",
+    "Change the container's public access level": "Public access settings do not invalidate a valid SAS."
+  },
+  "49251c256526": {
+    "A user delegation key with a 7-day lifetime": "User delegation SAS cannot be associated with a stored access policy, and revoking it requires revoking the delegation key.",
+    "An account SAS with HTTPS only": "An account SAS cannot use a stored access policy and can only be revoked by rotating keys.",
+    "Immutable storage with a time-based retention policy": "Immutable storage protects blobs from modification and does not manage SAS tokens."
+  },
+  "71b1ca10599e": {
+    "Storage Account Contributor scoped to the storage account": "Storage Account Contributor is a management plane role that can list keys and gives far more access than needed.",
+    "Storage Blob Data Owner scoped to the subscription": "Data Owner at the subscription covers every account and also manages POSIX ACLs, which is excessive.",
+    "Reader scoped to the container": "Reader is a management plane role and does not grant blob data access."
+  },
+  "5d3bdd71fb0c": {
+    "Allow Azure services on the trusted services list to access this storage account": "The trusted services exception allows any trusted service instance, which is broader than one workspace.",
+    "An IP rule with the Synapse service tag": "Storage IP rules accept public IP addresses and ranges, not service tags.",
+    "A service endpoint on the Synapse managed virtual network": "You cannot add service endpoints to a Microsoft-managed virtual network that you do not control."
+  },
+  "be3b9cd31231": {
+    "Sensitive data threat detection in Defender for Storage": "Sensitive data threat detection prioritizes alerts on accounts with sensitive data and does not scan for malware.",
+    "Microsoft Defender Antivirus on the app's VM": "Antivirus on the VM does not scan blobs that clients upload directly to storage.",
+    "Soft delete for blobs": "Soft delete helps recover deleted data and performs no scanning."
+  },
+  "c098146db586": {
+    "Configure the storage firewall to block malicious blobs": "The storage firewall filters network sources and cannot act on individual blobs.",
+    "Enable the built-in auto-quarantine option on the storage account's Data protection page": "There is no auto-quarantine setting on the Data protection page; that page manages features such as soft delete and versioning.",
+    "Assign an Azure Policy with a Modify effect": "Azure Policy changes resource configuration, not individual blob contents."
+  },
+  "0384d693810d": {
+    "On-upload malware scanning": "Malware scanning looks for malicious content, not sensitive data types.",
+    "Activity monitoring only": "Activity monitoring raises alerts but does not add sensitivity context by itself.",
+    "Storage account key rotation reminders": "Key rotation reminders are a key management feature, not threat detection."
+  },
+  "f95621536057": {
+    "Blob soft delete with 365-day retention": "Soft delete only allows recovery for a time and blobs can still be overwritten or purged.",
+    "A CanNotDelete lock on the storage account": "Resource locks protect the account on the management plane but not individual blobs.",
+    "Blob versioning combined with lifecycle management rules": "Versioning keeps previous versions, but they can still be deleted."
+  },
+  "e22ee593eb4f": {
+    "A server-level firewall rule that denies all IPs": "Firewall rules control network sources, not the authentication method.",
+    "Always Encrypted with secure enclaves": "Always Encrypted protects column data and does not control sign-in methods.",
+    "Transparent data encryption with a customer-managed key": "TDE encrypts data at rest and has no effect on authentication."
+  },
+  "797982ee72ce": {
+    "Premium SKU and HSM-only keys": "Both software-protected and HSM-protected keys are supported, so Premium is not required.",
+    "Public network access disabled": "Disabling public access is a good practice but is not required for TDE with CMK.",
+    "Access policy permission model only": "Both RBAC and access policies are supported for granting the server access to the key."
+  },
+  "b208f3ef9b86": {
+    "Dynamic data masking": "Dynamic data masking hides values in query results but privileged users and admins can still see the data.",
+    "Transparent data encryption": "TDE encrypts data at rest only and decrypts it for anyone who can query it.",
+    "Row-level security": "Row-level security filters rows by user but does not hide values in permitted rows from admins."
+  },
+  "693c81ea4793": {
+    "Only database-level auditing applies because it overrides the server": "Database auditing does not override server auditing; they run side by side.",
+    "Only server-level auditing applies because it overrides the database": "Server auditing does not override database settings; both apply.",
+    "The configuration fails validation and auditing is disabled": "Both configurations are valid and are applied together."
+  },
+  "b38f74b88031": {
+    "Enable server-level auditing in the portal Auditing blade of the instance, as for SQL Database": "Managed Instance auditing is configured with T-SQL server audits, not the SQL Database portal auditing blade.",
+    "Create a server audit TO URL pointing to the workspace ID": "TO URL writes audit files to Azure Blob Storage, not to a Log Analytics workspace.",
+    "Install the Azure Monitor Agent on the managed instance": "Managed Instance is a PaaS service where you do not install agents."
+  },
+  "008c59e0bf5b": {
+    "Classic configuration": "Classic configuration requires a storage account to store scan results.",
+    "Microsoft Defender for Storage": "Defender for Storage protects storage accounts and does not run SQL vulnerability scans.",
+    "SQL Server agent jobs": "Agent jobs are not how Defender for SQL runs vulnerability assessments on Azure SQL Database."
+  },
+  "d75b028212fb": {
+    "Defender for Azure SQL Databases together with Defender for Storage": "Defender for Azure SQL Databases covers Azure SQL, and Defender for Storage covers storage accounts.",
+    "Defender for SQL servers on machines with the AMA-based provisioning only": "SQL servers on machines protects SQL Server on VMs and Arc, not PaaS PostgreSQL or Cosmos DB.",
+    "Defender CSPM only": "Defender CSPM provides posture, not runtime threat detection for databases."
+  },
+  "95d627621065": {
+    "It is denied because deny rules always win": "Deny rules do not take precedence over allow rules; priority decides.",
+    "It is denied because rule 300 is more specific": "NSGs do not use specificity; they use priority order.",
+    "It is allowed only if the default AllowVnetInBound rule matches": "Internet traffic does not match AllowVnetInBound, and the explicit rule already matched."
+  },
+  "18dbcce88c0c": {
+    "Service tags as source and destination": "Service tags represent Azure service IP ranges, not your own VM tiers.",
+    "A separate route table for each tier": "Route tables control next hops and cannot filter traffic between tiers.",
+    "Azure Virtual Network Manager connectivity configuration": "Connectivity configurations build topologies such as hub and spoke and do not filter by tier."
+  },
+  "4e4320579344": {
+    "An NSG with a priority 100 deny rule applied to every subnet": "Teams that own the subnets can edit or replace NSGs, so the rule can be overridden.",
+    "An Azure Policy that audits NSG rules": "An Audit policy reports noncompliance but does not block traffic.",
+    "Azure Firewall DNAT rules": "DNAT rules translate inbound traffic through the firewall and do not block SSH reaching VMs with public IPs."
+  },
+  "37385df555c5": {
+    "Allow": "Allow lets the traffic continue to the NSG, which could still deny it.",
+    "Deny": "Deny blocks the traffic, the opposite of what is needed.",
+    "Audit": "Audit is not a security admin rule action; the actions are Allow, Always Allow and Deny."
+  },
+  "38ab00b33775": {
+    "A user-defined route on every spoke subnet to the hub firewall": "UDRs in spokes do not control hub routing for branch traffic and are error prone at scale.",
+    "A route table with a 0.0.0.0/0 route only": "A default route only covers internet-bound traffic, not private traffic.",
+    "NSG flow logs on the hub": "Flow logs record traffic but do not route it through the firewall."
+  },
+  "c4771edfc25c": {
+    "IKEv2 tunnel type with Microsoft Entra ID authentication": "Entra ID authentication is not supported with IKEv2.",
+    "SSTP tunnel type with certificate authentication": "Certificate authentication does not use Entra accounts or Conditional Access.",
+    "IKEv2 tunnel type with RADIUS authentication": "RADIUS could integrate with other directories but does not use Entra sign-in directly."
+  },
+  "3b59781fb831": {
+    "A policy-based VPN gateway with default settings": "Default settings use Azure's proposals, which may not match the required algorithms.",
+    "BGP on the connection": "BGP exchanges routes and does not set encryption algorithms.",
+    "Forced tunneling": "Forced tunneling routes internet traffic on-premises and has no effect on crypto settings."
+  },
+  "31686368f07c": {
+    "Azure VPN Gateway with certificate authentication": "A VPN gives network-level access and cannot apply Conditional Access per app with certificate authentication.",
+    "Azure Bastion with native client support": "Bastion provides RDP and SSH to Azure VMs, not general on-premises app access.",
+    "Azure Front Door with Private Link origins": "Front Door publishes web apps to the internet and is not a VPN replacement for private apps."
+  },
+  "a1dfc5c0ad9f": {
+    "Per-app access with a separate enterprise app for each range": "Per-app access gives finer control but takes more setup, which is the later step.",
+    "Application Proxy with pre-authentication": "Application Proxy publishes web apps, not broad IP ranges for any protocol.",
+    "Entra Internet Access web content filtering": "Internet Access filters internet traffic, not access to private resources."
+  },
+  "63123df458fa": {
+    "Enable a Microsoft.Storage service endpoint on the client subnet": "Service endpoints use the public endpoint and do not change DNS resolution to the private IP.",
+    "Add the client subnet to the storage firewall": "Firewall rules affect access, not name resolution.",
+    "Disable private endpoint network policies": "Network policies control NSGs and UDRs on the endpoint, not DNS."
+  },
+  "cee61d599043": {
+    "Assign an ASG to the private endpoint NIC": "ASGs can be used with private endpoints, but rules apply only after network policies are enabled on the subnet.",
+    "Add a service endpoint for the service": "Service endpoints are a different feature and do not make NSGs apply to private endpoints.",
+    "Disable the storage account's public endpoint and firewall exceptions": "Disabling public access helps security but does not make NSGs filter private endpoint traffic."
+  },
+  "5bc33dc38611": {
+    "A VNet peering to each customer": "Peering exposes whole networks and has overlapping address and governance issues.",
+    "A public IP with an NSG allow list": "A public IP keeps the service on the internet.",
+    "A service endpoint policy": "Service endpoint policies filter egress to Azure Storage and do not publish services."
+  },
+  "8cc71212771b": {
+    "NAT IP configuration and TCP proxy v2": "NAT IP and proxy protocol settings handle addressing and source IP, not who can connect.",
+    "Private DNS zone group and ASG": "DNS zone groups and ASGs are consumer-side or filtering features, not access controls on the service.",
+    "Load balancer health probe and session persistence": "Health probes and persistence are load balancer behaviors."
+  },
+  "3df9ef39175b": {
+    "Standard": "Standard supports FQDN filtering and threat intelligence but not TLS inspection or IDPS.",
+    "Basic": "Basic is for small businesses and lacks these advanced features.",
+    "Standard with threat intelligence in Alert and deny mode": "Threat intelligence filtering blocks known malicious IPs and domains but does not provide TLS inspection or URL path filtering."
+  },
+  "82f2ef7cd9fb": {
+    "Application rules, then network rules, then DNAT rules": "Application rules are processed last.",
+    "Network rules, then DNAT rules, then application rules": "DNAT rules come before network rules.",
+    "All rules are processed together by priority number only": "Rule collection type order applies first; priority applies within each type."
+  },
+  "814393c98582": {
+    "A private DNS zone linked to the firewall subnet and the spoke VNets": "A private DNS zone does not make clients and the firewall share resolution results.",
+    "An NSG rule allowing UDP 53 to Azure DNS": "Allowing DNS through an NSG does not make the firewall see the resolutions.",
+    "A forced tunneling route to on-premises DNS": "Forced tunneling changes routing and does not enable DNS proxy."
+  },
+  "6038f0607a8b": {
+    "Next hop": "Next hop shows routing, not NSG decisions.",
+    "Connection monitor": "Connection monitor tracks reachability over time but does not name the NSG rule for a flow.",
+    "VNet flow logs": "Flow logs record past traffic and require analysis to infer rule behavior."
+  },
+  "5ac221474dbf": {
+    "IP flow verify": "IP flow verify tests one flow and does not list all rules.",
+    "Packet capture": "Packet capture records traffic and does not list rules.",
+    "Next hop for the NIC's subnet": "Next hop shows the routing decision for a destination."
+  },
+  "559d71b2ffb3": {
+    "Microsoft Entra access reviews for Microsoft 365 groups": "Access reviews attest group membership but do not show site-level sharing to EEEU or sharing links.",
+    "The Defender for Cloud regulatory compliance dashboard": "The compliance dashboard covers Azure resource posture, not SharePoint permissions.",
+    "Microsoft Purview eDiscovery content search": "Content search finds items for legal holds and exports, not oversharing patterns."
+  },
+  "efb2b866b0e4": {
+    "Delete the site and restore it later": "Deleting the site removes access for legitimate members.",
+    "A Conditional Access policy for SharePoint Online": "Conditional Access controls sign-in conditions to SharePoint, not whether a site's content appears in Copilot.",
+    "Disable the Microsoft 365 Copilot license for all users": "Removing all Copilot licenses is disproportionate and does not fix the oversharing."
+  },
+  "995aa18ba660": {
+    "Microsoft Defender for Cloud Apps session policies": "Session policies control sessions to cloud apps but do not provide AI-specific data risk assessments.",
+    "Microsoft Entra ID Protection": "ID Protection detects identity risk, not sensitive data use in AI apps.",
+    "Defender for Cloud Data and AI security dashboard": "The Defender for Cloud dashboard covers Azure data and AI resources, not Microsoft 365 Copilot prompts."
+  },
+  "617f27c62988": {
+    "Copilot Studio agent settings, Generative AI, Content moderation": "Content moderation in an agent controls response filtering, not external threat detection.",
+    "Microsoft Entra admin center, Enterprise applications, Conditional Access policies": "Conditional Access does not connect Copilot Studio to an external security provider.",
+    "Microsoft 365 admin center, Agents, Settings": "The Microsoft 365 admin center manages agent availability, not the Copilot Studio threat detection webhook."
+  },
+  "2907038ac51a": {
+    "The tool call is blocked until the provider responds": "Blocking is not the default; it must be configured through error behavior.",
+    "The agent retries the call three times and then blocks": "There is no documented retry-then-block behavior.",
+    "The conversation ends and an alert is raised": "The default is to continue the conversation, not end it."
+  },
+  "cd71c33b0498": {
+    "All users": "Policies targeting all users do not include agent identities or agent user accounts.",
+    "A group containing the agent's user account": "Including or excluding agent user accounts by group membership is not supported, and the flow uses the agent identity, not its user account.",
+    "The signed-in user who invoked the agent": "In an app-only flow there is no signed-in user, so user-targeted policies do not apply."
+  },
+  "d41120bf8991": {
+    "Rotate the agent's credentials": "Credential and authentication settings are owner responsibilities.",
+    "Re-enable the agent after investigation": "Only owners or admins can re-enable a disabled agent identity.",
+    "Hard-delete the agent identity": "Hard-delete is reserved for owners and administrators."
+  },
+  "0f62ca3daf60": {
+    "Application permissions expire after one hour": "Tokens expire, but the permission grant does not, so expiry does not reduce blast radius.",
+    "Delegated permissions always require administrator consent first": "Many delegated permissions can be user consented; consent type is not what defines blast radius.",
+    "Application permissions cannot be audited": "Use of application permissions is logged and can be audited."
+  },
+  "bc96f4126cc0": {
+    "rate-limit-by-key": "rate-limit-by-key counts calls, not tokens consumed.",
+    "llm-emit-token-metric": "llm-emit-token-metric sends token usage metrics but does not enforce limits.",
+    "quota-by-key": "quota-by-key counts calls or bandwidth, not LLM tokens."
+  },
+  "b4315e02f5f7": {
+    "validate-content": "validate-content checks payloads against schemas and size, not harmful content.",
+    "llm-semantic-cache-lookup": "Semantic cache lookup returns cached responses and does not moderate prompts.",
+    "ip-filter": "ip-filter restricts callers by IP address."
+  },
+  "12acddc15f80": {
+    "A groundedness control at the output intervention point": "Groundedness applies to models, not agents, and checks output, not tool responses.",
+    "A content harms control on user input only": "Scanning only user input misses injected content returned by tools.",
+    "A protected material control with the Annotate action": "Protected material checks copyrighted text and code, and Annotate alone is available only for models."
+  },
+  "d2c0a5405b0b": {
+    "Both guardrails, with the strictest setting winning for each risk": "Guardrails are not merged; the agent guardrail replaces the model's.",
+    "Only the model deployment's guardrail": "The model's guardrail is used only when the agent has no guardrail of its own.",
+    "Microsoft.DefaultV2 always applies to agents": "DefaultV2 applies to an agent only if its model uses it or it is assigned explicitly."
+  },
+  "3cf19134639f": {
+    "Diagnostic logs on the Azure OpenAI resource": "Diagnostic logs do not add prompt evidence to Defender alerts.",
+    "Data security for AI interactions with Microsoft Purview": "The Purview integration shares prompts with Purview for data security, not alert evidence.",
+    "Defender CSPM sensitive data discovery": "Sensitive data discovery classifies data stores and does not change AI alerts."
+  },
+  "e3171850229e": {
+    "The Workload protections dashboard with Defender for Servers Plan 2 enabled": "The workload protections view does not focus on data and AI resources, and Servers Plan 2 does not cover them.",
+    "The regulatory compliance dashboard with the Microsoft cloud security benchmark": "Regulatory compliance maps controls to standards, not data and AI risks.",
+    "Azure Monitor workbooks that query a Log Analytics workspace only": "A custom workbook would not provide Defender's sensitive data and AI threat insights by itself."
+  },
+  "cc9df25b5227": {
+    "Restore the creator's account so the agents are reassigned automatically": "Restoring the account is not the documented way to manage ownerless agents.",
+    "Use Entra Conditional Access to hide the agents": "Conditional Access does not control visibility of agents in Microsoft 365.",
+    "Use Purview retention to expire the agents": "Retention policies apply to content, not agent availability."
+  },
+  "4a51b61fc28e": {
+    "BitLocker inside the guest OS": "BitLocker inside the guest is what ADE uses and consumes VM CPU.",
+    "Server-side encryption with platform-managed keys only": "SSE alone encrypts data at rest in storage but not temp disks or caches on the host.",
+    "Storage Service Encryption on a storage account": "Storage account encryption does not apply to managed disk temp storage and caches."
+  },
+  "3cb0c2c6b0f5": {
+    "Standard": "Standard supports native client but not session recording.",
+    "Basic": "Basic lacks native client support and session recording.",
+    "Developer": "Developer is a free, limited offering without these features."
+  },
+  "09cae961c961": {
+    "Defender for Servers Plan 1; it changes Windows Firewall inside the VM": "Plan 1 does not include JIT, and JIT does not modify the guest firewall.",
+    "Defender CSPM; it adds Bastion host rules": "JIT is not a Defender CSPM feature and does not work through Bastion rules.",
+    "Foundational CSPM; it modifies route tables": "Foundational CSPM does not include JIT, and JIT does not change routes."
+  },
+  "cb176b3da37e": {
+    "The Log Analytics agent with a workspace ID and key": "The Log Analytics agent is retired and does not make servers Azure resources.",
+    "Azure Site Recovery replication": "Site Recovery replicates for disaster recovery and does not manage the source servers.",
+    "An Azure Migrate appliance": "Azure Migrate assesses servers for migration and does not onboard them for protection."
+  },
+  "05816d457719": {
+    "Defender for Servers Plan 2": "Plan 2 costs more and includes features you do not need.",
+    "Defender CSPM": "Defender CSPM is a posture plan and does not provide EDR on servers.",
+    "Foundational CSPM": "Foundational CSPM is free posture management without EDR."
+  },
+  "ef5c6c3e032a": {
+    "It installs a temporary extension that runs a scan inside the VM": "No extension is installed; scanning is done on snapshots.",
+    "It mirrors network traffic to a scanner appliance": "Agentless scanning does not use traffic mirroring.",
+    "It reads the VM's memory through the hypervisor": "It analyzes disk snapshots, not live memory."
+  },
+  "8e0f3dca5069": {
+    "Standard security type with encryption at host enabled on the VM": "Encryption at host protects data at rest, not the boot chain.",
+    "Confidential VM with platform-managed keys only": "Confidential VMs add memory protection but the requirement is met by trusted launch.",
+    "Generation 1 VM with BitLocker": "Trusted launch requires Generation 2 VMs, and BitLocker does not provide boot attestation."
+  },
+  "0578742065de": {
+    "Audit": "Audit only reports compliance.",
+    "ApplyAndMonitor": "ApplyAndMonitor applies once and reports drift without correcting it.",
+    "DeployIfNotExists": "DeployIfNotExists is a policy effect, not a machine configuration assignment type."
+  },
+  "966c0a09aa91": {
+    "The Azure Policy add-on with the Deny effect": "The Policy add-on enforces admission rules, not runtime process monitoring.",
+    "Agentless registry scanning": "Registry scanning finds vulnerabilities in images before runtime.",
+    "Kubernetes audit logs only": "Audit logs record API server activity, not processes inside containers."
+  },
+  "e43b7ddc9dae": {
+    "Kubernetes RBAC with local accounts left enabled for admins": "Local accounts bypass Entra and are a backdoor.",
+    "Authorized IP ranges and a public API server endpoint": "IP ranges limit network access but do not control identity.",
+    "Workload identity federation with a Kubernetes service account token": "Workload identity is for pods accessing Azure resources, not user access to the cluster."
+  },
+  "f43f5f12b318": {
+    "Standard": "Standard does not support private endpoints.",
+    "Basic": "Basic does not support private endpoints.",
+    "Any SKU with the admin user disabled": "Disabling the admin user is a good practice but does not enable private endpoints."
+  },
+  "95d8b16670b9": {
+    "VNet integration for inbound and a service endpoint for outbound": "VNet integration only handles outbound traffic.",
+    "Hybrid connections for inbound and access restrictions for outbound": "Hybrid connections are outbound to specific endpoints, and access restrictions filter inbound traffic.",
+    "A NAT gateway for inbound and a private endpoint for outbound": "A NAT gateway provides outbound SNAT, not private inbound access."
+  },
+  "947a99e1d0ea": {
+    "Secure inputs and outputs in run history": "Secure inputs and outputs hide data in run history, not who can call the trigger.",
+    "An IP access restriction for workflow content": "Content access restrictions protect run history, not trigger calls.",
+    "A private endpoint on the Consumption logic app": "Private endpoints are not supported for Consumption logic apps."
+  },
+  "1f9c43c0c3e7": {
+    "Disable the entire managed rule set": "Disabling the rule set removes all OWASP protections.",
+    "Switch the WAF policy to the Bot Manager rule set only": "Bot Manager rules do not cover SQL injection.",
+    "Lower the anomaly score threshold": "Lowering the threshold makes blocking more aggressive, increasing false positives."
+  },
+  "434c35c51ab8": {
+    "authentication-managed-identity": "authentication-managed-identity gets a token for APIM to call the back end, not to validate the caller.",
+    "set-backend-service": "set-backend-service changes routing, not authentication.",
+    "cors": "cors controls browser cross-origin rules."
+  },
+  "1cc29796e8c9": {
+    "Secure score in foundational CSPM": "Secure score aggregates recommendations but does not chain risks into paths.",
+    "Regulatory compliance in foundational CSPM": "Regulatory compliance maps controls to standards, not attack chains.",
+    "Adaptive application controls in Defender for Servers": "Adaptive application controls were an allow list feature and do not analyze attack paths."
+  },
+  "8319a830f660": {
+    "Azure Resource Graph Explorer": "Resource Graph can list resource properties but does not include vulnerability findings and permission relationships from the security graph.",
+    "Microsoft Sentinel hunting queries": "Sentinel hunting queries log data, not the posture graph.",
+    "Azure Monitor metrics explorer": "Metrics explorer shows performance metrics."
+  },
+  "d4beadad3f09": {
+    "An Azure Resource Manager template in the AWS account": "ARM templates do not deploy into AWS.",
+    "An IAM user with long-lived access keys pasted into the portal": "The connector uses role-based trust, not stored IAM user keys.",
+    "The Azure Monitor Agent on every EC2 instance": "Agents may be used for some plans, but onboarding the account uses the CloudFormation template."
+  },
+  "5b91960104c2": {
+    "Deploy an AWS CloudFormation stack": "CloudFormation is an AWS service.",
+    "Install the Azure Connected Machine agent on a GCP VM first": "Arc onboarding is for individual servers, not connecting the GCP project.",
+    "Create an Entra app registration with a client secret": "The connector uses workload identity federation, not stored client secrets."
+  },
+  "d135fc67582f": {
+    "Azure Site Recovery": "Site Recovery is for disaster recovery replication.",
+    "A site-to-site VPN connection from AWS to Azure": "A VPN is not required for Defender for Servers on AWS.",
+    "Azure Bastion": "Bastion provides remote access to Azure VMs."
+  },
+  "1bbd8590add7": {
+    "In the Microsoft Defender portal, Settings, Endpoints, Advanced features only": "Endpoint advanced features control Defender for Endpoint settings, not the Defender for Cloud VA component.",
+    "In Azure Update Manager maintenance configurations": "Update Manager handles patching schedules.",
+    "In the Key Vault firewall settings": "Key Vault settings are unrelated."
+  },
+  "be53debfebeb": {
+    "Defender CSPM attack path analysis across subscriptions": "Attack paths analyze connected cloud environments, not unknown internet assets.",
+    "Azure Network Watcher topology": "Topology shows Azure network resources you already manage.",
+    "Microsoft Defender for Cloud Apps cloud discovery": "Cloud discovery identifies SaaS apps used by employees, not your public web assets."
+  },
+  "76cf4fde111c": {
+    "Enable each plan manually in every subscription's Environment settings page": "Manual enablement does not scale and misses new subscriptions.",
+    "Create a Sentinel automation rule": "Sentinel automation rules handle incidents, not plan enablement.",
+    "Configure a Defender for Cloud governance rule": "Governance rules assign remediation owners, not plans."
+  },
+  "cd6c385d7fb2": {
+    "An Azure Event Hubs namespace": "Event Hubs can be a data source but is not required for Sentinel.",
+    "An Azure Data Explorer cluster": "Azure Data Explorer is not required.",
+    "A Microsoft Purview account": "Purview is not required to enable Sentinel."
+  },
+  "ead5447840ed": {
+    "Microsoft Sentinel Reader": "Reader cannot manage incidents.",
+    "Microsoft Sentinel Contributor": "Contributor can create and edit rules, which exceeds the requirement.",
+    "Logic App Contributor": "Logic App Contributor manages playbooks, not incidents."
+  },
+  "5e799b88462b": {
+    "Assign the analyst who creates the rule the Microsoft Sentinel Responder role": "Responder lets users manage incidents but does not grant Sentinel permission to run playbooks.",
+    "Move the workspace into the playbook's resource group": "Moving resources is unnecessary; permissions are the issue.",
+    "Assign the playbook's managed identity the Owner role on the workspace": "The playbook does not need Owner on the workspace for Sentinel to run it."
+  },
+  "b3a7c0f945e1": {
+    "A scheduled analytics rule with entity mapping": "Analytics rules generate alerts and incidents but are not where assignment workflows are defined.",
+    "A watchlist with the on-call team members": "Watchlists store reference data and do not act on incidents.",
+    "A workbook with incident filters": "Workbooks visualize data only."
+  },
+  "6c5f908f1542": {
+    "Content hub solutions require a separate license for each rule": "There is no per-rule license for content hub solutions.",
+    "Solutions are enabled only after 24 hours of data": "Rules do not enable themselves after a waiting period.",
+    "You must restart the workspace": "Workspaces do not need restarts."
+  },
+  "4a651f441f01": {
+    "The Log Analytics agent installed directly on the firewall appliance": "The legacy Log Analytics agent is retired and cannot be installed on most appliances.",
+    "The Windows Security Events via AMA connector on a Windows collector": "Windows Security Events collect Windows logs, not CEF.",
+    "A direct Event Hubs connection from the appliance": "Event Hubs is not the standard CEF collection path."
+  },
+  "518292df3dfb": {
+    "The forwarder uses rsyslog instead of syslog-ng": "Both rsyslog and syslog-ng are supported daemons.",
+    "The CEF connector is configured on a Windows server": "The question states that the forwarder is Linux.",
+    "The workspace has data lake retention enabled": "Retention settings do not cause duplicate ingestion."
+  },
+  "c47758b790bd": {
+    "Windows Security Events via AMA with the All events set selected": "The All set collects every event, which increases cost.",
+    "The Windows Forwarded Events connector": "Forwarded Events collects events already forwarded to a WEC server.",
+    "The Microsoft Entra ID connector": "The Entra ID connector collects identity logs, not Windows events."
+  },
+  "b94778e50aa0": {
+    "The Windows Security Events via AMA connector on each source server": "Installing on each source server is unnecessary when WEF already centralizes events.",
+    "The Syslog via AMA connector on the WEC server": "Syslog is for Linux devices.",
+    "Azure Monitor Agent on the domain controller only": "Collecting only from the DC misses the forwarded events on the collector."
+  },
+  "54311455a6b1": {
+    "Create a table with the _SL suffix in the Defender portal": "Custom log tables use the _CL suffix, not _SL.",
+    "Use the legacy HTTP Data Collector API with a classic custom table": "The HTTP Data Collector API is deprecated in favor of the Logs Ingestion API.",
+    "Store data in a watchlist": "Watchlists hold reference data, not log streams."
+  },
+  "b52ff2a18a3d": {
+    "Set analytics retention to 7 years": "Analytics retention is limited to two years and is more expensive.",
+    "Export the data to a storage account and then delete the workspace": "Deleting the workspace removes analytics capabilities.",
+    "Use Basic Logs with a 30-day plan": "Basic Logs do not satisfy a 7-year retention need on their own."
+  },
+  "c6a92d7fa9c0": {
+    "They continue to run with no change": "Data lake tables do not support real-time analytics rules.",
+    "They are automatically converted to summary rules on the data lake": "Rules are not converted automatically.",
+    "They run every 24 hours instead of in real time": "There is no automatic switch to daily scheduling."
+  },
+  "c8c90742a331": {
+    "SecurityEvent, with the Windows Security Events via AMA connector": "SecurityEvent holds Windows security events.",
+    "AzureActivity, with the Azure Activity connector": "AzureActivity holds Azure control plane events.",
+    "IdentityLogonEvents, with Defender for Identity sensors": "IdentityLogonEvents holds authentication events, not file or mailbox actions."
+  },
+  "a02167685449": {
+    "Contributors cannot use plugins": "Contributors can use plugins.",
+    "The Sentinel plugin can be used only by users who hold the Copilot owner role": "Copilot owner is not required to use the plugin.",
+    "Security Copilot needs a separate Microsoft Sentinel license per user": "There is no separate license; access depends on the user's permissions."
+  },
+  "44fd6ebf98a9": {
+    "Assign them Global Reader": "Global Reader does not grant Copilot platform roles.",
+    "Assign them Security Administrator as eligible assignments using PIM": "Security Administrator is privileged and not recommended only for Copilot access.",
+    "Make each of them a Copilot owner": "Owner gives more control than the SOC needs."
+  },
+  "6fa04f654d9a": {
+    "A capacity can be shared by several workspaces at the same time": "A capacity resource can be used in only one workspace at a time.",
+    "Workspace names can be changed at any time": "Workspace names cannot be changed after creation.",
+    "A workspace can function without capacity": "A workspace must always have assigned capacity."
+  },
+  "4cccbef7ab00": {
+    "Copilot contributors": "Contributors cannot change plugin availability.",
+    "Any user who has used the plugin": "Using a plugin does not give management rights.",
+    "Only Microsoft support": "Owners can manage plugins without involving support."
+  },
+  "e474db587064": {
+    "Azure Marketplace virtual machine offers": "VM offers are not Security Copilot agents.",
+    "Microsoft Entra app gallery": "The Entra app gallery lists SaaS apps for SSO.",
+    "The Sentinel content hub as a playbook template": "Playbook templates are Logic Apps, not Security Copilot agents."
+  }
+}

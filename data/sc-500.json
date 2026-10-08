@@ -1,0 +1,1442 @@
+[
+  {
+    "question": "Administrators must not hold the Global Administrator role permanently. They should request it only when needed, for a limited time, after MFA and approval. Which feature should you configure?",
+    "options": [
+      "Microsoft Entra Privileged Identity Management with eligible assignments",
+      "A Conditional Access policy that requires MFA for all admins",
+      "Microsoft Entra ID Protection sign-in risk policy",
+      "An access package in entitlement management for directory roles"
+    ],
+    "answer": "Microsoft Entra Privileged Identity Management with eligible assignments",
+    "explanation": "PIM eligible assignments make users request activation of the role just in time, with settings for maximum duration, MFA on activation, justification and approval.",
+    "link": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure"
+  },
+  {
+    "question": "You want just-in-time membership of a security group that is assigned the Contributor role on several subscriptions, so engineers activate group membership only when needed. What should you use?",
+    "options": [
+      "A role-assignable group with a permanent owner",
+      "An Azure Policy assignment with a Modify effect",
+      "A dynamic membership rule on the group",
+      "PIM for Groups with eligible membership"
+    ],
+    "answer": "PIM for Groups with eligible membership",
+    "explanation": "PIM for Groups lets users be eligible members or owners of a group and activate membership just in time, so any roles granted to the group become time-bound.",
+    "link": "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/concept-pim-for-groups"
+  },
+  {
+    "question": "A Conditional Access policy must require phishing-resistant MFA for administrators. Which grant control should you configure?",
+    "options": [
+      "Require the Phishing-resistant MFA authentication strength",
+      "Require multifactor authentication",
+      "Require device to be marked as compliant in Intune before access",
+      "Require approved client app"
+    ],
+    "answer": "Require the Phishing-resistant MFA authentication strength",
+    "explanation": "Authentication strengths let a policy demand specific method combinations, and the built-in Phishing-resistant MFA strength allows only methods such as FIDO2 passkeys, Windows Hello for Business and certificate-based authentication.",
+    "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-authentication-strengths"
+  },
+  {
+    "question": "New employees must register a FIDO2 passkey on their first day without ever having a password. What should the help desk issue so the user can sign in and register the passkey?",
+    "options": [
+      "A one-time SMS code",
+      "A software OATH token",
+      "A temporary password with forced change",
+      "A Temporary Access Pass"
+    ],
+    "answer": "A Temporary Access Pass",
+    "explanation": "A Temporary Access Pass is a time-limited passcode that satisfies strong authentication, so users can onboard and register passwordless methods such as passkeys without a password.",
+    "link": "https://learn.microsoft.com/en-us/entra/identity/authentication/howto-authentication-temporary-access-pass"
+  },
+  {
+    "question": "You create an app registration in your tenant for an internal web app. Where do you configure which users are allowed to sign in to the app and whether assignment is required?",
+    "options": [
+      "On the app registration Manifest page",
+      "On the enterprise application in your tenant",
+      "On the app registration Certificates and secrets page",
+      "On the app registration Expose an API page"
+    ],
+    "answer": "On the enterprise application in your tenant",
+    "explanation": "The enterprise application is the service principal, the local instance of the app in the tenant, and it holds user assignment, the Assignment required setting and other tenant-specific settings.",
+    "link": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/assign-user-or-group-access-portal"
+  },
+  {
+    "question": "Users have been consenting to third-party apps that request mail access. You want users to consent only to apps from verified publishers that request low-impact permissions, and to request admin approval for anything else. Which two settings should you configure together?",
+    "options": [
+      "Block user consent, plus a Conditional Access policy for all cloud apps",
+      "Consent for verified publishers with low-impact permissions, plus admin consent workflow",
+      "Allow user consent for all apps, plus app instance property lock",
+      "Disable user consent completely, plus Assignment required on every enterprise application"
+    ],
+    "answer": "Consent for verified publishers with low-impact permissions, plus admin consent workflow",
+    "explanation": "The user consent setting can be limited to verified publishers and permissions classified as low impact, and the admin consent workflow lets users request approval for other apps instead of being blocked.",
+    "link": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-user-consent"
+  },
+  {
+    "question": "An attacker tricked users into granting an OAuth app the Mail.Read delegated permission. You must remove the app's access immediately for all users. What should you do first?",
+    "options": [
+      "Delete the app registration from your own tenant's App registrations list",
+      "Revoke the app's permission grants and disable its enterprise app sign-in",
+      "Reset the passwords of all affected users",
+      "Enable security defaults for the tenant"
+    ],
+    "answer": "Revoke the app's permission grants and disable its enterprise app sign-in",
+    "explanation": "Revoking the delegated permission grants on the service principal and disabling user sign-in for the enterprise app stops it from obtaining new tokens to access mailboxes.",
+    "link": "https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-user-consent"
+  },
+  {
+    "question": "A new key vault must use the recommended access model so that permissions can be granted at the individual secret level and managed with PIM. Which permission model should you choose?",
+    "options": [
+      "Storage account key authorization",
+      "Shared access signature tokens",
+      "Azure role-based access control",
+      "Vault access policy"
+    ],
+    "answer": "Azure role-based access control",
+    "explanation": "Azure RBAC is the recommended Key Vault permission model. It supports scopes down to an individual key, secret or certificate and works with PIM and Azure Policy.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide"
+  },
+  {
+    "question": "An application's managed identity needs to read the value of secrets in a key vault that uses Azure RBAC. It must not be able to create or delete secrets. Which built-in role should you assign?",
+    "options": [
+      "Key Vault Secrets User",
+      "Key Vault Reader",
+      "Key Vault Secrets Officer",
+      "Key Vault Contributor"
+    ],
+    "answer": "Key Vault Secrets User",
+    "explanation": "Key Vault Secrets User grants read access to secret contents, which is the least privilege for an application that only consumes secrets.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide"
+  },
+  {
+    "question": "A security engineer is assigned Key Vault Contributor on a vault that uses the access policy permission model. Why is this a concern?",
+    "options": [
+      "It can edit access policies and grant itself data plane access",
+      "The role grants direct read access to every key and secret",
+      "The role bypasses the Key Vault firewall",
+      "The role allows purging the vault even when purge protection is enabled"
+    ],
+    "answer": "It can edit access policies and grant itself data plane access",
+    "explanation": "With the access policy model, anyone who can write to the vault's management plane, including Key Vault Contributor, can modify access policies and therefore give themselves data access. Azure RBAC avoids this escalation path.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide"
+  },
+  {
+    "question": "A key vault holds TDE protector keys for Azure SQL. You must guarantee that a deleted key can be recovered for 90 days and that nobody, including administrators, can permanently delete it during that time. Which configuration is required?",
+    "options": [
+      "Soft delete with 90-day retention and a CanNotDelete lock",
+      "Soft delete with 7-day retention and RBAC enabled",
+      "Purge protection disabled and an Azure Backup policy",
+      "Soft delete with 90-day retention and purge protection enabled"
+    ],
+    "answer": "Soft delete with 90-day retention and purge protection enabled",
+    "explanation": "Soft delete keeps deleted objects for the retention period (7 to 90 days) and purge protection blocks permanent deletion until that period ends. Purge protection cannot be turned off once enabled.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview"
+  },
+  {
+    "question": "You enable the Key Vault firewall to allow only selected virtual networks. An Azure SQL logical server must still reach the vault for TDE with customer-managed keys. What should you also enable?",
+    "options": [
+      "Allow public access from all networks",
+      "Allow trusted Microsoft services to bypass this firewall",
+      "A service endpoint on the SQL server's subnet",
+      "A Key Vault access policy for the SQL server's IP address"
+    ],
+    "answer": "Allow trusted Microsoft services to bypass this firewall",
+    "explanation": "Azure SQL is a trusted Microsoft service for Key Vault, so enabling the trusted services exception lets it reach the vault while other public traffic is blocked.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/general/network-security"
+  },
+  {
+    "question": "You need customer-managed keys in Key Vault to rotate automatically every 12 months and notify the owners 30 days before expiry. What should you configure?",
+    "options": [
+      "An Event Grid subscription that recreates the key",
+      "An Azure Policy with a DeployIfNotExists effect",
+      "A key rotation policy on the key",
+      "A certificate issuance policy"
+    ],
+    "answer": "A key rotation policy on the key",
+    "explanation": "A key rotation policy defines automatic rotation intervals, expiry and notification time, and Key Vault creates the new key version itself.",
+    "link": "https://learn.microsoft.com/en-us/azure/key-vault/keys/how-to-configure-key-rotation"
+  },
+  {
+    "question": "Developers sometimes leave storage connection strings and SSH private keys on Azure VMs. You want agentless discovery of these secrets and to see them in attack paths. Which plan provides this?",
+    "options": [
+      "Defender for Storage",
+      "Defender CSPM",
+      "Defender for Key Vault",
+      "Foundational CSPM"
+    ],
+    "answer": "Defender CSPM",
+    "explanation": "Agentless secrets scanning for VMs is included in Defender CSPM (and Defender for Servers Plan 2), and the findings feed recommendations, cloud security explorer and attack path analysis.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/secrets-scanning"
+  },
+  {
+    "question": "Defender for Key Vault raised an alert that a vault was accessed from a TOR exit node. Which statement about this plan is correct?",
+    "options": [
+      "It scans secret values to detect weak passwords",
+      "It blocks the suspicious caller automatically",
+      "It analyzes vault access activity to detect anomalies, with no agent",
+      "It must be enabled separately on each key vault through its diagnostic settings"
+    ],
+    "answer": "It analyzes vault access activity to detect anomalies, with no agent",
+    "explanation": "Defender for Key Vault monitors access and operations on vaults and raises alerts for anomalies such as access from suspicious IP addresses. It is enabled at the subscription level and needs no agent.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-key-vault-introduction"
+  },
+  {
+    "question": "A policy must prevent anyone from creating storage accounts that allow public blob access. Existing noncompliant accounts should be reported but not changed. Which effect should you use?",
+    "options": [
+      "Modify",
+      "Audit",
+      "Deny",
+      "DeployIfNotExists"
+    ],
+    "answer": "Deny",
+    "explanation": "Deny blocks noncompliant create and update requests and also marks existing noncompliant resources as noncompliant without changing them.",
+    "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-basics"
+  },
+  {
+    "question": "You assign a policy with the Modify effect that adds a required tag to existing resources. The remediation task fails with an authorization error. What is the most likely cause?",
+    "options": [
+      "The policy must be assigned at the tenant root to remediate",
+      "Remediation tasks require the Deny effect",
+      "Modify effects cannot run on existing resources",
+      "The assignment's managed identity lacks the required role"
+    ],
+    "answer": "The assignment's managed identity lacks the required role",
+    "explanation": "Modify and DeployIfNotExists remediations run as the policy assignment's managed identity, which needs a role assignment granting the operations defined in roleDefinitionIds.",
+    "link": "https://learn.microsoft.com/en-us/azure/governance/policy/how-to/remediate-resources"
+  },
+  {
+    "question": "You must block deletion of any Azure SQL database in production subscriptions while still allowing updates. Which Azure Policy effect fits best?",
+    "options": [
+      "Audit",
+      "DenyAction",
+      "Append",
+      "Deny"
+    ],
+    "answer": "DenyAction",
+    "explanation": "DenyAction blocks specific actions, currently the DELETE action, on resources that match the policy, without blocking creates or updates.",
+    "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effect-deny-action"
+  },
+  {
+    "question": "A team needs a resource group to be excluded from a Deny policy for 60 days while a vendor fixes an app, and you want the exception documented with a reason. What should you create?",
+    "options": [
+      "A new assignment with enforcement mode set to DoNotEnforce",
+      "A notScopes entry on the assignment",
+      "A resource lock on the resource group",
+      "A policy exemption with category Waiver and an expiration date"
+    ],
+    "answer": "A policy exemption with category Waiver and an expiration date",
+    "explanation": "A policy exemption records why a scope is excluded, uses the Waiver or Mitigated category and can expire automatically, which suits a temporary documented exception.",
+    "link": "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/exemption-structure"
+  },
+  {
+    "question": "Your auditors require a view of your Azure subscriptions mapped to PCI DSS controls in Defender for Cloud. What should you do?",
+    "options": [
+      "Assign the Microsoft cloud security benchmark at the management group level",
+      "Create a custom role with Microsoft.Security read permissions",
+      "Enable Defender for Servers Plan 1 only",
+      "Add the PCI DSS standard and review the regulatory compliance dashboard"
+    ],
+    "answer": "Add the PCI DSS standard and review the regulatory compliance dashboard",
+    "explanation": "Defender for Cloud lets you assign regulatory standards such as PCI DSS, and the regulatory compliance dashboard shows assessment results mapped to that standard's controls.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-regulatory-compliance-standards"
+  },
+  {
+    "question": "You need a recommendation in Defender for Cloud that flags Azure storage accounts missing a specific tag, defined with a KQL query against the cloud security graph. What is required?",
+    "options": [
+      "A custom Azure Policy initiative only",
+      "Foundational CSPM with the Microsoft cloud security benchmark enabled",
+      "A workbook in Azure Monitor",
+      "A Defender CSPM plan for KQL-based custom recommendations"
+    ],
+    "answer": "A Defender CSPM plan for KQL-based custom recommendations",
+    "explanation": "Custom recommendations written in KQL are a Defender CSPM capability. Foundational CSPM supports custom recommendations only through Azure Policy definitions.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/create-custom-recommendations"
+  },
+  {
+    "question": "You apply a ReadOnly lock to a storage account. A user with the Contributor role tries to view blobs in the portal by using access keys and fails. Why?",
+    "options": [
+      "ReadOnly locks block all data plane reads",
+      "Contributor cannot read blob data under any lock",
+      "Listing account keys is a POST operation that the lock blocks",
+      "ReadOnly locks revoke existing SAS tokens and account key sessions"
+    ],
+    "answer": "Listing account keys is a POST operation that the lock blocks",
+    "explanation": "A ReadOnly lock blocks write and POST operations on the management plane, including listKeys, so the portal cannot retrieve keys to show blob data with key authorization.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources"
+  },
+  {
+    "question": "A custom role grants Microsoft.Storage/* in Actions and lists Microsoft.Storage/storageAccounts/delete in NotActions. A user also has the Contributor role on the same scope. Can the user delete storage accounts?",
+    "options": [
+      "Yes, but only after a PIM activation",
+      "No, because custom roles take precedence over built-in roles",
+      "No, because NotActions blocks the operation across all assigned roles",
+      "Yes, because NotActions is not a deny and Contributor allows it"
+    ],
+    "answer": "Yes, because NotActions is not a deny and Contributor allows it",
+    "explanation": "NotActions only subtracts operations from that role's own allowed set. Azure RBAC is additive, so another role that grants the delete still allows it.",
+    "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-definitions"
+  },
+  {
+    "question": "Your help desk must manage client secrets and certificates only for the app registrations used by the finance team, using least privilege. What should you create?",
+    "options": [
+      "An Entra custom role with app credential permissions, scoped to those apps",
+      "The Cloud Application Administrator role assigned tenant wide",
+      "An Azure custom role assigned at the subscription",
+      "The Application Administrator role assigned for the whole tenant directory"
+    ],
+    "answer": "An Entra custom role with app credential permissions, scoped to those apps",
+    "explanation": "Microsoft Entra custom roles can include specific application permissions such as updating credentials and can be assigned scoped to individual app registrations.",
+    "link": "https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/custom-overview"
+  },
+  {
+    "question": "A review shows that 40 users hold Owner on a subscription, mostly to manage VMs. What is the best remediation that follows least privilege?",
+    "options": [
+      "Create a deny assignment for Microsoft.Authorization/*",
+      "Keep Owner but add a CanNotDelete lock on the subscription to stop damage",
+      "Replace Owner with Contributor at the subscription scope for all 40 users",
+      "Virtual Machine Contributor at the narrowest scope, plus PIM for Owner"
+    ],
+    "answer": "Virtual Machine Contributor at the narrowest scope, plus PIM for Owner",
+    "explanation": "Least privilege means assigning the narrowest built-in role, such as Virtual Machine Contributor, at the smallest scope, and making the few privileged roles still needed eligible through PIM.",
+    "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices"
+  },
+  {
+    "question": "You must let a team lead assign the Storage Blob Data Reader role to users on one subscription, but prevent the lead from assigning any other role. Which approach should you use?",
+    "options": [
+      "Owner with a CanNotDelete lock",
+      "User Access Administrator at the subscription",
+      "Role Based Access Control Administrator with a role assignment condition",
+      "A Microsoft Entra custom role scoped to the subscription with role permissions"
+    ],
+    "answer": "Role Based Access Control Administrator with a role assignment condition",
+    "explanation": "Role Based Access Control Administrator can be assigned with a condition that constrains which roles and principal types the holder can assign, which delegates role assignment safely.",
+    "link": "https://learn.microsoft.com/en-us/azure/role-based-access-control/delegate-role-assignments-overview"
+  },
+  {
+    "question": "A ransomware actor with Backup Contributor rights might stop protection and delete backup data. You must make sure deleted backup data stays recoverable and that this protection cannot be turned off. What should you enable on the Recovery Services vault?",
+    "options": [
+      "Instant restore snapshots",
+      "Cross Region Restore",
+      "Geo-redundant storage",
+      "Soft delete set to always-on"
+    ],
+    "answer": "Soft delete set to always-on",
+    "explanation": "Always-on soft delete keeps deleted backup data for the retention period and, once enabled, cannot be disabled, so an attacker cannot turn it off before deleting data.",
+    "link": "https://learn.microsoft.com/en-us/azure/backup/secure-by-default"
+  },
+  {
+    "question": "You want to stop anyone from reducing backup retention or deleting recovery points before they expire in a Recovery Services vault, and the setting must be irreversible. What should you configure?",
+    "options": [
+      "Multi-user authorization with Resource Guard",
+      "Immutable vault in the Locked state",
+      "Soft delete with 14-day retention",
+      "Immutable vault in the Unlocked state"
+    ],
+    "answer": "Immutable vault in the Locked state",
+    "explanation": "An immutable vault blocks operations that could cause loss of recovery points, and locking it makes the immutability setting irreversible.",
+    "link": "https://learn.microsoft.com/en-us/azure/backup/backup-azure-immutable-vault-concept"
+  },
+  {
+    "question": "Critical operations on a Recovery Services vault, such as disabling soft delete, must require approval from a separate security team that manages its own subscription. What should you implement?",
+    "options": [
+      "PIM eligible assignment of Backup Contributor",
+      "An Azure Policy with the Deny effect assigned to the vault's subscription",
+      "A CanNotDelete lock on the vault",
+      "Multi-user authorization with a Resource Guard the security team owns"
+    ],
+    "answer": "Multi-user authorization with a Resource Guard the security team owns",
+    "explanation": "Multi-user authorization uses a Resource Guard, ideally in a different subscription or tenant, so protected operations need permissions on the guard that only the security team can grant.",
+    "link": "https://learn.microsoft.com/en-us/azure/backup/multi-user-authorization-concept"
+  },
+  {
+    "question": "Your team deploys Azure resources with Bicep templates from Azure DevOps. You want misconfigurations in the templates flagged in pull requests and surfaced in Defender for Cloud. What should you set up?",
+    "options": [
+      "Enable Azure Monitor change analysis",
+      "Connect Azure DevOps to Defender for Cloud and add the MSDO pipeline task",
+      "Enable Defender for Resource Manager on the deployment subscriptions",
+      "Assign Azure Policy definitions with the Audit effect to the subscriptions"
+    ],
+    "answer": "Connect Azure DevOps to Defender for Cloud and add the MSDO pipeline task",
+    "explanation": "The DevOps security features in Defender for Cloud, with the Microsoft Security DevOps task running IaC scanners such as Template Analyzer and Checkov, report template issues in PRs and in Defender for Cloud.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/iac-vulnerabilities"
+  },
+  {
+    "question": "You set AllowSharedKeyAccess to false on a storage account. Which kind of shared access signature can clients still use?",
+    "options": [
+      "User delegation SAS",
+      "Service SAS tied to a stored access policy",
+      "Service SAS",
+      "Account SAS"
+    ],
+    "answer": "User delegation SAS",
+    "explanation": "When Shared Key authorization is disallowed, SAS tokens signed with the account key stop working. A user delegation SAS is signed with Microsoft Entra credentials, so it continues to work.",
+    "link": "https://learn.microsoft.com/en-us/azure/storage/common/shared-key-authorization-prevent"
+  },
+  {
+    "question": "A partner received a service SAS for a container. The SAS was created without a stored access policy and you must revoke it immediately without affecting other clients that use Entra ID. What should you do?",
+    "options": [
+      "Delete the container's stored access policies",
+      "Change the container's public access level",
+      "Rotate the storage account key that signed the SAS",
+      "Remove the partner's RBAC role assignment"
+    ],
+    "answer": "Rotate the storage account key that signed the SAS",
+    "explanation": "An ad hoc service SAS can only be revoked by regenerating the account key used to sign it. Clients using Entra ID authorization are not affected by key rotation.",
+    "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview"
+  },
+  {
+    "question": "You want to issue service SAS tokens for a container that you can later revoke or extend without rotating account keys. What should you use?",
+    "options": [
+      "A user delegation key with a 7-day lifetime",
+      "An account SAS with HTTPS only",
+      "Immutable storage with a time-based retention policy",
+      "A stored access policy on the container"
+    ],
+    "answer": "A stored access policy on the container",
+    "explanation": "A service SAS that references a stored access policy takes its start, expiry and permissions from the policy, so changing or deleting the policy changes or revokes every SAS linked to it.",
+    "link": "https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy"
+  },
+  {
+    "question": "An app running on an Azure VM must upload blobs to a single container using Entra ID authorization and least privilege. Which role and scope should you assign to the VM's managed identity?",
+    "options": [
+      "Storage Blob Data Owner scoped to the subscription",
+      "Reader scoped to the container",
+      "Storage Account Contributor scoped to the storage account",
+      "Storage Blob Data Contributor scoped to the container"
+    ],
+    "answer": "Storage Blob Data Contributor scoped to the container",
+    "explanation": "Storage Blob Data Contributor grants data plane read, write and delete on blobs, and scoping it to the container limits access to that container only.",
+    "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/assign-azure-role-data-access"
+  },
+  {
+    "question": "A storage account firewall allows only selected virtual networks. An Azure Synapse workspace in your tenant must read data, and you want to allow only that specific workspace rather than all trusted services. What should you configure?",
+    "options": [
+      "An IP rule with the Synapse service tag",
+      "A resource instance rule for the Synapse workspace",
+      "Allow Azure services on the trusted services list to access this storage account",
+      "A service endpoint on the Synapse managed virtual network"
+    ],
+    "answer": "A resource instance rule for the Synapse workspace",
+    "explanation": "Resource instance rules allow traffic from specific instances of supported Azure resources, based on their managed identity, through the storage firewall.",
+    "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security"
+  },
+  {
+    "question": "Users upload files to a public-facing app that stores them in Blob Storage. You need each new blob scanned for malware close to upload time and the result available for downstream processing. What should you enable?",
+    "options": [
+      "Sensitive data threat detection in Defender for Storage",
+      "Soft delete for blobs",
+      "Microsoft Defender Antivirus on the app's VM",
+      "On-upload malware scanning in Defender for Storage"
+    ],
+    "answer": "On-upload malware scanning in Defender for Storage",
+    "explanation": "On-upload malware scanning scans blobs as they are uploaded and writes the result to blob index tags and, optionally, to Event Grid and Log Analytics so you can automate handling.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/on-upload-malware-scanning"
+  },
+  {
+    "question": "Malware scanning in Defender for Storage marks a blob as malicious. You want the file moved to a quarantine container automatically. Which approach is supported?",
+    "options": [
+      "Assign an Azure Policy with a Modify effect",
+      "Configure the storage firewall to block malicious blobs",
+      "Publish results to Event Grid and use a Function or Logic App to move it",
+      "Enable the built-in auto-quarantine option on the storage account's Data protection page"
+    ],
+    "answer": "Publish results to Event Grid and use a Function or Logic App to move it",
+    "explanation": "Scan results can be published to Event Grid, and an event-driven Function or Logic App can then move, delete or tag the blob. Defender for Storage also offers soft-delete based remediation, but moving to a custom location is done through automation.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/on-upload-malware-scanning"
+  },
+  {
+    "question": "You enable Defender for Storage and want alerts on accounts that hold credit card numbers to be prioritized, using the sensitive information types defined in Microsoft Purview. Which feature should be on?",
+    "options": [
+      "Storage account key rotation reminders",
+      "Sensitive data threat detection",
+      "Activity monitoring only",
+      "On-upload malware scanning"
+    ],
+    "answer": "Sensitive data threat detection",
+    "explanation": "Sensitive data threat detection uses the sensitive data discovery engine with Purview sensitive information types and labels so alerts on accounts with sensitive data get higher priority.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-storage-data-sensitivity"
+  },
+  {
+    "question": "Audit evidence in Blob Storage must not be modified or deleted by anyone, including account owners, for seven years. What should you configure?",
+    "options": [
+      "Blob versioning combined with lifecycle management rules",
+      "A locked time-based immutability policy",
+      "Blob soft delete with 365-day retention",
+      "A CanNotDelete lock on the storage account"
+    ],
+    "answer": "A locked time-based immutability policy",
+    "explanation": "A time-based retention policy in WORM mode prevents modification and deletion for the interval, and locking the policy makes it compliant with regulatory requirements and impossible to shorten.",
+    "link": "https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview"
+  },
+  {
+    "question": "Azure SQL Database must allow only Microsoft Entra identities to sign in, with SQL authentication disabled at the server level. What should you configure?",
+    "options": [
+      "A server-level firewall rule that denies all IPs",
+      "Transparent data encryption with a customer-managed key",
+      "Microsoft Entra-only authentication on the logical server",
+      "Always Encrypted with secure enclaves"
+    ],
+    "answer": "Microsoft Entra-only authentication on the logical server",
+    "explanation": "Enabling Microsoft Entra-only authentication disables SQL authentication on the server, including the SQL admin, so only Entra principals can connect.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-azure-ad-only-authentication"
+  },
+  {
+    "question": "You configure TDE with a customer-managed key for Azure SQL Database. Which Key Vault settings are required for the key vault that holds the TDE protector?",
+    "options": [
+      "Public network access disabled",
+      "Soft delete and purge protection enabled",
+      "Premium SKU and HSM-only keys",
+      "Access policy permission model only"
+    ],
+    "answer": "Soft delete and purge protection enabled",
+    "explanation": "Azure SQL requires the key vault to have soft delete and purge protection enabled so the TDE protector cannot be lost permanently, which would make databases inaccessible.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/transparent-data-encryption-byok-overview"
+  },
+  {
+    "question": "A table holds credit card numbers. Database administrators must not be able to see plaintext values, and the client application must decrypt them. Which feature should you use?",
+    "options": [
+      "Always Encrypted",
+      "Transparent data encryption",
+      "Dynamic data masking",
+      "Row-level security"
+    ],
+    "answer": "Always Encrypted",
+    "explanation": "Always Encrypted encrypts data inside client applications and never reveals encryption keys to the database engine, so DBAs cannot see plaintext values.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/always-encrypted-landing"
+  },
+  {
+    "question": "Server-level auditing is enabled on an Azure SQL logical server, writing to a storage account. A database on that server also has database-level auditing enabled to a Log Analytics workspace. What happens?",
+    "options": [
+      "Only server-level auditing applies because it overrides the database",
+      "The configuration fails validation and auditing is disabled",
+      "The database is audited twice, once to each destination",
+      "Only database-level auditing applies because it overrides the server"
+    ],
+    "answer": "The database is audited twice, once to each destination",
+    "explanation": "Server auditing applies to all databases on the server. If database auditing is also enabled, both run in parallel and the database is audited twice. Microsoft recommends server-level auditing unless a database needs different settings.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/auditing-overview"
+  },
+  {
+    "question": "You must send audit logs from Azure SQL Managed Instance to a Log Analytics workspace. Which steps are required?",
+    "options": [
+      "Add a diagnostic setting, then create a server audit TO EXTERNAL_MONITOR",
+      "Enable server-level auditing in the portal Auditing blade of the instance, as for SQL Database",
+      "Install the Azure Monitor Agent on the managed instance",
+      "Create a server audit TO URL pointing to the workspace ID"
+    ],
+    "answer": "Add a diagnostic setting, then create a server audit TO EXTERNAL_MONITOR",
+    "explanation": "For Managed Instance, you add a diagnostic setting that sends the SQLSecurityAuditEvents category to Log Analytics, then use T-SQL to create a server audit with TO EXTERNAL_MONITOR and an audit specification, and turn it on.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/auditing-configure"
+  },
+  {
+    "question": "You want Defender for SQL vulnerability assessment on Azure SQL databases without having to create or manage a storage account for scan results. Which option should you use?",
+    "options": [
+      "Microsoft Defender for Storage",
+      "SQL Server agent jobs",
+      "Classic configuration",
+      "Express configuration"
+    ],
+    "answer": "Express configuration",
+    "explanation": "Express configuration is the default for vulnerability assessment and stores scan results and baselines internally, so no customer storage account is needed.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/sql-azure-vulnerability-assessment-overview"
+  },
+  {
+    "question": "Your organization runs Azure Database for PostgreSQL flexible server and Azure Cosmos DB. You need threat detection for anomalous access, brute force and SQL injection. Which plans should you enable?",
+    "options": [
+      "Defender CSPM only",
+      "Defender for open-source relational databases and for Azure Cosmos DB",
+      "Defender for SQL servers on machines with the AMA-based provisioning only",
+      "Defender for Azure SQL Databases together with Defender for Storage"
+    ],
+    "answer": "Defender for open-source relational databases and for Azure Cosmos DB",
+    "explanation": "The Defender for Databases plan covers several sub-plans. Open-source relational databases protects PostgreSQL, MySQL and MariaDB, and Defender for Azure Cosmos DB protects Cosmos DB accounts.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-databases-introduction"
+  },
+  {
+    "question": "An NSG has a custom inbound rule with priority 300 that denies TCP 3389 from Internet, and a rule with priority 200 that allows TCP 3389 from any source. What happens to RDP from the internet?",
+    "options": [
+      "It is denied because rule 300 is more specific",
+      "It is allowed because the priority 200 rule is processed first",
+      "It is allowed only if the default AllowVnetInBound rule matches",
+      "It is denied because deny rules always win"
+    ],
+    "answer": "It is allowed because the priority 200 rule is processed first",
+    "explanation": "NSG rules are processed in priority order from lowest number to highest, and processing stops at the first match. Priority 200 matches first and allows the traffic.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview"
+  },
+  {
+    "question": "Web VMs and database VMs share a subnet. You want an NSG rule that allows only the web tier to reach the database tier on TCP 1433 without maintaining IP addresses. What should you use?",
+    "options": [
+      "Application security groups in the NSG rule",
+      "Azure Virtual Network Manager connectivity configuration",
+      "A separate route table for each tier",
+      "Service tags as source and destination"
+    ],
+    "answer": "Application security groups in the NSG rule",
+    "explanation": "Application security groups group VM network interfaces by role so NSG rules can reference them instead of IP addresses.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups"
+  },
+  {
+    "question": "The central security team must block inbound SSH from the internet on all virtual networks in the organization, and application teams must not be able to override it with their own NSGs. What should you use?",
+    "options": [
+      "Azure Firewall DNAT rules",
+      "An Azure Policy that audits NSG rules",
+      "A Virtual Network Manager security admin rule set to Deny",
+      "An NSG with a priority 100 deny rule applied to every subnet"
+    ],
+    "answer": "A Virtual Network Manager security admin rule set to Deny",
+    "explanation": "Security admin rules in Virtual Network Manager are evaluated before NSG rules, so a Deny admin rule blocks the traffic regardless of NSGs that app teams create.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-security-admins"
+  },
+  {
+    "question": "A Virtual Network Manager security admin rule should let monitoring traffic from a scanner subnet always reach VMs, even if an NSG on the target subnet denies it. Which action should the rule use?",
+    "options": [
+      "Audit",
+      "Always Allow",
+      "Deny",
+      "Allow"
+    ],
+    "answer": "Always Allow",
+    "explanation": "Always Allow terminates evaluation and allows the traffic without NSG evaluation. Allow passes the traffic on to NSG rules, where an NSG could still deny it.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-security-admins"
+  },
+  {
+    "question": "You deploy a secured virtual hub in Azure Virtual WAN with Azure Firewall. Traffic between branches and spoke virtual networks must be inspected by the firewall. What should you configure?",
+    "options": [
+      "NSG flow logs on the hub",
+      "Routing intent with a private traffic routing policy",
+      "A user-defined route on every spoke subnet to the hub firewall",
+      "A route table with a 0.0.0.0/0 route only"
+    ],
+    "answer": "Routing intent with a private traffic routing policy",
+    "explanation": "Routing intent with a private traffic routing policy sends branch, VNet and inter-hub traffic through the next hop security solution in the hub.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-wan/how-to-routing-policies"
+  },
+  {
+    "question": "Remote users connect with point-to-site VPN. You must authenticate them with their Microsoft Entra ID accounts and apply Conditional Access. Which configuration is required?",
+    "options": [
+      "OpenVPN tunnel type with Microsoft Entra ID authentication",
+      "SSTP tunnel type with certificate authentication",
+      "IKEv2 tunnel type with Microsoft Entra ID authentication",
+      "IKEv2 tunnel type with RADIUS authentication"
+    ],
+    "answer": "OpenVPN tunnel type with Microsoft Entra ID authentication",
+    "explanation": "Microsoft Entra ID authentication for P2S is supported only with the OpenVPN protocol, and the Entra sign-in lets Conditional Access apply.",
+    "link": "https://learn.microsoft.com/en-us/azure/vpn-gateway/point-to-site-about"
+  },
+  {
+    "question": "A site-to-site VPN must use specific cryptographic algorithms and Diffie-Hellman groups to meet a compliance standard. What should you configure on the connection?",
+    "options": [
+      "A policy-based VPN gateway with default settings",
+      "Forced tunneling",
+      "BGP on the connection",
+      "A custom IPsec/IKE policy"
+    ],
+    "answer": "A custom IPsec/IKE policy",
+    "explanation": "A custom IPsec/IKE policy on the connection sets exact encryption, integrity, DH group and PFS group values instead of the default proposals.",
+    "link": "https://learn.microsoft.com/en-us/azure/vpn-gateway/ipsec-ike-policy-howto"
+  },
+  {
+    "question": "You want to replace your legacy VPN for remote users who access on-premises apps, while applying Conditional Access per app. Which service should you deploy?",
+    "options": [
+      "Azure Bastion with native client support",
+      "Azure VPN Gateway with certificate authentication",
+      "Microsoft Entra Private Access with private network connectors",
+      "Azure Front Door with Private Link origins"
+    ],
+    "answer": "Microsoft Entra Private Access with private network connectors",
+    "explanation": "Microsoft Entra Private Access, part of Global Secure Access, uses private network connectors to publish private apps and lets you apply Conditional Access per app, replacing broad VPN access.",
+    "link": "https://learn.microsoft.com/en-us/entra/global-secure-access/concept-private-access"
+  },
+  {
+    "question": "You are starting with Microsoft Entra Private Access and want to quickly publish a broad range of on-premises IP ranges and FQDNs as a single app before defining per-app segments. Which feature should you use?",
+    "options": [
+      "Entra Internet Access web content filtering",
+      "Application Proxy with pre-authentication",
+      "Quick Access",
+      "Per-app access with a separate enterprise app for each range"
+    ],
+    "answer": "Quick Access",
+    "explanation": "Quick Access lets you add FQDNs and IP ranges to one app as a starting point to replace VPN, and you can later move to per-app access for finer control.",
+    "link": "https://learn.microsoft.com/en-us/entra/global-secure-access/how-to-configure-quick-access"
+  },
+  {
+    "question": "Clients in a peered VNet resolve a storage account to its public IP even though a private endpoint exists. What is the most likely fix?",
+    "options": [
+      "Link the privatelink.blob private DNS zone to the client VNet",
+      "Enable a Microsoft.Storage service endpoint on the client subnet",
+      "Add the client subnet to the storage firewall",
+      "Disable private endpoint network policies"
+    ],
+    "answer": "Link the privatelink.blob private DNS zone to the client VNet",
+    "explanation": "Private endpoint name resolution relies on the privatelink private DNS zone. If the zone is not linked to the client's VNet, clients resolve the public address.",
+    "link": "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns"
+  },
+  {
+    "question": "You want an NSG on a subnet to filter traffic destined for private endpoints in that subnet. What must you configure?",
+    "options": [
+      "Add a service endpoint for the service",
+      "Disable the storage account's public endpoint and firewall exceptions",
+      "Enable network policies for private endpoints on the subnet",
+      "Assign an ASG to the private endpoint NIC"
+    ],
+    "answer": "Enable network policies for private endpoints on the subnet",
+    "explanation": "NSGs and UDRs are applied to private endpoint traffic only when the subnet's private endpoint network policies setting is enabled.",
+    "link": "https://learn.microsoft.com/en-us/azure/private-link/disable-private-endpoint-network-policy"
+  },
+  {
+    "question": "A SaaS provider wants customers in other tenants to reach its service hosted behind a Standard Load Balancer through private endpoints in their own VNets. What should the provider deploy?",
+    "options": [
+      "A VNet peering to each customer",
+      "A public IP with an NSG allow list",
+      "An Azure Private Link service",
+      "A service endpoint policy"
+    ],
+    "answer": "An Azure Private Link service",
+    "explanation": "A Private Link service exposes a service behind a Standard Load Balancer so consumers can connect privately with private endpoints, even across tenants, without peering.",
+    "link": "https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview"
+  },
+  {
+    "question": "You create a Private Link service and want only customers in specific subscriptions to be able to find it, with their connection requests approved automatically. Which settings should you configure?",
+    "options": [
+      "Visibility and auto-approval subscription lists",
+      "NAT IP configuration and TCP proxy v2",
+      "Load balancer health probe and session persistence",
+      "Private DNS zone group and ASG"
+    ],
+    "answer": "Visibility and auto-approval subscription lists",
+    "explanation": "The visibility setting controls which subscriptions can find the service, and the auto-approval list lets those subscriptions connect without manual approval.",
+    "link": "https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview"
+  },
+  {
+    "question": "Your security team needs outbound TLS inspection, intrusion detection and prevention with signatures, and URL filtering on full paths. Which Azure Firewall SKU is required?",
+    "options": [
+      "Standard with threat intelligence in Alert and deny mode",
+      "Basic",
+      "Standard",
+      "Premium"
+    ],
+    "answer": "Premium",
+    "explanation": "TLS inspection, signature-based IDPS and full-path URL filtering are Azure Firewall Premium features.",
+    "link": "https://learn.microsoft.com/en-us/azure/firewall/premium-features"
+  },
+  {
+    "question": "Azure Firewall has a DNAT rule, a network rule allowing TCP 443 to a subnet, and an application rule allowing *.contoso.com. In which order are these rule types processed?",
+    "options": [
+      "Application rules, then network rules, then DNAT rules",
+      "Network rules, then DNAT rules, then application rules",
+      "All rules are processed together by priority number only",
+      "DNAT rules, then network rules, then application rules"
+    ],
+    "answer": "DNAT rules, then network rules, then application rules",
+    "explanation": "Azure Firewall processes DNAT rules first, then network rules, then application rules. If a network rule matches, application rules are not evaluated for that traffic.",
+    "link": "https://learn.microsoft.com/en-us/azure/firewall/rule-processing"
+  },
+  {
+    "question": "You want to use FQDNs as destinations in Azure Firewall network rules, and VMs must resolve names the same way the firewall does. What should you configure?",
+    "options": [
+      "A private DNS zone linked to the firewall subnet and the spoke VNets",
+      "A forced tunneling route to on-premises DNS",
+      "An NSG rule allowing UDP 53 to Azure DNS",
+      "Enable DNS proxy and point the VNet DNS servers to the firewall"
+    ],
+    "answer": "Enable DNS proxy and point the VNet DNS servers to the firewall",
+    "explanation": "FQDN filtering in network rules needs DNS proxy so clients and the firewall resolve names consistently. Clients must use the firewall as their DNS server.",
+    "link": "https://learn.microsoft.com/en-us/azure/firewall/dns-settings"
+  },
+  {
+    "question": "A VM cannot be reached on TCP 8443 from another VM. You want to know whether an NSG allows or denies this specific flow and which rule is responsible. Which Network Watcher tool should you use?",
+    "options": [
+      "IP flow verify",
+      "Next hop",
+      "VNet flow logs",
+      "Connection monitor"
+    ],
+    "answer": "IP flow verify",
+    "explanation": "IP flow verify checks a specific 5-tuple against the NSG rules applied to the VM's NIC and returns allow or deny along with the name of the rule.",
+    "link": "https://learn.microsoft.com/en-us/azure/network-watcher/ip-flow-verify-overview"
+  },
+  {
+    "question": "A VM has an NSG on both its subnet and its NIC, and an admin rule from Virtual Network Manager also applies. You want to see the combined, aggregated rules that apply to the NIC. What should you use?",
+    "options": [
+      "IP flow verify",
+      "Next hop for the NIC's subnet",
+      "Packet capture",
+      "Effective security rules"
+    ],
+    "answer": "Effective security rules",
+    "explanation": "Effective security rules show the aggregated rules from the NIC and subnet NSGs, and admin rules, applied to a network interface.",
+    "link": "https://learn.microsoft.com/en-us/azure/network-watcher/effective-security-rules-overview"
+  },
+  {
+    "question": "Before rolling out Microsoft 365 Copilot, you need to find SharePoint sites where content is shared with Everyone except external users, and baseline which sites have the broadest permissions. What should you use?",
+    "options": [
+      "The Defender for Cloud regulatory compliance dashboard",
+      "Microsoft Entra access reviews for Microsoft 365 groups",
+      "Microsoft Purview eDiscovery content search",
+      "Data access governance reports in the SharePoint admin center"
+    ],
+    "answer": "Data access governance reports in the SharePoint admin center",
+    "explanation": "Data access governance reports, part of SharePoint Advanced Management, include the site permissions oversharing baseline and EEEU reports that reveal overexposed sites.",
+    "link": "https://learn.microsoft.com/en-us/sharepoint/data-access-governance-reports"
+  },
+  {
+    "question": "A SharePoint site with sensitive HR content must stay accessible to its members, but its content must not appear in Microsoft 365 Copilot results or organization-wide search for other users, while you remediate permissions. Which control should you apply?",
+    "options": [
+      "A Conditional Access policy for SharePoint Online",
+      "Restricted Content Discovery on the site",
+      "Delete the site and restore it later",
+      "Disable the Microsoft 365 Copilot license for all users"
+    ],
+    "answer": "Restricted Content Discovery on the site",
+    "explanation": "Restricted Content Discovery limits discovery of a site's content in organization-wide search and Microsoft 365 Copilot responses while permissions are reviewed, without changing site permissions.",
+    "link": "https://learn.microsoft.com/en-us/sharepoint/restricted-content-discovery"
+  },
+  {
+    "question": "You need to see which users are submitting sensitive information to Microsoft 365 Copilot and third-party AI websites, and to run a weekly oversharing assessment of your top SharePoint sites. Which solution provides this?",
+    "options": [
+      "Microsoft Defender for Cloud Apps session policies",
+      "Microsoft Purview Data Security Posture Management for AI",
+      "Defender for Cloud Data and AI security dashboard",
+      "Microsoft Entra ID Protection"
+    ],
+    "answer": "Microsoft Purview Data Security Posture Management for AI",
+    "explanation": "DSPM for AI shows AI interactions and sensitive data in prompts in Activity explorer, offers one-click policies and runs a default weekly data risk assessment for the top 100 SharePoint sites.",
+    "link": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+  },
+  {
+    "question": "You are enabling real-time protection for Copilot Studio agents with Microsoft Defender as the threat detection provider. Where does the Power Platform administrator turn on the integration?",
+    "options": [
+      "Power Platform admin center, Threat detection, Additional threat detection",
+      "Microsoft 365 admin center, Agents, Settings",
+      "Copilot Studio agent settings, Generative AI, Content moderation",
+      "Microsoft Entra admin center, Enterprise applications, Conditional Access policies"
+    ],
+    "answer": "Power Platform admin center, Threat detection, Additional threat detection",
+    "explanation": "The admin enables Additional threat detection per environment in the Power Platform admin center and supplies the Entra app ID and the endpoint link provided by Defender.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/external-security-provider"
+  },
+  {
+    "question": "Copilot Studio is connected to an external threat detection provider for real-time protection. If the provider does not answer within one second, what happens to the agent's tool call by default?",
+    "options": [
+      "The agent retries the call three times and then blocks",
+      "The tool call proceeds, unless error behavior is set to block",
+      "The tool call is blocked until the provider responds",
+      "The conversation ends and an alert is raised"
+    ],
+    "answer": "The tool call proceeds, unless error behavior is set to block",
+    "explanation": "By default, if no allow or block decision arrives within one second the agent proceeds. You can change Set error behavior to block the query instead.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/external-security-provider"
+  },
+  {
+    "question": "An agent built with a blueprint calls Microsoft Graph with its own agent identity in an app-only flow. You want to block it when it is considered high risk, including future agents created from the same blueprint. What should the Conditional Access policy target?",
+    "options": [
+      "The agent identity blueprint",
+      "A group containing the agent's user account",
+      "All users",
+      "The signed-in user who invoked the agent"
+    ],
+    "answer": "The agent identity blueprint",
+    "explanation": "For app-only access, Conditional Access policies target agent identities or the agent identity blueprint. A blueprint target applies to all agent identities created from it, including future ones.",
+    "link": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/agent-id"
+  },
+  {
+    "question": "A business owner is the sponsor of an agent identity. They suspect the agent is misbehaving. Which action can the sponsor take on their own?",
+    "options": [
+      "Re-enable the agent after investigation",
+      "Rotate the agent's credentials",
+      "Hard-delete the agent identity",
+      "Disable the agent identity"
+    ],
+    "answer": "Disable the agent identity",
+    "explanation": "Sponsors provide business accountability and can perform nondestructive lifecycle actions such as disabling or soft-deleting the agent identity, but cannot change technical settings.",
+    "link": "https://learn.microsoft.com/en-us/entra/agent-id/agent-owners-sponsors-managers"
+  },
+  {
+    "question": "In Defender XDR you review an agent that holds the Microsoft Graph application permissions Mail.ReadWrite.All and Files.ReadWrite.All. Why does this create a larger blast radius than delegated permissions?",
+    "options": [
+      "Delegated permissions always require administrator consent first",
+      "Application permissions expire after one hour",
+      "Application permissions cannot be audited",
+      "They apply tenant wide without needing a user context"
+    ],
+    "answer": "They apply tenant wide without needing a user context",
+    "explanation": "Application permissions are granted at the tenant level and do not depend on a signed-in user's access, so a compromised agent can reach data across the whole tenant.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/analyze-ai-identity-risks-defender-xdr/3-assess-blast-radius-attack-paths"
+  },
+  {
+    "question": "You must enforce per-team tokens-per-minute limits on calls to Foundry model deployments through Azure API Management. Which policy should you apply?",
+    "options": [
+      "llm-emit-token-metric",
+      "rate-limit-by-key",
+      "llm-token-limit",
+      "quota-by-key"
+    ],
+    "answer": "llm-token-limit",
+    "explanation": "The llm-token-limit policy enforces tokens-per-minute limits or token quotas per counter key, such as a subscription key, based on LLM token usage.",
+    "link": "https://learn.microsoft.com/en-us/azure/api-management/llm-token-limit-policy"
+  },
+  {
+    "question": "You want prompts sent through the AI gateway in API Management to be checked for harmful content and jailbreak attempts before they reach the model. Which policy should you use?",
+    "options": [
+      "llm-content-safety",
+      "llm-semantic-cache-lookup",
+      "ip-filter",
+      "validate-content"
+    ],
+    "answer": "llm-content-safety",
+    "explanation": "The llm-content-safety policy sends prompts to Azure AI Content Safety and blocks requests that violate the configured categories or shield checks.",
+    "link": "https://learn.microsoft.com/en-us/azure/api-management/llm-content-safety-policy"
+  },
+  {
+    "question": "A Foundry agent calls external tools. You need to detect indirect prompt injection in content returned by those tools before the agent uses it. Which guardrail configuration is required?",
+    "options": [
+      "A content harms control on user input only",
+      "A groundedness control at the output intervention point",
+      "A protected material control with the Annotate action",
+      "An indirect attacks control at the tool response point"
+    ],
+    "answer": "An indirect attacks control at the tool response point",
+    "explanation": "Guardrail controls specify the risk and intervention points. Indirect attacks scanned at the tool response point check content returned from tools before the agent consumes it.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/guardrails-overview"
+  },
+  {
+    "question": "A model deployment has a guardrail with a strict violence control. You assign a different custom guardrail to an agent that uses that model. Which guardrail is applied to the agent's risks?",
+    "options": [
+      "Both guardrails, with the strictest setting winning for each risk",
+      "Only the agent's guardrail, which fully overrides the model's",
+      "Microsoft.DefaultV2 always applies to agents",
+      "Only the model deployment's guardrail"
+    ],
+    "answer": "Only the agent's guardrail, which fully overrides the model's",
+    "explanation": "Risks for an agent are detected based on the guardrail assigned to the agent, and the agent guardrail fully overrides the guardrail of the underlying model.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/guardrails/guardrails-overview"
+  },
+  {
+    "question": "You enabled Defender for AI Services. Analysts complain that alerts do not show the suspicious part of the user prompt. What should you turn on?",
+    "options": [
+      "Defender CSPM sensitive data discovery",
+      "Diagnostic logs on the Azure OpenAI resource",
+      "Data security for AI interactions with Microsoft Purview",
+      "Enable user prompt evidence in the AI services plan settings"
+    ],
+    "answer": "Enable user prompt evidence in the AI services plan settings",
+    "explanation": "The suspicious prompt evidence component adds suspicious portions of prompts and model responses to alerts, with sensitive data redacted. When off, prompt content is masked in alerts.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-onboarding"
+  },
+  {
+    "question": "A manager wants one view in Defender for Cloud that shows sensitive data in storage and databases, AI resources, prompts scanned, AI alerts and internet-exposed grounding sources. What should you use and which plans give full coverage?",
+    "options": [
+      "The regulatory compliance dashboard with the Microsoft cloud security benchmark",
+      "The Data and AI security dashboard, with CSPM, Storage, Databases and AI plans",
+      "The Workload protections dashboard with Defender for Servers Plan 2 enabled",
+      "Azure Monitor workbooks that query a Log Analytics workspace only"
+    ],
+    "answer": "The Data and AI security dashboard, with CSPM, Storage, Databases and AI plans",
+    "explanation": "The Data and AI security dashboard centralizes data and AI resources, risks and protection status. Full functionality needs Defender CSPM with sensitive data discovery, Defender for Storage, Defender for Databases and threat protection for AI services.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/data-aware-security-dashboard-overview"
+  },
+  {
+    "question": "A user who created several shared agents has left the company, and the agents are now ownerless. In the Microsoft 365 admin center, what can you do?",
+    "options": [
+      "Use Purview retention to expire the agents",
+      "Use Entra Conditional Access to hide the agents",
+      "Filter for agents without owners in the registry, then block or delete",
+      "Restore the creator's account so the agents are reassigned automatically"
+    ],
+    "answer": "Filter for agents without owners in the registry, then block or delete",
+    "explanation": "The agent registry under Agents in the Microsoft 365 admin center shows ownerless agents, and admins can review them and take action such as blocking or deleting.",
+    "link": "https://learn.microsoft.com/en-us/microsoft-365/admin/manage/agent-registry"
+  },
+  {
+    "question": "Microsoft recommends a replacement for Azure Disk Encryption for new deployments that encrypts temp disks and caches at the host without using CPU in the VM. What is it?",
+    "options": [
+      "Server-side encryption with platform-managed keys only",
+      "Encryption at host",
+      "BitLocker inside the guest OS",
+      "Storage Service Encryption on a storage account"
+    ],
+    "answer": "Encryption at host",
+    "explanation": "Encryption at host encrypts data on the VM host, including temp disks and OS and data disk caches, end to end into storage. Microsoft recommends it over ADE, which is scheduled for retirement.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview"
+  },
+  {
+    "question": "You must provide RDP access to Azure VMs from the native Windows client, with sessions recorded for audit, and no public IPs on the VMs. Which Bastion SKU meets all requirements?",
+    "options": [
+      "Standard",
+      "Developer",
+      "Basic",
+      "Premium"
+    ],
+    "answer": "Premium",
+    "explanation": "Session recording is a Premium SKU feature. Premium also supports native client connections, so it meets all requirements.",
+    "link": "https://learn.microsoft.com/en-us/azure/bastion/session-recording"
+  },
+  {
+    "question": "You want management ports on VMs closed by default and opened only on request for a specific source IP and limited time. Which plan is required, and what does the feature modify?",
+    "options": [
+      "Foundational CSPM; it modifies route tables",
+      "Defender CSPM; it adds Bastion host rules",
+      "Defender for Servers Plan 2; it creates NSG and Azure Firewall rules",
+      "Defender for Servers Plan 1; it changes Windows Firewall inside the VM"
+    ],
+    "answer": "Defender for Servers Plan 2; it creates NSG and Azure Firewall rules",
+    "explanation": "Just-in-time VM access is part of Defender for Servers Plan 2. It configures NSG rules, and Azure Firewall rules where relevant, to allow approved access for a limited time.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-overview"
+  },
+  {
+    "question": "On-premises Windows and Linux servers must appear in Defender for Cloud and receive Azure Policy and Defender for Servers protection. What should you deploy first?",
+    "options": [
+      "The Azure Connected Machine agent (Azure Arc)",
+      "The Log Analytics agent with a workspace ID and key",
+      "An Azure Migrate appliance",
+      "Azure Site Recovery replication"
+    ],
+    "answer": "The Azure Connected Machine agent (Azure Arc)",
+    "explanation": "Onboarding servers to Azure Arc projects them as Azure resources so Defender for Servers, Azure Policy and machine configuration can be applied.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-arc/servers/overview"
+  },
+  {
+    "question": "You need Defender for Endpoint integration only, at the lowest cost, for a fleet of VMs. Agentless scanning, JIT access and file integrity monitoring are not required. Which plan should you choose?",
+    "options": [
+      "Defender for Servers Plan 2",
+      "Defender for Servers Plan 1",
+      "Defender CSPM",
+      "Foundational CSPM"
+    ],
+    "answer": "Defender for Servers Plan 1",
+    "explanation": "Plan 1 includes Defender for Endpoint integration. Plan 2 adds agentless scanning, JIT, FIM and other features that are not required here.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/plan-defender-for-servers-select-plan"
+  },
+  {
+    "question": "You want vulnerability findings for VMs without installing any agent, while minimizing performance impact. How does agentless scanning in Defender for Servers work?",
+    "options": [
+      "It takes snapshots of VM disks and analyzes them out of band",
+      "It installs a temporary extension that runs a scan inside the VM",
+      "It mirrors network traffic to a scanner appliance",
+      "It reads the VM's memory through the hypervisor"
+    ],
+    "answer": "It takes snapshots of VM disks and analyzes them out of band",
+    "explanation": "Agentless scanning creates disk snapshots and scans them in a separate environment, so there is no agent and no impact on the running workload.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection"
+  },
+  {
+    "question": "A new VM must protect against bootkits and rootkits and enable boot integrity attestation. Which configuration should you use?",
+    "options": [
+      "Trusted launch with secure boot, vTPM and guest attestation",
+      "Confidential VM with platform-managed keys only",
+      "Standard security type with encryption at host enabled on the VM",
+      "Generation 1 VM with BitLocker"
+    ],
+    "answer": "Trusted launch with secure boot, vTPM and guest attestation",
+    "explanation": "Trusted launch combines secure boot and vTPM, and boot integrity monitoring uses the Guest Attestation extension to report on boot health to Defender for Cloud.",
+    "link": "https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch"
+  },
+  {
+    "question": "You must ensure a password policy setting inside Windows guests on Azure VMs and Arc-enabled servers is compliant, and automatically correct drift. Which assignment type should the machine configuration use?",
+    "options": [
+      "ApplyAndMonitor",
+      "ApplyAndAutoCorrect",
+      "Audit",
+      "DeployIfNotExists"
+    ],
+    "answer": "ApplyAndAutoCorrect",
+    "explanation": "Azure Machine Configuration supports Audit, ApplyAndMonitor and ApplyAndAutoCorrect. ApplyAndAutoCorrect applies the configuration and corrects drift.",
+    "link": "https://learn.microsoft.com/en-us/azure/governance/machine-configuration/concepts/assignments"
+  },
+  {
+    "question": "You want Defender for Containers to detect runtime threats on AKS nodes, such as a container running a binary that was not in its original image. Which component and feature provide this?",
+    "options": [
+      "Agentless registry scanning",
+      "Kubernetes audit logs only",
+      "The Azure Policy add-on with the Deny effect",
+      "The Defender sensor with binary drift detection"
+    ],
+    "answer": "The Defender sensor with binary drift detection",
+    "explanation": "The Defender sensor runs on nodes to collect runtime events, and binary drift detection alerts when a container runs an executable that was not part of the image.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/binary-drift-detection"
+  },
+  {
+    "question": "An AKS cluster must allow only Microsoft Entra authentication and Kubernetes access controlled by Azure role assignments. Which settings should you configure?",
+    "options": [
+      "Workload identity federation with a Kubernetes service account token",
+      "Entra integration with Azure RBAC, and local accounts disabled",
+      "Authorized IP ranges and a public API server endpoint",
+      "Kubernetes RBAC with local accounts left enabled for admins"
+    ],
+    "answer": "Entra integration with Azure RBAC, and local accounts disabled",
+    "explanation": "Using Entra integration with Azure RBAC and disabling local accounts ensures all access requires Entra identities and Azure role assignments.",
+    "link": "https://learn.microsoft.com/en-us/azure/aks/manage-local-accounts-managed-azure-ad"
+  },
+  {
+    "question": "You want to block all public access to Azure Container Registry and pull images through a private endpoint. Which SKU is required?",
+    "options": [
+      "Premium",
+      "Basic",
+      "Any SKU with the admin user disabled",
+      "Standard"
+    ],
+    "answer": "Premium",
+    "explanation": "Private endpoints and network rules for Azure Container Registry require the Premium SKU.",
+    "link": "https://learn.microsoft.com/en-us/azure/container-registry/container-registry-private-link"
+  },
+  {
+    "question": "A Function App must accept inbound requests only from a private VNet and reach a database in that VNet. Which pair of features should you configure?",
+    "options": [
+      "Hybrid connections for inbound and access restrictions for outbound",
+      "A NAT gateway for inbound and a private endpoint for outbound",
+      "VNet integration for inbound and a service endpoint for outbound",
+      "A private endpoint for inbound and VNet integration for outbound"
+    ],
+    "answer": "A private endpoint for inbound and VNet integration for outbound",
+    "explanation": "Private endpoints provide private inbound access to the app, while VNet integration lets the app make outbound calls into the VNet.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-networking-options"
+  },
+  {
+    "question": "A Consumption logic app has a Request trigger. You want to require an Entra ID token instead of only the SAS signature in the URL. What should you configure?",
+    "options": [
+      "An IP access restriction for workflow content",
+      "A private endpoint on the Consumption logic app",
+      "An Entra ID authorization policy, with SAS disabled",
+      "Secure inputs and outputs in run history"
+    ],
+    "answer": "An Entra ID authorization policy, with SAS disabled",
+    "explanation": "Consumption logic apps support Microsoft Entra ID OAuth authorization policies for request triggers, and you can disable SAS-based authentication.",
+    "link": "https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-securing-a-logic-app"
+  },
+  {
+    "question": "You enabled WAF on Application Gateway in Detection mode. Logs show legitimate requests matching a SQL injection rule on one header. What should you do before switching to Prevention mode?",
+    "options": [
+      "Switch the WAF policy to the Bot Manager rule set only",
+      "Create an exclusion for that header on the specific rule",
+      "Lower the anomaly score threshold",
+      "Disable the entire managed rule set"
+    ],
+    "answer": "Create an exclusion for that header on the specific rule",
+    "explanation": "WAF exclusions remove specific request attributes from evaluation by selected rules, fixing false positives without weakening other protection.",
+    "link": "https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/application-gateway-waf-configuration"
+  },
+  {
+    "question": "API Management must accept only requests that carry a valid Entra token for a specific audience before forwarding them to a back-end API. Which policy is purpose-built for this?",
+    "options": [
+      "set-backend-service",
+      "cors",
+      "authentication-managed-identity",
+      "validate-azure-ad-token"
+    ],
+    "answer": "validate-azure-ad-token",
+    "explanation": "validate-azure-ad-token checks Entra-issued tokens, including audience and claims, and rejects invalid requests.",
+    "link": "https://learn.microsoft.com/en-us/azure/api-management/validate-azure-ad-token-policy"
+  },
+  {
+    "question": "You need Defender for Cloud to show exploitable chains such as an internet-exposed VM with a high-severity vulnerability that has permissions to a storage account holding sensitive data. Which capability and plan provide this?",
+    "options": [
+      "Secure score in foundational CSPM",
+      "Attack path analysis in Defender CSPM",
+      "Regulatory compliance in foundational CSPM",
+      "Adaptive application controls in Defender for Servers"
+    ],
+    "answer": "Attack path analysis in Defender CSPM",
+    "explanation": "Attack path analysis uses the cloud security graph to identify exploitable paths to high-impact assets and is part of the Defender CSPM plan.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-attack-path"
+  },
+  {
+    "question": "An analyst wants to proactively query for all VMs that are exposed to the internet, have a critical CVE and have a managed identity with access to Key Vault. Which tool should they use?",
+    "options": [
+      "Azure Resource Graph Explorer",
+      "Cloud security explorer",
+      "Azure Monitor metrics explorer",
+      "Microsoft Sentinel hunting queries"
+    ],
+    "answer": "Cloud security explorer",
+    "explanation": "Cloud security explorer queries the cloud security graph, which combines exposure, vulnerabilities, identities and permissions, to build risk-based queries like this one.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/how-to-manage-cloud-security-explorer"
+  },
+  {
+    "question": "You connect an AWS account to Defender for Cloud. Which artifact do you deploy in AWS to grant Defender for Cloud the required permissions?",
+    "options": [
+      "The Azure Monitor Agent on every EC2 instance",
+      "A CloudFormation template provided by the connector wizard",
+      "An IAM user with long-lived access keys pasted into the portal",
+      "An Azure Resource Manager template in the AWS account"
+    ],
+    "answer": "A CloudFormation template provided by the connector wizard",
+    "explanation": "The AWS connector wizard generates a CloudFormation template that creates the IAM roles and trust that Defender for Cloud uses.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/quickstart-onboard-aws"
+  },
+  {
+    "question": "You onboard a GCP project to Defender for Cloud. How do you create the required GCP resources, such as the workload identity pool and service accounts?",
+    "options": [
+      "Install the Azure Connected Machine agent on a GCP VM first",
+      "Deploy an AWS CloudFormation stack",
+      "Create an Entra app registration with a client secret",
+      "Run the provided Cloud Shell script or Terraform template"
+    ],
+    "answer": "Run the provided Cloud Shell script or Terraform template",
+    "explanation": "The GCP connector provides a script to run in Google Cloud Shell, or a Terraform template, that creates the identity federation and service accounts used by Defender for Cloud.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/quickstart-onboard-gcp"
+  },
+  {
+    "question": "EC2 instances in a connected AWS account should be protected by Defender for Servers. What does Defender for Cloud use to bring those machines under management?",
+    "options": [
+      "Azure Site Recovery",
+      "Azure Bastion",
+      "A site-to-site VPN connection from AWS to Azure",
+      "Azure Arc, auto-provisioned by the connector"
+    ],
+    "answer": "Azure Arc, auto-provisioned by the connector",
+    "explanation": "For multicloud servers, the connector can auto-provision the Azure Arc agent so Defender for Servers features that need Arc can be applied.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-arc/servers/overview"
+  },
+  {
+    "question": "You want Defender for Cloud to use Microsoft Defender Vulnerability Management for Azure VMs covered by Defender for Servers. Where do you configure this?",
+    "options": [
+      "In the Key Vault firewall settings",
+      "In Azure Update Manager maintenance configurations",
+      "In the Microsoft Defender portal, Settings, Endpoints, Advanced features only",
+      "Defender for Servers plan settings, vulnerability assessment component"
+    ],
+    "answer": "Defender for Servers plan settings, vulnerability assessment component",
+    "explanation": "Vulnerability assessment for machines is a component in the Defender for Servers plan settings, where you select Microsoft Defender Vulnerability Management as the solution.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/deploy-vulnerability-assessment-defender-vulnerability-management"
+  },
+  {
+    "question": "Your marketing team often launches websites without telling IT. You need to discover your organization's internet-facing assets, such as domains, hosts and IP blocks, and their vulnerabilities from an outside-in view. Which service should you use?",
+    "options": [
+      "Azure Network Watcher topology",
+      "Defender CSPM attack path analysis across subscriptions",
+      "Microsoft Defender for Cloud Apps cloud discovery",
+      "Defender External Attack Surface Management (EASM)"
+    ],
+    "answer": "Defender External Attack Surface Management (EASM)",
+    "explanation": "Defender EASM starts from seeds such as domains and IP blocks and continuously discovers and maps the organization's external attack surface, including unknown assets and their vulnerabilities.",
+    "link": "https://learn.microsoft.com/en-us/azure/external-attack-surface-management/overview"
+  },
+  {
+    "question": "You want all supported Defender for Cloud workload protections enabled on every new subscription in a management group. What is the most scalable approach?",
+    "options": [
+      "Create a Sentinel automation rule",
+      "Assign the built-in plan enablement policies at the management group",
+      "Configure a Defender for Cloud governance rule",
+      "Enable each plan manually in every subscription's Environment settings page"
+    ],
+    "answer": "Assign the built-in plan enablement policies at the management group",
+    "explanation": "Built-in policy definitions can enable Defender plans with DeployIfNotExists, so new subscriptions in the management group get the plans automatically.",
+    "link": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/policy-reference"
+  },
+  {
+    "question": "You are onboarding Microsoft Sentinel. What must exist before you can enable Sentinel?",
+    "options": [
+      "A Microsoft Purview account",
+      "An Azure Event Hubs namespace",
+      "A Log Analytics workspace",
+      "An Azure Data Explorer cluster"
+    ],
+    "answer": "A Log Analytics workspace",
+    "explanation": "Microsoft Sentinel is enabled on a Log Analytics workspace, which stores the ingested data.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/quickstart-onboard"
+  },
+  {
+    "question": "Tier 1 analysts must be able to assign, change status of and comment on incidents, but not create or edit analytics rules. Which role should you assign?",
+    "options": [
+      "Microsoft Sentinel Reader",
+      "Logic App Contributor",
+      "Microsoft Sentinel Contributor",
+      "Microsoft Sentinel Responder"
+    ],
+    "answer": "Microsoft Sentinel Responder",
+    "explanation": "Responder can view data and manage incidents, such as assigning and closing them, but cannot create or edit analytics rules.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/roles"
+  },
+  {
+    "question": "An automation rule must run a playbook, but the playbook does not appear in the list. The playbook is in a different resource group from the workspace. What should you do?",
+    "options": [
+      "Move the workspace into the playbook's resource group",
+      "Grant Sentinel Automation Contributor on the playbook's resource group",
+      "Assign the playbook's managed identity the Owner role on the workspace",
+      "Assign the analyst who creates the rule the Microsoft Sentinel Responder role"
+    ],
+    "answer": "Grant Sentinel Automation Contributor on the playbook's resource group",
+    "explanation": "Sentinel needs explicit permissions, through the Microsoft Sentinel Automation Contributor role, on the resource group that contains the playbook before automation rules can run it.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/automation/automate-responses-with-playbooks"
+  },
+  {
+    "question": "You want all new high-severity incidents from a specific analytics rule to be assigned to the on-call team, tagged and then have a playbook run, in that order. What should you create?",
+    "options": [
+      "A watchlist with the on-call team members",
+      "An automation rule with ordered actions",
+      "A scheduled analytics rule with entity mapping",
+      "A workbook with incident filters"
+    ],
+    "answer": "An automation rule with ordered actions",
+    "explanation": "Automation rules trigger on incident creation and can run actions such as assigning owners, adding tags and running playbooks in a defined order.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/automation/automation-rules"
+  },
+  {
+    "question": "You installed a solution from the Microsoft Sentinel content hub, but no analytics rules are detecting threats. Why?",
+    "options": [
+      "Solutions install templates; you must create rules from them",
+      "You must restart the workspace",
+      "Solutions are enabled only after 24 hours of data",
+      "Content hub solutions require a separate license for each rule"
+    ],
+    "answer": "Solutions install templates; you must create rules from them",
+    "explanation": "A content hub solution installs content such as analytics rule templates, data connectors and workbooks. Analytics rules are active only after you create and enable them from the templates.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/sentinel-solutions-deploy"
+  },
+  {
+    "question": "A firewall appliance sends CEF messages over syslog. You want the data in the CommonSecurityLog table by using the Azure Monitor Agent. What should you deploy?",
+    "options": [
+      "A Linux forwarder with AMA and the CEF via AMA connector and DCR",
+      "A direct Event Hubs connection from the appliance",
+      "The Windows Security Events via AMA connector on a Windows collector",
+      "The Log Analytics agent installed directly on the firewall appliance"
+    ],
+    "answer": "A Linux forwarder with AMA and the CEF via AMA connector and DCR",
+    "explanation": "The CEF via AMA connector uses a Linux forwarder running AMA with a data collection rule to collect CEF messages from the appliance and send them to CommonSecurityLog.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/connect-cef-syslog-ama"
+  },
+  {
+    "question": "A Linux forwarder collects both Syslog and CEF through AMA. Analysts see duplicate events in Syslog and CommonSecurityLog. What is the most likely cause?",
+    "options": [
+      "The Syslog DCR and the CEF DCR use the same facility",
+      "The forwarder uses rsyslog instead of syslog-ng",
+      "The CEF connector is configured on a Windows server",
+      "The workspace has data lake retention enabled"
+    ],
+    "answer": "The Syslog DCR and the CEF DCR use the same facility",
+    "explanation": "When the same facility is collected by both Syslog and CEF DCRs, events are ingested into both tables. Use separate facilities to avoid duplication.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/connect-cef-syslog-ama"
+  },
+  {
+    "question": "You want to collect only specific Windows security event IDs from servers by using AMA. Which configuration should you use?",
+    "options": [
+      "The Microsoft Entra ID connector",
+      "The Windows Forwarded Events connector",
+      "Windows Security Events via AMA with a custom XPath query",
+      "Windows Security Events via AMA with the All events set selected"
+    ],
+    "answer": "Windows Security Events via AMA with a custom XPath query",
+    "explanation": "The Windows Security Events via AMA connector supports a custom event set defined by XPath queries in the data collection rule.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors/windows-security-events-via-ama"
+  },
+  {
+    "question": "Your servers forward security events to a Windows Event Collector using Windows Event Forwarding. You want these events in Sentinel. What should you configure?",
+    "options": [
+      "Azure Monitor Agent on the domain controller only",
+      "The Syslog via AMA connector on the WEC server",
+      "The Windows Security Events via AMA connector on each source server",
+      "The Windows Forwarded Events connector with AMA on the WEC server"
+    ],
+    "answer": "The Windows Forwarded Events connector with AMA on the WEC server",
+    "explanation": "The Windows Forwarded Events connector collects events from the ForwardedEvents channel on the collector by using AMA, storing them in the WindowsEvent table.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors/windows-forwarded-events"
+  },
+  {
+    "question": "You must ingest JSON logs from a custom app into Sentinel and store them in a dedicated table. Which steps are required?",
+    "options": [
+      "Create a table with the _SL suffix in the Defender portal",
+      "Store data in a watchlist",
+      "Use the legacy HTTP Data Collector API with a classic custom table",
+      "A DCR-based _CL custom table fed by the Logs Ingestion API"
+    ],
+    "answer": "A DCR-based _CL custom table fed by the Logs Ingestion API",
+    "explanation": "Custom tables in Log Analytics use the _CL suffix, and the Logs Ingestion API sends data to them through a data collection rule.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/create-custom-table"
+  },
+  {
+    "question": "Sentinel tables currently keep 90 days in the analytics tier. Compliance requires 7 years of retention at the lowest cost, with interactive queries needed only on the last 90 days. What should you configure?",
+    "options": [
+      "Export the data to a storage account and then delete the workspace",
+      "Use Basic Logs with a 30-day plan",
+      "Set analytics retention to 7 years",
+      "Keep 90 days in analytics and set total retention to 7 years"
+    ],
+    "answer": "Keep 90 days in analytics and set total retention to 7 years",
+    "explanation": "Analytics tier data is mirrored to the data lake by default, and total retention can be extended up to 12 years at low cost, while analytics retention stays at 90 days.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/manage-data-overview"
+  },
+  {
+    "question": "You move a Sentinel table from the analytics tier to the data lake tier. What happens to analytics rules that query that table?",
+    "options": [
+      "Real-time analytics rules and hunting on it stop working",
+      "They continue to run with no change",
+      "They run every 24 hours instead of in real time",
+      "They are automatically converted to summary rules on the data lake"
+    ],
+    "answer": "Real-time analytics rules and hunting on it stop working",
+    "explanation": "Switching a table to the data lake tier stops real-time analytics and hunting queries for that table. Data lake data is accessed through KQL jobs and similar tools.",
+    "link": "https://learn.microsoft.com/en-us/azure/sentinel/manage-data-overview"
+  },
+  {
+    "question": "You want to hunt in the Defender portal for Microsoft 365 audit activities such as file downloads and mailbox operations. Which table and prerequisite should you use?",
+    "options": [
+      "SecurityEvent, with the Windows Security Events via AMA connector",
+      "IdentityLogonEvents, with Defender for Identity sensors",
+      "CloudAppEvents, with the Microsoft 365 app connector",
+      "AzureActivity, with the Azure Activity connector"
+    ],
+    "answer": "CloudAppEvents, with the Microsoft 365 app connector",
+    "explanation": "CloudAppEvents contains events from Office 365 and other cloud apps, populated by Defender for Cloud Apps. You must connect Microsoft 365 and select Microsoft 365 activities.",
+    "link": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-cloudappevents-table"
+  },
+  {
+    "question": "A user is a Copilot contributor in Security Copilot and wants to query Microsoft Sentinel incidents. The plugin returns no data. What is the most likely cause?",
+    "options": [
+      "The Sentinel plugin can be used only by users who hold the Copilot owner role",
+      "The user has no Azure RBAC role, such as Sentinel Reader, on the workspace",
+      "Security Copilot needs a separate Microsoft Sentinel license per user",
+      "Contributors cannot use plugins"
+    ],
+    "answer": "The user has no Azure RBAC role, such as Sentinel Reader, on the workspace",
+    "explanation": "Security Copilot uses on-behalf-of authentication, so the user must also have permissions in the underlying service. Copilot roles alone grant no access to security data.",
+    "link": "https://learn.microsoft.com/en-us/copilot/security/authentication"
+  },
+  {
+    "question": "You want to give Security Copilot access to a SOC team without assigning them Security Administrator. What should you do?",
+    "options": [
+      "Make each of them a Copilot owner",
+      "Add a security group of SOC members to the Copilot contributor role",
+      "Assign them Global Reader",
+      "Assign them Security Administrator as eligible assignments using PIM"
+    ],
+    "answer": "Add a security group of SOC members to the Copilot contributor role",
+    "explanation": "Microsoft recommends adding a security group to the appropriate Copilot role instead of assigning privileged Entra roles just for Copilot access.",
+    "link": "https://learn.microsoft.com/en-us/copilot/security/authentication"
+  },
+  {
+    "question": "Which statement about Security Copilot workspaces is correct?",
+    "options": [
+      "The data storage location is set at creation and cannot be changed",
+      "A workspace can function without capacity",
+      "Workspace names can be changed at any time",
+      "A capacity can be shared by several workspaces at the same time"
+    ],
+    "answer": "The data storage location is set at creation and cannot be changed",
+    "explanation": "The data storage location for a workspace is immutable after creation, so to use a different geography you create a new workspace.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/configure-security-copilot-workspaces/3-create-workspace"
+  },
+  {
+    "question": "You want to stop contributors from using a third-party plugin in Security Copilot while still letting owners use it. Who can change preinstalled plugin availability?",
+    "options": [
+      "Only Microsoft support",
+      "Any user who has used the plugin",
+      "Copilot owners",
+      "Copilot contributors"
+    ],
+    "answer": "Copilot owners",
+    "explanation": "Owners manage plugin availability and settings for the tenant. Contributors can't change preinstalled plugin availability.",
+    "link": "https://learn.microsoft.com/en-us/copilot/security/manage-plugins"
+  },
+  {
+    "question": "Your organization wants a partner-built Security Copilot agent that triages alerts from a third-party product. Where should you find and deploy it?",
+    "options": [
+      "Azure Marketplace virtual machine offers",
+      "The Sentinel content hub as a playbook template",
+      "Microsoft Entra app gallery",
+      "Microsoft Security Store"
+    ],
+    "answer": "Microsoft Security Store",
+    "explanation": "Microsoft Security Store offers Microsoft and partner security agents and solutions that you can acquire and deploy into Security Copilot and Defender experiences.",
+    "link": "https://learn.microsoft.com/en-us/security/store/what-is-security-store"
+  }
+]

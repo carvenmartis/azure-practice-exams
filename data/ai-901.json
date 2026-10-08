@@ -1,0 +1,1442 @@
+[
+  {
+    "question": "A bank's loan-approval model approves applicants of one gender at a noticeably lower rate than applicants of another gender who have the same income and credit history. Which responsible AI principle is most directly at risk?",
+    "options": [
+      "Inclusiveness",
+      "Fairness",
+      "Transparency",
+      "Accountability"
+    ],
+    "answer": "Fairness",
+    "explanation": "Fairness means AI systems should treat all people fairly and not affect similarly situated groups in different ways. Different approval rates for applicants with the same financial profile is a fairness problem.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai"
+  },
+  {
+    "question": "An insurance company must be able to tell customers which factors most influenced an automated claim decision. Which responsible AI principle does this requirement address?",
+    "options": [
+      "Privacy and security",
+      "Fairness",
+      "Transparency",
+      "Reliability and safety"
+    ],
+    "answer": "Transparency",
+    "explanation": "Transparency means people should be able to understand how an AI system works and why it produced a result. Explaining the factors behind a decision is a transparency measure.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai"
+  },
+  {
+    "question": "A team designs a voice assistant so that people with hearing, vision, or mobility impairments can use it as easily as other users. Which responsible AI principle are they applying?",
+    "options": [
+      "Fairness",
+      "Accountability",
+      "Inclusiveness",
+      "Transparency"
+    ],
+    "answer": "Inclusiveness",
+    "explanation": "Inclusiveness means AI systems should empower everyone and be designed for a broad range of human needs and abilities, including accessibility.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai"
+  },
+  {
+    "question": "A company names a review board that owns its AI systems, approves releases, and can override or shut down a model if it behaves unexpectedly. Which responsible AI principle does this support?",
+    "options": [
+      "Reliability and safety",
+      "Accountability",
+      "Transparency",
+      "Inclusiveness"
+    ],
+    "answer": "Accountability",
+    "explanation": "Accountability means the people who design and deploy AI systems are answerable for how they operate and keep meaningful human control, which is what a governing review board provides.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai"
+  },
+  {
+    "question": "Before release, a medical triage model is tested against rare and unusual inputs, and it is designed to defer to a clinician when it is unsure instead of guessing. Which responsible AI principle is this?",
+    "options": [
+      "Privacy and security",
+      "Reliability and safety",
+      "Transparency",
+      "Fairness"
+    ],
+    "answer": "Reliability and safety",
+    "explanation": "Reliability and safety means AI systems should perform consistently and respond safely to unexpected conditions. Edge-case testing and safe fallback behavior support this principle.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai"
+  },
+  {
+    "question": "A retailer's recommendation system collects only the data it needs, encrypts customer records, and honors customer requests to delete their data. Which responsible AI principle is being applied?",
+    "options": [
+      "Fairness",
+      "Accountability",
+      "Inclusiveness",
+      "Privacy and security"
+    ],
+    "answer": "Privacy and security",
+    "explanation": "Privacy and security means AI systems should protect personal and business information and comply with privacy laws, which data minimization, encryption, and deletion support.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai"
+  },
+  {
+    "question": "A chat app built in Microsoft Foundry clearly labels its replies as AI-generated and tells users they are talking to an AI assistant, not a person. Which responsible AI principle does this most directly support?",
+    "options": [
+      "Reliability and safety",
+      "Fairness",
+      "Accountability",
+      "Transparency"
+    ],
+    "answer": "Transparency",
+    "explanation": "Disclosing that users are interacting with an AI system and that content is AI-generated helps people understand the system, which is part of transparency.",
+    "link": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai"
+  },
+  {
+    "question": "A Foundry chat app summarizes documents that users upload. Security testers hide instructions inside a document that tell the model to ignore its system message. Which content filter feature is designed to detect this kind of attack?",
+    "options": [
+      "Prompt Shields for indirect attacks",
+      "Protected material detection for text",
+      "Groundedness detection on completions",
+      "A custom blocklist on output text"
+    ],
+    "answer": "Prompt Shields for indirect attacks",
+    "explanation": "Prompt Shields detects user prompt attacks (jailbreaks) and indirect attacks, where malicious instructions are embedded in documents or other content the model processes.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/content-filter"
+  },
+  {
+    "question": "Which four harm categories does the default content filtering system for Foundry Models evaluate in prompts and completions?",
+    "options": [
+      "Hate and fairness, sexual, violence, and self-harm",
+      "Violence, misinformation, sexual, and fraud",
+      "Hate and fairness, profanity, spam, and self-harm",
+      "Sexual, violence, jailbreak, and protected material"
+    ],
+    "answer": "Hate and fairness, sexual, violence, and self-harm",
+    "explanation": "The content filtering system classifies hate and fairness, sexual, violence, and self-harm content at severity levels of safe, low, medium, and high.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/content-filter"
+  },
+  {
+    "question": "A game studio's Foundry deployment generates fantasy battle descriptions. Writers complain that mild combat descriptions are blocked. The studio wants to allow low and medium severity violence but still block high severity violence. How should the violence filter be configured?",
+    "options": [
+      "Set the violence threshold to block only high severity content",
+      "Set the violence threshold to block medium and high severity",
+      "Turn off all content filters for the deployment",
+      "Set the violence threshold to block low, medium, and high severity"
+    ],
+    "answer": "Set the violence threshold to block only high severity content",
+    "explanation": "Filter thresholds are configurable per category. Setting the threshold to high means only high severity content is filtered, while low and medium severity content passes.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/content-filter"
+  },
+  {
+    "question": "A developer's app sends a prompt to a Foundry model deployment and receives an HTTP 400 error with the code content_filter. What does this indicate?",
+    "options": [
+      "The deployment has run out of tokens-per-minute quota",
+      "The model's response was cut off because it reached the max tokens limit",
+      "The completion was filtered after generation began",
+      "The prompt was flagged by the content filter and was not processed"
+    ],
+    "answer": "The prompt was flagged by the content filter and was not processed",
+    "explanation": "When the input prompt triggers a content filter, the API returns HTTP 400 with the content_filter error code, and the prompt should be modified before retrying.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/content-filter"
+  },
+  {
+    "question": "A writing assistant occasionally reproduces full song lyrics in its responses. Which content filter capability helps detect this in model output?",
+    "options": [
+      "The self-harm harm category filter",
+      "Groundedness detection for completions",
+      "Prompt Shields for user prompt attacks",
+      "Protected material detection for text"
+    ],
+    "answer": "Protected material detection for text",
+    "explanation": "Protected material detection for text flags known text content such as song lyrics, articles, and recipes when it appears in model completions.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/content-filter"
+  },
+  {
+    "question": "In the context of large language models, what is a token?",
+    "options": [
+      "A unit of text, such as a word or part of a word",
+      "A credential that authorizes an application to call the model endpoint",
+      "A numeric score showing how confident the model is in its answer",
+      "A complete sentence that the model stores in its long-term memory"
+    ],
+    "answer": "A unit of text, such as a word or part of a word",
+    "explanation": "Language models break text into tokens, which can be whole words, parts of words, or punctuation. Input and output length, limits, and billing are all measured in tokens.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai/"
+  },
+  {
+    "question": "What does an embedding represent in a generative AI solution?",
+    "options": [
+      "A label that classifies text into one of a fixed list of categories",
+      "A vector of numbers that captures the semantic meaning of text",
+      "A compressed copy of the original text used to reduce storage",
+      "A set of rules that tells the model how to format its answers"
+    ],
+    "answer": "A vector of numbers that captures the semantic meaning of text",
+    "explanation": "An embedding is a dense vector representation of a piece of text's meaning. Texts with similar meaning produce vectors that are close together in vector space.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/understand-embeddings"
+  },
+  {
+    "question": "What mechanism allows a transformer model to weigh how strongly each token in a sequence relates to every other token?",
+    "options": [
+      "Content filtering",
+      "Backpropagation",
+      "Attention",
+      "Tokenization"
+    ],
+    "answer": "Attention",
+    "explanation": "Transformer models use attention layers that assign weights to tokens based on their relationships to other tokens, which lets the model capture context across the whole sequence.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai/"
+  },
+  {
+    "question": "At a basic level, how does a generative language model produce a text response?",
+    "options": [
+      "It translates the prompt into a search query and returns web results",
+      "It selects one answer from a fixed list of approved replies",
+      "It repeatedly predicts a likely next token from the tokens so far",
+      "It looks up a matching answer stored in a database of prior responses"
+    ],
+    "answer": "It repeatedly predicts a likely next token from the tokens so far",
+    "explanation": "Generative language models produce output by predicting a probable next token, appending it, and repeating the process until the response is complete.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai/"
+  },
+  {
+    "question": "Two support articles use different wording but describe the same fix. Their embeddings are compared. Which measure is commonly used to score how similar they are?",
+    "options": [
+      "Token-per-minute rate",
+      "Cosine similarity",
+      "Word count difference",
+      "Model temperature"
+    ],
+    "answer": "Cosine similarity",
+    "explanation": "Cosine similarity measures the angle between two vectors. Embeddings of texts with similar meaning have a small angle and therefore high cosine similarity.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/understand-embeddings"
+  },
+  {
+    "question": "A company wants users to search 50,000 policy documents by meaning, so that 'time off for a new baby' finds the 'parental leave' policy. Which type of model should they deploy to convert documents and queries into vectors?",
+    "options": [
+      "An embedding model such as text-embedding-3-large",
+      "An image generation model such as gpt-image-1",
+      "A speech to text model such as a transcription model",
+      "A reasoning chat model with a high temperature setting"
+    ],
+    "answer": "An embedding model such as text-embedding-3-large",
+    "explanation": "Embedding models turn text into vectors that capture meaning, so a query and a document with similar meaning can be matched even when they use different words.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/understand-embeddings"
+  },
+  {
+    "question": "An app extracts the invoice number and total from emails and must return the same, factual output each time it sees the same email. Which temperature setting is most appropriate?",
+    "options": [
+      "A low temperature, such as 0 to 0.2",
+      "The maximum temperature of 2",
+      "A high temperature, such as 1.5",
+      "A temperature of 1 combined with a top_p of 1"
+    ],
+    "answer": "A low temperature, such as 0 to 0.2",
+    "explanation": "Lower temperature values make output more focused and deterministic, which suits extraction and other tasks that need consistent answers.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "A marketing team uses a Foundry model to brainstorm product slogans, but every run returns nearly the same few slogans. Which change is most likely to produce more varied ideas?",
+    "options": [
+      "Decrease the max tokens setting",
+      "Add a stop sequence after the first slogan",
+      "Increase the temperature setting",
+      "Set the temperature to 0"
+    ],
+    "answer": "Increase the temperature setting",
+    "explanation": "Higher temperature increases randomness in token selection, producing more diverse and creative output.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "A developer is tuning a Foundry chat deployment. What does the top_p parameter control?",
+    "options": [
+      "The penalty applied to tokens that already appeared in the text",
+      "Sampling from the smallest token set reaching a cumulative probability",
+      "The maximum number of tokens that can appear in the response",
+      "The number of alternative responses the model returns for each request"
+    ],
+    "answer": "Sampling from the smallest token set reaching a cumulative probability",
+    "explanation": "top_p, also called nucleus sampling, restricts token selection to the smallest set of candidates whose cumulative probability reaches the top_p value. Lower values make output more focused.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "A team wants more predictable output from a chat deployment. One engineer suggests lowering both temperature and top_p at the same time. What does Microsoft guidance recommend?",
+    "options": [
+      "Always set both to 0 so output is fully deterministic",
+      "Leave both at defaults and instead raise max tokens",
+      "Adjust temperature or top_p, but generally not both at once",
+      "Raise top_p and lower temperature so they balance each other"
+    ],
+    "answer": "Adjust temperature or top_p, but generally not both at once",
+    "explanation": "Temperature and top_p both control randomness. Microsoft guidance recommends changing one of them, not both, so the effect of each adjustment is clear.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "An app's responses from a Foundry chat deployment sometimes end mid-sentence, and the finish reason in the response is length. What is the most likely fix?",
+    "options": [
+      "Lower the temperature so the model writes shorter answers",
+      "Switch the deployment type from Standard to Global Standard",
+      "Increase the maximum output tokens allowed for the response",
+      "Add a stop sequence at the end of each paragraph"
+    ],
+    "answer": "Increase the maximum output tokens allowed for the response",
+    "explanation": "A finish reason of length means generation stopped because it hit the configured token limit. Raising the max tokens setting, within the model's context window, allows longer responses.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/chatgpt"
+  },
+  {
+    "question": "A developer moves a prompt from a gpt-4o deployment to an o-series reasoning model deployment. Requests that set temperature and top_p now fail. What is the cause?",
+    "options": [
+      "Reasoning models only accept these settings when they appear in the system message",
+      "The reasoning model requires a higher temperature than 2",
+      "Reasoning models do not support temperature, top_p, or the penalty parameters",
+      "The deployment must be changed to Provisioned to allow these settings"
+    ],
+    "answer": "Reasoning models do not support temperature, top_p, or the penalty parameters",
+    "explanation": "Reasoning models don't support temperature, top_p, or the penalty parameters, and they use max_completion_tokens instead of max_tokens to limit output.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/chatgpt"
+  },
+  {
+    "question": "A long-running chat session starts failing because the combined messages exceed the model's token limit. Which approach is most appropriate?",
+    "options": [
+      "Increase the max output tokens setting for each request",
+      "Trim or summarize older messages to fit the context window",
+      "Increase the temperature so the model uses fewer tokens",
+      "Switch to a Global Batch deployment for the conversation"
+    ],
+    "answer": "Trim or summarize older messages to fit the context window",
+    "explanation": "Input tokens and output tokens share the model's context window. Apps that resend history must keep it within the limit, for example by removing or summarizing older messages.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/chatgpt"
+  },
+  {
+    "question": "A European company wants pay-per-token billing and higher default quota than a single-region deployment, but all inferencing must stay within the EU. Which deployment type should they choose?",
+    "options": [
+      "Global Standard",
+      "Global Batch",
+      "Global Provisioned",
+      "Data Zone Standard"
+    ],
+    "answer": "Data Zone Standard",
+    "explanation": "Data Zone Standard processes data within a Microsoft-defined data zone such as the EU or US, uses pay-per-token billing, and offers higher default quotas than geography-based types.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types"
+  },
+  {
+    "question": "A startup has no data residency requirements and wants the highest default quota with pay-per-token billing for a new chat app. Which deployment type is the best starting point?",
+    "options": [
+      "Developer",
+      "Regional Provisioned",
+      "Global Standard",
+      "Standard"
+    ],
+    "answer": "Global Standard",
+    "explanation": "Global Standard is pay-per-token, can route traffic to any Azure region, and offers the highest default quota, so it is the recommended starting point without residency constraints.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types"
+  },
+  {
+    "question": "A call center app has steady, high-volume traffic and needs consistently low latency during peak hours. Occasional slowdowns on pay-per-token deployments are not acceptable. Which deployment option fits best?",
+    "options": [
+      "A Global Batch deployment",
+      "A Data Zone Standard deployment with pay-per-token billing",
+      "A Global Standard deployment with default quota",
+      "A provisioned deployment with reserved throughput units"
+    ],
+    "answer": "A provisioned deployment with reserved throughput units",
+    "explanation": "Provisioned deployments reserve throughput units for guaranteed capacity, giving predictable throughput and lower, more consistent latency for steady, high-volume workloads.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types"
+  },
+  {
+    "question": "A company needs to classify two million archived support tickets. Results are needed within a day, not in real time, and cost should be minimized. Which deployment type is most appropriate?",
+    "options": [
+      "Standard",
+      "Regional Provisioned",
+      "Developer",
+      "Global Batch"
+    ],
+    "answer": "Global Batch",
+    "explanation": "Global Batch processes large asynchronous jobs with a separate enqueued token quota, a 24-hour target turnaround, and lower cost than Global Standard.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types"
+  },
+  {
+    "question": "A team has low-to-medium, bursty traffic and must keep data processing within a single Azure geography. Which deployment type matches these needs with pay-per-token billing?",
+    "options": [
+      "Data Zone Standard",
+      "Standard",
+      "Global Standard",
+      "Global Provisioned"
+    ],
+    "answer": "Standard",
+    "explanation": "The Standard deployment type processes data within the Azure geography of the resource, uses pay-per-token billing, and suits low-to-medium, bursty workloads.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types"
+  },
+  {
+    "question": "A developer deploys gpt-4.1-mini in Foundry and names the deployment support-bot-prod. Which value should the app pass in the model parameter of its requests?",
+    "options": [
+      "gpt-4.1-mini",
+      "The project endpoint URL",
+      "The Foundry resource name",
+      "support-bot-prod"
+    ],
+    "answer": "support-bot-prod",
+    "explanation": "At inference time the deployment name goes in the model parameter to route the request. The deployment name defaults to the model name but can be changed, as it was here.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/how-to/deploy-foundry-models"
+  },
+  {
+    "question": "A team needs a model that can accept a photo of a damaged car together with a text question and answer in text. Which kind of model should they choose from the Foundry model catalog?",
+    "options": [
+      "A multimodal chat model that accepts images, such as gpt-4.1",
+      "A text embedding model such as text-embedding-3-small",
+      "An image generation model such as gpt-image-1",
+      "A speech to text model used for audio transcription"
+    ],
+    "answer": "A multimodal chat model that accepts images, such as gpt-4.1",
+    "explanation": "Vision-enabled multimodal chat models accept images alongside text in a prompt and return text answers about the image.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "A company needs to classify millions of short customer messages into five categories with low latency and low cost. Accuracy from a large frontier model is not required. Which model choice is most sensible?",
+    "options": [
+      "The largest reasoning model available in the catalog",
+      "An embedding model used to generate the category names",
+      "An image generation model with low quality settings",
+      "A small, fast model such as a mini variant of a GPT model"
+    ],
+    "answer": "A small, fast model such as a mini variant of a GPT model",
+    "explanation": "Choosing a model is a tradeoff between capability, latency, and cost. Smaller models are often sufficient for simple, high-volume tasks such as short text classification.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/models"
+  },
+  {
+    "question": "An engineering firm needs an AI to work through multistep math and planning problems where accuracy matters more than response speed. Which kind of model is the best fit?",
+    "options": [
+      "An embedding model with high vector dimensions",
+      "A text to speech model with a neural voice",
+      "A reasoning model that works through problems step by step",
+      "A small, low-latency chat model tuned for short replies"
+    ],
+    "answer": "A reasoning model that works through problems step by step",
+    "explanation": "Reasoning models use extra internal reasoning steps to handle complex math, science, coding, and planning tasks, at the cost of more tokens and latency.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/models"
+  },
+  {
+    "question": "A developer adds three examples of input text and the desired output format to a prompt before the real request. What is this technique called?",
+    "options": [
+      "Grounding with retrieval",
+      "Few-shot learning",
+      "Zero-shot prompting",
+      "Fine-tuning"
+    ],
+    "answer": "Few-shot learning",
+    "explanation": "Few-shot learning includes example input and output pairs in the prompt to show the model the expected pattern and format.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/prompt-engineering"
+  },
+  {
+    "question": "A chat assistant must answer questions about a company's internal policies, which change every month. The team wants answers based on the latest documents without retraining a model. Which approach is most appropriate?",
+    "options": [
+      "Increase max tokens so the model can recall more policies",
+      "Fine-tune the model every month on the policy documents",
+      "Raise the temperature so the model generates fuller answers",
+      "Retrieve relevant policy content and add it to the prompt"
+    ],
+    "answer": "Retrieve relevant policy content and add it to the prompt",
+    "explanation": "Grounding, often called retrieval augmented generation, retrieves relevant content at query time and adds it to the prompt, so answers reflect current data without retraining.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai/"
+  },
+  {
+    "question": "A model confidently states a product feature that does not exist. What is this behavior commonly called?",
+    "options": [
+      "Overfitting to the training data",
+      "Prompt injection by a malicious user",
+      "A hallucination, or ungrounded output",
+      "A content filter false positive"
+    ],
+    "answer": "A hallucination, or ungrounded output",
+    "explanation": "Generative models can produce fluent but incorrect or unsupported content, often called hallucination. Grounding prompts in trusted data and clear instructions help reduce it.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/fundamentals-generative-ai/"
+  },
+  {
+    "question": "Which scenario is the best example of agentic AI rather than a simple generative AI chat?",
+    "options": [
+      "A model that summarizes a long article into three bullet points",
+      "An assistant that checks stock with a tool and places a reorder",
+      "A model that translates a paragraph from English to French",
+      "A chatbot that writes a poem when a user asks for one"
+    ],
+    "answer": "An assistant that checks stock with a tool and places a reorder",
+    "explanation": "Agentic AI uses a model plus instructions and tools to reason about a goal and take actions, such as calling systems and completing multistep tasks on a user's behalf.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "A news site wants to automatically tag each article with its main talking points, such as 'interest rates' and 'housing market'. Which text analysis capability fits best?",
+    "options": [
+      "Language detection",
+      "Named entity linking",
+      "Key phrase extraction",
+      "Sentiment analysis"
+    ],
+    "answer": "Key phrase extraction",
+    "explanation": "Key phrase extraction returns a list of the main concepts in unstructured text, which is useful for tagging and indexing content.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/key-phrase-extraction/overview"
+  },
+  {
+    "question": "An app must find and categorize mentions of people, organizations, locations, and dates in contracts. Which capability should it use?",
+    "options": [
+      "Named entity recognition",
+      "Key phrase extraction",
+      "Opinion mining",
+      "Language detection"
+    ],
+    "answer": "Named entity recognition",
+    "explanation": "Named entity recognition identifies entities in text and classifies them into predefined categories such as person, organization, location, and date and time.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/named-entity-recognition/overview"
+  },
+  {
+    "question": "A hotel chain wants to know not just whether a review is negative, but that guests were positive about 'the staff' and negative about 'the breakfast' in the same review. Which feature provides this?",
+    "options": [
+      "Key phrase extraction",
+      "Document-level sentiment analysis only",
+      "Sentiment analysis with opinion mining",
+      "Named entity recognition"
+    ],
+    "answer": "Sentiment analysis with opinion mining",
+    "explanation": "Opinion mining, part of sentiment analysis, links sentiment to specific aspects or targets in the text, such as attributes of a product or service.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/sentiment-opinion-mining/overview"
+  },
+  {
+    "question": "A legal team wants summaries of long contracts that reuse exact sentences from the original text, so every summary sentence can be traced to the source. Which type of summarization should they use?",
+    "options": [
+      "Conversation summarization",
+      "Extractive summarization",
+      "Key phrase extraction",
+      "Abstractive summarization"
+    ],
+    "answer": "Extractive summarization",
+    "explanation": "Extractive summarization selects the most important sentences from the original document, while abstractive summarization generates new text that captures the main ideas.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/summarization/overview"
+  },
+  {
+    "question": "A company wants to convert recorded customer calls into written text for later review. Which AI workload is this?",
+    "options": [
+      "Speech recognition",
+      "Language detection",
+      "Optical character recognition",
+      "Speech synthesis"
+    ],
+    "answer": "Speech recognition",
+    "explanation": "Speech recognition, or speech to text, converts spoken audio into text.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text"
+  },
+  {
+    "question": "A navigation app must read driving directions aloud to the user. Which AI workload does it need?",
+    "options": [
+      "Optical character recognition",
+      "Speech translation",
+      "Speech synthesis",
+      "Speech recognition"
+    ],
+    "answer": "Speech synthesis",
+    "explanation": "Speech synthesis, or text to speech, converts text into natural-sounding spoken audio.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech"
+  },
+  {
+    "question": "A warehouse camera system must locate each package in an image and draw a box around it, even when several packages appear in the same frame. Which computer vision task is this?",
+    "options": [
+      "Image classification",
+      "Object detection",
+      "Optical character recognition",
+      "Image generation"
+    ],
+    "answer": "Object detection",
+    "explanation": "Object detection identifies individual objects in an image and returns their locations, typically as bounding boxes with labels.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/introduction-computer-vision/"
+  },
+  {
+    "question": "A medical imaging tool must outline the exact pixels that belong to a tumor in a scan, not just draw a rectangle around it. Which computer vision technique is this?",
+    "options": [
+      "Image tagging",
+      "Object detection",
+      "Image classification",
+      "Semantic segmentation"
+    ],
+    "answer": "Semantic segmentation",
+    "explanation": "Semantic segmentation classifies individual pixels, producing a mask that shows exactly which pixels belong to each object or class.",
+    "link": "https://learn.microsoft.com/en-us/training/modules/introduction-computer-vision/"
+  },
+  {
+    "question": "A city wants to read license plate text from traffic camera photos. Which computer vision capability is required?",
+    "options": [
+      "Image classification",
+      "Image captioning",
+      "Optical character recognition",
+      "Semantic segmentation"
+    ],
+    "answer": "Optical character recognition",
+    "explanation": "Optical character recognition detects and extracts printed or handwritten text from images.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview"
+  },
+  {
+    "question": "A design team wants an AI to create original product mockup pictures from a text description such as 'a red ceramic mug on a wooden desk'. Which workload is this?",
+    "options": [
+      "Image generation",
+      "Object detection",
+      "Image captioning",
+      "Image classification"
+    ],
+    "answer": "Image generation",
+    "explanation": "Image generation models create new images from natural language prompts.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "Before storing chat transcripts, a company must find and mask phone numbers, email addresses, and government ID numbers. Which capability should it use?",
+    "options": [
+      "PII detection",
+      "Named entity linking",
+      "Language detection",
+      "Key phrase extraction"
+    ],
+    "answer": "PII detection",
+    "explanation": "Personally identifiable information (PII) detection identifies sensitive personal information such as phone numbers, email addresses, and ID numbers in text and can return a redacted version.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/personally-identifiable-information/overview"
+  },
+  {
+    "question": "A conference wants attendees to hear a presenter's English speech as spoken Spanish in near real time. Which workload does this require?",
+    "options": [
+      "Language detection on the slides",
+      "Speech synthesis only",
+      "Batch speech transcription",
+      "Speech translation"
+    ],
+    "answer": "Speech translation",
+    "explanation": "Speech translation provides real-time, multilingual speech to speech and speech to text translation of audio streams.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview"
+  },
+  {
+    "question": "A finance team receives thousands of vendor invoices as scanned PDFs and wants vendor name, invoice date, and total pulled into a database automatically. Which AI workload is this?",
+    "options": [
+      "Speech recognition of audio",
+      "Information extraction from documents",
+      "Image generation from prompts",
+      "Sentiment analysis of text"
+    ],
+    "answer": "Information extraction from documents",
+    "explanation": "Information extraction turns unstructured content such as scanned invoices into structured fields. Content Understanding performs this with field schemas and prebuilt analyzers such as prebuilt-invoice.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/document/overview"
+  },
+  {
+    "question": "A media company wants to automatically produce a description, transcript, and list of topics for each scene in hours of recorded video. Which kind of solution fits best?",
+    "options": [
+      "Language detection on the video title",
+      "Text to speech with a neural voice",
+      "Video information extraction per segment",
+      "Image classification of the video thumbnail"
+    ],
+    "answer": "Video information extraction per segment",
+    "explanation": "Video information extraction combines transcription, key frames, and generative models to produce descriptions and custom fields for each segment of a video.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/video/overview"
+  },
+  {
+    "question": "A clinic wants to extract medications, dosages, and diagnoses from unstructured doctors' notes. Which Azure Language capability is designed for this?",
+    "options": [
+      "Language detection",
+      "Text analytics for health",
+      "Custom text classification",
+      "Conversational language understanding"
+    ],
+    "answer": "Text analytics for health",
+    "explanation": "Text analytics for health extracts and labels relevant medical information, such as medications, dosages, and diagnoses, from unstructured clinical text.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview"
+  },
+  {
+    "question": "In a chat application, what is the main purpose of the system prompt (system message)?",
+    "options": [
+      "To store the model's previous answers for later turns",
+      "To configure the deployment's temperature and token limits",
+      "To set the model's role, behavior, and rules for the conversation",
+      "To hold the end user's latest question for the model"
+    ],
+    "answer": "To set the model's role, behavior, and rules for the conversation",
+    "explanation": "The system message is placed at the start of the conversation and gives the model its initial instructions, such as persona, tone, scope, and rules to follow.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/chatgpt"
+  },
+  {
+    "question": "A developer's chat app sends this message array: a system message saying 'You are a cheerful cooking assistant', then a message containing 'How long should I boil an egg?'. What role should the second message have?",
+    "options": [
+      "user",
+      "tool",
+      "assistant",
+      "system"
+    ],
+    "answer": "user",
+    "explanation": "In chat completions, the system message sets behavior, user messages contain the end user's input, and assistant messages contain the model's prior replies.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/chatgpt"
+  },
+  {
+    "question": "A product owner wants to try different system messages and see how a newly deployed model responds before any code is written. What is the quickest way to do this in Microsoft Foundry?",
+    "options": [
+      "Write a batch job that sends prompts to a Global Batch deployment",
+      "Test it in the Foundry portal playground",
+      "Deploy a second copy of the model with a Provisioned deployment type",
+      "Create a fine-tuning job with sample conversations"
+    ],
+    "answer": "Test it in the Foundry portal playground",
+    "explanation": "The Foundry playground lets you chat with a deployed model and edit its system message and parameters interactively, which is the fastest way to test prompt behavior.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/quickstarts/get-started-playground"
+  },
+  {
+    "question": "A tester chats with a newly deployed model in the Foundry playground and asks about the price of a specific product in the company catalog. The model gives a generic answer. What is the most likely reason?",
+    "options": [
+      "The model has no grounding data about the catalog",
+      "The playground only supports models deployed as Provisioned",
+      "The content filter blocked the product name",
+      "The temperature is set too low for factual questions"
+    ],
+    "answer": "The model has no grounding data about the catalog",
+    "explanation": "Without grounding data, a model can only use its general training knowledge, so it says it doesn't know or gives a generic answer about company-specific facts.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/quickstarts/get-started-playground"
+  },
+  {
+    "question": "A developer builds a Python chat client with the Foundry SDK. Which value identifies the Foundry project when creating the AIProjectClient?",
+    "options": [
+      "The model deployment name, such as gpt-4.1-mini",
+      "The project's display name as shown in the portal",
+      "The project endpoint URL ending in /api/projects/<project>",
+      "The Azure subscription ID and resource group name"
+    ],
+    "answer": "The project endpoint URL ending in /api/projects/<project>",
+    "explanation": "AIProjectClient is created with the project endpoint, which has the form https://<resource-name>.services.ai.azure.com/api/projects/<project-name>, and a credential.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code"
+  },
+  {
+    "question": "A developer uses AIProjectClient from the azure-ai-projects package and wants an OpenAI-compatible client to call a deployed model with the Responses API. Which method should they call?",
+    "options": [
+      "get_openai_client()",
+      "get_chat_completions_client()",
+      "agents.create_version()",
+      "create_deployment()"
+    ],
+    "answer": "get_openai_client()",
+    "explanation": "project.get_openai_client() returns an OpenAI-compatible client authenticated for the project, which can then call responses.create or other OpenAI APIs.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code"
+  },
+  {
+    "question": "Which code correctly sends a prompt to a deployed model through the OpenAI-compatible client returned by the Foundry SDK, using the Responses API?",
+    "options": [
+      "openai.responses.create(model=\"my-deployment\", input=\"Hello\")",
+      "openai.responses.create(deployment=\"my-deployment\", prompt=\"Hello\")",
+      "openai.completions.run(model=\"my-deployment\", text=\"Hello\")",
+      "openai.responses.create(model=\"Hello\", input=\"my-deployment\")"
+    ],
+    "answer": "openai.responses.create(model=\"my-deployment\", input=\"Hello\")",
+    "explanation": "The Responses API call takes the deployment name in model and the prompt in input, and the reply text is available as response.output_text.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code"
+  },
+  {
+    "question": "Which Python packages does the Foundry SDK quickstart install to connect to a project and authenticate with Microsoft Entra ID?",
+    "options": [
+      "azure-ai-projects and azure-identity",
+      "azure-cognitiveservices-speech and azure-core",
+      "azure-ai-projects and azure-storage-blob",
+      "azure-ai-textanalytics and azure-identity"
+    ],
+    "answer": "azure-ai-projects and azure-identity",
+    "explanation": "The quickstart installs azure-ai-projects for AIProjectClient and azure-identity for DefaultAzureCredential, which uses your Azure sign-in.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code"
+  },
+  {
+    "question": "A developer's console app uses the Responses API. After the first reply, the user asks a follow-up question that depends on the earlier answer. What is the simplest way to continue the conversation without resending all prior messages?",
+    "options": [
+      "Set temperature to 0 so the model remembers the earlier answer",
+      "Add the first response's ID to the system message text",
+      "Create a new deployment for each turn of the conversation",
+      "Pass the first response's ID as previous_response_id"
+    ],
+    "answer": "Pass the first response's ID as previous_response_id",
+    "explanation": "The Responses API is stateful. Passing previous_response_id links the new request to the earlier response so the model has the prior context.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses"
+  },
+  {
+    "question": "A developer uses chat completions and notices the model forgets what the user said two turns ago. What must the app do to keep context?",
+    "options": [
+      "Pass previous_response_id with each chat completions request",
+      "Resend the earlier user and assistant messages in each request",
+      "Raise the model's temperature to strengthen its memory",
+      "Enable Prompt Shields on the deployment"
+    ],
+    "answer": "Resend the earlier user and assistant messages in each request",
+    "explanation": "Chat completions is stateless. The app keeps context by sending the conversation so far, as system, user, and assistant messages, with each request.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/chatgpt"
+  },
+  {
+    "question": "A team must choose between chat completions and the Responses API for a new multi-turn app. They want the service to store conversation state so they don't manage history themselves, and they want built-in tools. Which option fits best?",
+    "options": [
+      "Chat completions with max tokens set to the context window",
+      "A Global Batch deployment with chat completions",
+      "Chat completions with a long system message",
+      "The Responses API"
+    ],
+    "answer": "The Responses API",
+    "explanation": "The Responses API generates stateful, multi-turn responses, supports chaining with previous_response_id, and supports tools such as function calling and code interpreter.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses"
+  },
+  {
+    "question": "A healthcare app uses the Responses API but must not keep response data stored on the service between calls. Which setting supports a stateless pattern?",
+    "options": [
+      "Set max output tokens to a very small value",
+      "Set previous_response_id to the last response's ID",
+      "Set store to false and send the context with each request",
+      "Set temperature to 0 for every request in the session"
+    ],
+    "answer": "Set store to false and send the context with each request",
+    "explanation": "By default, response data is retained so it can be chained. Setting store to false enables stateless use, with the app supplying the context itself.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses"
+  },
+  {
+    "question": "Which three components define a basic agent in Foundry Agent Service?",
+    "options": [
+      "A prompt, a vector index, and a web app",
+      "A model, a content filter, and a deployment type",
+      "A model, instructions, and tools",
+      "A dataset, a training job, and an endpoint"
+    ],
+    "answer": "A model, instructions, and tools",
+    "explanation": "An agent combines a model for reasoning, instructions that define its goals and behavior, and tools that let it retrieve knowledge or take actions.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "A team wants to build a single agent in the Foundry portal with no code by choosing a model, writing instructions, and adding tools. Which kind of agent is this?",
+    "options": [
+      "A workflow agent",
+      "A prompt agent",
+      "A fine-tuned agent",
+      "A hosted agent"
+    ],
+    "answer": "A prompt agent",
+    "explanation": "In the Foundry portal you can create a prompt agent with no code by defining its model, instructions, and tools.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "An HR agent must answer employee questions using a set of uploaded PDF handbooks. Which tool should be added to the agent?",
+    "options": [
+      "Code interpreter",
+      "Image generation",
+      "File search",
+      "Function calling"
+    ],
+    "answer": "File search",
+    "explanation": "The file search tool chunks uploaded files, creates embeddings in a vector store, and retrieves the most relevant passages to ground the agent's answers.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/file-search"
+  },
+  {
+    "question": "A file search tool is added to an agent and three PDFs are uploaded. What happens to the files so the agent can search them?",
+    "options": [
+      "They are pasted in full into the agent's instructions",
+      "They are chunked, embedded, and stored in a vector store",
+      "They are converted into fine-tuning data for the model",
+      "They are sent to a search engine on the public web"
+    ],
+    "answer": "They are chunked, embedded, and stored in a vector store",
+    "explanation": "When files are added to a vector store, the service parses and chunks them, generates embeddings, and stores them for keyword and semantic retrieval.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/file-search"
+  },
+  {
+    "question": "A sales agent must read an uploaded CSV of monthly revenue, calculate growth rates, and produce a chart. Which agent tool is the best fit?",
+    "options": [
+      "File search",
+      "Code interpreter",
+      "Web search",
+      "Azure AI Search"
+    ],
+    "answer": "Code interpreter",
+    "explanation": "Code interpreter lets the agent write and run Python in a sandbox, which suits data analysis, calculations, and generating charts from uploaded files.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/code-interpreter"
+  },
+  {
+    "question": "An agent must check order status by calling the company's internal order API, and the call must run inside the company's own app code. Which tool approach fits?",
+    "options": [
+      "File search over a nightly export of order data",
+      "Function calling, with the client app running the call",
+      "Web search to find the order on the internet",
+      "Code interpreter running in the agent sandbox"
+    ],
+    "answer": "Function calling, with the client app running the call",
+    "explanation": "With function calling, you describe functions to the agent, the model decides when to call one and with which arguments, and your client code runs it and returns the result.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/function-calling"
+  },
+  {
+    "question": "A travel agent built in Foundry must answer questions about today's flight disruptions and news. Which tool gives the agent access to current public information?",
+    "options": [
+      "File search over last year's travel guides",
+      "Code interpreter",
+      "A web search or Grounding with Bing tool",
+      "A lower temperature setting on the model"
+    ],
+    "answer": "A web search or Grounding with Bing tool",
+    "explanation": "Web search tools let an agent retrieve current information from the web and cite sources, which a model can't know from its training data alone.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/tool-catalog"
+  },
+  {
+    "question": "A company already maintains a large Azure AI Search index of product manuals. They want a Foundry agent to ground answers in that index without uploading the files again. Which tool should they add?",
+    "options": [
+      "Image generation",
+      "Code interpreter",
+      "File search with a new vector store",
+      "Azure AI Search"
+    ],
+    "answer": "Azure AI Search",
+    "explanation": "The Azure AI Search tool connects an agent to an existing search index so it can ground responses in that indexed content.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/concepts/tool-catalog"
+  },
+  {
+    "question": "A Foundry agent for a bank's mortgage team keeps answering general investment questions, which is out of scope. What is the first thing to change?",
+    "options": [
+      "Increase the agent's max output tokens limit",
+      "Update the agent's instructions to define its scope",
+      "Change the deployment type to Provisioned",
+      "Add the code interpreter tool to the agent"
+    ],
+    "answer": "Update the agent's instructions to define its scope",
+    "explanation": "The agent's instructions define its goals and behavior. Clear scope rules and guidance on declining off-topic requests are the first fix for out-of-scope answers.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/overview"
+  },
+  {
+    "question": "A developer created an agent named support-agent in the Foundry portal and now wants a Python client app to chat with it over several turns. Which approach matches the current Foundry SDK pattern?",
+    "options": [
+      "Call get_openai_client(agent_name=...), create a conversation, then call responses.create",
+      "Upload each user message as a file to the agent's vector store",
+      "Create a new agent version on every user message and read its instructions",
+      "Call responses.create with model set to support-agent and resend the full history each time"
+    ],
+    "answer": "Call get_openai_client(agent_name=...), create a conversation, then call responses.create",
+    "explanation": "The SDK returns an OpenAI client pre-bound to the agent when you pass agent_name, and a conversation created with conversations.create carries history across responses.create calls.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code"
+  },
+  {
+    "question": "Why does a client app that chats with a Foundry agent typically not repeat the agent's instructions in every message?",
+    "options": [
+      "Instructions can only be set in the system message of each request",
+      "Repeating instructions would disable the agent's tools",
+      "The instructions are stored in the agent definition",
+      "Instructions are ignored by agents after the first message"
+    ],
+    "answer": "The instructions are stored in the agent definition",
+    "explanation": "An agent's definition holds its core behavior, including instructions, model, and tools, so client messages only need to carry user input.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code"
+  },
+  {
+    "question": "Which credential does the Foundry SDK quickstart use so that a developer signed in with the Azure CLI can authenticate without putting keys in code?",
+    "options": [
+      "DefaultAzureCredential",
+      "AzureKeyCredential with a hardcoded key",
+      "A shared access signature token",
+      "An anonymous client with no credential"
+    ],
+    "answer": "DefaultAzureCredential",
+    "explanation": "DefaultAzureCredential tries several Microsoft Entra ID credential sources, including an Azure CLI sign-in, so the code doesn't need keys.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code"
+  },
+  {
+    "question": "A developer tests an agent in the Foundry portal and wants to confirm that answers come from the uploaded policy files rather than the model's general knowledge. What should they look for in the agent's responses?",
+    "options": [
+      "A higher token count than responses without tools",
+      "A finish reason of length on each response",
+      "Citations that reference the uploaded files",
+      "An HTTP 400 error code of content_filter"
+    ],
+    "answer": "Citations that reference the uploaded files",
+    "explanation": "When file search retrieves content, the agent's response can include citations or annotations pointing to the source files, which confirms grounding.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/agents/how-to/tools/file-search"
+  },
+  {
+    "question": "A team uses the Foundry playground to test a model and wants to add guidance that reduces harmful or ungrounded output, using Microsoft-provided templates. What can they add to the system message?",
+    "options": [
+      "Few-shot examples of harmful responses",
+      "Safety system messages",
+      "A larger max tokens value",
+      "A Global Batch deployment"
+    ],
+    "answer": "Safety system messages",
+    "explanation": "In the playground you can add safety system message sections, using prebuilt templates you can edit, to guide the model away from harmful or ungrounded content.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-foundry/quickstarts/get-started-playground"
+  },
+  {
+    "question": "A developer calls Azure Language sentiment analysis on a product review. Which kind of result does the service return for the document?",
+    "options": [
+      "A numeric star rating from one to five that summarizes the review",
+      "A sentiment label, such as mixed, with confidence scores",
+      "A rewritten version of the review that uses neutral, polite wording",
+      "A list of the main concepts mentioned in the review"
+    ],
+    "answer": "A sentiment label, such as mixed, with confidence scores",
+    "explanation": "Sentiment analysis returns sentiment labels such as positive, negative, neutral, or mixed, along with confidence scores at the document and sentence level.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/sentiment-opinion-mining/overview"
+  },
+  {
+    "question": "A company needs to detect and redact names, phone numbers, and credit card numbers in support tickets before indexing them, with consistent, predefined entity categories. Which option is the most appropriate?",
+    "options": [
+      "Use the PII detection feature of Azure Language in Foundry Tools",
+      "Use language detection and drop non-English tickets",
+      "Use key phrase extraction and delete the returned phrases",
+      "Prompt a chat model to remove anything that looks like personal data"
+    ],
+    "answer": "Use the PII detection feature of Azure Language in Foundry Tools",
+    "explanation": "Azure Language PII detection identifies sensitive entities in predefined categories, such as phone numbers and credit card numbers, and returns redacted text.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/personally-identifiable-information/overview"
+  },
+  {
+    "question": "A text analysis app built on Azure Language returns the code 'fr' with a high confidence score for a customer email. Which feature produced this result?",
+    "options": [
+      "Named entity recognition",
+      "Sentiment analysis",
+      "Key phrase extraction",
+      "Language detection"
+    ],
+    "answer": "Language detection",
+    "explanation": "Language detection evaluates text and returns the detected language, for example as an ISO 639-1 code such as fr, with a confidence score.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/language-detection/overview"
+  },
+  {
+    "question": "A developer wants users to speak a question to a model and get a text answer, without first running a separate speech to text service. What does this require?",
+    "options": [
+      "A vision-enabled model with the audio sent as an image_url part",
+      "Any chat model, with the audio file name included in the text",
+      "An embedding model that converts the audio file to vectors",
+      "An audio-capable model, with the audio sent as input_audio"
+    ],
+    "answer": "An audio-capable model, with the audio sent as input_audio",
+    "explanation": "Audio-capable models such as gpt-4o-audio-preview accept spoken prompts. The audio is base64-encoded and sent in an input_audio content part with its format, such as wav.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/audio-completions-quickstart"
+  },
+  {
+    "question": "A developer sends a spoken prompt to an audio-capable model using chat completions and wants the model to reply with both text and spoken audio. Which request setting is needed?",
+    "options": [
+      "Set temperature to 0 and max tokens to the audio length",
+      "Send the prompt as an image_url content part",
+      "Set modalities to text and audio and choose a voice and format",
+      "Set the response format to json_object"
+    ],
+    "answer": "Set modalities to text and audio and choose a voice and format",
+    "explanation": "The modalities parameter sets output types. Requesting text and audio, with an audio setting such as voice and format, returns base64 audio and a transcript.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/audio-completions-quickstart"
+  },
+  {
+    "question": "A company is building a voice assistant that must hold natural, low-latency spoken conversations where users can interrupt the assistant. Which option is designed for this?",
+    "options": [
+      "Content Understanding with the prebuilt-audioSearch analyzer",
+      "Batch transcription followed by a chat model",
+      "A realtime model such as gpt-realtime using the Realtime API",
+      "Audio-enabled chat completions with one request per file"
+    ],
+    "answer": "A realtime model such as gpt-realtime using the Realtime API",
+    "explanation": "The Realtime API uses audio models optimized for low-latency, real-time speech interactions, such as live voice assistants.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/audio-completions-quickstart"
+  },
+  {
+    "question": "A legal firm has 40,000 recorded meetings in Azure Blob Storage and needs transcripts within a few days. No real-time results are needed. Which Azure Speech option is most appropriate?",
+    "options": [
+      "Text to speech with a neural voice",
+      "Batch transcription",
+      "Speech translation",
+      "Real-time speech to text from the microphone"
+    ],
+    "answer": "Batch transcription",
+    "explanation": "Batch transcription asynchronously transcribes large volumes of stored audio, such as files in Azure Blob Storage, and saves results for later retrieval.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/batch-transcription"
+  },
+  {
+    "question": "A field service app records short voice notes and must transcribe each file as soon as it is uploaded, returning results synchronously and faster than real time. Batch job queues are too slow. Which Azure Speech option fits best?",
+    "options": [
+      "Fast transcription",
+      "Pronunciation assessment",
+      "Batch transcription",
+      "Custom voice"
+    ],
+    "answer": "Fast transcription",
+    "explanation": "Fast transcription transcribes pre-recorded audio files synchronously with predictable latency, which suits processing individual files quickly.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/fast-transcription-create"
+  },
+  {
+    "question": "A pharmaceutical call center finds that speech to text often misrecognizes drug names. Which Azure Speech capability should they use to improve accuracy?",
+    "options": [
+      "Custom speech trained with domain-specific data",
+      "Speech translation into a second language",
+      "SSML prosody settings on the transcripts",
+      "A different neural voice for text to speech"
+    ],
+    "answer": "Custom speech trained with domain-specific data",
+    "explanation": "Custom speech lets you train recognition models with your own data, such as domain vocabulary and pronunciation, to improve accuracy for specialized terms.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview"
+  },
+  {
+    "question": "A developer uses the Speech SDK for text to speech and wants a specific prebuilt neural voice. What do they set?",
+    "options": [
+      "The audio input device for the microphone",
+      "The model deployment name of a chat model",
+      "The synthesis voice name, such as en-US-AvaNeural",
+      "The speech recognition language, such as en-US or fr-FR"
+    ],
+    "answer": "The synthesis voice name, such as en-US-AvaNeural",
+    "explanation": "Text to speech uses prebuilt neural voices, chosen by name in the speech configuration or in the SSML voice element.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech"
+  },
+  {
+    "question": "Which element must wrap all content in an SSML document sent to Azure Speech, along with the version, xmlns, and xml:lang attributes?",
+    "options": [
+      "prosody",
+      "audio",
+      "speak",
+      "voice"
+    ],
+    "answer": "speak",
+    "explanation": "Every SSML document starts with the speak root element, which requires version, xmlns, and xml:lang attributes and contains at least one voice element.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-structure"
+  },
+  {
+    "question": "A developer wants a one-second pause between two sentences in synthesized speech. Which SSML markup should they use?",
+    "options": [
+      "<emphasis level=\"1000ms\"/>",
+      "<say-as interpret-as=\"pause\"/>",
+      "<break time=\"1000ms\"/>",
+      "<prosody rate=\"1000ms\"/>"
+    ],
+    "answer": "<break time=\"1000ms\"/>",
+    "explanation": "The break element inserts a pause. Its time attribute sets an absolute duration in seconds or milliseconds, and it overrides the strength attribute.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-structure"
+  },
+  {
+    "question": "An audiobook app must read a passage more slowly and at a lower pitch than the default voice. Which SSML element controls this?",
+    "options": [
+      "prosody",
+      "phoneme",
+      "break",
+      "say-as"
+    ],
+    "answer": "prosody",
+    "explanation": "The prosody element changes pitch, contour, range, rate, and volume of the synthesized speech.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-voice"
+  },
+  {
+    "question": "A text to speech app reads '4/5/2026' as 'four slash five slash two thousand twenty-six'. Which SSML element should be used so it is read as a date?",
+    "options": [
+      "voice with a different neural voice name",
+      "say-as with interpret-as set to date",
+      "prosody with rate set to slow",
+      "break with strength set to strong"
+    ],
+    "answer": "say-as with interpret-as set to date",
+    "explanation": "The say-as element, with its interpret-as attribute, tells the speech engine how to interpret content such as dates, numbers, and telephone numbers.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-pronunciation"
+  },
+  {
+    "question": "A support bot uses a neural voice that supports speaking styles. The team wants apologies read in a more empathetic tone. Which SSML element should they use?",
+    "options": [
+      "mstts:express-as with a style attribute",
+      "prosody with volume set to loud",
+      "lang with xml:lang set to en-US",
+      "emphasis with level set to strong"
+    ],
+    "answer": "mstts:express-as with a style attribute",
+    "explanation": "For voices that support it, the mstts:express-as element applies a speaking style, such as cheerful, sad, or empathetic, with optional style degree and role.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-synthesis-markup-voice"
+  },
+  {
+    "question": "A retail brand wants a unique synthetic voice for its assistant that sounds like its own spokesperson rather than any prebuilt voice. Which Azure Speech capability is designed for this?",
+    "options": [
+      "Custom speech",
+      "Speech translation",
+      "Custom voice",
+      "Pronunciation assessment"
+    ],
+    "answer": "Custom voice",
+    "explanation": "Custom voice lets organizations create a custom neural voice that is unique to their brand or product, subject to Microsoft's responsible AI requirements.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview"
+  },
+  {
+    "question": "A developer sends a photo to a vision-enabled chat model through chat completions. How should the image be included in the user message?",
+    "options": [
+      "As a base64 string pasted into the system message text",
+      "As an input_audio content part with the image format",
+      "As a file uploaded to the deployment's vector store",
+      "As an image_url content part, alongside a text content part"
+    ],
+    "answer": "As an image_url content part, alongside a text content part",
+    "explanation": "Vision-enabled chat models accept a user message whose content is an array of parts, such as text parts and image_url parts that hold a URL or base64 data URL.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "A developer's app sends images stored in a private Azure Blob container behind a firewall to a vision-enabled model by URL, and the requests fail. What is the simplest fix?",
+    "options": [
+      "Send each image as a base64 data URL instead",
+      "Set the image detail parameter to high",
+      "Switch from a Standard to a Provisioned deployment",
+      "Increase max tokens so the model can download the images"
+    ],
+    "answer": "Send each image as a base64 data URL instead",
+    "explanation": "Image URLs must be publicly accessible. For private images, the app can read the file and send it as a base64 data URL, such as data:image/jpeg;base64,....",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "A vision app classifies thousands of product photos as 'damaged' or 'not damaged'. Fine detail isn't needed and the team wants to reduce token use and latency. Which setting helps?",
+    "options": [
+      "Increase temperature to 1.5",
+      "Set the image detail parameter to low",
+      "Set the image detail parameter to high",
+      "Send each photo twice in the same message"
+    ],
+    "answer": "Set the image detail parameter to low",
+    "explanation": "The detail setting low uses a downscaled version of the image, which is faster and uses fewer tokens, while high processes detailed tiles at higher token cost.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "A quality inspector wants a model to compare a reference photo and a production photo of a circuit board and describe differences. How can this be done in one request?",
+    "options": [
+      "Send each image in a separate deployment and merge the outputs",
+      "Put one image in the system message and the other in a tool message",
+      "Combine the images into an embedding and send the vector",
+      "Send both images as image_url parts in one user message"
+    ],
+    "answer": "Send both images as image_url parts in one user message",
+    "explanation": "A user message can contain multiple image_url parts plus text, so the model can reason over several images together in one request.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "A developer calls a gpt-image-1 deployment to generate an image and tries to read a URL from the response, but there isn't one. How is the image returned?",
+    "options": [
+      "As a file saved to the project's blob storage",
+      "As an SVG text string in the output_text field",
+      "As a URL that expires after 24 hours",
+      "As base64-encoded data in the b64_json field"
+    ],
+    "answer": "As base64-encoded data in the b64_json field",
+    "explanation": "GPT-image-1 models always return base64 image data in b64_json, which the app decodes and saves, and they don't support a URL response format.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "A marketing team needs portrait-oriented images from gpt-image-1 for phone screens. Which size value should they request?",
+    "options": [
+      "1536x1024",
+      "1024x1536",
+      "1024x1024",
+      "512x512"
+    ],
+    "answer": "1024x1536",
+    "explanation": "gpt-image-1 supports 1024x1024 (square), 1024x1536 (portrait), and 1536x1024 (landscape).",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "A designer needs product icons from gpt-image-1 with a transparent background so they can be placed on any web page. Which request settings should they use?",
+    "options": [
+      "Set background to transparent with PNG output format",
+      "Set output compression to 100 with PNG format",
+      "Set background to transparent with JPEG output format",
+      "Set quality to low with JPEG output format"
+    ],
+    "answer": "Set background to transparent with PNG output format",
+    "explanation": "gpt-image-1 supports a transparent background option, which is used with the PNG output format because JPEG doesn't support transparency.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "A team wants to replace only the sky in an existing photo with a sunset, keeping the rest unchanged, using gpt-image-1. Which approach should they use?",
+    "options": [
+      "Call the generations API with the detail parameter set to high",
+      "Send the photo to a vision chat model and ask it to return an edited image",
+      "Use the image edits API with a mask over the sky",
+      "Call the generations API with a prompt describing the whole new photo"
+    ],
+    "answer": "Use the image edits API with a mask over the sky",
+    "explanation": "The edits endpoint accepts an input image, a prompt, and a mask. Fully transparent areas of the mask mark the region to change, which enables inpainting.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "A prototyping app generates many draft images from gpt-image-1 and speed matters more than fine detail. Which setting best supports this?",
+    "options": [
+      "Set background to transparent",
+      "Set quality to low",
+      "Set n to 10 for every request",
+      "Set quality to high"
+    ],
+    "answer": "Set quality to low",
+    "explanation": "gpt-image-1 supports low, medium, and high quality. Lower quality generates faster, while high, the default, produces the most detail.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/dall-e"
+  },
+  {
+    "question": "A developer building a lightweight vision app wants a vision-enabled model to return the total from a photographed receipt as structured data. What is the most direct approach?",
+    "options": [
+      "Convert the receipt to an embedding and look up the total",
+      "Send the receipt to batch transcription in Azure Speech",
+      "Send the receipt to gpt-image-1 with a prompt asking for the total",
+      "Send the image and ask for the total in a set JSON format"
+    ],
+    "answer": "Send the image and ask for the total in a set JSON format",
+    "explanation": "Vision-enabled models can read text in images. A clear instruction about the output format lets a simple app get structured results from an image prompt.",
+    "link": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/gpt-with-vision"
+  },
+  {
+    "question": "In Azure Content Understanding in Foundry Tools, what is an analyzer?",
+    "options": [
+      "A dashboard that charts usage and cost for a resource",
+      "A trained neural network that you must label data to create",
+      "A configuration of extraction settings, field schema, and models",
+      "A storage container that holds uploaded documents"
+    ],
+    "answer": "A configuration of extraction settings, field schema, and models",
+    "explanation": "An analyzer defines how content is processed, including content extraction settings, the field extraction schema, and model deployments, and applies them consistently to all inputs.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview"
+  },
+  {
+    "question": "Which types of content can Azure Content Understanding in Foundry Tools process?",
+    "options": [
+      "Text documents and live microphone streams only",
+      "Documents and images only",
+      "Audio and video only",
+      "Documents, images, audio, and video"
+    ],
+    "answer": "Documents, images, audio, and video",
+    "explanation": "Content Understanding processes documents, images, video, and audio, converting them into structured output such as Markdown or JSON.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview"
+  },
+  {
+    "question": "A developer creates a custom Content Understanding analyzer to extract fields from scanned loan applications. Which value should baseAnalyzerId have?",
+    "options": [
+      "prebuilt-document",
+      "prebuilt-read",
+      "prebuilt-image",
+      "prebuilt-documentSearch"
+    ],
+    "answer": "prebuilt-document",
+    "explanation": "Custom analyzers inherit from one of four base analyzers: prebuilt-document, prebuilt-image, prebuilt-audio, or prebuilt-video. Documents use prebuilt-document.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference"
+  },
+  {
+    "question": "An accounts payable team wants to extract vendor, dates, line items, and totals from invoices with as little setup as possible. Which Content Understanding option should they start with?",
+    "options": [
+      "The prebuilt-invoice analyzer",
+      "A custom analyzer based on prebuilt-audio",
+      "The prebuilt-videoSearch analyzer",
+      "The prebuilt-imageSearch analyzer"
+    ],
+    "answer": "The prebuilt-invoice analyzer",
+    "explanation": "Content Understanding includes domain-specific prebuilt analyzers, such as prebuilt-invoice, that extract common fields without designing a schema.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/prebuilt-analyzers"
+  },
+  {
+    "question": "A team is building a retrieval augmented generation (RAG) index from thousands of PDFs with charts and tables. They want Markdown output, figure descriptions, a summary, and chunked content ready for embedding. Which analyzer is recommended?",
+    "options": [
+      "prebuilt-layout",
+      "prebuilt-callCenter",
+      "prebuilt-documentSearch",
+      "prebuilt-read"
+    ],
+    "answer": "prebuilt-documentSearch",
+    "explanation": "prebuilt-documentSearch is recommended for document ingestion in RAG workflows. It outputs Markdown with layout, figure descriptions, a summary, and chunked output.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/prebuilt-analyzers"
+  },
+  {
+    "question": "A contact center wants a summary, topics, sentiment, and the people and companies mentioned in each recorded customer call, with minimal setup. Which Content Understanding analyzer fits best?",
+    "options": [
+      "prebuilt-imageSearch",
+      "prebuilt-callCenter",
+      "prebuilt-layout",
+      "prebuilt-invoice"
+    ],
+    "answer": "prebuilt-callCenter",
+    "explanation": "The prebuilt-callCenter analyzer processes call recordings and returns fields such as summary, topics, people, companies, sentiment, and categories.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/audio/overview"
+  },
+  {
+    "question": "A developer defines a field InvoiceNumber that must be copied exactly as it appears in the document. Which field method should they use?",
+    "options": [
+      "classify",
+      "segment",
+      "generate",
+      "extract"
+    ],
+    "answer": "extract",
+    "explanation": "The extract method takes values literally from the content and is supported for documents. generate creates values freely and classify chooses from defined categories.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference"
+  },
+  {
+    "question": "A video analyzer must produce a short natural-language description of what happens in each scene. Which field method fits this requirement?",
+    "options": [
+      "extract",
+      "enableOcr",
+      "classify",
+      "generate"
+    ],
+    "answer": "generate",
+    "explanation": "The generate method lets the generative model create values from the input, such as summaries of audio or descriptions of video scenes.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview"
+  },
+  {
+    "question": "A Content Understanding analyzer must label each customer call as 'billing', 'technical', or 'cancellation'. Which field method and definition fit best?",
+    "options": [
+      "Use the extract method on the call transcript",
+      "Use the classify method with the three categories",
+      "Use the generate method with no list of values",
+      "Enable OCR on the audio file"
+    ],
+    "answer": "Use the classify method with the three categories",
+    "explanation": "The classify method assigns a value from a predefined set of categories, which gives consistent labels such as call type or sentiment.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/overview"
+  },
+  {
+    "question": "A reviewer must trace each extracted value back to the page and region of the source document, and route low-confidence values to manual review. Which Content Understanding setting enables this?",
+    "options": [
+      "contentCategories with an 'other' category",
+      "estimateFieldSourceAndConfidence set to true",
+      "enableOcr set to false",
+      "enableSegment set to true"
+    ],
+    "answer": "estimateFieldSourceAndConfidence set to true",
+    "explanation": "Setting estimateFieldSourceAndConfidence to true returns a confidence score and source location, such as page and bounding box, for each field value.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference"
+  },
+  {
+    "question": "According to the Content Understanding analyzer reference, which requirement applies to a field that uses the extract method?",
+    "options": [
+      "extract fields require the analyzer to be based on prebuilt-video",
+      "Source and confidence estimation must be enabled for extract fields",
+      "extract fields must be inside a contentCategories entry",
+      "extract fields must use the type boolean"
+    ],
+    "answer": "Source and confidence estimation must be enabled for extract fields",
+    "explanation": "The extract method requires estimateSourceAndConfidence to be true for the field, either set on the field or through the analyzer-level setting.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference"
+  },
+  {
+    "question": "A field schema must capture invoice line items, each with a description, quantity, and amount. How should the field be defined?",
+    "options": [
+      "As a boolean field that indicates line items exist",
+      "As three separate top-level number fields on the invoice",
+      "An array of objects with description, quantity, and amount",
+      "As a single string field that holds all line items"
+    ],
+    "answer": "An array of objects with description, quantity, and amount",
+    "explanation": "Field types include string, number, boolean, date, object, and array. Repeating structured data such as line items is defined as an array of objects with properties.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference"
+  },
+  {
+    "question": "Why does Microsoft recommend writing specific, clear description values for each field in a Content Understanding field schema?",
+    "options": [
+      "The description is required only for display in the portal",
+      "The description sets the maximum length of the extracted value",
+      "The description chooses which base analyzer to use",
+      "It acts as a prompt that guides extraction of the value"
+    ],
+    "answer": "It acts as a prompt that guides extraction of the value",
+    "explanation": "Each field description works as a mini-prompt to guide extraction, so specific descriptions improve accuracy.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference"
+  },
+  {
+    "question": "A media company wants a custom video analyzer that splits newscasts into individual news stories and ignores advertisements. Which configuration achieves this?",
+    "options": [
+      "Set enableOcr to true and enableLayout to true",
+      "Enable segmentation and describe stories in contentCategories",
+      "Set enableSegment to false and add a summary field per video",
+      "Use prebuilt-invoice as the base analyzer"
+    ],
+    "answer": "Enable segmentation and describe stories in contentCategories",
+    "explanation": "Custom segmentation splits a video based on a natural-language description in contentCategories when enableSegment is true. With it false, the whole video is one segment.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/video/overview"
+  },
+  {
+    "question": "A developer needs to extract mostly text-based fields, such as names and dates, from photographed forms. Content Understanding offers image analyzers and document analyzers. Which should they use and why?",
+    "options": [
+      "A video analyzer, because it samples frames at high resolution",
+      "A document analyzer, since the goal is mainly text extraction",
+      "An image analyzer, because the input files are photographs",
+      "An audio analyzer, because it includes speech transcription"
+    ],
+    "answer": "A document analyzer, since the goal is mainly text extraction",
+    "explanation": "Microsoft notes that image analyzers aren't optimized for scenarios that rely mainly on extracted text, and recommends a document field extraction schema in those cases.",
+    "link": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/image/overview"
+  }
+]

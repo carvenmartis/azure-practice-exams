@@ -1,0 +1,602 @@
+{
+  "a51381928954": {
+    "Inclusiveness": "Inclusiveness is about designing systems that empower and can be used by people with a broad range of needs and abilities, not about unequal outcomes for similar groups.",
+    "Transparency": "Transparency concerns whether people can understand how the system makes decisions; the core issue here is the biased outcome itself.",
+    "Accountability": "Accountability is about who answers for the system and keeps human control; it does not describe the disparity in outcomes between groups."
+  },
+  "ab44912bb17c": {
+    "Fairness": "Fairness focuses on avoiding biased outcomes between groups, not on explaining how a specific decision was reached.",
+    "Reliability and safety": "Reliability and safety is about consistent, safe operation under expected and unexpected conditions, not about explaining decisions.",
+    "Privacy and security": "Privacy and security covers protecting personal data, not making the model's reasoning understandable."
+  },
+  "a0b0cc3cd12b": {
+    "Fairness": "Fairness concerns avoiding biased treatment of groups in outcomes such as approvals or rankings, not designing for accessibility needs.",
+    "Accountability": "Accountability is about human ownership and oversight of the system, not about who can use it.",
+    "Transparency": "Transparency is about explaining how the system works, which does not make it usable by people with disabilities."
+  },
+  "b1da6212e09e": {
+    "Transparency": "Transparency is about making the system's behavior understandable, not about who is answerable for it and keeps control.",
+    "Inclusiveness": "Inclusiveness is about designing for a broad range of users and abilities, not about governance and oversight.",
+    "Reliability and safety": "Reliability and safety is about the system behaving consistently and safely; the board and override authority are governance measures."
+  },
+  "9a006e8f5aa4": {
+    "Fairness": "Fairness is about avoiding biased outcomes for groups; testing edge cases and failing safely is about dependable behavior.",
+    "Privacy and security": "Privacy and security covers protection of patient data, not how the model behaves when given unexpected inputs.",
+    "Transparency": "Transparency is about explaining decisions; deferring when unsure is a safety behavior, not an explanation."
+  },
+  "aa574d57ea60": {
+    "Accountability": "Accountability is about who is answerable for the system, not about how personal data is collected and protected.",
+    "Inclusiveness": "Inclusiveness is about designing for people of all abilities and backgrounds, not about data protection.",
+    "Fairness": "Fairness is about equitable outcomes across groups; encryption and deletion requests are data protection measures."
+  },
+  "6955a2527626": {
+    "Accountability": "Accountability is about human ownership and control of the system; labeling output informs users rather than assigning responsibility.",
+    "Reliability and safety": "Labeling output does not make the model behave more consistently or safely; it tells users what they are interacting with.",
+    "Fairness": "Fairness is about avoiding biased outcomes for groups, which disclosure of AI use does not address."
+  },
+  "850824c2f252": {
+    "Protected material detection for text": "Protected material detection flags known copyrighted text such as lyrics or articles in model output; it does not detect injected instructions in documents.",
+    "Groundedness detection on completions": "Groundedness detection checks whether output is supported by source material, not whether a document contains malicious instructions.",
+    "A custom blocklist on output text": "A blocklist matches specific terms you list; it cannot reliably detect instructions hidden in arbitrary documents."
+  },
+  "fb8ec1cc9bff": {
+    "Hate and fairness, profanity, spam, and self-harm": "Profanity is handled by optional blocklists and spam is not a harm category of the default classifiers.",
+    "Violence, misinformation, sexual, and fraud": "Misinformation and fraud are not among the four harm categories that the default filter classifies.",
+    "Sexual, violence, jailbreak, and protected material": "Jailbreak detection and protected material are separate optional filters, not two of the four harm categories."
+  },
+  "ec62bf4fbe68": {
+    "Set the violence threshold to block low, medium, and high severity": "This is the strictest setting and blocks low severity content, which is the behavior the writers are complaining about.",
+    "Set the violence threshold to block medium and high severity": "This setting still blocks medium severity content, which the studio wants to allow.",
+    "Turn off all content filters for the deployment": "Turning filters off would allow high severity violence too, and disabling filters requires approval; it is far broader than needed."
+  },
+  "bca78e5fa420": {
+    "The model's response was cut off because it reached the max tokens limit": "Truncation at the token limit returns a successful response with a finish reason of length, not an HTTP 400 content_filter error.",
+    "The deployment has run out of tokens-per-minute quota": "Quota and rate limit problems return HTTP 429 errors, not a content_filter code.",
+    "The completion was filtered after generation began": "A filtered completion returns a finish reason of content_filter in a normal response; an HTTP 400 with content_filter means the prompt itself was filtered."
+  },
+  "382f5d1fd168": {
+    "Prompt Shields for user prompt attacks": "Prompt Shields detects jailbreak attempts in inputs, not copyrighted text in outputs.",
+    "The self-harm harm category filter": "The self-harm category detects content about hurting oneself, which is unrelated to reproducing lyrics.",
+    "Groundedness detection for completions": "Groundedness detection checks whether output is supported by provided sources; it does not identify known copyrighted text."
+  },
+  "2d9880d4b8f5": {
+    "A credential that authorizes an application to call the model endpoint": "Authentication tokens exist, but in language models a token is the unit of text the model reads and generates.",
+    "A numeric score showing how confident the model is in its answer": "Confidence scores are not tokens; tokens are pieces of text such as words, subwords, or punctuation.",
+    "A complete sentence that the model stores in its long-term memory": "Tokens are usually smaller than words or sentences, and models do not store sentences as long-term memory."
+  },
+  "a56e913567c8": {
+    "A compressed copy of the original text used to reduce storage": "Embeddings cannot be decompressed back into the original text; they encode meaning as vectors for comparison.",
+    "A set of rules that tells the model how to format its answers": "Formatting rules are given in prompts or system messages, not encoded as embeddings.",
+    "A label that classifies text into one of a fixed list of categories": "A category label is the output of classification; an embedding is a dense vector describing meaning."
+  },
+  "3ab5aff00e88": {
+    "Tokenization": "Tokenization splits text into tokens before processing; it does not compute relationships between tokens.",
+    "Backpropagation": "Backpropagation is how weights are updated during training, not how token relationships are computed during processing.",
+    "Content filtering": "Content filtering is a safety layer around a deployment and is not part of the transformer architecture."
+  },
+  "39cd7c4e64a1": {
+    "It looks up a matching answer stored in a database of prior responses": "Generative models do not retrieve stored answers; they generate output one token at a time.",
+    "It translates the prompt into a search query and returns web results": "A plain language model does not search the web; it generates text from patterns learned in training.",
+    "It selects one answer from a fixed list of approved replies": "Selecting from fixed replies describes a rules-based bot, not a generative model."
+  },
+  "23c0c7019b48": {
+    "Word count difference": "Counting words ignores meaning and does not compare embedding vectors.",
+    "Token-per-minute rate": "Tokens per minute is a throughput and quota measure, not a similarity score.",
+    "Model temperature": "Temperature controls randomness in generation and has nothing to do with comparing vectors."
+  },
+  "fbe3261a5610": {
+    "An image generation model such as gpt-image-1": "Image generation models create pictures from prompts; they do not produce text vectors for search.",
+    "A speech to text model such as a transcription model": "Transcription models convert audio to text and do not create vectors for semantic search.",
+    "A reasoning chat model with a high temperature setting": "Chat models generate text responses; embedding models are the right choice for creating search vectors, and temperature is irrelevant here."
+  },
+  "a752fca413ba": {
+    "A high temperature, such as 1.5": "High temperature increases randomness, which works against consistent, factual extraction.",
+    "The maximum temperature of 2": "The maximum value produces the most random output, the opposite of what the app needs.",
+    "A temperature of 1 combined with a top_p of 1": "These are typical defaults that allow a fair amount of variation; lowering temperature makes output more focused and repeatable."
+  },
+  "ffc8ab223239": {
+    "Decrease the max tokens setting": "Lowering max tokens only shortens responses; it does not add variety.",
+    "Add a stop sequence after the first slogan": "A stop sequence ends generation early and does not make the content more varied.",
+    "Set the temperature to 0": "A temperature of 0 makes output as deterministic as possible, which would reduce variety further."
+  },
+  "e06c6fe3b50c": {
+    "The maximum number of tokens that can appear in the response": "The response length limit is set by max tokens, not top_p.",
+    "The number of alternative responses the model returns for each request": "The number of returned choices is set by a separate parameter such as n, not top_p.",
+    "The penalty applied to tokens that already appeared in the text": "Repetition is controlled by presence and frequency penalties, not top_p."
+  },
+  "9536b57b98ce": {
+    "Always set both to 0 so output is fully deterministic": "Guidance recommends changing one of the two at a time, and even very low values do not guarantee identical output.",
+    "Leave both at defaults and instead raise max tokens": "Max tokens limits response length; it does not make the choice of tokens more predictable.",
+    "Raise top_p and lower temperature so they balance each other": "Moving them in opposite directions makes results hard to reason about; guidance is to change only one."
+  },
+  "4c6f4734f749": {
+    "Lower the temperature so the model writes shorter answers": "Temperature affects randomness, not response length limits, so the truncation would continue.",
+    "Add a stop sequence at the end of each paragraph": "Stop sequences end generation earlier, which would make truncation worse.",
+    "Switch the deployment type from Standard to Global Standard": "Deployment type affects data processing location and quota, not the maximum length of a single response."
+  },
+  "aa59469c605c": {
+    "The reasoning model requires a higher temperature than 2": "Temperature cannot exceed 2 for any model, and reasoning models do not accept the parameter at all.",
+    "Reasoning models only accept these settings when they appear in the system message": "Sampling parameters cannot be set through a system message; reasoning models simply do not support them.",
+    "The deployment must be changed to Provisioned to allow these settings": "Deployment type does not change which request parameters a model supports."
+  },
+  "e22e6748d94f": {
+    "Increase the temperature so the model uses fewer tokens": "Temperature does not change how many tokens the conversation history consumes.",
+    "Switch to a Global Batch deployment for the conversation": "Batch deployments are for asynchronous jobs and do not increase a model's context window.",
+    "Increase the max output tokens setting for each request": "Raising output tokens consumes more of the context window and makes the problem worse."
+  },
+  "be0e32405a35": {
+    "Global Standard": "Global Standard can process data in any Azure region worldwide, which breaks the EU-only requirement.",
+    "Global Batch": "Global Batch processes in any region and is for asynchronous jobs, not interactive EU-only inferencing.",
+    "Global Provisioned": "Global Provisioned uses reserved capacity rather than pay-per-token billing, and it can process data in any region."
+  },
+  "15da4c1b6083": {
+    "Regional Provisioned": "Provisioned deployments require reserving throughput units, which does not suit a startup that wants pay-per-token billing.",
+    "Standard": "Standard keeps processing in one Azure geography and has lower default quota than Global Standard.",
+    "Developer": "The Developer type is for evaluating fine-tuned models, with a limited lifetime and no SLA."
+  },
+  "38d690eba726": {
+    "A Global Standard deployment with default quota": "Global Standard is pay-per-token and latency can vary at high sustained volume, which the call center cannot accept.",
+    "A Global Batch deployment": "Batch deployments process asynchronous jobs with a target turnaround of up to 24 hours, not real-time requests.",
+    "A Data Zone Standard deployment with pay-per-token billing": "Data Zone Standard is still pay-per-token without guaranteed capacity, so latency can vary under load."
+  },
+  "e52d7d628857": {
+    "Regional Provisioned": "Reserving provisioned throughput for a one-time offline job is expensive and unnecessary when real-time latency isn't needed.",
+    "Standard": "Standard handles real-time requests at standard pricing and has lower quota, so a two-million-item job would be slower and cost more.",
+    "Developer": "The Developer type is meant for evaluating fine-tuned models, not large production jobs."
+  },
+  "cbd29193ede5": {
+    "Global Standard": "Global Standard can process data in any Azure region, which doesn't meet the single-geography requirement.",
+    "Data Zone Standard": "Data Zone Standard processes data anywhere within a multi-country data zone, which is broader than one geography.",
+    "Global Provisioned": "Global Provisioned uses reserved capacity instead of pay-per-token billing and can process data in any region."
+  },
+  "5b83042b3a8b": {
+    "gpt-4.1-mini": "The model parameter routes to a specific deployment, so it takes the deployment name, which differs from the model name here.",
+    "The project endpoint URL": "The endpoint is used to create the client, not as the model parameter.",
+    "The Foundry resource name": "The resource name is part of the endpoint and does not identify a specific deployment."
+  },
+  "37e7bbf80dcf": {
+    "A text embedding model such as text-embedding-3-small": "Embedding models create vectors from text and cannot answer questions about images.",
+    "An image generation model such as gpt-image-1": "Image generation models create images from prompts; they are not used to answer questions about an input photo.",
+    "A speech to text model used for audio transcription": "Transcription models convert audio to text and cannot analyze photos."
+  },
+  "d4869fd02fd7": {
+    "The largest reasoning model available in the catalog": "Reasoning models spend extra tokens thinking, which raises cost and latency for a simple classification task.",
+    "An image generation model with low quality settings": "Image models generate images and cannot classify text messages.",
+    "An embedding model used to generate the category names": "Embedding models produce vectors, not category names; a small chat model can classify directly."
+  },
+  "568f556fe963": {
+    "A small, low-latency chat model tuned for short replies": "Small fast models trade depth for speed and are weaker at complex multistep reasoning.",
+    "An embedding model with high vector dimensions": "Embedding models create vectors for similarity search and do not solve problems.",
+    "A text to speech model with a neural voice": "Text to speech models convert text to audio and do not perform reasoning."
+  },
+  "de7e6aa09131": {
+    "Fine-tuning": "Fine-tuning retrains a model on a dataset; adding examples to the prompt does not change the model's weights.",
+    "Grounding with retrieval": "Retrieval grounding adds relevant source data to a prompt, not example input and output pairs.",
+    "Zero-shot prompting": "Zero-shot prompting gives instructions without any examples, which is the opposite of this approach."
+  },
+  "64481060f493": {
+    "Fine-tune the model every month on the policy documents": "Monthly fine-tuning is costly and slow, and it is not needed to give the model current reference content.",
+    "Raise the temperature so the model generates fuller answers": "Temperature only affects randomness; it does not give the model access to current policies.",
+    "Increase max tokens so the model can recall more policies": "Max tokens limits response length and does not provide new knowledge to the model."
+  },
+  "014c81a07447": {
+    "Overfitting to the training data": "Overfitting describes poor generalization during training, not fabricated statements at inference time.",
+    "A content filter false positive": "A false positive is a safe output being blocked; here the output was delivered but incorrect.",
+    "Prompt injection by a malicious user": "Prompt injection is an attack that changes model behavior; the model inventing facts can happen without any attack."
+  },
+  "9aef79bd3971": {
+    "A chatbot that writes a poem when a user asks for one": "Writing a poem on request is a single generative response with no planning or tool actions.",
+    "A model that translates a paragraph from English to French": "Translation is a single transformation of text, not a goal-directed sequence of actions with tools.",
+    "A model that summarizes a long article into three bullet points": "Summarization is one generative task and doesn't involve tools or acting on behalf of the user."
+  },
+  "7e0178e7bf16": {
+    "Language detection": "Language detection identifies which language the text is written in, not the main topics.",
+    "Sentiment analysis": "Sentiment analysis measures positive or negative opinion, not the main concepts in the text.",
+    "Named entity linking": "Entity linking connects named entities to a knowledge base entry, not general talking points like 'interest rates'."
+  },
+  "b020698a1cd9": {
+    "Key phrase extraction": "Key phrase extraction returns main concepts but does not categorize them as people, organizations, or dates.",
+    "Opinion mining": "Opinion mining links sentiment to aspects of a product or service; it does not categorize entities.",
+    "Language detection": "Language detection only identifies the language of the text."
+  },
+  "715ea411152e": {
+    "Document-level sentiment analysis only": "Document-level sentiment gives one overall label and would likely report 'mixed' without linking sentiment to staff or breakfast.",
+    "Key phrase extraction": "Key phrase extraction would list 'staff' and 'breakfast' but would not say how guests felt about each.",
+    "Named entity recognition": "Entity recognition finds categorized entities but does not attach opinions to them."
+  },
+  "b3673046d62e": {
+    "Abstractive summarization": "Abstractive summarization generates new sentences that paraphrase the text, so summary sentences may not appear verbatim in the source.",
+    "Conversation summarization": "Conversation summarization is designed for chat and call transcripts, not long contract documents.",
+    "Key phrase extraction": "Key phrase extraction returns short phrases, not summary sentences."
+  },
+  "ccfc95790eea": {
+    "Speech synthesis": "Speech synthesis does the opposite, converting text into spoken audio.",
+    "Language detection": "Language detection identifies the language of text; it does not convert audio into text.",
+    "Optical character recognition": "OCR reads printed or handwritten text from images; it does not transcribe audio."
+  },
+  "2f4135bcb8c1": {
+    "Speech recognition": "Speech recognition converts spoken words into text, the opposite direction of what is needed.",
+    "Optical character recognition": "OCR reads text from images; it does not produce audio.",
+    "Speech translation": "Speech translation converts speech from one language to another; the app only needs to speak existing text."
+  },
+  "865fc21465b5": {
+    "Image classification": "Image classification assigns a label to the whole image; it doesn't locate individual objects with boxes.",
+    "Optical character recognition": "OCR extracts text from images and doesn't locate packages.",
+    "Image generation": "Image generation creates new images rather than analyzing existing ones."
+  },
+  "f25f25a2ead8": {
+    "Object detection": "Object detection returns rectangular bounding boxes, not pixel-level outlines.",
+    "Image classification": "Image classification labels the whole image and doesn't locate the tumor at all.",
+    "Image tagging": "Tagging returns descriptive labels for content in the image, not pixel-level masks."
+  },
+  "471281e3e167": {
+    "Image classification": "Classification would label the image, for example as 'car', but would not read the characters on the plate.",
+    "Semantic segmentation": "Segmentation outlines regions of pixels and doesn't convert characters into text.",
+    "Image captioning": "Captioning generates a sentence describing the image, not the exact plate text."
+  },
+  "c3903af7c1c2": {
+    "Image classification": "Classification labels existing images; it doesn't create new ones.",
+    "Object detection": "Object detection finds objects in existing images and doesn't produce new images.",
+    "Image captioning": "Captioning describes an existing image in text, the opposite direction from creating an image."
+  },
+  "f377b7fc5c81": {
+    "Named entity linking": "Entity linking connects entities to knowledge base entries and is not designed to find and redact sensitive personal data.",
+    "Key phrase extraction": "Key phrase extraction surfaces main topics and won't reliably identify or mask phone and ID numbers.",
+    "Language detection": "Language detection only determines the text's language."
+  },
+  "430b6560ac4a": {
+    "Speech synthesis only": "Synthesis alone turns text into audio but doesn't recognize the English speech or translate it.",
+    "Language detection on the slides": "Detecting the language of slide text doesn't translate spoken audio.",
+    "Batch speech transcription": "Batch transcription processes recorded files asynchronously and produces text in the same language, not live translation."
+  },
+  "7e7ebf0aea59": {
+    "Image generation from prompts": "Image generation creates new images and doesn't pull data out of scanned documents.",
+    "Speech recognition of audio": "Speech recognition works on audio, not scanned PDFs.",
+    "Sentiment analysis of text": "Sentiment analysis measures opinion in text and doesn't extract structured invoice fields."
+  },
+  "3e55820c68f3": {
+    "Image classification of the video thumbnail": "Classifying one thumbnail can't describe each scene or produce a transcript.",
+    "Text to speech with a neural voice": "Text to speech generates audio from text and doesn't analyze video.",
+    "Language detection on the video title": "Detecting the title's language gives no information about individual scenes."
+  },
+  "0c79bd684bcc": {
+    "Custom text classification": "Custom classification assigns whole documents to classes; it doesn't extract and label medical entities.",
+    "Language detection": "Language detection only identifies the language of the notes.",
+    "Conversational language understanding": "CLU predicts intents from short user utterances in conversational apps, not medical entities in notes."
+  },
+  "57e212fd20f7": {
+    "To hold the end user's latest question for the model": "The user's question goes in a user message, not the system message.",
+    "To store the model's previous answers for later turns": "Previous model replies are assistant messages or server-side conversation state, not the system message.",
+    "To configure the deployment's temperature and token limits": "Temperature and token limits are request parameters, not text in the system prompt."
+  },
+  "583eebdcbf2d": {
+    "system": "A second system message would add more instructions, but the question comes from the end user and belongs in a user message.",
+    "assistant": "Assistant messages hold the model's own previous replies, not questions from the user.",
+    "tool": "Tool messages return results from tool or function calls, not user questions."
+  },
+  "c49731fd7215": {
+    "Create a fine-tuning job with sample conversations": "Fine-tuning trains a new model version and is far slower than testing prompts interactively.",
+    "Deploy a second copy of the model with a Provisioned deployment type": "Changing deployment type doesn't let you test system messages, and it adds cost.",
+    "Write a batch job that sends prompts to a Global Batch deployment": "Batch jobs return results asynchronously, which is too slow for interactive prompt testing."
+  },
+  "c98d26421884": {
+    "The playground only supports models deployed as Provisioned": "The playground works with standard deployments, and deployment type doesn't affect knowledge of the catalog.",
+    "The temperature is set too low for factual questions": "A low temperature makes answers more focused; it can't give the model data it doesn't have.",
+    "The content filter blocked the product name": "A filtered prompt returns an error, not a generic answer."
+  },
+  "39c8af3dcf12": {
+    "The model deployment name, such as gpt-4.1-mini": "The deployment name is passed per request in the model parameter, not used to create the project client.",
+    "The Azure subscription ID and resource group name": "The current SDK connects with the project endpoint rather than subscription and resource group values.",
+    "The project's display name as shown in the portal": "A display name alone doesn't identify the endpoint; the client needs the full project endpoint URL."
+  },
+  "d89cf874f955": {
+    "get_chat_completions_client()": "This isn't the documented method in the current SDK quickstart; get_openai_client returns the OpenAI-compatible client.",
+    "create_deployment()": "Creating deployments is a management action and doesn't return a client for inference.",
+    "agents.create_version()": "This creates or versions an agent; it doesn't return an OpenAI-compatible client."
+  },
+  "1d7f34db91af": {
+    "openai.responses.create(deployment=\"my-deployment\", prompt=\"Hello\")": "The Responses API uses the model and input parameters, not deployment and prompt.",
+    "openai.completions.run(model=\"my-deployment\", text=\"Hello\")": "There is no completions.run method; the Responses API is called with responses.create.",
+    "openai.responses.create(model=\"Hello\", input=\"my-deployment\")": "The values are swapped; model takes the deployment name and input takes the prompt."
+  },
+  "c1dc0c1af27b": {
+    "azure-ai-textanalytics and azure-identity": "azure-ai-textanalytics is the Azure Language text analytics client, not the Foundry project SDK.",
+    "azure-cognitiveservices-speech and azure-core": "The Speech SDK is used for Azure Speech, not for connecting to a Foundry project.",
+    "azure-ai-projects and azure-storage-blob": "Blob storage isn't needed to call models, and azure-identity is needed for DefaultAzureCredential."
+  },
+  "f89a8cd70227": {
+    "Set temperature to 0 so the model remembers the earlier answer": "Temperature affects randomness, not memory of previous turns.",
+    "Add the first response's ID to the system message text": "Putting an ID in the prompt text does nothing; the API links turns through the previous_response_id parameter.",
+    "Create a new deployment for each turn of the conversation": "New deployments don't carry conversation context and would add needless overhead."
+  },
+  "f79997dd4b68": {
+    "Pass previous_response_id with each chat completions request": "previous_response_id is a Responses API feature; chat completions expects the history in the messages array.",
+    "Raise the model's temperature to strengthen its memory": "Temperature affects randomness and has nothing to do with conversation history.",
+    "Enable Prompt Shields on the deployment": "Prompt Shields detects attacks and doesn't store conversation history."
+  },
+  "7d674c2190ba": {
+    "Chat completions with a long system message": "Chat completions is stateless, so the app would still need to manage and resend history.",
+    "Chat completions with max tokens set to the context window": "Raising max tokens doesn't make chat completions store conversation state.",
+    "A Global Batch deployment with chat completions": "Batch processing is asynchronous and doesn't provide stateful multi-turn conversations."
+  },
+  "1cf3500473b5": {
+    "Set previous_response_id to the last response's ID": "previous_response_id relies on stored responses, which is the opposite of a stateless pattern.",
+    "Set temperature to 0 for every request in the session": "Temperature controls randomness and doesn't affect whether data is stored.",
+    "Set max output tokens to a very small value": "Limiting output length doesn't change whether the service stores the response."
+  },
+  "dbf7ac967efe": {
+    "A model, a content filter, and a deployment type": "Content filters and deployment types apply to model deployments; they aren't the core components of an agent.",
+    "A prompt, a vector index, and a web app": "An agent may use a vector index through a tool, but the defining components are model, instructions, and tools.",
+    "A dataset, a training job, and an endpoint": "These describe training a custom model, not defining an agent."
+  },
+  "cf92e26d6086": {
+    "A hosted agent": "Hosted agents are built in code with frameworks such as Agent Framework or LangGraph and deployed as containers.",
+    "A workflow agent": "Workflow agents orchestrate multiple agents and steps; a single no-code agent is a prompt agent.",
+    "A fine-tuned agent": "Fine-tuning changes a model's weights; it isn't an agent type in Foundry Agent Service."
+  },
+  "f44cbec486c5": {
+    "Code interpreter": "Code interpreter runs Python for analysis and file processing; it isn't designed for retrieving passages from a document collection.",
+    "Function calling": "Function calling invokes your own code; it doesn't index or search uploaded handbooks by itself.",
+    "Image generation": "Image generation creates pictures and can't answer questions from handbook text."
+  },
+  "d80ae47c8388": {
+    "They are converted into fine-tuning data for the model": "File search doesn't retrain the model; it retrieves relevant chunks at query time.",
+    "They are pasted in full into the agent's instructions": "The full files aren't added to the instructions; only relevant chunks are retrieved for each query.",
+    "They are sent to a search engine on the public web": "Uploaded files stay in a vector store for the agent and aren't published to the web."
+  },
+  "981537aca21d": {
+    "File search": "File search retrieves relevant text passages; it doesn't run calculations or create charts.",
+    "Web search": "Web search retrieves current public information, not analysis of a private CSV.",
+    "Azure AI Search": "Azure AI Search grounds answers in an existing search index and doesn't compute statistics or draw charts."
+  },
+  "4c4b3a6a2bd1": {
+    "File search over a nightly export of order data": "Searching an export would return stale data and doesn't call the live order system.",
+    "Code interpreter running in the agent sandbox": "The sandbox is isolated and isn't meant to call the company's internal systems from its own app code.",
+    "Web search to find the order on the internet": "Order status is private data and isn't available through public web search."
+  },
+  "7ad01e708beb": {
+    "File search over last year's travel guides": "Uploaded guides are static and won't contain today's disruptions.",
+    "Code interpreter": "Code interpreter runs Python in a sandbox and isn't a source of current news.",
+    "A lower temperature setting on the model": "Temperature affects randomness and can't give the model new information."
+  },
+  "a21844736e50": {
+    "File search with a new vector store": "File search would require uploading and indexing the manuals again in a separate vector store.",
+    "Code interpreter": "Code interpreter runs code and doesn't query an existing search index.",
+    "Image generation": "Image generation creates pictures and can't retrieve manual content."
+  },
+  "0fe3591bdf25": {
+    "Increase the agent's max output tokens limit": "More output tokens produce longer answers but don't limit topics.",
+    "Add the code interpreter tool to the agent": "Code interpreter adds computation abilities and doesn't restrict what topics the agent covers.",
+    "Change the deployment type to Provisioned": "Deployment type affects throughput and billing, not the agent's behavior."
+  },
+  "878bd3279d94": {
+    "Call responses.create with model set to support-agent and resend the full history each time": "The agent is referenced through the bound client and conversation; resending history isn't needed when a conversation holds it.",
+    "Create a new agent version on every user message and read its instructions": "Creating versions changes the agent definition and doesn't send user messages.",
+    "Upload each user message as a file to the agent's vector store": "Vector stores hold knowledge files for file search, not conversation turns."
+  },
+  "6b06344dc1bc": {
+    "Instructions are ignored by agents after the first message": "Instructions guide the agent throughout the conversation, not just the first message.",
+    "Instructions can only be set in the system message of each request": "For an agent, instructions are stored in its definition, so the app doesn't send them with each message.",
+    "Repeating instructions would disable the agent's tools": "Repeating instructions is unnecessary, but it wouldn't disable any tools."
+  },
+  "22baacaf1a3b": {
+    "AzureKeyCredential with a hardcoded key": "A hardcoded key goes against the keyless approach in the quickstart and is a security risk.",
+    "A shared access signature token": "SAS tokens are used for storage access, not for authenticating to a Foundry project.",
+    "An anonymous client with no credential": "Foundry project endpoints require authentication."
+  },
+  "d1eabe59afee": {
+    "A finish reason of length on each response": "A length finish reason means the output hit the token limit and says nothing about grounding.",
+    "A higher token count than responses without tools": "Token counts can vary for many reasons and don't prove that files were used.",
+    "An HTTP 400 error code of content_filter": "A content filter error means the prompt was blocked, not that the answer was grounded."
+  },
+  "58d0c9881633": {
+    "Few-shot examples of harmful responses": "Adding harmful examples could encourage the behavior the team wants to avoid.",
+    "A larger max tokens value": "Max tokens limits length and doesn't provide safety guidance.",
+    "A Global Batch deployment": "Deployment type has no effect on what instructions the model follows."
+  },
+  "3d7ad3df784a": {
+    "A numeric star rating from one to five that summarizes the review": "Sentiment analysis returns labels and confidence scores, not star ratings.",
+    "A list of the main concepts mentioned in the review": "A list of main concepts is the output of key phrase extraction.",
+    "A rewritten version of the review that uses neutral, polite wording": "Sentiment analysis classifies opinion and doesn't rewrite text."
+  },
+  "39ed3cd1914d": {
+    "Prompt a chat model to remove anything that looks like personal data": "A general prompt can work but gives less predictable results and no predefined categories, which is weaker for compliance.",
+    "Use key phrase extraction and delete the returned phrases": "Key phrases are topics, not sensitive data, so this would miss PII and remove useful content.",
+    "Use language detection and drop non-English tickets": "Language detection doesn't find personal information in any language."
+  },
+  "0cce8faa132a": {
+    "Named entity recognition": "NER returns categorized entities such as people and places, not a language code for the document.",
+    "Sentiment analysis": "Sentiment analysis returns labels like positive or negative, not language codes.",
+    "Key phrase extraction": "Key phrase extraction returns phrases from the text, not a language identifier."
+  },
+  "570d54fb23f3": {
+    "A vision-enabled model with the audio sent as an image_url part": "image_url parts carry images; audio must be sent to an audio-capable model as input_audio.",
+    "An embedding model that converts the audio file to vectors": "Embedding models don't accept audio prompts or answer questions.",
+    "Any chat model, with the audio file name included in the text": "A file name in text doesn't give the model the audio content, and not every model accepts audio."
+  },
+  "d468c5e5402e": {
+    "Set the response format to json_object": "JSON mode controls text structure and doesn't produce audio output.",
+    "Set temperature to 0 and max tokens to the audio length": "These settings affect randomness and length, not whether audio is returned.",
+    "Send the prompt as an image_url content part": "image_url is for images; audio output is requested with the modalities and audio settings."
+  },
+  "a750028bb8b7": {
+    "Batch transcription followed by a chat model": "Batch transcription is asynchronous and can take hours, far too slow for live conversation.",
+    "Audio-enabled chat completions with one request per file": "Audio chat completions works for request and response, but the Realtime API is optimized for low-latency, live voice interaction.",
+    "Content Understanding with the prebuilt-audioSearch analyzer": "Content Understanding analyzes recorded audio for extraction; it isn't a live conversational voice interface."
+  },
+  "255c78a126bb": {
+    "Real-time speech to text from the microphone": "Real-time transcription is designed for live streaming audio and is inefficient for tens of thousands of stored files.",
+    "Text to speech with a neural voice": "Text to speech generates audio from text and doesn't create transcripts.",
+    "Speech translation": "Speech translation converts speech to another language; the firm only needs transcripts."
+  },
+  "3eda054b1ce6": {
+    "Batch transcription": "Batch jobs run on a best-effort basis and can take much longer to start and finish, which is too slow here.",
+    "Custom voice": "Custom voice creates a branded synthetic voice for text to speech and doesn't transcribe audio.",
+    "Pronunciation assessment": "Pronunciation assessment scores how words are spoken and isn't used for general transcription."
+  },
+  "76fc89849ab4": {
+    "A different neural voice for text to speech": "Voices affect synthesized audio output, not recognition of spoken drug names.",
+    "SSML prosody settings on the transcripts": "SSML controls how text is spoken during synthesis, not speech recognition.",
+    "Speech translation into a second language": "Translation would carry over the recognition errors and doesn't fix them."
+  },
+  "14abf3d23ac1": {
+    "The speech recognition language, such as en-US or fr-FR": "The recognition language applies to speech to text, not the voice used for synthesis.",
+    "The model deployment name of a chat model": "Chat deployments aren't voices; Azure Speech voices are chosen by voice name.",
+    "The audio input device for the microphone": "The input device is used for recognition, not for choosing a synthesis voice."
+  },
+  "3e3e3aaeb67d": {
+    "voice": "The voice element sits inside the root element and selects a voice; it isn't the root.",
+    "prosody": "prosody adjusts pitch, rate, and volume inside a voice element; it isn't the root.",
+    "audio": "The audio element inserts recorded audio; the document's root is a different element."
+  },
+  "f481c9de89fe": {
+    "<prosody rate=\"1000ms\"/>": "prosody rate changes speaking speed and doesn't accept a duration to insert a pause.",
+    "<say-as interpret-as=\"pause\"/>": "say-as tells the engine how to interpret text such as dates or numbers; it doesn't insert pauses.",
+    "<emphasis level=\"1000ms\"/>": "emphasis sets stress on words and doesn't create a pause."
+  },
+  "340aa1c30230": {
+    "phoneme": "phoneme specifies exact pronunciation using a phonetic alphabet, not overall speed and pitch.",
+    "break": "break inserts pauses but doesn't change the speed or pitch of the speech.",
+    "say-as": "say-as controls how content types such as dates are read, not speed or pitch."
+  },
+  "6ad5820a7c9d": {
+    "prosody with rate set to slow": "Slowing the speech doesn't change how the characters are interpreted.",
+    "voice with a different neural voice name": "Changing the voice doesn't tell the engine to read the text as a date.",
+    "break with strength set to strong": "A pause doesn't change how the date characters are read."
+  },
+  "ba4404fbbc80": {
+    "emphasis with level set to strong": "emphasis adds stress to specific words but doesn't apply an emotional speaking style.",
+    "prosody with volume set to loud": "Louder speech isn't the same as an empathetic speaking style.",
+    "lang with xml:lang set to en-US": "The lang element switches language for multilingual voices; it doesn't set emotional style."
+  },
+  "c32226e993af": {
+    "Custom speech": "Custom speech improves speech recognition accuracy; it doesn't create a synthesized voice.",
+    "Pronunciation assessment": "Pronunciation assessment evaluates how a speaker pronounces words, not creating new voices.",
+    "Speech translation": "Speech translation converts speech between languages and doesn't create branded voices."
+  },
+  "d64bc4528ae1": {
+    "As a file uploaded to the deployment's vector store": "Vector stores support file search for agents; images in prompts are sent as content parts.",
+    "As a base64 string pasted into the system message text": "Raw base64 in the system message text isn't treated as an image; it must be an image_url content part.",
+    "As an input_audio content part with the image format": "input_audio is for audio input, not images."
+  },
+  "e6d48ee65f66": {
+    "Increase max tokens so the model can download the images": "Max tokens doesn't affect whether the service can reach the image URL.",
+    "Set the image detail parameter to high": "detail controls resolution and token use, not network access to the image.",
+    "Switch from a Standard to a Provisioned deployment": "Deployment type doesn't let the service reach firewall-restricted URLs."
+  },
+  "57777c668938": {
+    "Set the image detail parameter to high": "High detail processes more image tiles, which increases token use and latency.",
+    "Increase temperature to 1.5": "Temperature affects randomness of text output, not how much of the image is processed.",
+    "Send each photo twice in the same message": "Duplicating images doubles image token cost with no benefit."
+  },
+  "71bce5366609": {
+    "Send each image in a separate deployment and merge the outputs": "Separate deployments don't share context, so the model couldn't compare the images directly.",
+    "Combine the images into an embedding and send the vector": "Chat models don't take raw embedding vectors as image input.",
+    "Put one image in the system message and the other in a tool message": "Images are sent in user message content parts, and tool messages are for tool results."
+  },
+  "38fb1c535784": {
+    "As a URL that expires after 24 hours": "Returning a URL was DALL-E behavior; gpt-image-1 models return base64 data.",
+    "As a file saved to the project's blob storage": "The image is returned in the API response, not saved to storage automatically.",
+    "As an SVG text string in the output_text field": "gpt-image-1 returns raster image data such as PNG or JPEG, not SVG text."
+  },
+  "34c68c02d826": {
+    "1536x1024": "1536x1024 is landscape, wider than it is tall.",
+    "1024x1024": "1024x1024 is square, not portrait.",
+    "512x512": "512x512 isn't one of the gpt-image-1 size options."
+  },
+  "d3fd37c095e4": {
+    "Set background to transparent with JPEG output format": "JPEG doesn't support transparency, so transparent backgrounds need PNG.",
+    "Set quality to low with JPEG output format": "Quality affects detail and speed; neither setting produces a transparent background.",
+    "Set output compression to 100 with PNG format": "Output compression applies to JPEG and doesn't create transparency."
+  },
+  "33a1ef65e358": {
+    "Call the generations API with a prompt describing the whole new photo": "Generating from scratch creates a new image and won't preserve the rest of the original photo.",
+    "Send the photo to a vision chat model and ask it to return an edited image": "Vision chat models return text about images, not edited images.",
+    "Call the generations API with the detail parameter set to high": "detail is a vision input setting for chat models; it doesn't edit images."
+  },
+  "657496149e87": {
+    "Set quality to high": "High quality produces the most detail but is the slowest option, which is the opposite of what the app needs.",
+    "Set n to 10 for every request": "Requesting more images per call increases processing work and doesn't make each image faster.",
+    "Set background to transparent": "Background transparency affects the output appearance, not generation speed."
+  },
+  "5c3c23fab925": {
+    "Send the receipt to gpt-image-1 with a prompt asking for the total": "gpt-image-1 generates images and doesn't return extracted text values.",
+    "Convert the receipt to an embedding and look up the total": "Embeddings capture meaning for similarity search and don't extract specific values.",
+    "Send the receipt to batch transcription in Azure Speech": "Batch transcription processes audio, not images."
+  },
+  "31dfdd9ae3c8": {
+    "A trained neural network that you must label data to create": "Analyzers are configured with settings and field descriptions; they don't require you to train a model with labeled data.",
+    "A dashboard that charts usage and cost for a resource": "Usage dashboards are monitoring tools, not the component that processes content.",
+    "A storage container that holds uploaded documents": "Analyzers process content; storage is handled separately."
+  },
+  "13ab74dce025": {
+    "Documents and images only": "Content Understanding also processes audio and video, such as call recordings and media files.",
+    "Audio and video only": "Content Understanding also processes documents and images.",
+    "Text documents and live microphone streams only": "It handles images and video too, and it analyzes files rather than acting as a live microphone service."
+  },
+  "a367d88028dc": {
+    "prebuilt-documentSearch": "prebuilt-documentSearch is a ready-to-use RAG analyzer; custom analyzers derive from the base analyzers.",
+    "prebuilt-read": "prebuilt-read is a content extraction analyzer for OCR, not one of the base analyzers that custom analyzers inherit from.",
+    "prebuilt-image": "prebuilt-image is the base for image analyzers; a scanned document form should use the document base."
+  },
+  "2fb3276d3359": {
+    "The prebuilt-videoSearch analyzer": "prebuilt-videoSearch analyzes video segments and transcripts, not invoice documents.",
+    "A custom analyzer based on prebuilt-audio": "Audio analyzers process recordings, not invoice documents.",
+    "The prebuilt-imageSearch analyzer": "prebuilt-imageSearch produces general image descriptions for search, not invoice fields."
+  },
+  "82b08fcc88d3": {
+    "prebuilt-read": "prebuilt-read performs basic OCR without layout, figure descriptions, or summaries.",
+    "prebuilt-layout": "prebuilt-layout extracts structure such as tables and sections but doesn't add summaries or RAG-ready chunking.",
+    "prebuilt-callCenter": "prebuilt-callCenter analyzes call recordings, not PDF documents."
+  },
+  "9d8000f77961": {
+    "prebuilt-invoice": "prebuilt-invoice extracts fields from invoice documents, not call recordings.",
+    "prebuilt-layout": "prebuilt-layout extracts document structure and doesn't process audio.",
+    "prebuilt-imageSearch": "prebuilt-imageSearch describes images and doesn't analyze calls."
+  },
+  "638d09e4e4a0": {
+    "generate": "generate lets the model produce values freely, such as summaries, so the value might not match the document text exactly.",
+    "classify": "classify picks a value from a predefined set of categories, which doesn't fit a free-form invoice number.",
+    "segment": "segment isn't a field method; segmentation is configured separately with enableSegment."
+  },
+  "07294fd42cad": {
+    "extract": "extract pulls values as they literally appear and is supported for documents only, not for describing video scenes.",
+    "classify": "classify chooses from fixed categories and can't write free-form scene descriptions.",
+    "enableOcr": "enableOcr is a configuration setting for reading text, not a field method."
+  },
+  "fb122ec844e3": {
+    "Use the extract method on the call transcript": "extract copies literal values and is document-only; it can't assign one of three categories to a call.",
+    "Use the generate method with no list of values": "generate without defined values could return inconsistent labels, unlike a fixed set of categories.",
+    "Enable OCR on the audio file": "OCR reads text from images and documents and doesn't apply to audio classification."
+  },
+  "6ad81d669042": {
+    "enableSegment set to true": "enableSegment splits content into segments by category; it doesn't return confidence or source locations for fields.",
+    "enableOcr set to false": "Turning off OCR would reduce extraction from scanned pages and doesn't add confidence scores.",
+    "contentCategories with an 'other' category": "Content categories control classification and routing, not field confidence and grounding."
+  },
+  "3350eae15131": {
+    "extract fields must use the type boolean": "extract works with types such as string, date, and number; boolean isn't required.",
+    "extract fields must be inside a contentCategories entry": "Content categories are for segmentation and routing, not a requirement for extract fields.",
+    "extract fields require the analyzer to be based on prebuilt-video": "extract is supported for documents, so a document base analyzer is appropriate."
+  },
+  "ba9753df8e05": {
+    "As a single string field that holds all line items": "A single string loses the structure of each line item and makes the values hard to use.",
+    "As three separate top-level number fields on the invoice": "Separate top-level fields can hold only one value each, not a repeating list of line items.",
+    "As a boolean field that indicates line items exist": "A boolean only says whether items exist and doesn't capture their details."
+  },
+  "724fb1f9933b": {
+    "The description sets the maximum length of the extracted value": "Descriptions guide extraction; they don't set length limits.",
+    "The description is required only for display in the portal": "Descriptions affect extraction accuracy, not just display.",
+    "The description chooses which base analyzer to use": "The base analyzer is set with baseAnalyzerId, not field descriptions."
+  },
+  "d4406ddce66a": {
+    "Set enableSegment to false and add a summary field per video": "With segmentation off, the whole video is treated as one segment, so stories won't be split.",
+    "Set enableOcr to true and enableLayout to true": "OCR and layout settings control text and structure extraction, not splitting video into stories.",
+    "Use prebuilt-invoice as the base analyzer": "prebuilt-invoice is a document analyzer and isn't a valid base for video analysis."
+  },
+  "b72e07f97c72": {
+    "An image analyzer, because the input files are photographs": "Image analyzers aren't optimized for text-driven extraction; a document field schema is recommended for text-heavy goals.",
+    "A video analyzer, because it samples frames at high resolution": "Video analyzers are for video content, and frames are downscaled, which hurts small text.",
+    "An audio analyzer, because it includes speech transcription": "Audio analyzers transcribe speech and can't read text from images."
+  }
+}

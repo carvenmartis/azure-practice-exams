@@ -67,6 +67,12 @@ export const exams: Exam[] = [
     description: 'Designing reliable, secure and cost-effective Azure architectures.'
   },
   {
+    slug: 'ai-901',
+    category: 'ai',
+    name: 'AI‑901: Microsoft Azure AI Fundamentals',
+    description: 'AI concepts, responsible AI and first apps and agents in Microsoft Foundry.'
+  },
+  {
     slug: 'ai-103',
     category: 'ai',
     name: 'AI‑103: Developing AI Apps and Agents on Azure',
@@ -83,6 +89,24 @@ export const exams: Exam[] = [
     category: 'ai',
     name: 'AI‑300: Operationalizing Machine Learning and Generative AI Solutions',
     description: 'MLOps and GenAIOps: training, deployment, evaluation and RAG tuning.'
+  },
+  {
+    slug: 'sc-500',
+    category: 'administration',
+    name: 'SC‑500: Cloud and AI Security Engineer',
+    description: 'Identity, Key Vault, network, compute and AI security, Defender for Cloud and Sentinel.'
+  },
+  {
+    slug: 'ab-620',
+    category: 'ai',
+    name: 'AB‑620: AI Agent Builder',
+    description: 'Copilot Studio agents: topics, agent flows, tools, MCP, multi-agent and ALM.'
+  },
+  {
+    slug: 'dp-800',
+    category: 'ai',
+    name: 'DP‑800: SQL AI Developer',
+    description: 'Advanced T-SQL, security and CI/CD, vector and hybrid search, and RAG in SQL.'
   }
 ];
 

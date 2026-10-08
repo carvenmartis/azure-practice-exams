@@ -1,0 +1,1442 @@
+[
+  {
+    "question": "You have a system-versioned temporal table named dbo.Policy. An auditor asks for each policy row exactly as it existed at 2026-03-01 09:00 UTC. Which clause should you add after FROM dbo.Policy?",
+    "options": [
+      "FOR SYSTEM_TIME ALL",
+      "FOR SYSTEM_TIME AS OF '2026-03-01T09:00:00'",
+      "FOR SYSTEM_TIME BETWEEN '2026-03-01' AND '2026-03-02'",
+      "FOR SYSTEM_TIME CONTAINED IN ('2026-03-01', '2026-03-02')"
+    ],
+    "answer": "FOR SYSTEM_TIME AS OF '2026-03-01T09:00:00'",
+    "explanation": "AS OF returns the row versions that were valid at the single specified point in time, combining the current and history tables as needed.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/querying-data-in-a-system-versioned-temporal-table"
+  },
+  {
+    "question": "An Azure SQL Database contains a temporal table whose history table grows quickly. Compliance requires keeping only 6 months of history, and you want cleanup to happen automatically with no custom jobs. What should you do?",
+    "options": [
+      "Convert the history table to a clustered columnstore and partition it by month",
+      "Schedule an elastic job that deletes history rows while system versioning stays on",
+      "Create an AFTER DELETE trigger on the history table that removes old rows",
+      "Set HISTORY_RETENTION_PERIOD = 6 MONTHS in the SYSTEM_VERSIONING clause"
+    ],
+    "answer": "Set HISTORY_RETENTION_PERIOD = 6 MONTHS in the SYSTEM_VERSIONING clause",
+    "explanation": "A temporal history retention policy (HISTORY_RETENTION_PERIOD) lets the database engine remove aged history rows automatically through a background cleanup task.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/manage-retention-of-historical-data-in-system-versioned-temporal-tables"
+  },
+  {
+    "question": "A security team needs a table that records privileged-access events. Rows must never be updated or deleted, and any tampering by a DBA must be cryptographically detectable. Which table type fits best?",
+    "options": [
+      "An append-only ledger table",
+      "A system-versioned temporal table",
+      "A regular table with DENY UPDATE, DELETE to public",
+      "An updatable ledger table with a history table"
+    ],
+    "answer": "An append-only ledger table",
+    "explanation": "Append-only ledger tables allow only INSERT and add cryptographic tamper evidence through the database ledger, which suits insert-only security event logs.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/ledger/ledger-append-only-ledger-tables"
+  },
+  {
+    "question": "A web app stores shopping-cart session state in Azure SQL Database (Business Critical). The table has extreme insert and update rates, and losing its contents after a failover or restart is acceptable. Which definition gives the best throughput?",
+    "options": [
+      "MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA",
+      "A clustered columnstore table with DELAYED_DURABILITY = FORCED",
+      "A disk-based heap table with a nonclustered primary key",
+      "MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_ONLY"
+    ],
+    "answer": "MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_ONLY",
+    "explanation": "SCHEMA_ONLY memory-optimized tables avoid transaction logging and checkpoint I/O for the data, giving the highest throughput when data loss on restart is acceptable.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/in-memory-oltp/defining-durability-for-memory-optimized-objects"
+  },
+  {
+    "question": "A memory-optimized table is queried mostly with predicates such as WHERE OrderDate >= @start AND OrderDate < @end, plus ORDER BY OrderDate. Which index should you add on OrderDate?",
+    "options": [
+      "A filtered disk-based B-tree index",
+      "A nonclustered columnstore index only",
+      "A memory-optimized nonclustered (range) index",
+      "A hash index with BUCKET_COUNT sized to twice the distinct values"
+    ],
+    "answer": "A memory-optimized nonclustered (range) index",
+    "explanation": "Memory-optimized nonclustered indexes are ordered Bw-tree indexes that support range predicates and ordered scans, unlike hash indexes.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-index-design-guide"
+  },
+  {
+    "question": "You are modeling a social network in SQL Server 2025 with SQL Graph. Which statements create a node table for people and an edge table for friendships?",
+    "options": [
+      "CREATE TABLE Person (...) WITH (GRAPH = NODE); CREATE TABLE FriendOf (...) WITH (GRAPH = EDGE);",
+      "CREATE GRAPH Person (...); CREATE RELATIONSHIP FriendOf;",
+      "CREATE TABLE Person (...) AS NODE; CREATE TABLE FriendOf AS EDGE;",
+      "CREATE NODE TABLE Person (...); CREATE EDGE TABLE FriendOf (...);"
+    ],
+    "answer": "CREATE TABLE Person (...) AS NODE; CREATE TABLE FriendOf AS EDGE;",
+    "explanation": "SQL Graph uses CREATE TABLE ... AS NODE and CREATE TABLE ... AS EDGE, and the engine adds $node_id, $from_id, and $to_id pseudo-columns.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/graphs/sql-graph-overview"
+  },
+  {
+    "question": "An edge table named Bought must only ever connect a Customer node to a Product node, and deleting a Customer should also delete its Bought edges. Which definition enforces this?",
+    "options": [
+      "An INSTEAD OF INSERT trigger that validates node types and deletes edges",
+      "CONSTRAINT EC_Bought CONNECTION (Customer TO Product) ON DELETE CASCADE",
+      "A CHECK constraint that compares OBJECT_ID_FROM_NODE_ID($from_id) to Customer",
+      "A FOREIGN KEY on $from_id referencing Customer($node_id) with ON DELETE CASCADE"
+    ],
+    "answer": "CONSTRAINT EC_Bought CONNECTION (Customer TO Product) ON DELETE CASCADE",
+    "explanation": "An edge constraint with CONNECTION (Customer TO Product) restricts which node tables an edge can connect, and ON DELETE CASCADE removes edges when a connected node is deleted.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/graph-edge-constraints"
+  },
+  {
+    "question": "An OLTP table in Azure SQL Database receives constant inserts, and analysts also run large aggregations against it. You want to speed up the analytics without changing the rowstore table design. What should you add?",
+    "options": [
+      "A nonclustered columnstore index on the analytic columns",
+      "An indexed view for every analyst query",
+      "A filtered nonclustered rowstore index",
+      "A clustered columnstore index replacing the clustered B-tree"
+    ],
+    "answer": "A nonclustered columnstore index on the analytic columns",
+    "explanation": "A nonclustered columnstore index on a rowstore table supports real-time operational analytics, enabling batch-mode scans while the OLTP workload keeps its B-tree indexes.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/indexes/columnstore-indexes-overview"
+  },
+  {
+    "question": "You bulk load a clustered columnstore table each night. Load jobs send batches of 50,000 rows and queries afterward are slow because many rows sit in delta rowgroups. Which change lets the data go directly into compressed rowgroups?",
+    "options": [
+      "Set the database to the SIMPLE recovery model",
+      "Run DBCC SHRINKFILE on the data file after each nightly load completes",
+      "Increase the load batch size to at least 102,400 rows",
+      "Switch the table to a heap before loading"
+    ],
+    "answer": "Increase the load batch size to at least 102,400 rows",
+    "explanation": "Bulk-insert batches of 102,400 rows or more are compressed directly into columnstore rowgroups, while smaller batches go to the deltastore first.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/indexes/columnstore-indexes-data-loading-guidance"
+  },
+  {
+    "question": "A product catalog stores attributes as JSON documents in an nvarchar(max) column. Reads repeatedly parse the documents, and small edits rewrite the whole value. Which change addresses both issues in SQL Server 2025?",
+    "options": [
+      "Change the column to varbinary(max) and compress the documents",
+      "Convert the documents to XML and store them in an xml column with a primary XML index",
+      "Add a computed column for each JSON property and index them",
+      "Change the column to the native json data type and use the modify method"
+    ],
+    "answer": "Change the column to the native json data type and use the modify method",
+    "explanation": "The native json type stores documents in a parsed binary format for faster reads, and its modify method can update values in place where possible.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/data-types/json-data-type"
+  },
+  {
+    "question": "You plan to run CREATE JSON INDEX on the Details column (json type) of dbo.Orders. Which requirement must the table meet?",
+    "options": [
+      "The table must not have any other nonclustered indexes",
+      "The table must have a clustered primary key",
+      "The Details column must be a computed column",
+      "The table must be memory-optimized before a vector index is created"
+    ],
+    "answer": "The table must have a clustered primary key",
+    "explanation": "A JSON index requires the table to have a clustered primary key. JSON indexes are not allowed on computed json columns or memory-optimized tables.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-json-index-transact-sql"
+  },
+  {
+    "question": "dbo.Orders has a JSON index on its Details column. Which predicate is the index able to help with?",
+    "options": [
+      "WHERE CAST(Details AS nvarchar(max)) LIKE '%shipped%'",
+      "WHERE JSON_VALUE(Details, '$.status') IS NULL",
+      "WHERE JSON_VALUE(Details, '$.status') = 'shipped'",
+      "WHERE JSON_VALUE(Details, '$.status') LIKE 'ship%'"
+    ],
+    "answer": "WHERE JSON_VALUE(Details, '$.status') = 'shipped'",
+    "explanation": "JSON indexes support equality comparisons on JSON_VALUE and JSON_PATH_EXISTS, and can also optimize JSON_CONTAINS.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-json-index-transact-sql"
+  },
+  {
+    "question": "You need to ensure the Email column only accepts values that match a pattern such as name@domain.tld, enforced by the database on every insert and update. The database is at compatibility level 170. What should you use?",
+    "options": [
+      "A UNIQUE constraint on Email",
+      "A FOREIGN KEY to a table of valid domains",
+      "A CHECK constraint that uses REGEXP_LIKE(Email, pattern)",
+      "A DEFAULT constraint on Email whose value is defined by a regex pattern"
+    ],
+    "answer": "A CHECK constraint that uses REGEXP_LIKE(Email, pattern)",
+    "explanation": "REGEXP_LIKE returns a Boolean and can be used inside a CHECK constraint, so the engine validates the format on every write.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-like-transact-sql"
+  },
+  {
+    "question": "Invoices and credit notes are stored in two tables but must share one gapless-looking, ever-increasing document number range generated by the database. Which object should you use?",
+    "options": [
+      "ROW_NUMBER() OVER (ORDER BY CreatedAt) computed at insert time for each new row",
+      "NEWSEQUENTIALID() as the default for both tables",
+      "An IDENTITY column in each table with the same seed",
+      "A SEQUENCE object referenced with NEXT VALUE FOR in both tables"
+    ],
+    "answer": "A SEQUENCE object referenced with NEXT VALUE FOR in both tables",
+    "explanation": "A SEQUENCE is a schema-bound object independent of any table, so multiple tables can draw numbers from the same range with NEXT VALUE FOR.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-sequence-transact-sql"
+  },
+  {
+    "question": "A sales table is partitioned by month. Each month you must remove the oldest month almost instantly without logging millions of row deletes. What should you do?",
+    "options": [
+      "Run TRUNCATE TABLE with a WHERE clause that targets only the oldest month value",
+      "SWITCH the oldest partition out to an empty staging table with the same structure",
+      "DELETE the oldest month's rows in batches of 10,000 inside a WHILE loop",
+      "Rebuild the clustered index with a filter that excludes the oldest month"
+    ],
+    "answer": "SWITCH the oldest partition out to an empty staging table with the same structure",
+    "explanation": "ALTER TABLE ... SWITCH PARTITION is a metadata operation when source and target share structure and filegroup, so data leaves the table almost instantly.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/partitions/partitioned-tables-and-indexes"
+  },
+  {
+    "question": "You want SQL Server 2025 to query Parquet files in Azure Blob Storage as if they were a table, without importing the data. Which objects must exist before you run CREATE EXTERNAL TABLE?",
+    "options": [
+      "A database snapshot and a database scoped credential for the storage account",
+      "An external data source and an external file format",
+      "A linked server and a synonym",
+      "A full-text catalog and a stoplist"
+    ],
+    "answer": "An external data source and an external file format",
+    "explanation": "An external table references an EXTERNAL DATA SOURCE for the storage location and an EXTERNAL FILE FORMAT describing the Parquet files, usually with a database scoped credential for access.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-table-transact-sql"
+  },
+  {
+    "question": "A reporting query calls a multi-statement table-valued function that returns open orders for a customer. Performance is poor because the optimizer misestimates rows. The logic is a single SELECT. What should you do?",
+    "options": [
+      "Rewrite it as a scalar UDF",
+      "Add WITH SCHEMABINDING to the multi-statement function",
+      "Rewrite it as an inline table-valued function",
+      "Wrap it in a stored procedure that returns a cursor"
+    ],
+    "answer": "Rewrite it as an inline table-valued function",
+    "explanation": "An inline TVF is expanded into the calling query like a parameterized view, so the optimizer sees real statistics instead of a fixed estimate.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/create-user-defined-functions-database-engine"
+  },
+  {
+    "question": "In SQL Server 2025 at compatibility level 170, a scalar UDF used in a large SELECT is not being inlined. The function computes a value using GETDATE(). What explains this?",
+    "options": [
+      "Inlining requires the function to be created WITH EXECUTE AS OWNER and SCHEMABINDING",
+      "Inlining only works for UDFs that return varchar values",
+      "It calls GETDATE(), and time-dependent intrinsic functions block inlining",
+      "Scalar UDFs are never inlined when called from a SELECT list"
+    ],
+    "answer": "It calls GETDATE(), and time-dependent intrinsic functions block inlining",
+    "explanation": "Scalar UDF inlining has eligibility rules, and invoking time-dependent intrinsic functions like GETDATE() makes a UDF non-inlineable. sys.sql_modules.is_inlineable shows eligibility.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/scalar-udf-inlining"
+  },
+  {
+    "question": "An AFTER UPDATE trigger contains: DECLARE @id int = (SELECT OrderID FROM inserted); INSERT INTO dbo.OrderAudit (OrderID) VALUES (@id); An UPDATE that affects 50 rows fails or audits only one row. What is the fix?",
+    "options": [
+      "Add SET NOCOUNT ON at the start of the trigger",
+      "Use INSERT INTO dbo.OrderAudit (OrderID) SELECT OrderID FROM inserted",
+      "Loop over the deleted table with a cursor and insert one audit row per fetch",
+      "Change the trigger to INSTEAD OF UPDATE"
+    ],
+    "answer": "Use INSERT INTO dbo.OrderAudit (OrderID) SELECT OrderID FROM inserted",
+    "explanation": "Triggers fire once per statement, and inserted can contain many rows, so the trigger must use set-based logic over inserted.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-trigger-transact-sql"
+  },
+  {
+    "question": "You want to create an indexed view that aggregates SUM(LineTotal) by ProductID. Which requirement must the view meet before you create the unique clustered index?",
+    "options": [
+      "It must contain an OUTER JOIN to support NULL products",
+      "It must include COUNT_BIG(*) and be created WITH SCHEMABINDING",
+      "It must reference base tables that live in another database on the same server",
+      "It must use SELECT * and include an ORDER BY"
+    ],
+    "answer": "It must include COUNT_BIG(*) and be created WITH SCHEMABINDING",
+    "explanation": "Indexed views must be schema bound, and a view with GROUP BY must include COUNT_BIG(*) before you can create its unique clustered index.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/views/create-indexed-views"
+  },
+  {
+    "question": "A search stored procedure builds a WHERE clause from optional user input and runs EXEC(@sql). A security review flags SQL injection. Which change keeps the dynamic filter while removing the injection risk?",
+    "options": [
+      "Run the procedure WITH EXECUTE AS OWNER",
+      "Pass user values as parameters to sp_executesql",
+      "Wrap user input in QUOTENAME and keep EXEC(@sql)",
+      "Replace single quotes with double quotes in user input"
+    ],
+    "answer": "Pass user values as parameters to sp_executesql",
+    "explanation": "sp_executesql with typed parameters keeps values separate from the SQL text, preventing injection and enabling plan reuse.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-executesql-transact-sql"
+  },
+  {
+    "question": "An employee table has EmployeeID and ManagerID. You must return the full reporting chain under a CEO, and the hierarchy can be up to 250 levels deep. The recursive CTE fails with a maximum recursion error. What should you do?",
+    "options": [
+      "Replace UNION ALL with UNION in the CTE",
+      "Add TOP (250) to the anchor member",
+      "Add OPTION (MAXRECURSION 300) to the outer query",
+      "Move the recursive member before the anchor member"
+    ],
+    "answer": "Add OPTION (MAXRECURSION 300) to the outer query",
+    "explanation": "Recursive CTEs default to a limit of 100 levels, and OPTION (MAXRECURSION n) on the statement that uses the CTE raises the limit (0 means no limit).",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql"
+  },
+  {
+    "question": "You calculate a running total with SUM(Amount) OVER (ORDER BY OrderDate). Several orders share the same OrderDate, and those rows all show the same total instead of incrementing. Which frame fixes this while keeping date order?",
+    "options": [
+      "OVER (ORDER BY OrderDate ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)",
+      "OVER (ORDER BY OrderDate, OrderID ROWS UNBOUNDED PRECEDING)",
+      "OVER (ORDER BY OrderDate RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)",
+      "OVER (PARTITION BY OrderDate ORDER BY OrderDate)"
+    ],
+    "answer": "OVER (ORDER BY OrderDate, OrderID ROWS UNBOUNDED PRECEDING)",
+    "explanation": "With ORDER BY and no frame, the default is RANGE UNBOUNDED PRECEDING, which treats ties as peers. A ROWS frame with a unique tie-breaker increments row by row.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/queries/select-over-clause-transact-sql"
+  },
+  {
+    "question": "A query uses LAST_VALUE(Price) OVER (PARTITION BY ProductID ORDER BY ChangeDate) to show each product's latest price on every row, but each row shows its own price. What is the cause?",
+    "options": [
+      "PARTITION BY must be removed because LAST_VALUE only works over the whole set",
+      "LAST_VALUE requires a GROUP BY on ProductID to return one value per product",
+      "LAST_VALUE ignores the ORDER BY clause and returns values in storage order",
+      "The default frame ends at the current row, so extend it to UNBOUNDED FOLLOWING"
+    ],
+    "answer": "The default frame ends at the current row, so extend it to UNBOUNDED FOLLOWING",
+    "explanation": "The default frame with ORDER BY is RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW, so the last value is the current row. Extending the frame to UNBOUNDED FOLLOWING returns the partition's last value.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/last-value-transact-sql"
+  },
+  {
+    "question": "A staging table has duplicate customer rows. For each Email, you must keep only the most recently modified row and delete the rest. Which approach is correct?",
+    "options": [
+      "NTILE(2) OVER (PARTITION BY Email ORDER BY ModifiedDate) in a CTE, delete rows in tile 2",
+      "RANK() OVER (ORDER BY Email, ModifiedDate DESC) in a CTE, delete where rank > 1",
+      "ROW_NUMBER() OVER (PARTITION BY Email ORDER BY ModifiedDate DESC) in a CTE, delete where > 1",
+      "DENSE_RANK() OVER (PARTITION BY ModifiedDate ORDER BY Email DESC) in a CTE, delete where rank = 1"
+    ],
+    "answer": "ROW_NUMBER() OVER (PARTITION BY Email ORDER BY ModifiedDate DESC) in a CTE, delete where > 1",
+    "explanation": "ROW_NUMBER partitioned by Email and ordered by ModifiedDate DESC assigns 1 to the newest row per email, and deleting rows numbered above 1 from the CTE removes duplicates.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/ranking-functions-transact-sql"
+  },
+  {
+    "question": "An @order variable contains a JSON object with an array at $.lines, where each element has sku, qty, and an options object. You must return one row per line with typed sku and qty columns plus the options object as JSON. Which query is correct?",
+    "options": [
+      "SELECT * FROM OPENJSON(@order, '$.lines') WITH (sku varchar(20), qty int, options nvarchar(max) AS JSON)",
+      "SELECT * FROM OPENJSON(@order, '$.lines') WITH (sku varchar(20), qty int, options nvarchar(max))",
+      "SELECT JSON_VALUE(@order, '$.lines[*].sku'), JSON_VALUE(@order, '$.lines[*].qty')",
+      "SELECT * FROM OPENJSON(@order) WITH (sku varchar(20) '$.lines.sku', qty int '$.lines.qty', options nvarchar(max) '$.lines.options' AS JSON)"
+    ],
+    "answer": "SELECT * FROM OPENJSON(@order, '$.lines') WITH (sku varchar(20), qty int, options nvarchar(max) AS JSON)",
+    "explanation": "OPENJSON with a path to the array returns one row per element, and nvarchar(max) AS JSON returns a nested object or array as JSON text.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/openjson-transact-sql"
+  },
+  {
+    "question": "You run SELECT JSON_ARRAYAGG(Email) FROM dbo.Contact and SELECT JSON_OBJECT('id':1, 'phone':NULL). Some Email values are NULL. Which result describes the default behavior?",
+    "options": [
+      "JSON_ARRAYAGG omits NULL elements, while JSON_OBJECT returns \"phone\":null",
+      "Both functions keep NULLs as JSON null",
+      "Both functions omit NULLs",
+      "JSON_ARRAYAGG returns null elements, while JSON_OBJECT omits the phone key"
+    ],
+    "answer": "JSON_ARRAYAGG omits NULL elements, while JSON_OBJECT returns \"phone\":null",
+    "explanation": "JSON_ARRAYAGG defaults to ABSENT ON NULL, while JSON_OBJECT defaults to NULL ON NULL.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-arrayagg-transact-sql"
+  },
+  {
+    "question": "A Tags column holds JSON arrays such as [\"sale\",\"new\",\"eco\"]. You must find rows whose array contains the string sale. Which predicate is the most direct?",
+    "options": [
+      "WHERE JSON_CONTAINS(Tags, 'sale', '$') = 1",
+      "WHERE JSON_PATH_EXISTS(Tags, '$.sale') = 1",
+      "WHERE JSON_VALUE(Tags, '$[0]') = 'sale'",
+      "WHERE ISJSON(Tags) = 1 AND CAST(Tags AS nvarchar(max)) = 'sale'"
+    ],
+    "answer": "WHERE JSON_CONTAINS(Tags, 'sale', '$') = 1",
+    "explanation": "JSON_CONTAINS returns 1 when the search value is found at the specified path, 0 if not, and NULL if an argument is NULL or the path is not found.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/json-contains-transact-sql"
+  },
+  {
+    "question": "A developer runs SELECT * FROM dbo.Customer WHERE REGEXP_LIKE(Phone, '^\\d{3}-\\d{4}$') in a database migrated from SQL Server 2019, and gets an error that REGEXP_LIKE is not recognized. Other REGEXP_ scalar functions work. What is the most likely fix?",
+    "options": [
+      "Install the RE2 library on the server",
+      "Change the column collation to a binary collation",
+      "Set the database compatibility level to 170",
+      "Enable the regex preview feature with PREVIEW_FEATURES = ON"
+    ],
+    "answer": "Set the database compatibility level to 170",
+    "explanation": "REGEXP_LIKE requires database compatibility level 170 or higher, while the other scalar regex functions work at all levels.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-like-transact-sql"
+  },
+  {
+    "question": "Phone numbers are stored as 5551234567 and must be displayed as (555) 123-4567. Which expression produces that output?",
+    "options": [
+      "REGEXP_SUBSTR(Phone, '(\\d{3})(\\d{3})(\\d{4})', 1, 1, 'c', 3)",
+      "REGEXP_REPLACE(Phone, '(\\d{3})(\\d{3})(\\d{4})', '(\\1) \\2-\\3')",
+      "REGEXP_REPLACE(Phone, '\\d{3}', '($0) ')",
+      "REGEXP_INSTR(Phone, '(\\d{3})(\\d{3})(\\d{4})', 1, 1, 1)"
+    ],
+    "answer": "REGEXP_REPLACE(Phone, '(\\d{3})(\\d{3})(\\d{4})', '(\\1) \\2-\\3')",
+    "explanation": "REGEXP_REPLACE supports back-references \\1 through \\9 in the replacement string to insert captured groups.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-replace-transact-sql"
+  },
+  {
+    "question": "A Notes column contains free text. You need the second number that appears in each value, for example 42 from 'Order 7 shipped 42 units'. Which expression returns it?",
+    "options": [
+      "REGEXP_REPLACE(Notes, '\\d+', '', 1, 2)",
+      "REGEXP_INSTR(Notes, '\\d+', 1, 2)",
+      "REGEXP_SUBSTR(Notes, '\\d+', 1, 2)",
+      "REGEXP_COUNT(Notes, '\\d+', 2)"
+    ],
+    "answer": "REGEXP_SUBSTR(Notes, '\\d+', 1, 2)",
+    "explanation": "REGEXP_SUBSTR(string, pattern, start, occurrence) returns the substring for the requested occurrence of the pattern.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-substr-transact-sql"
+  },
+  {
+    "question": "You need to find the character position immediately after the first match of the pattern 'ID-\\d+' in a string so you can extract text that follows it. Which call returns that position?",
+    "options": [
+      "REGEXP_INSTR(s, 'ID-\\d+', 1, 1, 0)",
+      "REGEXP_INSTR(s, 'ID-\\d+', 1, 1, 1)",
+      "REGEXP_INSTR(s, 'ID-\\d+', 0, 1, 1)",
+      "REGEXP_COUNT(s, 'ID-\\d+', 1)"
+    ],
+    "answer": "REGEXP_INSTR(s, 'ID-\\d+', 1, 1, 1)",
+    "explanation": "REGEXP_INSTR uses return_option 1 to return the end position of the match, while 0 (the default) returns the start position.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-instr-transact-sql"
+  },
+  {
+    "question": "A Posts table contains text such as 'Learning #AzureSQL #AI'. For each post, you must return every hashtag with its start position as rows. Which function fits?",
+    "options": [
+      "REGEXP_SPLIT_TO_TABLE with CROSS APPLY",
+      "REGEXP_MATCHES with CROSS APPLY",
+      "REGEXP_SUBSTR in the SELECT list",
+      "REGEXP_COUNT in the SELECT list"
+    ],
+    "answer": "REGEXP_MATCHES with CROSS APPLY",
+    "explanation": "REGEXP_MATCHES is a table-valued function that returns one row per match with match_id, start_position, end_position, match_value, and substring_matches.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/regexp-matches-transact-sql"
+  },
+  {
+    "question": "A customer import contains company names with typos such as Contsoo versus Contoso. You want a score from 0 to 100 so you can treat pairs scoring 85 or above as probable duplicates. Which function returns that kind of score?",
+    "options": [
+      "DIFFERENCE",
+      "EDIT_DISTANCE",
+      "JARO_WINKLER_DISTANCE",
+      "EDIT_DISTANCE_SIMILARITY"
+    ],
+    "answer": "EDIT_DISTANCE_SIMILARITY",
+    "explanation": "EDIT_DISTANCE_SIMILARITY returns an integer from 0 (no similarity) to 100 (exact match) based on the Damerau-Levenshtein edit distance normalized by string length.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/edit-distance-similarity-transact-sql"
+  },
+  {
+    "question": "You match person names where typos usually occur near the end and matching prefixes should count more, for example Jonathon versus Jonathan. Which function is designed to weight common prefixes?",
+    "options": [
+      "SOUNDEX",
+      "REGEXP_COUNT",
+      "EDIT_DISTANCE_SIMILARITY",
+      "JARO_WINKLER_DISTANCE"
+    ],
+    "answer": "JARO_WINKLER_DISTANCE",
+    "explanation": "The Jaro-Winkler measure gives extra weight to matching characters at the start of strings, which suits short strings such as names.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/jaro-winkler-distance-transact-sql"
+  },
+  {
+    "question": "Graph tables Person (node) and FriendOf (edge) exist. Which query returns the names of friends of friends of Alice?",
+    "options": [
+      "SELECT p3.Name FROM Person p1, FriendOf f1, Person p2, FriendOf f2, Person p3 WHERE MATCH(p1-(f1)->p2-(f2)->p3) AND p1.Name = 'Alice'",
+      "SELECT p3.Name FROM Person p1 JOIN FriendOf f1 ON MATCH(p1, f1) JOIN FriendOf f2 ON MATCH(f1, f2) JOIN Person p3 ON MATCH(f2, p3) WHERE p1.Name = 'Alice'",
+      "SELECT p3.Name FROM Person p1, Person p3 WHERE MATCH(p1-(FriendOf)->(FriendOf)->p3) AND p1.Name = 'Alice'",
+      "SELECT p3.Name FROM GRAPH_TRAVERSE(Person, FriendOf, 2) WHERE Name = 'Alice'"
+    ],
+    "answer": "SELECT p3.Name FROM Person p1, FriendOf f1, Person p2, FriendOf f2, Person p3 WHERE MATCH(p1-(f1)->p2-(f2)->p3) AND p1.Name = 'Alice'",
+    "explanation": "MATCH uses ASCII-art patterns that chain node and edge aliases from the FROM clause, such as p1-(f1)->p2-(f2)->p3.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/queries/match-sql-graph"
+  },
+  {
+    "question": "A query uses WHERE CustomerID NOT IN (SELECT CustomerID FROM dbo.Blocked). It suddenly returns no rows after a NULL CustomerID was inserted into dbo.Blocked. What is the best rewrite?",
+    "options": [
+      "WHERE CustomerID NOT IN (SELECT DISTINCT CustomerID FROM dbo.Blocked)",
+      "WHERE NOT EXISTS (SELECT 1 FROM dbo.Blocked b WHERE b.CustomerID = c.CustomerID)",
+      "WHERE CustomerID <> ALL (SELECT CustomerID FROM dbo.Blocked)",
+      "WHERE CustomerID NOT IN (SELECT ISNULL(CustomerID, 0) FROM dbo.Blocked) OR CustomerID IS NULL"
+    ],
+    "answer": "WHERE NOT EXISTS (SELECT 1 FROM dbo.Blocked b WHERE b.CustomerID = c.CustomerID)",
+    "explanation": "If the subquery returns a NULL, NOT IN evaluates to UNKNOWN for every row. A correlated NOT EXISTS ignores NULLs in the subquery and returns the expected rows.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/in-transact-sql"
+  },
+  {
+    "question": "A procedure runs inside BEGIN TRY with an explicit transaction. In the CATCH block, you must commit only if the transaction is still committable and otherwise roll back. Which logic is correct?",
+    "options": [
+      "IF @@TRANCOUNT > 0 COMMIT TRANSACTION ELSE ROLLBACK TRANSACTION",
+      "IF @@ERROR = 0 COMMIT ELSE ROLLBACK",
+      "IF XACT_STATE() = 0 COMMIT ELSE ROLLBACK",
+      "IF XACT_STATE() = 1 COMMIT; IF XACT_STATE() = -1 ROLLBACK;"
+    ],
+    "answer": "IF XACT_STATE() = 1 COMMIT; IF XACT_STATE() = -1 ROLLBACK;",
+    "explanation": "XACT_STATE returns 1 for an active committable transaction, -1 for an uncommittable one that must be rolled back, and 0 when there is no transaction.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/xact-state-transact-sql"
+  },
+  {
+    "question": "In a CATCH block you log the error and then must re-raise the original error number and message to the caller. Which statement does that?",
+    "options": [
+      "RAISERROR(ERROR_MESSAGE(), 16, 1)",
+      "THROW;",
+      "RETURN ERROR_NUMBER();",
+      "THROW 50000, ERROR_MESSAGE(), 1;"
+    ],
+    "answer": "THROW;",
+    "explanation": "THROW without parameters inside a CATCH block re-raises the caught error with its original number, message, and state. The preceding statement must end with a semicolon.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/throw-transact-sql"
+  },
+  {
+    "question": "A procedure starts a transaction and calls several statements. A client timeout cancels the batch mid-transaction, leaving locks held and an open transaction. Which setting best ensures the transaction is rolled back automatically?",
+    "options": [
+      "SET IMPLICIT_TRANSACTIONS ON",
+      "SET ANSI_WARNINGS OFF",
+      "SET XACT_ABORT ON",
+      "SET NOCOUNT ON"
+    ],
+    "answer": "SET XACT_ABORT ON",
+    "explanation": "With XACT_ABORT ON, run-time errors and attention events such as client timeouts cause the whole transaction to roll back, avoiding orphaned open transactions.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/set-xact-abort-transact-sql"
+  },
+  {
+    "question": "Your team wants GitHub Copilot in VS Code to follow team T-SQL conventions, such as schema-qualifying object names, but only when working on .sql files. Where should the guidance go?",
+    "options": [
+      "A comment block with the conventions at the top of every stored procedure file",
+      "A .github/instructions/sql.instructions.md file with applyTo: \"**/*.sql\"",
+      "A CONVENTIONS section in the README.md file at the repository root",
+      "The database extended properties of each table"
+    ],
+    "answer": "A .github/instructions/sql.instructions.md file with applyTo: \"**/*.sql\"",
+    "explanation": "Custom instruction files in .github/instructions with the .instructions.md suffix and an applyTo glob are injected automatically into matching Copilot requests.",
+    "link": "https://learn.microsoft.com/en-us/sql/tools/visual-studio-code-extensions/github-copilot/custom-instructions"
+  },
+  {
+    "question": "You want one set of Copilot guidance, such as \"never use SELECT * and always use parameterized queries\", applied to every chat request in a repository regardless of file type. Which file is intended for repository-wide instructions?",
+    "options": [
+      ".github/copilot-instructions.md",
+      ".github/CODEOWNERS",
+      ".github/workflows/copilot-instructions.yml",
+      ".vscode/settings.json"
+    ],
+    "answer": ".github/copilot-instructions.md",
+    "explanation": "GitHub Copilot reads .github/copilot-instructions.md as repository-wide custom instructions, while .instructions.md files with applyTo provide file-scoped guidance.",
+    "link": "https://learn.microsoft.com/en-us/visualstudio/ide/copilot-chat-context"
+  },
+  {
+    "question": "In VS Code with the MSSQL extension, you want Copilot to connect to a database, list tables, and run queries as part of a multistep task. Which Copilot mode can invoke the MSSQL tools for this?",
+    "options": [
+      "Agent mode",
+      "Edit mode",
+      "Ask mode",
+      "Inline completions"
+    ],
+    "answer": "Agent mode",
+    "explanation": "Agent mode runs multistep workflows using MSSQL tools such as connect, list databases, and run query, and it requires approval for each tool invocation.",
+    "link": "https://learn.microsoft.com/en-us/sql/tools/visual-studio-code-extensions/github-copilot/overview"
+  },
+  {
+    "question": "Your organization wants to let an AI agent read product data through MCP without giving it direct database credentials, and the agent must never see a table that holds salary data. Which design fits best?",
+    "options": [
+      "Grant the agent's identity db_owner and rely on the approval prompt that appears before each tool call",
+      "Publish the whole database through a public REST endpoint protected by a shared API key",
+      "Give the agent a SQL login in db_datareader and a system prompt that tells it never to query the salary table",
+      "Use SQL MCP Server in Data API builder and set \"mcp\": {\"dml-tools\": false} on the salary entity"
+    ],
+    "answer": "Use SQL MCP Server in Data API builder and set \"mcp\": {\"dml-tools\": false} on the salary entity",
+    "explanation": "SQL MCP Server in Data API builder is role-aware and only exposes configured entities and permitted operations, and an entity can be excluded from MCP tools.",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/mcp/overview"
+  },
+  {
+    "question": "A user asks Copilot in SQL database in Fabric to find customers whose order totals look suspicious. The answer is vague. What limitation explains this?",
+    "options": [
+      "Copilot requires the database to be mirrored first",
+      "Copilot only works with lakehouse tables, not SQL database tables",
+      "Copilot only supports SELECT statements against views",
+      "Copilot can access the database schema but not the data itself"
+    ],
+    "answer": "Copilot can access the database schema but not the data itself",
+    "explanation": "Copilot for SQL database in Fabric is grounded in schema, not row data, so its accuracy drops when asked to evaluate data.",
+    "link": "https://learn.microsoft.com/en-us/fabric/database/sql/copilot"
+  },
+  {
+    "question": "A security reviewer asks whether Copilot in SQL database in Fabric can change data on its own from the Fabric portal. Which statement is accurate?",
+    "options": [
+      "Copilot runs generated DML automatically to validate the syntax, then rolls it back",
+      "It doesn't run queries on its own, and data changes require the user to start or approve them",
+      "Copilot can run DML on its own whenever the signed-in user is a member of db_owner",
+      "Copilot runs read-only queries against production data so the model can learn from it"
+    ],
+    "answer": "It doesn't run queries on its own, and data changes require the user to start or approve them",
+    "explanation": "In the Fabric portal, Copilot does not run queries autonomously, prompts are not used to train foundation models, and data-modifying actions require the user.",
+    "link": "https://learn.microsoft.com/en-us/fabric/database/sql/copilot"
+  },
+  {
+    "question": "An application looks up patients by national ID, which must be protected with Always Encrypted. Queries only use equality (WHERE NationalID = @id), and no secure enclave is configured. Which encryption type should you use?",
+    "options": [
+      "Randomized encryption",
+      "Transparent data encryption",
+      "Cell-level encryption with ENCRYPTBYKEY",
+      "Deterministic encryption"
+    ],
+    "answer": "Deterministic encryption",
+    "explanation": "Deterministic encryption always produces the same ciphertext for a value, which allows equality lookups, joins, and grouping on the encrypted column without an enclave.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/always-encrypted-database-engine"
+  },
+  {
+    "question": "A Notes column is encrypted with Always Encrypted using randomized encryption. Users now need WHERE Notes LIKE '%allergy%' to work without exposing plaintext to the database engine or DBAs. What do you need?",
+    "options": [
+      "Re-encrypt the column with deterministic encryption instead of randomized",
+      "Transparent data encryption with a customer-managed key",
+      "Always Encrypted with secure enclaves and enclave-enabled keys",
+      "Dynamic Data Masking on the Notes column with the default() function"
+    ],
+    "answer": "Always Encrypted with secure enclaves and enclave-enabled keys",
+    "explanation": "Secure enclaves let the engine evaluate rich operations such as LIKE and range comparisons on randomized-encrypted columns inside a trusted memory region, keeping plaintext hidden from DBAs.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/always-encrypted-enclaves"
+  },
+  {
+    "question": "You encrypt a column with a symmetric key using ENCRYPTBYKEY. A report query returns NULL for every decrypted value. What is the most likely cause?",
+    "options": [
+      "The session did not run OPEN SYMMETRIC KEY before calling DECRYPTBYKEY",
+      "The column type is varbinary",
+      "The database master key is not protected by TDE on the server",
+      "DECRYPTBYKEY requires Always Encrypted to be enabled on the column first"
+    ],
+    "answer": "The session did not run OPEN SYMMETRIC KEY before calling DECRYPTBYKEY",
+    "explanation": "With cell-level encryption, the symmetric key must be opened in the session before DECRYPTBYKEY can return plaintext, otherwise it returns NULL.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/encryption/encrypt-a-column-of-data"
+  },
+  {
+    "question": "Support staff must see only the last four digits of a customer's phone number, such as XXX-XXX-1234, while the data stays unchanged in the table. Which masking function should you use?",
+    "options": [
+      "partial(0, \"XXX-XXX-\", 4)",
+      "default()",
+      "random(1000, 9999)",
+      "email()"
+    ],
+    "answer": "partial(0, \"XXX-XXX-\", 4)",
+    "explanation": "The partial(prefix, padding, suffix) mask exposes the specified number of leading and trailing characters and pads the middle with a custom string.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking"
+  },
+  {
+    "question": "A Salary column uses Dynamic Data Masking. A user without UNMASK runs SELECT Name FROM dbo.Employee WHERE Salary > 150000 and learns who earns more than 150,000. What does this show?",
+    "options": [
+      "The mask is misconfigured and should use random() so comparisons return random values",
+      "The user must have been granted UNMASK implicitly through db_datareader",
+      "WHERE clauses run against unmasked data, so you must also enable row-level security",
+      "DDM does not stop inference through WHERE predicates, so combine it with other controls"
+    ],
+    "answer": "DDM does not stop inference through WHERE predicates, so combine it with other controls",
+    "explanation": "DDM only masks query results. Users with ad hoc query access can infer values with predicates, so DDM is not a complete security boundary.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/dynamic-data-masking"
+  },
+  {
+    "question": "A multitenant table uses RLS with a filter predicate on TenantID. Testing shows a user can still INSERT rows that carry another tenant's TenantID. What should you add?",
+    "options": [
+      "A CHECK constraint that calls SESSION_CONTEXT",
+      "A BLOCK PREDICATE ... AFTER INSERT on the security policy",
+      "A second FILTER PREDICATE on the same policy that applies to INSERT",
+      "DENY INSERT on the table to the tenant users"
+    ],
+    "answer": "A BLOCK PREDICATE ... AFTER INSERT on the security policy",
+    "explanation": "Filter predicates only filter reads. Block predicates such as AFTER INSERT and AFTER UPDATE prevent writes that violate the predicate.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/row-level-security"
+  },
+  {
+    "question": "A middle-tier API connects with a single identity and calls sp_set_session_context to pass the user's TenantID, which an RLS predicate reads. How do you stop a malicious query in the same session from changing TenantID later?",
+    "options": [
+      "Set the security policy WITH (STATE = OFF) after setting the value",
+      "Use CONTEXT_INFO instead of SESSION_CONTEXT",
+      "Call sp_set_session_context with @read_only = 1",
+      "Set the predicate function WITH EXECUTE AS OWNER"
+    ],
+    "answer": "Call sp_set_session_context with @read_only = 1",
+    "explanation": "Setting @read_only = 1 marks the key as read-only for the rest of the session, so it cannot be overwritten.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-set-session-context-transact-sql"
+  },
+  {
+    "question": "Application users must be able to run every stored procedure in the Sales schema but must not query the underlying tables directly. All objects have the same owner. What should you grant?",
+    "options": [
+      "CONTROL ON SCHEMA::Sales",
+      "EXECUTE ON SCHEMA::Sales",
+      "db_datareader role membership",
+      "SELECT ON SCHEMA::Sales"
+    ],
+    "answer": "EXECUTE ON SCHEMA::Sales",
+    "explanation": "Granting EXECUTE on the schema lets users run its procedures, and ownership chaining allows the procedures to access tables with the same owner without direct table permissions.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-chains"
+  },
+  {
+    "question": "An App Service web app must connect to Azure SQL Database without storing passwords. You enabled its system-assigned managed identity. What else is required in the database?",
+    "options": [
+      "Create a database scoped credential with the app's client secret",
+      "Add the app's outbound IPs to db_owner",
+      "CREATE USER [app-name] FROM EXTERNAL PROVIDER and grant it roles",
+      "CREATE LOGIN [app-name] WITH PASSWORD and a matching user"
+    ],
+    "answer": "CREATE USER [app-name] FROM EXTERNAL PROVIDER and grant it roles",
+    "explanation": "Managed identities authenticate with Microsoft Entra ID, so you create a contained database user FROM EXTERNAL PROVIDER for the identity and grant least-privilege roles.",
+    "link": "https://learn.microsoft.com/en-us/azure/app-service/tutorial-connect-msi-sql-database"
+  },
+  {
+    "question": "You must keep Azure SQL Database audit logs in a workspace where you can query them with KQL and create alerts. Which audit destination should you choose?",
+    "options": [
+      "The database's sys.fn_get_audit_file output only",
+      "Azure Storage account",
+      "Azure Event Hubs",
+      "Log Analytics workspace"
+    ],
+    "answer": "Log Analytics workspace",
+    "explanation": "Azure SQL auditing can write to Storage, Log Analytics, or Event Hubs, and Log Analytics provides KQL queries and alerting.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/auditing-overview"
+  },
+  {
+    "question": "An Azure SQL Database calls an Azure OpenAI embeddings endpoint with CREATE EXTERNAL MODEL. You must avoid storing API keys. What should the database scoped credential use?",
+    "options": [
+      "IDENTITY = 'HTTPEndpointHeaders', SECRET = '{\"api-key\":\"...\"}'",
+      "IDENTITY = 'Anonymous', with the API key appended to the LOCATION URL query string",
+      "IDENTITY = 'SHARED ACCESS SIGNATURE', SECRET = '<sas token for the OpenAI resource>'",
+      "IDENTITY = 'Managed Identity', SECRET = '{\"resourceid\":\"https://cognitiveservices.azure.com\"}'"
+    ],
+    "answer": "IDENTITY = 'Managed Identity', SECRET = '{\"resourceid\":\"https://cognitiveservices.azure.com\"}'",
+    "explanation": "A credential with IDENTITY = 'Managed Identity' and the Cognitive Services resource ID lets the database get Entra tokens for the endpoint, with an RBAC role granted on the Azure OpenAI resource.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql"
+  },
+  {
+    "question": "An application role must call AI_GENERATE_EMBEDDINGS using the external model MyEmbedModel but must not be able to create or change external models. What should you grant?",
+    "options": [
+      "CONTROL ON DATABASE",
+      "ALTER ON EXTERNAL MODEL::MyEmbedModel",
+      "CREATE EXTERNAL MODEL",
+      "EXECUTE ON EXTERNAL MODEL::MyEmbedModel"
+    ],
+    "answer": "EXECUTE ON EXTERNAL MODEL::MyEmbedModel",
+    "explanation": "Using an external model in an AI function requires EXECUTE on the model, while creating or altering models needs separate permissions.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql"
+  },
+  {
+    "question": "You deploy Data API builder to production in front of an Azure SQL database. You do not want anonymous clients to discover the full GraphQL schema. Which setting should you change?",
+    "options": [
+      "runtime.rest.request-body-strict = false",
+      "runtime.host.mode = development",
+      "runtime.pagination.max-page-size = -1",
+      "runtime.graphql.allow-introspection = false"
+    ],
+    "answer": "runtime.graphql.allow-introspection = false",
+    "explanation": "Setting allow-introspection to false prevents clients from querying the GraphQL schema.",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/runtime"
+  },
+  {
+    "question": "In Data API builder, authenticated users must read only their own Orders rows, based on the oid claim in their Entra token matching the OwnerId column. Which configuration achieves this without changing the database?",
+    "options": [
+      "\"fields\": {\"exclude\": [\"OwnerId\"]} for the authenticated role",
+      "A relationship from Orders to a Users entity joined on OwnerId and the oid column",
+      "A permissions action with \"policy\": {\"database\": \"@item.OwnerId eq @claims.oid\"}",
+      "\"cache\": {\"enabled\": true} on the Orders entity"
+    ],
+    "answer": "A permissions action with \"policy\": {\"database\": \"@item.OwnerId eq @claims.oid\"}",
+    "explanation": "Database policies are OData-style filters that can compare @item fields to @claims values, and DAB applies them to read, update, and delete requests.",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/entities"
+  },
+  {
+    "question": "Report queries in an Azure SQL database read large ranges while OLTP transactions update rows. Readers must not block writers, and each statement must see committed data as of when the statement started. Which isolation behavior gives this with the least application change?",
+    "options": [
+      "READ UNCOMMITTED with NOLOCK hints",
+      "Read committed snapshot isolation (RCSI)",
+      "SERIALIZABLE",
+      "REPEATABLE READ for every reporting transaction"
+    ],
+    "answer": "Read committed snapshot isolation (RCSI)",
+    "explanation": "RCSI makes READ COMMITTED use row versions, so readers do not take shared locks and see a statement-level consistent snapshot. It is on by default for new Azure SQL databases.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/understand-resolve-blocking"
+  },
+  {
+    "question": "A financial report runs several SELECT statements in one transaction and all of them must see the same consistent data, even while other sessions commit changes. Which isolation level should the report use?",
+    "options": [
+      "READ COMMITTED with RCSI",
+      "READ COMMITTED with RCSI disabled",
+      "READ UNCOMMITTED",
+      "SNAPSHOT"
+    ],
+    "answer": "SNAPSHOT",
+    "explanation": "SNAPSHOT isolation provides transaction-level consistency, so every statement in the transaction sees data as of the transaction start. It requires ALLOW_SNAPSHOT_ISOLATION ON.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/set-transaction-isolation-level-transact-sql"
+  },
+  {
+    "question": "Two sessions use SNAPSHOT isolation. Both read row 42, then both try to UPDATE it. The second session fails with error 3960. What is happening, and how should the app respond?",
+    "options": [
+      "The version store is full, so restart the database",
+      "An update conflict occurred, so the app should retry the transaction",
+      "RCSI is disabled, so enable READ_COMMITTED_SNAPSHOT",
+      "A deadlock occurred, so set DEADLOCK_PRIORITY HIGH for the reporting session"
+    ],
+    "answer": "An update conflict occurred, so the app should retry the transaction",
+    "explanation": "Under SNAPSHOT, if another transaction modified the row after your transaction started, your update fails with an update conflict, and the application should retry.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide"
+  },
+  {
+    "question": "You enable optimized locking on a SQL Server 2025 database to reduce lock memory and blocking. Which prerequisite must be enabled first, and what setting maximizes its benefit?",
+    "options": [
+      "Query Store first, and SNAPSHOT isolation for the benefit",
+      "Change Tracking first, and READ UNCOMMITTED for the benefit",
+      "In-Memory OLTP filegroup first, and SERIALIZABLE isolation for the most benefit",
+      "Accelerated database recovery first, and RCSI for lock after qualification"
+    ],
+    "answer": "Accelerated database recovery first, and RCSI for lock after qualification",
+    "explanation": "Optimized locking requires accelerated database recovery, and its lock after qualification (LAQ) component is in effect only when RCSI is enabled.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/optimized-locking"
+  },
+  {
+    "question": "Users report intermittent timeouts in Azure SQL Database, and you suspect blocking. Which DMV column directly shows which session is blocking a running request?",
+    "options": [
+      "sys.dm_db_resource_stats.avg_cpu_percent",
+      "sys.dm_exec_requests.blocking_session_id",
+      "sys.dm_db_index_usage_stats.user_seeks",
+      "sys.dm_exec_query_stats.total_worker_time"
+    ],
+    "answer": "sys.dm_exec_requests.blocking_session_id",
+    "explanation": "blocking_session_id in sys.dm_exec_requests identifies the session blocking a request, and 0 means it is not blocked.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/understand-resolve-blocking"
+  },
+  {
+    "question": "Two procedures update dbo.Account and dbo.Ledger in opposite orders, and error 1205 occurs several times an hour. What is the most effective code change?",
+    "options": [
+      "Increase SET LOCK_TIMEOUT to 60 seconds in both procedures",
+      "Add NOLOCK hints to both procedures",
+      "Access the tables in the same order and keep transactions short",
+      "Run both procedures under SERIALIZABLE"
+    ],
+    "answer": "Access the tables in the same order and keep transactions short",
+    "explanation": "Deadlocks often come from acquiring locks in opposite orders, so a consistent access order and short transactions remove the cycle.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-deadlocks-guide"
+  },
+  {
+    "question": "After a deployment, a critical query's duration jumps because the optimizer chose a new plan. Query Store shows the previous plan was much faster. What is the fastest safe mitigation without code changes?",
+    "options": [
+      "Clear the plan cache with DBCC FREEPROCCACHE",
+      "Lower the database compatibility level to 100 temporarily",
+      "Rebuild all indexes",
+      "Force the previous plan with sp_query_store_force_plan"
+    ],
+    "answer": "Force the previous plan with sp_query_store_force_plan",
+    "explanation": "Query Store keeps plan history, and forcing the last good plan restores performance immediately while you investigate.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitoring-performance-by-using-the-query-store"
+  },
+  {
+    "question": "A manager wants a quick view in the Azure portal of the top CPU-consuming queries over the last 24 hours for an Azure SQL database. Which tool fits, and what does it depend on?",
+    "options": [
+      "Query Performance Insight, which depends on Query Store being enabled",
+      "Database watcher, which depends on Change Tracking being enabled on each table",
+      "Azure Advisor, which depends on Log Analytics",
+      "SQL Server Profiler, which depends on a trace file"
+    ],
+    "answer": "Query Performance Insight, which depends on Query Store being enabled",
+    "explanation": "Query Performance Insight shows top resource-consuming queries in the portal and relies on Query Store data.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/query-performance-insight-use"
+  },
+  {
+    "question": "An execution plan for SELECT CustomerID, OrderDate, Total FROM dbo.Orders WHERE CustomerID = @c shows an index seek on IX_Orders_CustomerID followed by thousands of key lookups. What is the best fix?",
+    "options": [
+      "Convert the clustered index to a heap",
+      "Add OrderDate and Total as INCLUDE columns",
+      "Create a separate nonclustered index on the Total column",
+      "Add a NOLOCK hint"
+    ],
+    "answer": "Add OrderDate and Total as INCLUDE columns",
+    "explanation": "Including the needed columns makes the nonclustered index covering, which removes the key lookups.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/indexes/create-indexes-with-included-columns"
+  },
+  {
+    "question": "A procedure with one skewed parameter is fast for most customers but slow for one huge customer because a cached plan is reused. You cannot change code. Which approach in Azure SQL Database targets this specific query?",
+    "options": [
+      "Drop and re-create the procedure nightly",
+      "Set MAXDOP to 1 for the whole database with a scoped configuration",
+      "Attach OPTION (RECOMPILE) to that query with a Query Store hint",
+      "Disable Query Store"
+    ],
+    "answer": "Attach OPTION (RECOMPILE) to that query with a Query Store hint",
+    "explanation": "Query Store hints let you attach hints like RECOMPILE to a specific query by query_id without changing code. Parameter-sensitive plan optimization at compatibility level 160 can also help.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/performance/query-store-hints"
+  },
+  {
+    "question": "An Azure SQL database runs a mixed OLTP workload where some queries go highly parallel and saturate CPU. You want to cap parallelism only for this database. What should you use?",
+    "options": [
+      "sp_configure 'max degree of parallelism'",
+      "Disable Query Store so plans are not captured or forced",
+      "ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 8",
+      "Add OPTION (MAXDOP 8) to every query in the application"
+    ],
+    "answer": "ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 8",
+    "explanation": "MAXDOP is a database scoped configuration, which is the supported way to set parallelism for a single Azure SQL database.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/alter-database-scoped-configuration-transact-sql"
+  },
+  {
+    "question": "Your team starts a new database project and wants cross-platform builds on Linux build agents with dotnet. Which project format should they use?",
+    "options": [
+      "An SDK-style project that uses Microsoft.Build.Sql",
+      "A folder of numbered migration scripts with no project",
+      "An original .sqlproj based on .NET Framework MSBuild",
+      "A BACPAC file stored in source control"
+    ],
+    "answer": "An SDK-style project that uses Microsoft.Build.Sql",
+    "explanation": "Microsoft.Build.Sql SDK-style projects build with dotnet build on .NET 8+ cross-platform and produce a .dacpac.",
+    "link": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/sql-database-projects"
+  },
+  {
+    "question": "In an SDK-style SQL project, a folder named scripts contains ad hoc .sql files that should not be compiled into the database model. They break the build. What should you add to the .sqlproj?",
+    "options": [
+      "<Build Remove=\"scripts\\**\" />",
+      "<Compile Include=\"scripts\\**\" />",
+      "<PostDeploy Include=\"scripts\\**\" />",
+      "<None Remove=\"scripts\\**\" />"
+    ],
+    "answer": "<Build Remove=\"scripts\\**\" />",
+    "explanation": "SDK-style projects include all .sql files by default through globbing, so you exclude files from the model with Build Remove items.",
+    "link": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts"
+  },
+  {
+    "question": "A lookup table dbo.OrderStatus must contain the same five rows in every environment after each deployment, and rows may already exist. Where should this logic live?",
+    "options": [
+      "In the table's CREATE TABLE file using INSERT statements",
+      "In the post-deployment script, using idempotent MERGE logic",
+      "In a manual script that DBAs run after each release",
+      "In the pre-deployment script using TRUNCATE and INSERT"
+    ],
+    "answer": "In the post-deployment script, using idempotent MERGE logic",
+    "explanation": "Post-deployment scripts run after the schema is deployed on every publish, so idempotent logic keeps reference data consistent.",
+    "link": "https://learn.microsoft.com/en-us/sql/tools/sql-database-projects/concepts/pre-post-deployment-scripts"
+  },
+  {
+    "question": "A pipeline publishes a dacpac with SqlPackage. The new schema narrows a column from nvarchar(200) to nvarchar(100), and the target table has data. With default settings, what happens?",
+    "options": [
+      "The deployment truncates the values and continues",
+      "The deployment succeeds and logs a data-loss warning in the output",
+      "SqlPackage creates a new column and keeps both",
+      "The deployment is blocked by BlockOnPossibleDataLoss"
+    ],
+    "answer": "The deployment is blocked by BlockOnPossibleDataLoss",
+    "explanation": "BlockOnPossibleDataLoss defaults to True, so the operation stops during validation when a change could cause data loss.",
+    "link": "https://learn.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-publish"
+  },
+  {
+    "question": "Before deploying to production, you want a list of the changes SqlPackage would make so reviewers can catch unexpected changes caused by out-of-band edits. Which action should the pipeline run?",
+    "options": [
+      "/Action:Import",
+      "/Action:Export",
+      "/Action:DeployReport",
+      "/Action:Extract"
+    ],
+    "answer": "/Action:DeployReport",
+    "explanation": "DeployReport produces an XML report of the changes a publish would make to the target, which is useful for review and spotting drift.",
+    "link": "https://learn.microsoft.com/en-us/sql/tools/sqlpackage/sqlpackage-deploy-drift-report"
+  },
+  {
+    "question": "A GitHub Actions workflow deploys a dacpac to Azure SQL Database. Security forbids storing long-lived Azure secrets in GitHub. Which approach should you use?",
+    "options": [
+      "Commit the connection string to the repo in an encrypted settings file",
+      "Use a GitHub personal access token stored as an environment secret",
+      "Use OpenID Connect federation with azure/login and Entra auth to the database",
+      "Store the SQL admin password as an encrypted GitHub repository secret"
+    ],
+    "answer": "Use OpenID Connect federation with azure/login and Entra auth to the database",
+    "explanation": "OpenID Connect federation lets the workflow obtain short-lived Entra tokens without storing secrets, and the identity can be granted database access.",
+    "link": "https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect"
+  },
+  {
+    "question": "Production database deployments in Azure Pipelines must pause until a DBA approves them, while test deployments run automatically. What should you configure?",
+    "options": [
+      "An approval check on the production environment",
+      "A branch policy on the main branch",
+      "A post-deployment script that waits for input",
+      "A manual trigger on the build pipeline"
+    ],
+    "answer": "An approval check on the production environment",
+    "explanation": "Environment approvals and checks pause the stages that target that environment until approvers sign off.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/pipelines/process/approvals"
+  },
+  {
+    "question": "Your team wants every change to the database project to be reviewed and to build successfully before it reaches the main branch. What should you configure in Azure Repos?",
+    "options": [
+      "A release gate that checks Azure Monitor alerts before each deployment",
+      "A branch policy requiring pull requests, reviewers, and build validation",
+      "Allow only the database team to push directly to the main branch",
+      "A scheduled pipeline that builds and tests the main branch every night"
+    ],
+    "answer": "A branch policy requiring pull requests, reviewers, and build validation",
+    "explanation": "Branch policies can require pull requests, reviewers, and a successful build validation before merging.",
+    "link": "https://learn.microsoft.com/en-us/azure/devops/repos/git/branch-policies"
+  },
+  {
+    "question": "Your SQL project includes a table with a vector index. A schema-only dacpac deployment to an empty test database finishes, but the vector index is missing. What explains this?",
+    "options": [
+      "Dacpacs do not deploy vector indexes, and the index needs 100 rows",
+      "BlockOnPossibleDataLoss skipped the index",
+      "Vector indexes must be created in the pre-deployment script",
+      "The project must add a package reference to the master system dacpac"
+    ],
+    "answer": "Dacpacs do not deploy vector indexes, and the index needs 100 rows",
+    "explanation": "Vector indexes are not deployed with DacPac, and CREATE VECTOR INDEX requires at least 100 non-NULL vectors, so create the index in a separate step after loading data.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql"
+  },
+  {
+    "question": "A Data API builder entity is based on the view dbo.vProductSummary. Startup fails because DAB cannot identify rows. What must you add to the entity?",
+    "options": [
+      "A source type of stored-procedure instead of view",
+      "Key columns for the view, using fields primary-key or key-fields",
+      "A cache section with a short ttl-seconds value",
+      "A relationships section that maps the view to its underlying base table"
+    ],
+    "answer": "Key columns for the view, using fields primary-key or key-fields",
+    "explanation": "Views have no primary key metadata, so DAB needs the key columns declared with fields primary-key (or the older key-fields).",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/entities"
+  },
+  {
+    "question": "A client calls a Data API builder REST endpoint and needs books from 1970 or later, sorted newest first, with only id and title returned. Which request is correct?",
+    "options": [
+      "GET /api/book?$filter=year ge 1970&$orderby=year desc&$select=id,title",
+      "GET /api/book?where=year>=1970&sort=-year&fields=id,title",
+      "GET /api/book?$filter=year >= 1970&$sort=year desc&$fields=id,title",
+      "POST /api/book/query with a T-SQL WHERE clause"
+    ],
+    "answer": "GET /api/book?$filter=year ge 1970&$orderby=year desc&$select=id,title",
+    "explanation": "DAB REST endpoints support OData-style $filter, $orderby, and $select query parameters.",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/api/rest"
+  },
+  {
+    "question": "A Data API builder REST call returns 100 rows plus a nextLink. The client must page through all results reliably. What should it do?",
+    "options": [
+      "Repeat the same call with $orderby=rand() until rows repeat",
+      "Set $first=100000 on every call to get all rows at once",
+      "Increment a $skip query parameter by 100 on each request",
+      "Follow nextLink, which uses a $after token, until none is returned"
+    ],
+    "answer": "Follow nextLink, which uses a $after token, until none is returned",
+    "explanation": "DAB uses keyset pagination with $first and a $after continuation token, and the nextLink in the response points to the next page.",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/concept/api/rest"
+  },
+  {
+    "question": "You set \"cache\": {\"enabled\": true, \"ttl-seconds\": 30} on a Data API builder entity, but responses are never cached. What is the most likely cause?",
+    "options": [
+      "ttl-seconds must be at least 300 for entity-level caching to start",
+      "runtime.cache.enabled is false, so entity-level caching has no effect",
+      "Entity caching applies only to GraphQL queries, not REST requests",
+      "Caching is supported only when the entity source is a stored procedure"
+    ],
+    "answer": "runtime.cache.enabled is false, so entity-level caching has no effect",
+    "explanation": "Entity caching only works when caching is enabled globally in runtime.cache, and its default is false.",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/runtime"
+  },
+  {
+    "question": "In Data API builder, Book and Author have a many-to-many relationship through the table dbo.books_authors. Which relationship property is required for this?",
+    "options": [
+      "fields.exclude for the linking table columns",
+      "A database policy on Book that references the dbo.books_authors table",
+      "cardinality: one with no target.fields",
+      "linking.object with linking.source.fields and linking.target.fields"
+    ],
+    "answer": "linking.object with linking.source.fields and linking.target.fields",
+    "explanation": "Many-to-many relationships use linking.object and its source and target fields to map through the junction table.",
+    "link": "https://learn.microsoft.com/en-us/azure/data-api-builder/configuration/entities"
+  },
+  {
+    "question": "A data team needs a history of every insert, update, and delete to dbo.Orders, including the column values before and after each change, to feed a warehouse. Which feature fits?",
+    "options": [
+      "Change Tracking",
+      "A temporal table on the warehouse side",
+      "Change data capture (CDC)",
+      "Query Store"
+    ],
+    "answer": "Change data capture (CDC)",
+    "explanation": "CDC reads the transaction log and records the changed column data in change tables, including before and after images of updates.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/about-change-data-capture-sql-server"
+  },
+  {
+    "question": "You create an Azure Function with the Azure SQL trigger binding for dbo.ToDo. The function never fires. What must be enabled in the database?",
+    "options": [
+      "Query Store in READ_WRITE mode",
+      "Service Broker",
+      "Change Tracking on the database and on dbo.ToDo",
+      "Change data capture on the database and table"
+    ],
+    "answer": "Change Tracking on the database and on dbo.ToDo",
+    "explanation": "The Azure SQL trigger for Functions uses Change Tracking, which must be enabled on both the database and the table.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-azure-sql-trigger"
+  },
+  {
+    "question": "Your team wants row changes in an Azure SQL database to be pushed in near real time to Azure Event Hubs without polling or custom code. Which feature is designed for this?",
+    "options": [
+      "Change event streaming",
+      "Change Tracking with a scheduled query",
+      "Transactional replication",
+      "Temporal tables"
+    ],
+    "answer": "Change event streaming",
+    "explanation": "Change event streaming sends INSERT, UPDATE, and DELETE changes as CloudEvents to Azure Event Hubs or Fabric Eventstream in near real time.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/track-changes/change-event-streaming/overview"
+  },
+  {
+    "question": "A low-code team wants to send an approval email whenever a new row appears in an Azure SQL table, with no custom code. Which service should they use?",
+    "options": [
+      "A SQL Server Agent job that polls the table every minute",
+      "Azure Data Factory copy activity",
+      "Azure Logic Apps with the SQL Server connector trigger",
+      "Database Mail in Azure SQL Database"
+    ],
+    "answer": "Azure Logic Apps with the SQL Server connector trigger",
+    "explanation": "Logic Apps provides SQL Server connector triggers and email actions in a low-code designer.",
+    "link": "https://learn.microsoft.com/en-us/azure/connectors/connectors-create-api-sqlazure"
+  },
+  {
+    "question": "You must keep 90 days of Azure SQL Database diagnostics, such as deadlocks, timeouts, and Query Store runtime statistics, and query them centrally with KQL. What should you configure?",
+    "options": [
+      "An Extended Events session that writes to a ring buffer target",
+      "Query Store with STALE_QUERY_THRESHOLD_DAYS set to 90 days",
+      "Diagnostic settings that send these log categories to Log Analytics",
+      "A metric alert on CPU percentage"
+    ],
+    "answer": "Diagnostic settings that send these log categories to Log Analytics",
+    "explanation": "Diagnostic settings stream Azure SQL diagnostic logs, including deadlocks, timeouts, and Query Store statistics, to Log Analytics for KQL analysis and retention.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/metrics-diagnostic-telemetry-logging-streaming-export-configure"
+  },
+  {
+    "question": "You run CREATE EXTERNAL MODEL to register an Azure OpenAI deployment for use with AI_GENERATE_EMBEDDINGS. Which MODEL_TYPE value must you specify?",
+    "options": [
+      "EMBEDDINGS",
+      "ONNX",
+      "CHAT_COMPLETION",
+      "TEXT_GENERATION"
+    ],
+    "answer": "EMBEDDINGS",
+    "explanation": "EMBEDDINGS is the only accepted MODEL_TYPE value for CREATE EXTERNAL MODEL.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql"
+  },
+  {
+    "question": "A SQL Server 2025 instance must generate embeddings with a model served by Ollama on the same host, so no data leaves the server. Which API_FORMAT should the external model use?",
+    "options": [
+      "OpenAI",
+      "Ollama",
+      "REST",
+      "Azure OpenAI"
+    ],
+    "answer": "Ollama",
+    "explanation": "CREATE EXTERNAL MODEL supports the API formats Azure OpenAI, OpenAI, Ollama, and ONNX Runtime, and Ollama targets a local Ollama endpoint.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-external-model-transact-sql"
+  },
+  {
+    "question": "You define an external model with PARAMETERS = '{\"dimensions\":768}' for text-embedding-3-small. Your table column is VECTOR(1536). Inserts of generated embeddings fail. What is the best fix?",
+    "options": [
+      "Call VECTOR_NORMALIZE on each embedding before inserting it",
+      "Change the column to VECTOR(1536, float16) to save space",
+      "Make the column VECTOR(768), or drop the dimensions parameter",
+      "Increase the column to VECTOR(1998), the float32 maximum"
+    ],
+    "answer": "Make the column VECTOR(768), or drop the dimensions parameter",
+    "explanation": "The embedding length is set by the model parameters, and the vector column dimension must match it exactly.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql"
+  },
+  {
+    "question": "Which statement stores an embedding of each product's Description in the Embedding column using the external model ProductEmbedModel?",
+    "options": [
+      "UPDATE dbo.Product SET Embedding = VECTOR_NORMALIZE(Description, 'ProductEmbedModel')",
+      "UPDATE p SET Embedding = AI_GENERATE_EMBEDDINGS(p.Description USE MODEL ProductEmbedModel) FROM dbo.Product AS p",
+      "UPDATE dbo.Product SET Embedding = EXEC ProductEmbedModel @text = Description WHERE Embedding IS NULL",
+      "UPDATE dbo.Product SET Embedding = AI_GENERATE_EMBEDDINGS(ProductEmbedModel, Description)"
+    ],
+    "answer": "UPDATE p SET Embedding = AI_GENERATE_EMBEDDINGS(p.Description USE MODEL ProductEmbedModel) FROM dbo.Product AS p",
+    "explanation": "AI_GENERATE_EMBEDDINGS takes the source text followed by USE MODEL and the external model name.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql"
+  },
+  {
+    "question": "Support articles average 20,000 characters. You want 1,000-character chunks with 10 percent overlap so context is not lost at boundaries. Which query is correct?",
+    "options": [
+      "SELECT AI_GENERATE_CHUNKS(a.Body, 1000, 100) FROM dbo.Article a",
+      "SELECT c.chunk FROM dbo.Article a CROSS APPLY AI_GENERATE_CHUNKS(SOURCE = a.Body, CHUNK_TYPE = SENTENCE, CHUNK_SIZE = 1000, OVERLAP = 100) c",
+      "SELECT c.value FROM dbo.Article a CROSS APPLY STRING_SPLIT(a.Body, 1000) c",
+      "SELECT c.chunk FROM dbo.Article a CROSS APPLY AI_GENERATE_CHUNKS(SOURCE = a.Body, CHUNK_TYPE = FIXED, CHUNK_SIZE = 1000, OVERLAP = 10) c"
+    ],
+    "answer": "SELECT c.chunk FROM dbo.Article a CROSS APPLY AI_GENERATE_CHUNKS(SOURCE = a.Body, CHUNK_TYPE = FIXED, CHUNK_SIZE = 1000, OVERLAP = 10) c",
+    "explanation": "AI_GENERATE_CHUNKS is a table-valued function used with CROSS APPLY, CHUNK_TYPE = FIXED is required, and OVERLAP is a percentage of CHUNK_SIZE from 0 to 50.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-chunks-transact-sql"
+  },
+  {
+    "question": "Product descriptions change about 2,000 times per day. Embeddings must stay reasonably fresh, but the OLTP update path must not slow down or fail when the embedding endpoint is throttled. Which design is best?",
+    "options": [
+      "Track changed rows and regenerate embeddings asynchronously in batches",
+      "Recompute embeddings for the whole table on every update",
+      "Call AI_GENERATE_EMBEDDINGS in an AFTER UPDATE trigger",
+      "Regenerate document embeddings in the client application before each search"
+    ],
+    "answer": "Track changed rows and regenerate embeddings asynchronously in batches",
+    "explanation": "Decoupling embedding generation from the write path keeps transactions fast and lets you batch, retry, and throttle calls to the model.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/ai-generate-embeddings-transact-sql"
+  },
+  {
+    "question": "You plan to switch from text-embedding-ada-002 to text-embedding-3-large for better quality. Existing rows have ada-002 embeddings. What must you do?",
+    "options": [
+      "Normalize the old vectors with VECTOR_NORMALIZE so they are compatible",
+      "Keep old vectors and embed only new rows with the new model",
+      "Re-embed all existing content with the new model",
+      "Change the vector index metric from cosine to dot"
+    ],
+    "answer": "Re-embed all existing content with the new model",
+    "explanation": "Embeddings from different models live in different vector spaces, so query and document vectors must come from the same model.",
+    "link": "https://learn.microsoft.com/en-us/sql/sql-server/ai/vectors"
+  },
+  {
+    "question": "You are building semantic search over a Product table with ProductID, SKU, Price, Name, and a long Description. Which content is best to embed?",
+    "options": [
+      "The SKU, since it uniquely identifies each product",
+      "ProductID and Price, serialized as a JSON string",
+      "Name and Description text, with Price and SKU kept as filter columns",
+      "All columns concatenated, including IDs and timestamps"
+    ],
+    "answer": "Name and Description text, with Price and SKU kept as filter columns",
+    "explanation": "Embeddings capture meaning in natural-language text, so descriptive fields should be embedded while structured values are filtered with regular predicates.",
+    "link": "https://learn.microsoft.com/en-us/sql/sql-server/ai/vectors"
+  },
+  {
+    "question": "You are evaluating two embedding models for a multilingual support knowledge base. Which factor is the most important to test on your own data?",
+    "options": [
+      "Retrieval quality on your own queries, plus dimensions, cost, and latency",
+      "Which model returns float16 values so vectors use less storage",
+      "Which model name sorts first alphabetically",
+      "Which model has the largest parameter count according to its publisher"
+    ],
+    "answer": "Retrieval quality on your own queries, plus dimensions, cost, and latency",
+    "explanation": "Model choice should be validated on representative data for relevance, plus practical factors such as dimensions, latency, cost, and data residency.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/ai-artificial-intelligence-intelligent-applications"
+  },
+  {
+    "question": "Users search a parts catalog by exact part numbers such as XJ-4471-B and also by phrases like \"quiet fan for small office\". Which search approach fits best?",
+    "options": [
+      "LIKE '%term%' predicates across all text columns",
+      "Hybrid full-text and vector search",
+      "Vector search only, using a DiskANN index",
+      "Full-text search only, using CONTAINSTABLE"
+    ],
+    "answer": "Hybrid full-text and vector search",
+    "explanation": "Keyword search handles exact identifiers, vector search handles meaning, and hybrid search combines both result sets.",
+    "link": "https://learn.microsoft.com/en-us/sql/sql-server/ai/vectors"
+  },
+  {
+    "question": "You need to rank documents that match the words solar and battery near each other and get a relevance score per row. Which full-text function returns ranked rows with a KEY and RANK column?",
+    "options": [
+      "CONTAINSTABLE",
+      "SOUNDEX",
+      "CONTAINS",
+      "FREETEXT"
+    ],
+    "answer": "CONTAINSTABLE",
+    "explanation": "CONTAINSTABLE returns a table with KEY and RANK columns, so you can join and order by relevance, and supports NEAR.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/search/query-with-full-text-search"
+  },
+  {
+    "question": "You combine a full-text result list and a vector result list using reciprocal rank fusion. How is each document's fused score calculated?",
+    "options": [
+      "Maximum of the two ranks",
+      "Sum of 1 / (k + rank) across the result lists",
+      "Average of the raw full-text and vector scores",
+      "Product of the two distances"
+    ],
+    "answer": "Sum of 1 / (k + rank) across the result lists",
+    "explanation": "RRF adds 1 / (k + rank) for each list a document appears in, with k commonly set to 60, so it uses ranks and avoids normalizing different score scales.",
+    "link": "https://learn.microsoft.com/en-us/azure/search/hybrid-search-ranking"
+  },
+  {
+    "question": "What is the maximum number of dimensions for a VECTOR column with the default float32 base type?",
+    "options": [
+      "8,000",
+      "1,998",
+      "1,536",
+      "3,996"
+    ],
+    "answer": "1,998",
+    "explanation": "float32 vectors support up to 1,998 dimensions, while float16 vectors support up to 3,996.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+  },
+  {
+    "question": "You want to store 3,072-dimension embeddings from text-embedding-3-large without reducing dimensions in Azure SQL Database. Which column definition works?",
+    "options": [
+      "VECTOR(1998) with two columns concatenated at query time",
+      "VECTOR(3072)",
+      "VECTOR(3072, float16)",
+      "varchar(max) parsed with OPENJSON"
+    ],
+    "answer": "VECTOR(3072, float16)",
+    "explanation": "float16 vectors support up to 3,996 dimensions, so VECTOR(3072, float16) stores the full embedding with half-precision values.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/data-types/vector-data-type"
+  },
+  {
+    "question": "A table has a DiskANN vector index on Embedding. A query uses ORDER BY VECTOR_DISTANCE('cosine', Embedding, @q) with TOP (10). The plan scans the whole table. Why?",
+    "options": [
+      "The index uses cosine, but this query pattern requires the dot metric",
+      "TOP must be greater than 100 for the optimizer to choose the index",
+      "Statistics on the Embedding column are out of date",
+      "VECTOR_DISTANCE always does exact search and ignores vector indexes"
+    ],
+    "answer": "VECTOR_DISTANCE always does exact search and ignores vector indexes",
+    "explanation": "VECTOR_DISTANCE performs exact kNN calculations. VECTOR_SEARCH with TOP (N) WITH APPROXIMATE uses the ANN index.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+  },
+  {
+    "question": "You created a vector index with the current syntax in Azure SQL Database. Which query uses it for approximate nearest neighbor search?",
+    "options": [
+      "SELECT TOP (10) WITH APPROXIMATE t.id, r.distance FROM VECTOR_SEARCH(TABLE = dbo.Doc AS t, COLUMN = Embedding, SIMILAR_TO = @q, METRIC = 'cosine') AS r ORDER BY r.distance",
+      "SELECT TOP (10) t.id FROM dbo.Doc t ORDER BY VECTOR_DISTANCE('cosine', t.Embedding, @q)",
+      "SELECT t.id, r.distance FROM VECTOR_SEARCH(TABLE = dbo.Doc AS t, COLUMN = Embedding, SIMILAR_TO = @q, METRIC = 'cosine', TOP_N = 10) AS r ORDER BY r.distance",
+      "SELECT TOP (10) WITH APPROXIMATE t.id FROM dbo.Doc t ORDER BY VECTOR_DISTANCE('cosine', t.Embedding, @q)"
+    ],
+    "answer": "SELECT TOP (10) WITH APPROXIMATE t.id, r.distance FROM VECTOR_SEARCH(TABLE = dbo.Doc AS t, COLUMN = Embedding, SIMILAR_TO = @q, METRIC = 'cosine') AS r ORDER BY r.distance",
+    "explanation": "With latest-version vector indexes, approximate search uses VECTOR_SEARCH with SELECT TOP (N) WITH APPROXIMATE and ORDER BY distance.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+  },
+  {
+    "question": "A query uses SELECT TOP (5) WITH APPROXIMATE ... FROM VECTOR_SEARCH(...) AS r ORDER BY r.distance DESC, t.Title. It fails. What is wrong?",
+    "options": [
+      "Only ascending ORDER BY on distance is allowed",
+      "ORDER BY is not allowed with WITH APPROXIMATE",
+      "VECTOR_SEARCH does not return a distance column",
+      "TOP must be at least 10 when WITH APPROXIMATE is used"
+    ],
+    "answer": "Only ascending ORDER BY on distance is allowed",
+    "explanation": "For approximate search, ORDER BY is required and only the distance column in ascending order is allowed.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+  },
+  {
+    "question": "A vector index was created with METRIC = 'cosine'. A query calls VECTOR_SEARCH with METRIC = 'euclidean'. What happens?",
+    "options": [
+      "A warning is raised and an exact kNN search is used",
+      "The engine rebuilds the index with the euclidean metric automatically",
+      "The query returns no rows",
+      "The query fails with a metric mismatch error"
+    ],
+    "answer": "A warning is raised and an exact kNN search is used",
+    "explanation": "An ANN index is used only if one exists with the same metric on the column. Otherwise a warning is raised and kNN is used.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+  },
+  {
+    "question": "You try CREATE VECTOR INDEX on a staging table that has 40 rows and a clustered primary key on an int column. It fails. What is the cause?",
+    "options": [
+      "Vector indexes require a uniqueidentifier clustered primary key",
+      "The metric must be specified as dot",
+      "A vector index requires at least 100 rows with non-NULL vectors",
+      "The table must be memory-optimized before a vector index is created"
+    ],
+    "answer": "A vector index requires at least 100 rows with non-NULL vectors",
+    "explanation": "CREATE VECTOR INDEX requires at least 100 non-NULL vector rows, as well as a base table with a clustered primary key on an int column.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-vector-index-transact-sql"
+  },
+  {
+    "question": "You compute VECTOR_DISTANCE('cosine', @a, @b) for two vectors that point in exactly opposite directions. What value is returned?",
+    "options": [
+      "0",
+      "1",
+      "2",
+      "-1"
+    ],
+    "answer": "2",
+    "explanation": "Cosine distance ranges from 0 for identical direction to 2 for opposite vectors.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+  },
+  {
+    "question": "Your embeddings are not normalized, and you choose METRIC = 'dot' for a vector index. How should you interpret the distance values that VECTOR_SEARCH returns?",
+    "options": [
+      "Smaller values mean more similar, since dot is negated",
+      "Larger values mean more similar",
+      "Values represent the angle in degrees",
+      "Values always fall between 0 and 2, like cosine distance"
+    ],
+    "answer": "Smaller values mean more similar, since dot is negated",
+    "explanation": "The dot metric returns the negative dot product, so smaller values are more similar, which keeps ascending ORDER BY distance correct.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+  },
+  {
+    "question": "A model returns embeddings that are not unit length, and you want to store them normalized to unit Euclidean length. Which expression should you use?",
+    "options": [
+      "VECTOR_NORMALIZE(@v, 'norminf')",
+      "VECTOR_NORMALIZE(@v, 'norm1')",
+      "VECTOR_NORMALIZE(@v, 'norm2')",
+      "VECTORPROPERTY(@v, 'Normalize')"
+    ],
+    "answer": "VECTOR_NORMALIZE(@v, 'norm2')",
+    "explanation": "norm2 is the Euclidean norm, so VECTOR_NORMALIZE with norm2 returns a vector with Euclidean length 1.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-normalize-transact-sql"
+  },
+  {
+    "question": "A data quality check must confirm that every value in an Embedding column has 1,536 dimensions. Which expression returns the dimension count?",
+    "options": [
+      "VECTORPROPERTY(Embedding, 'Dimensions')",
+      "LEN(Embedding)",
+      "JSON_VALUE(CAST(Embedding AS nvarchar(max)), '$.length')",
+      "DATALENGTH(Embedding) / 4"
+    ],
+    "answer": "VECTORPROPERTY(Embedding, 'Dimensions')",
+    "explanation": "VECTORPROPERTY with the Dimensions property returns the number of dimensions as an integer.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vectorproperty-transact-sql"
+  },
+  {
+    "question": "You must measure whether a new DiskANN vector index returns good results compared with exact search. Which approach is the most meaningful?",
+    "options": [
+      "Compare the vector index size with the size of the base table",
+      "Measure only the average query latency for a sample workload",
+      "Count how many rows have non-NULL embeddings",
+      "Compare ANN results with exact kNN results and compute recall"
+    ],
+    "answer": "Compare ANN results with exact kNN results and compute recall",
+    "explanation": "ANN trades some accuracy for speed, so recall against exact kNN ground truth, together with latency, measures index quality.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-search-transact-sql"
+  },
+  {
+    "question": "A table contains 3,000 product embeddings and grows slowly. Searches must always return the exact top matches. What is the simplest appropriate design?",
+    "options": [
+      "Use full-text search with CONTAINSTABLE instead of vectors",
+      "Store embeddings in a separate vector database",
+      "Exact kNN with VECTOR_DISTANCE and no vector index",
+      "Create a DiskANN index and use WITH APPROXIMATE"
+    ],
+    "answer": "Exact kNN with VECTOR_DISTANCE and no vector index",
+    "explanation": "For small tables, exact kNN search is fast enough and guarantees exact results, while ANN adds complexity and approximate results.",
+    "link": "https://learn.microsoft.com/en-us/sql/t-sql/functions/vector-distance-transact-sql"
+  },
+  {
+    "question": "A support chatbot must answer questions using your company's product manuals stored in Azure SQL Database, without retraining a model. Which pattern fits?",
+    "options": [
+      "Use DDM to mask manuals before sending them",
+      "Fine-tune a new model every night on the full contents of the database",
+      "Export the manuals to a CSV file and attach the whole file to each prompt",
+      "RAG: retrieve relevant chunks with vector search and add them to the prompt"
+    ],
+    "answer": "RAG: retrieve relevant chunks with vector search and add them to the prompt",
+    "explanation": "RAG retrieves the most relevant content at query time and grounds the model's answer in it, so no retraining is needed.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/ai-artificial-intelligence-intelligent-applications"
+  },
+  {
+    "question": "In a RAG procedure, you must send the top five retrieved chunks to a chat model as a JSON array of objects with title and content. Which T-SQL builds that array from the result set?",
+    "options": [
+      "SELECT TOP (5) Title AS title, Content AS content FROM #hits ORDER BY distance FOR JSON PATH",
+      "SELECT STRING_AGG(CONCAT('{', Title, ':', Content, '}'), ',') FROM #hits",
+      "SELECT TOP (5) Title, Content FROM #hits ORDER BY distance FOR XML PATH('hit')",
+      "SELECT TOP (5) JSON_VALUE(Title, '$.title') FROM #hits ORDER BY distance"
+    ],
+    "answer": "SELECT TOP (5) Title AS title, Content AS content FROM #hits ORDER BY distance FOR JSON PATH",
+    "explanation": "FOR JSON PATH turns a result set into a JSON array of objects with the column aliases as property names.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/json/format-query-results-as-json-with-for-json-sql-server"
+  },
+  {
+    "question": "You call a chat completions endpoint with sp_invoke_external_rest_endpoint and store the output in @response. Which expression returns the model's answer text?",
+    "options": [
+      "JSON_VALUE(@response, '$.result.choices[0].message.content')",
+      "JSON_VALUE(@response, '$.result.data[0].embedding')",
+      "JSON_QUERY(@response, '$.response.status.http')",
+      "JSON_VALUE(@response, '$.choices[0].message.content')"
+    ],
+    "answer": "JSON_VALUE(@response, '$.result.choices[0].message.content')",
+    "explanation": "The procedure wraps the endpoint's payload under $.result, so the chat answer is at $.result.choices[0].message.content.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql"
+  },
+  {
+    "question": "After calling sp_invoke_external_rest_endpoint, your procedure must branch on whether the HTTP call succeeded. Which approach is correct?",
+    "options": [
+      "Check for a return value of 0 or the HTTP code in @response",
+      "Check that @response is not NULL after the call returns",
+      "Check that @@ROWCOUNT is 1 after the call",
+      "Check that XACT_STATE() returns 1 after the call"
+    ],
+    "answer": "Check for a return value of 0 or the HTTP code in @response",
+    "explanation": "The procedure returns 0 for a 2xx status and otherwise the HTTP status code, which is also in $.response.status.http.code.",
+    "link": "https://learn.microsoft.com/en-us/sql/relational-databases/system-stored-procedures/sp-invoke-external-rest-endpoint-transact-sql"
+  },
+  {
+    "question": "In a RAG prompt you want the chat model to avoid making up facts that are not in the retrieved product data. What should the prompt include?",
+    "options": [
+      "A higher temperature setting so answers are more creative",
+      "Instructions to answer only from the supplied context, or say it does not know",
+      "Every row from the product table so nothing is missed",
+      "The full database schema so the model understands the data"
+    ],
+    "answer": "Instructions to answer only from the supplied context, or say it does not know",
+    "explanation": "Grounding instructions that limit answers to retrieved context, with an explicit fallback, reduce hallucinations in RAG.",
+    "link": "https://learn.microsoft.com/en-us/azure/azure-sql/database/ai-artificial-intelligence-intelligent-applications"
+  }
+]

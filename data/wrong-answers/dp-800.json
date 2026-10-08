@@ -1,0 +1,602 @@
+{
+  "812e98a871be": {
+    "FOR SYSTEM_TIME BETWEEN '2026-03-01' AND '2026-03-02'": "BETWEEN returns all versions active at any time in the range, which can return several versions of the same row.",
+    "FOR SYSTEM_TIME CONTAINED IN ('2026-03-01', '2026-03-02')": "CONTAINED IN returns only versions that both opened and closed inside the range, so it misses rows that were valid at the instant but changed later.",
+    "FOR SYSTEM_TIME ALL": "ALL returns every version from both the current and history tables, not a single point-in-time snapshot."
+  },
+  "bec366db4113": {
+    "Convert the history table to a clustered columnstore and partition it by month": "Columnstore and partitioning can make cleanup cheaper, but on their own they do not remove any rows automatically.",
+    "Schedule an elastic job that deletes history rows while system versioning stays on": "You cannot run DML against the history table directly while SYSTEM_VERSIONING is ON, and the requirement is to avoid custom jobs.",
+    "Create an AFTER DELETE trigger on the history table that removes old rows": "Triggers are not the supported mechanism for aging out temporal history, and a delete trigger would not fire for rows that nothing deletes."
+  },
+  "f9e056424b67": {
+    "A regular table with DENY UPDATE, DELETE to public": "DENY permissions can be bypassed by sysadmin or the table owner and provide no tamper detection.",
+    "A system-versioned temporal table": "Temporal tables keep history but provide no cryptographic tamper evidence, and privileged users can disable versioning.",
+    "An updatable ledger table with a history table": "Updatable ledger tables allow UPDATE and DELETE, so they do not enforce the insert-only requirement."
+  },
+  "2cbc9ad1eb15": {
+    "A clustered columnstore table with DELAYED_DURABILITY = FORCED": "Columnstore is optimized for analytics and large scans, not for high-frequency single-row inserts and updates.",
+    "A disk-based heap table with a nonclustered primary key": "A disk-based heap still uses latches, locks, and full logging, so it cannot match In-Memory OLTP throughput for this workload.",
+    "MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA": "SCHEMA_AND_DATA is fully durable, so it still pays the logging cost that is not needed for disposable session state."
+  },
+  "171e12c4830e": {
+    "A nonclustered columnstore index only": "A columnstore index helps large analytic scans but does not provide an ordered seek path for selective range queries.",
+    "A hash index with BUCKET_COUNT sized to twice the distinct values": "Hash indexes are efficient for equality point lookups only and cannot seek on range predicates or return ordered results.",
+    "A filtered disk-based B-tree index": "Disk-based B-tree indexes cannot be created on memory-optimized tables."
+  },
+  "4c12e10ae706": {
+    "CREATE NODE TABLE Person (...); CREATE EDGE TABLE FriendOf (...);": "CREATE NODE TABLE and CREATE EDGE TABLE are not valid T-SQL statements.",
+    "CREATE TABLE Person (...) WITH (GRAPH = NODE); CREATE TABLE FriendOf (...) WITH (GRAPH = EDGE);": "There is no GRAPH table option in the WITH clause, the AS NODE and AS EDGE suffixes are used instead.",
+    "CREATE GRAPH Person (...); CREATE RELATIONSHIP FriendOf;": "CREATE GRAPH and CREATE RELATIONSHIP are not T-SQL statements."
+  },
+  "d2ae9994fb4a": {
+    "A FOREIGN KEY on $from_id referencing Customer($node_id) with ON DELETE CASCADE": "Graph pseudo-columns cannot be referenced by regular foreign keys, edge constraints are the supported mechanism.",
+    "An INSTEAD OF INSERT trigger that validates node types and deletes edges": "A trigger adds custom code and overhead to reproduce behavior that a declarative edge constraint already provides.",
+    "A CHECK constraint that compares OBJECT_ID_FROM_NODE_ID($from_id) to Customer": "A CHECK constraint could validate type but would not cascade deletes, and edge constraints are the purpose-built feature."
+  },
+  "be7ed10d01eb": {
+    "A clustered columnstore index replacing the clustered B-tree": "Replacing the clustered index changes the table design and can hurt singleton OLTP lookups and updates.",
+    "A filtered nonclustered rowstore index": "Filtered rowstore indexes help selective predicates, not large scans and aggregations.",
+    "An indexed view for every analyst query": "Indexed views must be built per query pattern and add write overhead without covering ad hoc analytics."
+  },
+  "0d71b88d04f7": {
+    "Run DBCC SHRINKFILE on the data file after each nightly load completes": "Shrinking files does not compress delta rowgroups and usually causes fragmentation.",
+    "Switch the table to a heap before loading": "Converting to a heap removes the columnstore benefit and does not affect deltastore behavior.",
+    "Set the database to the SIMPLE recovery model": "Recovery model changes logging behavior but not whether rows land in delta or compressed rowgroups."
+  },
+  "11ba230033a5": {
+    "Change the column to varbinary(max) and compress the documents": "varbinary(max) loses JSON semantics, so every read must decompress and parse the content again.",
+    "Convert the documents to XML and store them in an xml column with a primary XML index": "Moving to XML changes the data format and does not provide JSON functions or partial JSON updates.",
+    "Add a computed column for each JSON property and index them": "Computed columns help specific predicates but do not reduce parsing for full reads or make partial updates cheaper."
+  },
+  "bb6c2056f166": {
+    "The table must not have any other nonclustered indexes": "Other nonclustered indexes can coexist, the limit is one JSON index per json column.",
+    "The table must be memory-optimized before a vector index is created": "JSON indexes are explicitly not supported on memory-optimized tables.",
+    "The Details column must be a computed column": "JSON indexes cannot be created on computed json columns."
+  },
+  "4f6781cf8c94": {
+    "WHERE JSON_VALUE(Details, '$.status') IS NULL": "IS [NOT] NULL is not currently supported by JSON indexes.",
+    "WHERE CAST(Details AS nvarchar(max)) LIKE '%shipped%'": "Casting the document to a string and using a leading wildcard cannot use the JSON index.",
+    "WHERE JSON_VALUE(Details, '$.status') LIKE 'ship%'": "LIKE on JSON_VALUE is listed as not currently supported by JSON indexes."
+  },
+  "0b0d803ce273": {
+    "A UNIQUE constraint on Email": "UNIQUE prevents duplicates but does not validate format.",
+    "A FOREIGN KEY to a table of valid domains": "A foreign key validates a whole value against another table and cannot test a pattern.",
+    "A DEFAULT constraint on Email whose value is defined by a regex pattern": "A DEFAULT supplies a value when none is given, it does not validate supplied values."
+  },
+  "ceae43df97fb": {
+    "ROW_NUMBER() OVER (ORDER BY CreatedAt) computed at insert time for each new row": "ROW_NUMBER is computed per query and is not a persistent, concurrency-safe number generator.",
+    "NEWSEQUENTIALID() as the default for both tables": "NEWSEQUENTIALID returns uniqueidentifier values, not human-readable integer document numbers.",
+    "An IDENTITY column in each table with the same seed": "IDENTITY is scoped to one table, so two tables would produce overlapping numbers."
+  },
+  "4e429db9c461": {
+    "DELETE the oldest month's rows in batches of 10,000 inside a WHILE loop": "Batched deletes reduce blocking but still log every row and take far longer than a partition switch.",
+    "Rebuild the clustered index with a filter that excludes the oldest month": "Clustered indexes cannot be filtered, and a rebuild would not remove the data.",
+    "Run TRUNCATE TABLE with a WHERE clause that targets only the oldest month value": "TRUNCATE TABLE does not accept a WHERE clause, it can target partitions only with WITH (PARTITIONS (...))."
+  },
+  "874902482fe0": {
+    "A linked server and a synonym": "Linked servers connect to other database servers, not to Parquet files in object storage.",
+    "A full-text catalog and a stoplist": "Full-text catalogs and stoplists support word searches over local data.",
+    "A database snapshot and a database scoped credential for the storage account": "Database snapshots are read-only copies of databases and are unrelated to external data."
+  },
+  "21130e4b91bf": {
+    "Add WITH SCHEMABINDING to the multi-statement function": "SCHEMABINDING protects dependencies but does not change multi-statement TVF cardinality estimation.",
+    "Wrap it in a stored procedure that returns a cursor": "Cursors add row-by-row overhead and cannot be joined like a table source.",
+    "Rewrite it as a scalar UDF": "A scalar UDF returns one value, not a set, and does not solve the estimate problem."
+  },
+  "dbfe2e534c14": {
+    "Inlining only works for UDFs that return varchar values": "Inlining is not limited to varchar return types.",
+    "Scalar UDFs are never inlined when called from a SELECT list": "Scalar UDFs called in the SELECT list are the primary target of inlining when they are eligible.",
+    "Inlining requires the function to be created WITH EXECUTE AS OWNER and SCHEMABINDING": "EXECUTE AS is not a requirement for inlining, and EXECUTE AS CALLER is the typical default."
+  },
+  "2276332852dc": {
+    "Loop over the deleted table with a cursor and insert one audit row per fetch": "The deleted table holds pre-update values, and a cursor is a slower way to handle a set-based task.",
+    "Change the trigger to INSTEAD OF UPDATE": "INSTEAD OF changes when the trigger fires but the same single-row assumption would still fail.",
+    "Add SET NOCOUNT ON at the start of the trigger": "SET NOCOUNT ON suppresses row count messages and does not fix multi-row handling."
+  },
+  "187cbb3e396f": {
+    "It must reference base tables that live in another database on the same server": "Indexed views can reference only base tables in the same database.",
+    "It must use SELECT * and include an ORDER BY": "SELECT * and ORDER BY are not allowed in indexed view definitions.",
+    "It must contain an OUTER JOIN to support NULL products": "OUTER JOINs are not allowed in indexed views."
+  },
+  "5487eabc182a": {
+    "Replace single quotes with double quotes in user input": "Character replacement is fragile and can be bypassed.",
+    "Wrap user input in QUOTENAME and keep EXEC(@sql)": "QUOTENAME is meant for identifiers and has a 128-character limit, so it is not a general fix for values.",
+    "Run the procedure WITH EXECUTE AS OWNER": "EXECUTE AS changes the security context but makes injection more dangerous, not less."
+  },
+  "42da0c81b2d5": {
+    "Move the recursive member before the anchor member": "The anchor member must come first, and reordering does not change the limit.",
+    "Add TOP (250) to the anchor member": "TOP in the anchor limits starting rows, not recursion depth.",
+    "Replace UNION ALL with UNION in the CTE": "Recursive CTEs require UNION ALL between anchor and recursive members, and UNION does not change the recursion limit."
+  },
+  "f93ae7cbfde6": {
+    "OVER (PARTITION BY OrderDate ORDER BY OrderDate)": "Partitioning by OrderDate restarts the total for each date instead of producing a running total.",
+    "OVER (ORDER BY OrderDate RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING)": "That frame computes a reverse running total and still treats ties as peers.",
+    "OVER (ORDER BY OrderDate ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)": "That frame computes a three-row moving sum, not a running total."
+  },
+  "e8d9343d3891": {
+    "PARTITION BY must be removed because LAST_VALUE only works over the whole set": "Removing PARTITION BY would return the last price across all products.",
+    "LAST_VALUE requires a GROUP BY on ProductID to return one value per product": "Window functions do not require GROUP BY.",
+    "LAST_VALUE ignores the ORDER BY clause and returns values in storage order": "LAST_VALUE uses the ORDER BY to determine order, it does not ignore it."
+  },
+  "3f2099bc08be": {
+    "DENSE_RANK() OVER (PARTITION BY ModifiedDate ORDER BY Email DESC) in a CTE, delete where rank = 1": "Partitioning by ModifiedDate and deleting rank 1 deletes the wrong rows.",
+    "NTILE(2) OVER (PARTITION BY Email ORDER BY ModifiedDate) in a CTE, delete rows in tile 2": "NTILE splits rows into equal buckets and does not identify the newest row.",
+    "RANK() OVER (ORDER BY Email, ModifiedDate DESC) in a CTE, delete where rank > 1": "Without PARTITION BY Email, the ranking is global, and RANK can leave ties."
+  },
+  "9db4819f54f8": {
+    "SELECT * FROM OPENJSON(@order) WITH (sku varchar(20) '$.lines.sku', qty int '$.lines.qty', options nvarchar(max) '$.lines.options' AS JSON)": "Without the $.lines path the root object is shredded, so you get one row and not one per line.",
+    "SELECT * FROM OPENJSON(@order, '$.lines') WITH (sku varchar(20), qty int, options nvarchar(max))": "Without AS JSON, a column mapped to a nested object returns NULL in lax mode.",
+    "SELECT JSON_VALUE(@order, '$.lines[*].sku'), JSON_VALUE(@order, '$.lines[*].qty')": "JSON_VALUE returns single scalars and does not expand arrays into rows."
+  },
+  "7253e8c95fcd": {
+    "JSON_ARRAYAGG returns null elements, while JSON_OBJECT omits the phone key": "That reverses the defaults of the two functions.",
+    "Both functions omit NULLs": "JSON_OBJECT keeps NULL values as JSON null by default.",
+    "Both functions keep NULLs as JSON null": "JSON_ARRAYAGG omits NULLs by default, so not both keep them."
+  },
+  "966b1a2a0b9c": {
+    "WHERE JSON_PATH_EXISTS(Tags, '$.sale') = 1": "JSON_PATH_EXISTS tests whether a path exists, and $.sale looks for a property, not an array element.",
+    "WHERE ISJSON(Tags) = 1 AND CAST(Tags AS nvarchar(max)) = 'sale'": "Comparing the whole array text to 'sale' never matches.",
+    "WHERE JSON_VALUE(Tags, '$[0]') = 'sale'": "Checking only index 0 misses the value when it appears in any other position."
+  },
+  "9309dc494821": {
+    "Change the column collation to a binary collation": "Regex matching does not honor collations, and collation changes do not make the function available.",
+    "Install the RE2 library on the server": "The RE2-based engine is built in and does not need a separate install.",
+    "Enable the regex preview feature with PREVIEW_FEATURES = ON": "The documented requirement is the compatibility level, not a preview feature switch."
+  },
+  "9f9fbecadc36": {
+    "REGEXP_INSTR(Phone, '(\\d{3})(\\d{3})(\\d{4})', 1, 1, 1)": "REGEXP_INSTR returns a position, not a string.",
+    "REGEXP_REPLACE(Phone, '\\d{3}', '($0) ')": "That replaces every 3-digit run and $0 is not the documented back-reference syntax.",
+    "REGEXP_SUBSTR(Phone, '(\\d{3})(\\d{3})(\\d{4})', 1, 1, 'c', 3)": "REGEXP_SUBSTR returns one matched group, not a reformatted string."
+  },
+  "03001644d133": {
+    "REGEXP_INSTR(Notes, '\\d+', 1, 2)": "REGEXP_INSTR returns the position of the second match, not the text.",
+    "REGEXP_REPLACE(Notes, '\\d+', '', 1, 2)": "This removes the second number rather than returning it.",
+    "REGEXP_COUNT(Notes, '\\d+', 2)": "REGEXP_COUNT returns the number of matches, and the third argument is a start position."
+  },
+  "3192cde6f306": {
+    "REGEXP_COUNT(s, 'ID-\\d+', 1)": "REGEXP_COUNT counts matches and does not return a position.",
+    "REGEXP_INSTR(s, 'ID-\\d+', 0, 1, 1)": "start must be 1 or greater, so a start of 0 raises an error.",
+    "REGEXP_INSTR(s, 'ID-\\d+', 1, 1, 0)": "return_option 0 returns the starting position of the match."
+  },
+  "df606bb5bcd4": {
+    "REGEXP_SUBSTR in the SELECT list": "REGEXP_SUBSTR returns a single occurrence per call, not all matches as rows.",
+    "REGEXP_SPLIT_TO_TABLE with CROSS APPLY": "REGEXP_SPLIT_TO_TABLE returns the text between matches, not the matches themselves.",
+    "REGEXP_COUNT in the SELECT list": "REGEXP_COUNT returns only a count of matches."
+  },
+  "10c5f733177c": {
+    "EDIT_DISTANCE": "EDIT_DISTANCE returns the number of edits, not a 0 to 100 similarity score.",
+    "JARO_WINKLER_DISTANCE": "JARO_WINKLER_DISTANCE returns a float distance where lower means more similar.",
+    "DIFFERENCE": "DIFFERENCE compares SOUNDEX codes and returns 0 to 4, which is too coarse for typo detection."
+  },
+  "871b742d7925": {
+    "SOUNDEX": "SOUNDEX encodes pronunciation and does not measure character-level similarity.",
+    "REGEXP_COUNT": "REGEXP_COUNT counts pattern matches and is not a similarity metric.",
+    "EDIT_DISTANCE_SIMILARITY": "EDIT_DISTANCE_SIMILARITY is based on edit distance, which weighs every edit equally regardless of position."
+  },
+  "fa7a5c7636d5": {
+    "SELECT p3.Name FROM GRAPH_TRAVERSE(Person, FriendOf, 2) WHERE Name = 'Alice'": "GRAPH_TRAVERSE is not a T-SQL function.",
+    "SELECT p3.Name FROM Person p1, Person p3 WHERE MATCH(p1-(FriendOf)->(FriendOf)->p3) AND p1.Name = 'Alice'": "Edge tables must be referenced by alias in the FROM clause, not by name inside MATCH.",
+    "SELECT p3.Name FROM Person p1 JOIN FriendOf f1 ON MATCH(p1, f1) JOIN FriendOf f2 ON MATCH(f1, f2) JOIN Person p3 ON MATCH(f2, p3) WHERE p1.Name = 'Alice'": "MATCH is not used in a JOIN ON clause with that argument form."
+  },
+  "7fa493f922ee": {
+    "WHERE CustomerID <> ALL (SELECT CustomerID FROM dbo.Blocked)": "<> ALL has the same NULL semantics as NOT IN.",
+    "WHERE CustomerID NOT IN (SELECT ISNULL(CustomerID, 0) FROM dbo.Blocked) OR CustomerID IS NULL": "Replacing NULL with 0 is a fragile workaround that can wrongly exclude a real ID 0.",
+    "WHERE CustomerID NOT IN (SELECT DISTINCT CustomerID FROM dbo.Blocked)": "DISTINCT still returns the NULL, so the problem remains."
+  },
+  "ff113de2b0a0": {
+    "IF XACT_STATE() = 0 COMMIT ELSE ROLLBACK": "XACT_STATE 0 means there is no active transaction to commit.",
+    "IF @@ERROR = 0 COMMIT ELSE ROLLBACK": "@@ERROR in a CATCH block reflects the last statement and does not report transaction state.",
+    "IF @@TRANCOUNT > 0 COMMIT TRANSACTION ELSE ROLLBACK TRANSACTION": "@@TRANCOUNT cannot tell whether the transaction is uncommittable, so COMMIT can fail."
+  },
+  "74613fa94625": {
+    "THROW 50000, ERROR_MESSAGE(), 1;": "THROW with arguments raises a new user error 50000 rather than the original.",
+    "RAISERROR(ERROR_MESSAGE(), 16, 1)": "RAISERROR raises a new error 50000 with the text, not the original error number.",
+    "RETURN ERROR_NUMBER();": "RETURN passes back an integer and does not raise an error to the caller."
+  },
+  "ad4f48ceee90": {
+    "SET NOCOUNT ON": "NOCOUNT suppresses row count messages only.",
+    "SET ANSI_WARNINGS OFF": "ANSI_WARNINGS changes warning behavior for nulls and truncation, not transaction rollback.",
+    "SET IMPLICIT_TRANSACTIONS ON": "IMPLICIT_TRANSACTIONS starts transactions automatically and makes orphaned transactions more likely."
+  },
+  "e44dd801da74": {
+    "The database extended properties of each table": "Extended properties document schema objects but are not loaded as Copilot instructions.",
+    "A CONVENTIONS section in the README.md file at the repository root": "Copilot does not treat README.md as custom instructions.",
+    "A comment block with the conventions at the top of every stored procedure file": "Per-file comments are not a reliable way to apply conventions to every request and must be repeated everywhere."
+  },
+  "33800621d2a1": {
+    ".vscode/settings.json": "settings.json holds editor settings, not natural-language guidance for Copilot.",
+    ".github/workflows/copilot-instructions.yml": "The workflows folder holds GitHub Actions definitions.",
+    ".github/CODEOWNERS": "CODEOWNERS defines review ownership, not Copilot instructions."
+  },
+  "1bb48dea915e": {
+    "Inline completions": "Inline completions suggest code as you type and do not see the connected schema.",
+    "Edit mode": "Edit mode refactors code across files and is not the mode for tool-driven workflows.",
+    "Ask mode": "Ask mode answers questions and generates queries but does not orchestrate tool calls."
+  },
+  "5f426e8f0488": {
+    "Grant the agent's identity db_owner and rely on the approval prompt that appears before each tool call": "db_owner grants far more than needed, and approval prompts are not a substitute for least privilege.",
+    "Give the agent a SQL login in db_datareader and a system prompt that tells it never to query the salary table": "Prompt instructions are not a security boundary, and db_datareader can read every table.",
+    "Publish the whole database through a public REST endpoint protected by a shared API key": "A public endpoint with a shared key exposes everything and does not enforce entity-level restrictions."
+  },
+  "d12f54d5f2af": {
+    "Copilot only works with lakehouse tables, not SQL database tables": "Copilot works with SQL database in Fabric, not only lakehouses.",
+    "Copilot only supports SELECT statements against views": "Copilot can generate many kinds of T-SQL, not only SELECT against views.",
+    "Copilot requires the database to be mirrored first": "Mirroring is not a prerequisite for Copilot."
+  },
+  "96f5ac0390f5": {
+    "Copilot can run DML on its own whenever the signed-in user is a member of db_owner": "Role membership does not make Copilot run DML autonomously.",
+    "Copilot runs generated DML automatically to validate the syntax, then rolls it back": "Copilot does not automatically run generated DML.",
+    "Copilot runs read-only queries against production data so the model can learn from it": "Prompts and responses are not used to train foundation models."
+  },
+  "2bba8c1ecf24": {
+    "Cell-level encryption with ENCRYPTBYKEY": "ENCRYPTBYKEY uses keys stored in the database and is not Always Encrypted.",
+    "Transparent data encryption": "TDE encrypts data at rest only, and values are plaintext to anyone who can query them.",
+    "Randomized encryption": "Randomized encryption does not support equality comparisons unless a secure enclave is used."
+  },
+  "8d70ae59138d": {
+    "Re-encrypt the column with deterministic encryption instead of randomized": "Deterministic encryption without an enclave supports only equality, not LIKE pattern matching.",
+    "Transparent data encryption with a customer-managed key": "TDE protects data at rest but the engine and DBAs still see plaintext.",
+    "Dynamic Data Masking on the Notes column with the default() function": "Dynamic Data Masking does not encrypt anything and does not protect data from privileged users."
+  },
+  "20c52f7a5f31": {
+    "The database master key is not protected by TDE on the server": "TDE is unrelated to opening keys for cell-level decryption.",
+    "The column type is varbinary": "Encrypted values are stored in varbinary, which is the expected type.",
+    "DECRYPTBYKEY requires Always Encrypted to be enabled on the column first": "Cell-level encryption and Always Encrypted are separate features."
+  },
+  "a37af79c5dff": {
+    "random(1000, 9999)": "random() applies to numeric types and replaces the value with a random number.",
+    "default()": "default() fully masks the value, so no digits are shown.",
+    "email()": "email() exposes the first letter and a constant suffix, intended for email addresses."
+  },
+  "bc296413ad85": {
+    "WHERE clauses run against unmasked data, so you must also enable row-level security": "RLS filters rows but is not the inherent fix for DDM inference, and WHERE does not return unmasked values.",
+    "The mask is misconfigured and should use random() so comparisons return random values": "Changing the mask function does not stop predicate-based inference.",
+    "The user must have been granted UNMASK implicitly through db_datareader": "db_datareader does not include UNMASK."
+  },
+  "b30db10c43ae": {
+    "DENY INSERT on the table to the tenant users": "DENY INSERT would stop tenants from inserting their own rows too.",
+    "A second FILTER PREDICATE on the same policy that applies to INSERT": "Filter predicates apply to SELECT, UPDATE, and DELETE reads, not to inserted values.",
+    "A CHECK constraint that calls SESSION_CONTEXT": "Using SESSION_CONTEXT in a CHECK constraint is not the supported RLS mechanism."
+  },
+  "2cbe07748405": {
+    "Use CONTEXT_INFO instead of SESSION_CONTEXT": "CONTEXT_INFO is a single binary value that any code in the session can overwrite.",
+    "Set the security policy WITH (STATE = OFF) after setting the value": "Turning off the security policy disables RLS completely.",
+    "Set the predicate function WITH EXECUTE AS OWNER": "EXECUTE AS does not lock session values."
+  },
+  "37798ea4de45": {
+    "SELECT ON SCHEMA::Sales": "SELECT on the schema grants direct table access, which is not allowed.",
+    "CONTROL ON SCHEMA::Sales": "CONTROL gives full rights over the schema.",
+    "db_datareader role membership": "db_datareader grants SELECT on every table in the database."
+  },
+  "638937d5d11e": {
+    "CREATE LOGIN [app-name] WITH PASSWORD and a matching user": "A SQL login with a password is the opposite of passwordless access.",
+    "Add the app's outbound IPs to db_owner": "IP addresses are firewall rules, not database principals.",
+    "Create a database scoped credential with the app's client secret": "Database scoped credentials authenticate outbound calls from the database, not inbound app connections."
+  },
+  "2191bcfbc909": {
+    "The database's sys.fn_get_audit_file output only": "sys.fn_get_audit_file reads audit files from storage and does not provide alerting.",
+    "Azure Event Hubs": "Event Hubs streams events to other systems and is not a query store.",
+    "Azure Storage account": "Storage keeps audit files but has no built-in KQL querying or alerting."
+  },
+  "d14dfcbf5523": {
+    "IDENTITY = 'Anonymous', with the API key appended to the LOCATION URL query string": "Embedding a key in the URL stores the secret in metadata and is insecure.",
+    "IDENTITY = 'HTTPEndpointHeaders', SECRET = '{\"api-key\":\"...\"}'": "HTTPEndpointHeaders with an api-key stores a secret, which the requirement forbids.",
+    "IDENTITY = 'SHARED ACCESS SIGNATURE', SECRET = '<sas token for the OpenAI resource>'": "SAS tokens are for Azure Storage, not Azure OpenAI."
+  },
+  "238996d0dedc": {
+    "CREATE EXTERNAL MODEL": "CREATE EXTERNAL MODEL lets the role create models, which is more than required.",
+    "ALTER ON EXTERNAL MODEL::MyEmbedModel": "ALTER on the model lets the role change its definition, which is more than required.",
+    "CONTROL ON DATABASE": "CONTROL on the database grants full control."
+  },
+  "aba70f26ed27": {
+    "runtime.pagination.max-page-size = -1": "Page size settings do not affect schema discovery.",
+    "runtime.rest.request-body-strict = false": "request-body-strict controls handling of extra REST body fields.",
+    "runtime.host.mode = development": "Development mode enables tooling like Swagger and Nitro and is less secure for production."
+  },
+  "1fce722bbe2d": {
+    "A relationship from Orders to a Users entity joined on OwnerId and the oid column": "Relationships define navigation between entities, not per-user row filtering.",
+    "\"fields\": {\"exclude\": [\"OwnerId\"]} for the authenticated role": "Excluding a field hides the column but does not restrict which rows are returned.",
+    "\"cache\": {\"enabled\": true} on the Orders entity": "Caching improves performance and has no security effect."
+  },
+  "82d2d3229bc4": {
+    "READ UNCOMMITTED with NOLOCK hints": "READ UNCOMMITTED avoids blocking but returns dirty, uncommitted data.",
+    "SERIALIZABLE": "SERIALIZABLE takes range locks and increases blocking.",
+    "REPEATABLE READ for every reporting transaction": "REPEATABLE READ holds shared locks until commit and increases blocking."
+  },
+  "51d467aa736c": {
+    "READ COMMITTED with RCSI": "RCSI is consistent per statement, so later statements can see newer committed data.",
+    "READ COMMITTED with RCSI disabled": "Locking READ COMMITTED releases shared locks after each read, so statements can see different data.",
+    "READ UNCOMMITTED": "READ UNCOMMITTED can return dirty and inconsistent data."
+  },
+  "132698d7632f": {
+    "A deadlock occurred, so set DEADLOCK_PRIORITY HIGH for the reporting session": "Deadlocks raise error 1205, not an update conflict.",
+    "The version store is full, so restart the database": "Error 3960 is an update conflict, not a version store space issue.",
+    "RCSI is disabled, so enable READ_COMMITTED_SNAPSHOT": "RCSI affects READ COMMITTED and does not prevent snapshot update conflicts."
+  },
+  "75c4f43feb1a": {
+    "Query Store first, and SNAPSHOT isolation for the benefit": "Query Store is not a prerequisite, and LAQ depends on RCSI, not SNAPSHOT.",
+    "In-Memory OLTP filegroup first, and SERIALIZABLE isolation for the most benefit": "In-Memory OLTP is unrelated, and SERIALIZABLE increases locking.",
+    "Change Tracking first, and READ UNCOMMITTED for the benefit": "Change Tracking is unrelated, and READ UNCOMMITTED is not what LAQ relies on."
+  },
+  "1b89b1ddb15d": {
+    "sys.dm_db_resource_stats.avg_cpu_percent": "Resource stats show resource consumption, not session-level blocking.",
+    "sys.dm_exec_query_stats.total_worker_time": "Query stats show cumulative resource usage of cached plans, not current blockers.",
+    "sys.dm_db_index_usage_stats.user_seeks": "Index usage stats show index access counts, not blocking."
+  },
+  "1e60a12ab4cd": {
+    "Add NOLOCK hints to both procedures": "NOLOCK does not apply to writes and introduces dirty reads.",
+    "Run both procedures under SERIALIZABLE": "SERIALIZABLE takes more locks and makes deadlocks more likely.",
+    "Increase SET LOCK_TIMEOUT to 60 seconds in both procedures": "Lock timeouts do not resolve deadlock cycles, which the engine resolves by picking a victim."
+  },
+  "d572befff5b6": {
+    "Clear the plan cache with DBCC FREEPROCCACHE": "Clearing the cache may produce the same bad plan again and affects every query.",
+    "Lower the database compatibility level to 100 temporarily": "Lowering the compatibility level has broad side effects and disables newer features.",
+    "Rebuild all indexes": "Rebuilding indexes is expensive and does not guarantee the earlier plan."
+  },
+  "876b25f8121a": {
+    "Azure Advisor, which depends on Log Analytics": "Azure Advisor gives general recommendations, not per-query CPU rankings.",
+    "SQL Server Profiler, which depends on a trace file": "Profiler is not supported against Azure SQL Database.",
+    "Database watcher, which depends on Change Tracking being enabled on each table": "Change Tracking is not a dependency for performance monitoring."
+  },
+  "0204b32a81fe": {
+    "Add a NOLOCK hint": "NOLOCK changes locking, not the lookup pattern.",
+    "Create a separate nonclustered index on the Total column": "An index on Total does not cover the query's CustomerID seek.",
+    "Convert the clustered index to a heap": "A heap would use RID lookups instead and would not remove them."
+  },
+  "5860059b6e1f": {
+    "Disable Query Store": "Disabling Query Store removes the tools you need to fix the issue.",
+    "Set MAXDOP to 1 for the whole database with a scoped configuration": "Database-wide MAXDOP affects all queries and does not address plan reuse.",
+    "Drop and re-create the procedure nightly": "Re-creating the procedure only resets the plan until it is cached again."
+  },
+  "52d90bc6affa": {
+    "sp_configure 'max degree of parallelism'": "sp_configure is a server-level setting and is not used for Azure SQL Database.",
+    "Add OPTION (MAXDOP 8) to every query in the application": "Hints in every query are hard to maintain and miss new queries.",
+    "Disable Query Store so plans are not captured or forced": "Query Store does not control parallelism."
+  },
+  "b952eade4789": {
+    "An original .sqlproj based on .NET Framework MSBuild": "Original projects depend on .NET Framework MSBuild and are not cross-platform.",
+    "A folder of numbered migration scripts with no project": "Raw scripts lose model validation and dacpac-based deployment.",
+    "A BACPAC file stored in source control": "A BACPAC contains data and schema for import, not a buildable project."
+  },
+  "75b2425e853e": {
+    "<PostDeploy Include=\"scripts\\**\" />": "A project can have only one post-deployment script, and this would not exclude files from the build.",
+    "<Compile Include=\"scripts\\**\" />": "Compile is not the SQL project item type for model files and would not exclude them.",
+    "<None Remove=\"scripts\\**\" />": "None Remove changes non-build items and does not stop the files from being compiled."
+  },
+  "c114e5502c9b": {
+    "In a manual script that DBAs run after each release": "Manual steps cause drift and are not repeatable.",
+    "In the pre-deployment script using TRUNCATE and INSERT": "Pre-deployment runs before the schema is updated, and TRUNCATE can fail with foreign keys.",
+    "In the table's CREATE TABLE file using INSERT statements": "Object definition files define schema, and DML there is not part of the declarative model."
+  },
+  "88c258b8af57": {
+    "SqlPackage creates a new column and keeps both": "SqlPackage does not keep parallel columns as a strategy for narrowing changes.",
+    "The deployment succeeds and logs a data-loss warning in the output": "With the default, the change blocks the deployment instead of only warning.",
+    "The deployment truncates the values and continues": "SqlPackage does not silently truncate data with default settings."
+  },
+  "0feebaf5e93e": {
+    "/Action:Extract": "Extract creates a dacpac from a database and does not compare to the source.",
+    "/Action:Export": "Export creates a BACPAC with data.",
+    "/Action:Import": "Import loads a BACPAC into a new database."
+  },
+  "0be39702a4b6": {
+    "Commit the connection string to the repo in an encrypted settings file": "Committing even encrypted secrets risks leakage and still needs a decryption key.",
+    "Store the SQL admin password as an encrypted GitHub repository secret": "A stored password is a long-lived secret.",
+    "Use a GitHub personal access token stored as an environment secret": "A PAT is a long-lived secret and is not meant for Azure access."
+  },
+  "f8e69f23be46": {
+    "A manual trigger on the build pipeline": "A manual build trigger affects all stages, not only production.",
+    "A post-deployment script that waits for input": "Deployment scripts cannot wait for human input.",
+    "A branch policy on the main branch": "Branch policies govern pull requests, not deployment stages."
+  },
+  "67346c7cb7fb": {
+    "Allow only the database team to push directly to the main branch": "Direct pushes skip review entirely.",
+    "A scheduled pipeline that builds and tests the main branch every night": "A nightly build finds problems after the merge.",
+    "A release gate that checks Azure Monitor alerts before each deployment": "Release gates control deployments, not merges."
+  },
+  "b8ef37e0b750": {
+    "Vector indexes must be created in the pre-deployment script": "Pre-deployment runs before the table exists and before data is loaded.",
+    "BlockOnPossibleDataLoss skipped the index": "BlockOnPossibleDataLoss blocks data-loss changes and does not skip index creation.",
+    "The project must add a package reference to the master system dacpac": "The master dacpac reference resolves system objects and does not affect vector indexes."
+  },
+  "fab04fd37e12": {
+    "A source type of stored-procedure instead of view": "Changing the source type to a stored procedure changes the entity's behavior.",
+    "A cache section with a short ttl-seconds value": "Caching does not tell DAB how to identify rows.",
+    "A relationships section that maps the view to its underlying base table": "Relationships link entities and do not define keys."
+  },
+  "b4a1389a4d6a": {
+    "POST /api/book/query with a T-SQL WHERE clause": "DAB does not accept T-SQL from clients.",
+    "GET /api/book?$filter=year >= 1970&$sort=year desc&$fields=id,title": "$filter uses OData operators like ge, and $sort and $fields are not supported.",
+    "GET /api/book?where=year>=1970&sort=-year&fields=id,title": "DAB does not use where, sort, or fields parameters."
+  },
+  "ed16183a28bc": {
+    "Set $first=100000 on every call to get all rows at once": "Very large pages are capped by max-page-size and are inefficient.",
+    "Increment a $skip query parameter by 100 on each request": "DAB uses $after continuation tokens, not $skip offsets.",
+    "Repeat the same call with $orderby=rand() until rows repeat": "Random ordering does not page through results."
+  },
+  "afea123be114": {
+    "ttl-seconds must be at least 300 for entity-level caching to start": "30 seconds is a valid TTL.",
+    "Entity caching applies only to GraphQL queries, not REST requests": "DAB caching is not limited to GraphQL.",
+    "Caching is supported only when the entity source is a stored procedure": "Caching is not limited to stored-procedure entities."
+  },
+  "80a4e90d9a6e": {
+    "cardinality: one with no target.fields": "cardinality one models a single related row, not many-to-many.",
+    "A database policy on Book that references the dbo.books_authors table": "Policies filter rows and do not define relationships.",
+    "fields.exclude for the linking table columns": "Excluding fields hides columns but does not define a join path."
+  },
+  "cd9aea050ab9": {
+    "A temporal table on the warehouse side": "A warehouse-side temporal table cannot capture changes that happen in the source.",
+    "Query Store": "Query Store tracks query performance, not data changes.",
+    "Change Tracking": "Change Tracking records only that a row changed and its key, not column values or history."
+  },
+  "3acd1d975c31": {
+    "Change data capture on the database and table": "The trigger binding uses Change Tracking, not CDC.",
+    "Service Broker": "Service Broker is not used by the binding.",
+    "Query Store in READ_WRITE mode": "Query Store is unrelated to triggers."
+  },
+  "336817720c37": {
+    "Change Tracking with a scheduled query": "Change Tracking requires a consumer to poll for changes.",
+    "Temporal tables": "Temporal tables keep history but do not publish events.",
+    "Transactional replication": "Transactional replication sends changes to databases, not Event Hubs."
+  },
+  "20cbf336ee8c": {
+    "Azure Data Factory copy activity": "Data Factory moves data and is not built for event-driven email workflows.",
+    "A SQL Server Agent job that polls the table every minute": "SQL Server Agent is not available in Azure SQL Database.",
+    "Database Mail in Azure SQL Database": "Database Mail is not available in Azure SQL Database."
+  },
+  "e81b11e17ab1": {
+    "An Extended Events session that writes to a ring buffer target": "A ring buffer is in memory and is lost when the session restarts.",
+    "Query Store with STALE_QUERY_THRESHOLD_DAYS set to 90 days": "Query Store keeps performance data inside the database and does not centralize deadlock or timeout logs.",
+    "A metric alert on CPU percentage": "Metric alerts notify on thresholds but do not collect diagnostic logs."
+  },
+  "422ebba8ff9a": {
+    "CHAT_COMPLETION": "Chat completion is not a supported MODEL_TYPE, chat calls use sp_invoke_external_rest_endpoint.",
+    "TEXT_GENERATION": "TEXT_GENERATION is not a supported MODEL_TYPE.",
+    "ONNX": "ONNX Runtime is an API_FORMAT value, not a MODEL_TYPE."
+  },
+  "38d9f6567449": {
+    "OpenAI": "OpenAI targets OpenAI-compatible cloud endpoints and request shapes.",
+    "REST": "REST is not a valid API_FORMAT value.",
+    "Azure OpenAI": "Azure OpenAI targets a cloud Azure OpenAI endpoint."
+  },
+  "1389e7246405": {
+    "Increase the column to VECTOR(1998), the float32 maximum": "A vector column requires the exact declared dimension count.",
+    "Call VECTOR_NORMALIZE on each embedding before inserting it": "Normalizing changes vector length in magnitude, not the number of dimensions.",
+    "Change the column to VECTOR(1536, float16) to save space": "Changing the base type does not change the dimension count."
+  },
+  "f142aee4d75e": {
+    "UPDATE dbo.Product SET Embedding = EXEC ProductEmbedModel @text = Description WHERE Embedding IS NULL": "External models are not executed with EXEC.",
+    "UPDATE dbo.Product SET Embedding = VECTOR_NORMALIZE(Description, 'ProductEmbedModel')": "VECTOR_NORMALIZE normalizes an existing vector and does not call a model.",
+    "UPDATE dbo.Product SET Embedding = AI_GENERATE_EMBEDDINGS(ProductEmbedModel, Description)": "The model is not passed as a first positional argument."
+  },
+  "ad3c79a19a04": {
+    "SELECT AI_GENERATE_CHUNKS(a.Body, 1000, 100) FROM dbo.Article a": "It is a table-valued function with named arguments, not a scalar function with positional arguments.",
+    "SELECT c.value FROM dbo.Article a CROSS APPLY STRING_SPLIT(a.Body, 1000) c": "STRING_SPLIT splits on a separator, not on chunk size.",
+    "SELECT c.chunk FROM dbo.Article a CROSS APPLY AI_GENERATE_CHUNKS(SOURCE = a.Body, CHUNK_TYPE = SENTENCE, CHUNK_SIZE = 1000, OVERLAP = 100) c": "FIXED is the only accepted CHUNK_TYPE, and OVERLAP cannot exceed 50."
+  },
+  "4081ce0de52f": {
+    "Call AI_GENERATE_EMBEDDINGS in an AFTER UPDATE trigger": "A trigger makes each update wait on, and fail with, an external HTTP call.",
+    "Regenerate document embeddings in the client application before each search": "Generating document embeddings at query time adds latency and repeats work.",
+    "Recompute embeddings for the whole table on every update": "Re-embedding the whole table for each change wastes cost and time."
+  },
+  "70a3b9da6dbb": {
+    "Keep old vectors and embed only new rows with the new model": "Mixing models makes distances meaningless between old and new rows.",
+    "Normalize the old vectors with VECTOR_NORMALIZE so they are compatible": "Normalization does not map one model's space into another's.",
+    "Change the vector index metric from cosine to dot": "Changing the metric does not make vectors from different models comparable."
+  },
+  "d812f39f3492": {
+    "The SKU, since it uniquely identifies each product": "SKUs are codes that keyword or exact match handles better.",
+    "All columns concatenated, including IDs and timestamps": "Adding IDs and timestamps adds noise and reduces embedding quality.",
+    "ProductID and Price, serialized as a JSON string": "Numeric IDs and prices carry little semantic meaning for embeddings."
+  },
+  "8e9e14cf64a5": {
+    "Which model returns float16 values so vectors use less storage": "The output precision is controlled by the column type, not the main selection criterion.",
+    "Which model name sorts first alphabetically": "Model names are irrelevant to quality.",
+    "Which model has the largest parameter count according to its publisher": "Parameter count does not guarantee better retrieval for your data."
+  },
+  "39f9c7c19011": {
+    "Vector search only, using a DiskANN index": "Vector search often ranks exact codes poorly because codes have little semantic meaning.",
+    "Full-text search only, using CONTAINSTABLE": "Full-text search misses semantically similar phrasings that use different words.",
+    "LIKE '%term%' predicates across all text columns": "Leading wildcard LIKE scans are slow and do not understand meaning."
+  },
+  "17a6787a6587": {
+    "CONTAINS": "CONTAINS is a predicate that filters rows but returns no rank.",
+    "FREETEXT": "FREETEXT is a predicate without a rank column.",
+    "SOUNDEX": "SOUNDEX returns a phonetic code, not full-text ranking."
+  },
+  "e6269e438cc4": {
+    "Average of the raw full-text and vector scores": "Raw scores from different methods use different scales and are not directly comparable.",
+    "Maximum of the two ranks": "Taking the maximum rank ignores the contribution from both lists.",
+    "Product of the two distances": "Multiplying distances is not RRF and distorts rankings."
+  },
+  "30afd55921b4": {
+    "8,000": "8,000 is not a vector dimension limit.",
+    "3,996": "3,996 is the limit for float16 vectors.",
+    "1,536": "1,536 is a common embedding size, not the limit."
+  },
+  "1effaca25c9e": {
+    "varchar(max) parsed with OPENJSON": "Text storage loses native vector functions and performance.",
+    "VECTOR(3072)": "float32 vectors are limited to 1,998 dimensions.",
+    "VECTOR(1998) with two columns concatenated at query time": "Splitting vectors breaks distance functions and indexing."
+  },
+  "7ab7567737f5": {
+    "Statistics on the Embedding column are out of date": "Statistics do not make VECTOR_DISTANCE use a vector index.",
+    "TOP must be greater than 100 for the optimizer to choose the index": "TOP size does not enable index use for VECTOR_DISTANCE.",
+    "The index uses cosine, but this query pattern requires the dot metric": "The metric does not change whether VECTOR_DISTANCE uses an index."
+  },
+  "d1c65c03d9f7": {
+    "SELECT TOP (10) t.id FROM dbo.Doc t ORDER BY VECTOR_DISTANCE('cosine', t.Embedding, @q)": "VECTOR_DISTANCE performs exact search and does not use the index.",
+    "SELECT t.id, r.distance FROM VECTOR_SEARCH(TABLE = dbo.Doc AS t, COLUMN = Embedding, SIMILAR_TO = @q, METRIC = 'cosine', TOP_N = 10) AS r ORDER BY r.distance": "TOP_N is deprecated and returns an error with latest-version vector indexes.",
+    "SELECT TOP (10) WITH APPROXIMATE t.id FROM dbo.Doc t ORDER BY VECTOR_DISTANCE('cosine', t.Embedding, @q)": "WITH APPROXIMATE requires VECTOR_SEARCH and fails with a plain VECTOR_DISTANCE query."
+  },
+  "99a033e69e98": {
+    "ORDER BY is not allowed with WITH APPROXIMATE": "ORDER BY is required with WITH APPROXIMATE.",
+    "TOP must be at least 10 when WITH APPROXIMATE is used": "There is no minimum TOP value of 10.",
+    "VECTOR_SEARCH does not return a distance column": "VECTOR_SEARCH returns a column named distance."
+  },
+  "ad1cd878b9bd": {
+    "The query returns no rows": "The kNN fallback still returns results.",
+    "The query fails with a metric mismatch error": "The documented behavior is a warning and a fallback, not an error.",
+    "The engine rebuilds the index with the euclidean metric automatically": "Indexes are not converted automatically."
+  },
+  "a2adc33907f2": {
+    "The table must be memory-optimized before a vector index is created": "Memory-optimized tables are not required, and vectors are not allowed in them.",
+    "The metric must be specified as dot": "cosine, euclidean, and dot are all valid metrics.",
+    "Vector indexes require a uniqueidentifier clustered primary key": "The required clustered primary key is on an int column, not uniqueidentifier."
+  },
+  "0557d8f1b9dd": {
+    "0": "0 means the vectors point the same way.",
+    "-1": "Cosine distance is never negative.",
+    "1": "1 means the vectors are orthogonal."
+  },
+  "0dd247a83c15": {
+    "Larger values mean more similar": "Because the value is negated, smaller values are more similar.",
+    "Values represent the angle in degrees": "No metric returns an angle in degrees.",
+    "Values always fall between 0 and 2, like cosine distance": "The 0 to 2 range applies to cosine distance."
+  },
+  "f8f214864f2e": {
+    "VECTORPROPERTY(@v, 'Normalize')": "VECTORPROPERTY returns Dimensions or BaseType and does not normalize.",
+    "VECTOR_NORMALIZE(@v, 'norminf')": "norminf normalizes by the largest absolute component.",
+    "VECTOR_NORMALIZE(@v, 'norm1')": "norm1 normalizes by the sum of absolute values, not Euclidean length."
+  },
+  "b2ce7b9aa76f": {
+    "JSON_VALUE(CAST(Embedding AS nvarchar(max)), '$.length')": "Vectors are not JSON objects with a length property.",
+    "DATALENGTH(Embedding) / 4": "DATALENGTH returns bytes of internal storage, which includes overhead.",
+    "LEN(Embedding)": "LEN is a string function and does not return vector dimensions."
+  },
+  "d1f35cf1e7d7": {
+    "Compare the vector index size with the size of the base table": "Index size does not show result quality.",
+    "Measure only the average query latency for a sample workload": "Latency alone ignores whether the right rows are returned.",
+    "Count how many rows have non-NULL embeddings": "Row counts do not measure search quality."
+  },
+  "5b264973bdf7": {
+    "Store embeddings in a separate vector database": "A separate store adds integration and sync overhead.",
+    "Use full-text search with CONTAINSTABLE instead of vectors": "Full-text search does not provide semantic similarity.",
+    "Create a DiskANN index and use WITH APPROXIMATE": "ANN returns approximate results, which does not meet the exact requirement."
+  },
+  "765208f84844": {
+    "Fine-tune a new model every night on the full contents of the database": "Nightly fine-tuning is costly and does not provide reliable grounding.",
+    "Use DDM to mask manuals before sending them": "Masking is a security feature and does not retrieve relevant content.",
+    "Export the manuals to a CSV file and attach the whole file to each prompt": "Sending the whole database exceeds context limits and wastes tokens."
+  },
+  "064ed0961aac": {
+    "SELECT TOP (5) JSON_VALUE(Title, '$.title') FROM #hits ORDER BY distance": "JSON_VALUE extracts a scalar from JSON and does not build arrays.",
+    "SELECT TOP (5) Title, Content FROM #hits ORDER BY distance FOR XML PATH('hit')": "FOR XML produces XML, not JSON.",
+    "SELECT STRING_AGG(CONCAT('{', Title, ':', Content, '}'), ',') FROM #hits": "STRING_AGG produces plain text, not valid JSON objects."
+  },
+  "d21676b34764": {
+    "JSON_VALUE(@response, '$.result.data[0].embedding')": "That path is where an embeddings response would place a vector.",
+    "JSON_QUERY(@response, '$.response.status.http')": "That returns the HTTP status object, not the answer.",
+    "JSON_VALUE(@response, '$.choices[0].message.content')": "The payload is nested under result, so $.choices does not exist at the root."
+  },
+  "64929baed6bd": {
+    "Check that XACT_STATE() returns 1 after the call": "XACT_STATE reports transaction state, not HTTP status.",
+    "Check that @response is not NULL after the call returns": "Error responses still populate @response, so non-NULL does not mean success.",
+    "Check that @@ROWCOUNT is 1 after the call": "@@ROWCOUNT does not reflect an HTTP call result."
+  },
+  "2e374b0a4b10": {
+    "Every row from the product table so nothing is missed": "Sending every row exceeds token limits and dilutes relevance.",
+    "The full database schema so the model understands the data": "The schema does not ground answers in retrieved facts.",
+    "A higher temperature setting so answers are more creative": "Higher temperature increases randomness and hallucination risk."
+  }
+}

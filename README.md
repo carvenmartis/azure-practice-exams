@@ -1,6 +1,6 @@
 # Azure Practice Exams
 
-A Next.js website for practising Microsoft Azure certification exams (AZ-104, AZ-204, AZ-304, AZ-400, AI-103, AI-200 and AI-300). Each exam draws up to 60 random questions from the JSON files in `data/` and scores you out of 1000.
+A Next.js website for practising Microsoft Azure certification exams (AZ-104, AZ-204, AZ-304, AZ-400, SC-500, AI-901, AI-103, AI-200, AI-300, AB-620 and DP-800). Each exam draws up to 60 random questions from the JSON files in `data/` and scores you out of 1000.
 
 ## Getting started
 
