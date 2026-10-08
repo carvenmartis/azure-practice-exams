@@ -4,17 +4,20 @@ import { Badge } from '@/components/ui/badge';
 import { buttonClasses } from '@/components/ui/button';
 import { Card, cardClasses } from '@/components/ui/card';
 import { exams, splitExamName } from '@/lib/exams';
-import { useProgress } from '@/lib/progress-store';
+import { daysUntil, reviewIntervals, reviewQueue, useProgress } from '@/lib/progress-store';
 
 /**
- * Review mistakes: per exam, how many questions were answered wrong and not
- * answered right since, with a button to practise just those.
+ * Review mistakes: per exam, the missed questions due again under spaced
+ * repetition, with a button to practise just those. A missed question comes
+ * back after a few days, then less often each time it's answered right.
  */
 export default function Review() {
-  const { mistakes } = useProgress();
+  const progress = useProgress();
   const withMistakes = exams
-    .map((exam) => ({ exam, count: mistakes[exam.slug]?.length ?? 0 }))
-    .filter((item) => item.count > 0);
+    .map((exam) => ({ exam, ...reviewQueue(progress, exam.slug) }))
+    .filter((item) => item.due.length + item.later.length > 0);
+  const [first, ...rest] = reviewIntervals;
+  const last = rest.pop();
 
   return (
     <PageLayout pageTitle="Review mistakes" headerTitle="Review mistakes">
@@ -22,28 +25,46 @@ export default function Review() {
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Practice</p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Review mistakes</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          A practice round built only from questions you got wrong. Answer one right and it leaves the list; miss it
-          again and it stays.
+          Questions you get wrong come back for review {first} days later. Each time you answer one right it comes
+          back less often ({rest.join(', ')} and {last} days), and after that it leaves the list. Miss it again and it
+          starts over.
         </p>
 
         {withMistakes.length ? (
           <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {withMistakes.map(({ exam, count }) => {
+            {withMistakes.map(({ exam, due, later, nextDue }) => {
               const { code, title } = splitExamName(exam);
+              const total = due.length + later.length;
               return (
                 <li key={exam.slug} className={cardClasses('flex h-full flex-col p-6')}>
                   <Badge className="self-start">{code}</Badge>
                   <h2 className="mt-4 font-display text-xl font-semibold leading-snug">{title}</h2>
-                  <p className="mt-2 mb-6 text-sm text-ink-muted">
-                    {count} question{count === 1 ? '' : 's'} to review
-                    {count > 60 ? ', 60 at random per round' : ''}
+                  <p className="mt-2 text-sm font-semibold text-ink">
+                    {due.length
+                      ? `${due.length} question${due.length === 1 ? '' : 's'} due now`
+                      : 'Nothing due today'}
+                    {due.length > 60 ? ', 60 at random per round' : ''}
                   </p>
-                  <Link
-                    href={`/exams/${exam.slug}?mode=review`}
-                    className={buttonClasses({ className: 'mt-auto self-start' })}
-                  >
-                    Start review
-                  </Link>
+                  <p className="mt-1 mb-6 text-sm text-ink-muted">
+                    {later.length && nextDue
+                      ? `${later.length} coming back later, the next in ${daysUntil(nextDue)} day${daysUntil(nextDue) === 1 ? '' : 's'}`
+                      : 'None waiting for later'}
+                  </p>
+                  <div className="mt-auto flex flex-wrap items-center gap-3">
+                    {due.length > 0 && (
+                      <Link href={`/exams/${exam.slug}?mode=review`} className={buttonClasses()}>
+                        Start review
+                      </Link>
+                    )}
+                    {later.length > 0 && (
+                      <Link
+                        href={`/exams/${exam.slug}?mode=review&scope=all`}
+                        className={buttonClasses({ variant: due.length ? 'ghost' : 'secondary' })}
+                      >
+                        Practise all {total} early
+                      </Link>
+                    )}
+                  </div>
                 </li>
               );
             })}
@@ -56,6 +77,11 @@ export default function Review() {
               Choose an exam
             </Link>
           </Card>
+        )}
+        {withMistakes.some((item) => item.later.length > 0) && (
+          <p className="mt-6 text-sm text-ink-subtle">
+            Practising early doesn&apos;t move questions along the schedule, but a wrong answer still starts it over.
+          </p>
         )}
       </div>
     </PageLayout>

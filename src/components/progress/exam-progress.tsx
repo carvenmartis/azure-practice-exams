@@ -16,6 +16,7 @@ interface ExamProgressProps {
   exam: Exam;
   /** This exam's attempts, oldest first. */
   attempts: Attempt[];
+  /** Missed questions due for spaced repetition review now. */
   mistakeCount: number;
 }
 
@@ -150,10 +151,10 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
             href={`/exams/${exam.slug}?mode=review`}
             className="text-sm font-semibold text-accent-strong underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
           >
-            Review {mistakeCount} mistake{mistakeCount === 1 ? '' : 's'}
+            Review {mistakeCount} mistake{mistakeCount === 1 ? '' : 's'} due now
           </Link>
         ) : (
-          <p className="text-sm text-ink-muted">No mistakes waiting for review</p>
+          <p className="text-sm text-ink-muted">No mistakes due for review</p>
         )}
         <Button variant="ghost" size="sm" onClick={() => setConfirmClear(true)}>
           Clear history

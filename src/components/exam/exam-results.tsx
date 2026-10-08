@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { StatCard } from '@/components/ui/stat-card';
+import { reviewIntervals } from '@/lib/progress-store';
 import { formatDuration } from '@/lib/utils';
 
 /** Microsoft certification exams are passed with 700 out of 1000. */
@@ -65,12 +66,12 @@ export function ExamResults({
           {endedEarly ? 'Review ended early' : 'Review complete'}
         </p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
-          {correctCount} of {answeredCount} fixed
+          {correctCount} of {answeredCount} right
         </h1>
         <p className="mt-4 leading-relaxed text-ink-muted">
-          Questions you answered right leave your review list.{' '}
+          Each right answer brings a question back less often, until it leaves your review list.{' '}
           {stillWrong
-            ? `${stillWrong} you missed again stay on it for next time.`
+            ? `The ${stillWrong} you missed again come${stillWrong === 1 ? 's' : ''} back in ${reviewIntervals[0]} days.`
             : 'You got every one of them right this time.'}
         </p>
         {timeTaken}

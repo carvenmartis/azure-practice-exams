@@ -16,7 +16,7 @@ import { fetchExamQuestions } from '@/lib/exam-data';
 import type { ExamQuestion } from '@/lib/exam-data';
 import { exams } from '@/lib/exams';
 import { setLeaveGuard } from '@/lib/leave-guard';
-import { getProgress, recordAnswers, recordAttempt } from '@/lib/progress-store';
+import { getProgress, recordAnswers, recordAttempt, reviewQueue } from '@/lib/progress-store';
 import type { TopicTally } from '@/lib/progress-store';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
 import { topicFor } from '@/lib/topics';
@@ -27,7 +27,8 @@ interface ExamPageProps {
 
 /**
  * 'exam': 60 random questions, scored and saved to My progress.
- * 'review': only questions answered wrong before (?mode=review).
+ * 'review': missed questions that are due again (?mode=review), or every
+ *   question on the review list (?mode=review&scope=all).
  * 'bookmarks': only bookmarked questions (?mode=bookmarks).
  * Every mode updates the mistakes list; only 'exam' adds an attempt.
  */
@@ -44,7 +45,8 @@ const questionsPerAttempt = 60;
  * are revealed. When all questions have been answered a score out
  * of 1000 points is calculated and shown. Leaving mid-exam (Exit button,
  * header or menu links, Back) asks first and then shows the results so far.
- * With ?mode=review the questions come from the saved mistakes instead.
+ * With ?mode=review the questions come from the missed questions that are due
+ * for spaced repetition review instead.
  * A clock shows the time taken, which is saved with the attempt. Questions
  * can be skipped and answered later from the question overview.
  */
@@ -57,6 +59,8 @@ export default function ExamPage({ slug }: ExamPageProps) {
   const router = useRouter();
   const mode: PracticeMode =
     router.query.mode === 'review' || router.query.mode === 'bookmarks' ? router.query.mode : 'exam';
+  // Review rounds take only the questions that are due, unless asked for all of them.
+  const reviewAll = router.query.scope === 'all';
 
   useEffect(() => {
     // The query string is only known once the router is ready.
@@ -66,7 +70,9 @@ export default function ExamPage({ slug }: ExamPageProps) {
       .then((exam) => {
         if (cancelled) return;
         const saved = getProgress();
-        const picked = new Set((mode === 'review' ? saved.mistakes[slug] : saved.bookmarks[slug]) ?? []);
+        const queue = reviewQueue(saved, slug);
+        const reviewIds = reviewAll ? [...queue.due, ...queue.later] : queue.due;
+        const picked = new Set((mode === 'review' ? reviewIds : saved.bookmarks[slug]) ?? []);
         const pool = mode === 'exam' ? exam : exam.filter((question) => picked.has(question.id));
         const shuffled = [...pool];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -83,7 +89,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
     return () => {
       cancelled = true;
     };
-  }, [slug, mode, router.isReady]);
+  }, [slug, mode, reviewAll, router.isReady]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
@@ -205,7 +211,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
         <div className="flex max-w-xl flex-col items-center text-center">
           <p className="text-lg text-ink-muted">
             {mode === 'review'
-              ? `Nothing to review for ${slug.toUpperCase()}: you have answered every question you missed correctly since.`
+              ? `Nothing to review for ${slug.toUpperCase()} right now. Missed questions come back here when they are due.`
               : `You have no ${slug.toUpperCase()} bookmarks yet.`}
           </p>
           <Link href={mode === 'review' ? '/review' : '/bookmarks'} className={buttonClasses({ className: 'mt-8' })}>

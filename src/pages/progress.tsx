@@ -5,14 +5,15 @@ import { buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { StatCard } from '@/components/ui/stat-card';
 import { exams } from '@/lib/exams';
-import { useProgress } from '@/lib/progress-store';
+import { reviewQueue, useProgress } from '@/lib/progress-store';
 
 /**
  * My progress: every practice exam taken on this device, grouped by exam,
  * with score trends and the weakest skill areas.
  */
 export default function Progress() {
-  const { attempts, mistakes } = useProgress();
+  const progress = useProgress();
+  const { attempts } = progress;
   const taken = exams
     .map((exam) => ({ exam, attempts: attempts.filter((attempt) => attempt.slug === exam.slug) }))
     .filter((item) => item.attempts.length > 0);
@@ -47,7 +48,7 @@ export default function Progress() {
                   key={exam.slug}
                   exam={exam}
                   attempts={examAttempts}
-                  mistakeCount={mistakes[exam.slug]?.length ?? 0}
+                  mistakeCount={reviewQueue(progress, exam.slug).due.length}
                 />
               ))}
             </div>
