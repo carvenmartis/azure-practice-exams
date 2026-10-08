@@ -30,11 +30,11 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
             if (!canLeave()) event.preventDefault();
           }}
           className={cn(
-            'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-display text-base font-semibold text-on-primary ring-1 ring-accent/50 ring-offset-2 ring-offset-header transition-colors hover:bg-primary-hover',
+            'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-on-primary ring-1 ring-accent/50 ring-offset-2 ring-offset-header transition-colors hover:bg-primary-hover',
             focusRing
           )}
         >
-          Az
+          <GraduationCap />
         </Link>
         <div className="ml-1 min-w-0 flex-1">
           {eyebrow && (
@@ -49,5 +49,32 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
         <NavMenu />
       </div>
     </header>
+  );
+}
+
+/**
+ * The graduation cap from the app icon (public/icons), drawn in the current
+ * text colour so it follows the light and dark themes.
+ */
+function GraduationCap() {
+  return (
+    <svg viewBox="48 54 416 416" aria-hidden="true" className="h-7 w-7">
+      <path
+        d="M150 262 L150 330 C150 362 205 384 256 384 C307 384 362 362 362 330 L362 262 L256 312 Z"
+        fill="currentColor"
+        opacity="0.7"
+      />
+      <path d="M256 140 L452 226 L256 312 L60 226 Z" fill="currentColor" />
+      <path
+        d="M256 226 L392 266 L392 340"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="14"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.7"
+      />
+      <path d="M374 336 L410 336 L418 390 L366 390 Z" fill="currentColor" opacity="0.7" />
+    </svg>
   );
 }
