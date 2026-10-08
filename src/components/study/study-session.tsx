@@ -7,6 +7,7 @@ import { AnswerFeedback } from '@/components/exam/answer-feedback';
 import { AnswerOption } from '@/components/exam/answer-option';
 import type { AnswerState } from '@/components/exam/answer-option';
 import { BookmarkButton } from '@/components/exam/bookmark-button';
+import { LearnSearchLink, openLearnSearch } from '@/components/exam/learn-search-link';
 import { PageLayout } from '@/components/layout/page-layout';
 import { ShortcutHelp } from '@/components/layout/shortcut-help';
 import { Button } from '@/components/ui/button';
@@ -168,7 +169,8 @@ export function StudySession({ slug }: StudySessionProps) {
     ArrowRight: () => {
       if (!isLast) goTo(index + 1);
     },
-    m: () => toggleBookmark(slug, current.id)
+    m: () => toggleBookmark(slug, current.id),
+    l: () => openLearnSearch(current.question)
   };
 
   return (
@@ -201,7 +203,8 @@ export function StudySession({ slug }: StudySessionProps) {
                 { keys: ['S'], label: 'Show the answer' },
                 { keys: ['Enter'], label: 'Next question (after answering)' },
                 { keys: ['←', '→'], label: 'Previous or next question' },
-                { keys: ['M'], label: 'Bookmark the question' }
+                { keys: ['M'], label: 'Bookmark the question' },
+                { keys: ['L'], label: 'Search the question on Microsoft Learn' }
               ]}
             />
             <Link
@@ -218,7 +221,10 @@ export function StudySession({ slug }: StudySessionProps) {
             Question {index + 1} <span className="text-ink-subtle/70">of {visible.length}</span>
             {topic === allTopics && <span className="hidden sm:inline"> · {current.topic}</span>}
           </p>
-          <BookmarkButton slug={slug} questionId={current.id} />
+          <div className="flex flex-wrap items-center justify-end gap-1">
+            <LearnSearchLink question={current.question} />
+            <BookmarkButton slug={slug} questionId={current.id} />
+          </div>
         </div>
         <h1 className="mt-3 mb-8 text-lg leading-relaxed font-semibold sm:text-xl">{current.question}</h1>
 

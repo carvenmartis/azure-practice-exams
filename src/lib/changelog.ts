@@ -17,7 +17,8 @@ export const changelog: ChangelogEntry[] = [
     title: 'Study notes for every exam',
     changes: [
       'New Study notes page per exam (in the menu, on each exam card and on the exam guide): the key terms, limits and facts of every skill area with a short explanation, plus all abbreviations used in the questions.',
-      'Search the notes, jump to a skill area, or tap Quiz me to hide the meanings and test yourself one term at a time.'
+      'Search the notes, jump to a skill area, or tap Quiz me to hide the meanings and test yourself one term at a time.',
+      'Stuck on a tricky question? Search on Microsoft Learn (or press L), next to Bookmark, opens the Learn search for that question in a new tab, in exams and in study mode.'
     ]
   },
   {

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { AnswerFeedback } from '@/components/exam/answer-feedback';
 import { BookmarkButton } from '@/components/exam/bookmark-button';
+import { LearnSearchLink, openLearnSearch } from '@/components/exam/learn-search-link';
 import { AnswerOption } from '@/components/exam/answer-option';
 import type { AnswerState } from '@/components/exam/answer-option';
 import { ExamResults } from '@/components/exam/exam-results';
@@ -368,6 +369,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
       if (currentIndex < questions.length - 1) goTo(currentIndex + 1);
     },
     m: () => toggleBookmark(slug, currentQuestion.id),
+    l: () => openLearnSearch(currentQuestion.question),
     Tab: (event: KeyboardEvent) => cycleFocus(examFocusSelector, event.shiftKey),
     ArrowDown: () => cycleFocus(examFocusSelector),
     ArrowUp: () => cycleFocus(examFocusSelector, true),
@@ -396,6 +398,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
                   { keys: ['S'], label: 'Skip for now' },
                   { keys: ['←', '→'], label: 'Previous or next question' },
                   { keys: ['M'], label: 'Bookmark the question' },
+                  { keys: ['L'], label: 'Search the question on Microsoft Learn' },
                   { keys: ['Esc'], label: 'Exit the exam' }
                 ]}
               />
@@ -429,7 +432,10 @@ export function ExamSession({ slug }: ExamSessionProps) {
             <p className="text-sm font-medium text-ink-subtle">
               Question {currentIndex + 1} <span className="text-ink-subtle/70">of {questions.length}</span>
             </p>
-            <BookmarkButton slug={slug} questionId={currentQuestion.id} />
+            <div className="flex flex-wrap items-center justify-end gap-1">
+              <LearnSearchLink question={currentQuestion.question} />
+              <BookmarkButton slug={slug} questionId={currentQuestion.id} />
+            </div>
           </div>
           <h1 className="mt-3 text-lg leading-relaxed font-semibold sm:text-xl">
             {currentQuestion.question}
