@@ -2,7 +2,7 @@ import { ExamCard } from '@/components/dashboard/exam-card';
 import { ReviewDueBanner } from '@/components/dashboard/review-due-banner';
 import { PageLayout } from '@/components/layout/page-layout';
 import { StatCard } from '@/components/ui/stat-card';
-import { exams } from '@/lib/exams';
+import { examCategories, exams, examsInCategory } from '@/lib/exams';
 
 const facts = [
   { label: 'Practice exams', value: exams.length },
@@ -12,7 +12,8 @@ const facts = [
 
 /**
  * Home page renders a dashboard of available practice exams under an always-visible
- * header with the site name. The exams are presented in a responsive grid.
+ * header with the site name. The exams are grouped into category sections, each
+ * with its own heading and a responsive grid.
  * Selecting a card navigates to the corresponding exam page.
  */
 export default function Home() {
@@ -46,13 +47,34 @@ export default function Home() {
             </h2>
             <p className="text-sm text-ink-subtle">{exams.length} exams</p>
           </div>
-          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {exams.map((exam) => (
-              <li key={exam.slug}>
-                <ExamCard exam={exam} />
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-12 sm:space-y-14">
+            {examCategories.map((category) => {
+              const categoryExams = examsInCategory(category.id);
+              if (!categoryExams.length) return null;
+              const headingId = `category-${category.id}`;
+              return (
+                <section key={category.id} aria-labelledby={headingId}>
+                  <div className="mb-5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                    <h3
+                      id={headingId}
+                      className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent"
+                    >
+                      <span aria-hidden="true" className="h-px w-8 bg-accent" />
+                      {category.title}
+                    </h3>
+                    <p className="text-sm text-ink-subtle">{category.description}</p>
+                  </div>
+                  <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {categoryExams.map((exam) => (
+                      <li key={exam.slug}>
+                        <ExamCard exam={exam} />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              );
+            })}
+          </div>
         </section>
       </div>
     </PageLayout>
