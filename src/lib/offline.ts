@@ -1,4 +1,4 @@
-import { exams } from '@/lib/exams';
+import { examCategories, exams } from '@/lib/exams';
 import { buildId } from '@/lib/version';
 
 /**
@@ -14,6 +14,7 @@ export const offlinePages = [
   '/review',
   '/settings',
   '/study',
+  ...examCategories.map((category) => `/categories/${category.id}`),
   ...exams.flatMap((exam) => [`/exams/${exam.slug}`, `/study/${exam.slug}`, `/guides/${exam.slug}`])
 ];
 

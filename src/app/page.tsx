@@ -1,8 +1,10 @@
-import { ExamCard } from '@/components/dashboard/exam-card';
+import { CategoryCard } from '@/components/dashboard/category-card';
 import { ReviewDueBanner } from '@/components/dashboard/review-due-banner';
 import { PageLayout } from '@/components/layout/page-layout';
 import { StatCard } from '@/components/ui/stat-card';
 import { examCategories, exams, examsInCategory } from '@/lib/exams';
+
+const categories = examCategories.filter((category) => examsInCategory(category.id).length);
 
 const facts = [
   { label: 'Practice exams', value: exams.length },
@@ -12,9 +14,8 @@ const facts = [
 
 /**
  * Home page renders a dashboard of available practice exams under an always-visible
- * header with the site name. The exams are grouped into category sections, each
- * with its own heading and a responsive grid.
- * Selecting a card navigates to the corresponding exam page.
+ * header with the site name. The exams are grouped into category cards; selecting
+ * a card opens that category's page (src/app/categories/[id]) with its exams.
  */
 export default function Home() {
   return (
@@ -29,7 +30,7 @@ export default function Home() {
             Prepare for your Microsoft Azure <span className="text-accent italic">certification</span>
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
-            Pick an exam to start an untimed practice run. Each question shows the correct
+            Pick a category, then an exam to start an untimed practice run. Each question shows the correct
             answer, an explanation and a link to the Microsoft documentation.
           </p>
           <dl className="mt-10 grid grid-cols-3 gap-3 sm:gap-5">
@@ -40,41 +41,20 @@ export default function Home() {
           <ReviewDueBanner />
         </section>
 
-        <section aria-labelledby="exams-heading">
+        <section aria-labelledby="categories-heading">
           <div className="mb-6 flex items-end justify-between gap-4 border-b border-line pb-4">
-            <h2 id="exams-heading" className="font-display text-2xl font-semibold sm:text-3xl">
-              Available exams
+            <h2 id="categories-heading" className="font-display text-2xl font-semibold sm:text-3xl">
+              Categories
             </h2>
-            <p className="text-sm text-ink-subtle">{exams.length} exams</p>
+            <p className="text-sm text-ink-subtle">{categories.length} categories</p>
           </div>
-          <div className="space-y-12 sm:space-y-14">
-            {examCategories.map((category) => {
-              const categoryExams = examsInCategory(category.id);
-              if (!categoryExams.length) return null;
-              const headingId = `category-${category.id}`;
-              return (
-                <section key={category.id} aria-labelledby={headingId}>
-                  <div className="mb-5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                    <h3
-                      id={headingId}
-                      className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent"
-                    >
-                      <span aria-hidden="true" className="h-px w-8 bg-accent" />
-                      {category.title}
-                    </h3>
-                    <p className="text-sm text-ink-subtle">{category.description}</p>
-                  </div>
-                  <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {categoryExams.map((exam) => (
-                      <li key={exam.slug}>
-                        <ExamCard exam={exam} />
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              );
-            })}
-          </div>
+          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {categories.map((category) => (
+              <li key={category.id}>
+                <CategoryCard category={category} />
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </PageLayout>
