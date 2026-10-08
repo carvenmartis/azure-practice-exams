@@ -1,3 +1,5 @@
+'use client';
+
 import { RadioCard } from '@/components/ui/radio-card';
 import { useTheme } from '@/contexts/theme-context';
 import type { ThemePreference } from '@/contexts/theme-context';

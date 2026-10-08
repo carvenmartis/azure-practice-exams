@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +13,7 @@ import { daysUntil, reviewIntervals, reviewQueue, useProgress } from '@/lib/prog
  * repetition, with a button to practise just those. A missed question comes
  * back after a few days, then less often each time it's answered right.
  */
-export default function Review() {
+export function ReviewList() {
   const progress = useProgress();
   const withMistakes = exams
     .map((exam) => ({ exam, ...reviewQueue(progress, exam.slug) }))
@@ -20,7 +22,7 @@ export default function Review() {
   const last = rest.pop();
 
   return (
-    <PageLayout pageTitle="Review mistakes" headerTitle="Review mistakes">
+    <PageLayout headerTitle="Review mistakes">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Practice</p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Review mistakes</h1>

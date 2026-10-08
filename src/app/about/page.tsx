@@ -1,7 +1,10 @@
+import type { Metadata } from 'next';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card } from '@/components/ui/card';
 import { changelog } from '@/lib/changelog';
 import { appVersion, commitSha } from '@/lib/version';
+
+export const metadata: Metadata = { title: 'About' };
 
 function formatDate(iso: string) {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', {
@@ -14,7 +17,7 @@ function formatDate(iso: string) {
 /** About: the running version and what changed in each update. */
 export default function About() {
   return (
-    <PageLayout pageTitle="About" headerTitle="About">
+    <PageLayout headerTitle="About">
       <div className="mx-auto max-w-3xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">About</p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Azure Practice Exams</h1>

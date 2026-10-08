@@ -1,10 +1,8 @@
 import { ExamCard } from '@/components/dashboard/exam-card';
+import { ReviewDueBanner } from '@/components/dashboard/review-due-banner';
 import { PageLayout } from '@/components/layout/page-layout';
 import { StatCard } from '@/components/ui/stat-card';
-import Link from 'next/link';
 import { exams } from '@/lib/exams';
-import { reviewQueue, useProgress } from '@/lib/progress-store';
-import { cn, focusRing } from '@/lib/utils';
 
 const facts = [
   { label: 'Practice exams', value: exams.length },
@@ -18,9 +16,6 @@ const facts = [
  * Selecting a card navigates to the corresponding exam page.
  */
 export default function Home() {
-  const progress = useProgress();
-  const dueCount = exams.reduce((sum, exam) => sum + reviewQueue(progress, exam.slug).due.length, 0);
-
   return (
     <PageLayout>
       <div className="mx-auto max-w-6xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20 sm:pb-24">
@@ -41,23 +36,7 @@ export default function Home() {
               <StatCard key={fact.label} label={fact.label} value={fact.value} />
             ))}
           </dl>
-          {dueCount > 0 && (
-            <Link
-              href="/review"
-              className={cn(
-                'mt-6 flex items-center justify-between gap-4 rounded-2xl border border-accent/40 bg-surface px-5 py-4 shadow-card transition-colors hover:border-accent',
-                focusRing
-              )}
-            >
-              <span>
-                <span className="block font-semibold">
-                  {dueCount} missed question{dueCount === 1 ? ' is' : 's are'} due for review
-                </span>
-                <span className="block text-sm text-ink-muted">They come back less often each time you get them right.</span>
-              </span>
-              <span aria-hidden="true" className="text-xl text-accent">→</span>
-            </Link>
-          )}
+          <ReviewDueBanner />
         </section>
 
         <section aria-labelledby="exams-heading">

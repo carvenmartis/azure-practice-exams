@@ -1,7 +1,8 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { AnswerFeedback } from '@/components/exam/answer-feedback';
 import { BookmarkButton } from '@/components/exam/bookmark-button';
 import { AnswerOption } from '@/components/exam/answer-option';
@@ -21,7 +22,7 @@ import type { TopicTally } from '@/lib/progress-store';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
 import { topicFor } from '@/lib/topics';
 
-interface ExamPageProps {
+interface ExamSessionProps {
   slug: string;
 }
 
@@ -36,8 +37,11 @@ export type PracticeMode = 'exam' | 'review' | 'bookmarks';
 
 const questionsPerAttempt = 60;
 
+/** Marks the extra history entry that catches Back during an exam. */
+const backGuardKey = 'examBackGuard';
+
 /**
- * The ExamPage component displays a quiz for a given exam. It
+ * The ExamSession component displays a quiz for a given exam. It
  * downloads the questions from public/exam-data/<slug>.json (generated
  * by scripts/build-exam-data.mjs), randomly selects up to 60 of them
  * and walks the user through them one at a time. After each answer
@@ -50,21 +54,19 @@ const questionsPerAttempt = 60;
  * A clock shows the time taken, which is saved with the attempt. Questions
  * can be skipped and answered later from the question overview.
  */
-export default function ExamPage({ slug }: ExamPageProps) {
+export function ExamSession({ slug }: ExamSessionProps) {
   // Load the questions in the browser, then shuffle, limit to 60 and shuffle each question's answers.
   const [questions, setQuestions] = useState<ExamQuestion[] | null>(null);
   const [loadError, setLoadError] = useState(false);
   // Wall-clock start (questions shown) and end (results shown) of the attempt.
   const [startedAt, setStartedAt] = useState<number | null>(null);
-  const router = useRouter();
-  const mode: PracticeMode =
-    router.query.mode === 'review' || router.query.mode === 'bookmarks' ? router.query.mode : 'exam';
+  const searchParams = useSearchParams();
+  const modeParam = searchParams.get('mode');
+  const mode: PracticeMode = modeParam === 'review' || modeParam === 'bookmarks' ? modeParam : 'exam';
   // Review rounds take only the questions that are due, unless asked for all of them.
-  const reviewAll = router.query.scope === 'all';
+  const reviewAll = searchParams.get('scope') === 'all';
 
   useEffect(() => {
-    // The query string is only known once the router is ready.
-    if (!router.isReady) return;
     let cancelled = false;
     fetchExamQuestions(slug)
       .then((exam) => {
@@ -89,7 +91,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
     return () => {
       cancelled = true;
     };
-  }, [slug, mode, reviewAll, router.isReady]);
+  }, [slug, mode, reviewAll]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
@@ -140,31 +142,44 @@ export default function ExamPage({ slug }: ExamPageProps) {
   }, [finished, questions, selectedAnswers, slug, endedEarly, durationSeconds, mode]);
 
   // While the exam is running, ask before leaving: header and menu links go
-  // through the leave guard, Back through beforePopState, and closing or
-  // reloading the tab gets the browser's own prompt.
+  // through the leave guard, and closing or reloading the tab gets the
+  // browser's own prompt. For Back, a copy of this page's history entry goes
+  // on top; Back then only removes the copy, which is put back while the
+  // exit prompt shows.
   useEffect(() => {
     if (!inProgress) return;
     const removeGuard = setLeaveGuard(() => {
       setConfirmExit(true);
       return false;
     });
-    // Back has already moved the URL, so put the exam entry back on top.
-    const examEntry = window.history.state;
-    router.beforePopState(() => {
-      window.history.pushState(examEntry, '', router.asPath);
+    const pushBackGuard = () => {
+      if (window.history.state?.[backGuardKey]) return;
+      window.history.pushState({ ...window.history.state, [backGuardKey]: true }, '', window.location.href);
+    };
+    pushBackGuard();
+    const handlePopState = () => {
+      pushBackGuard();
       setConfirmExit(true);
-      return false;
-    });
+    };
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
     };
+    window.addEventListener('popstate', handlePopState);
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       removeGuard();
-      router.beforePopState(() => true);
+      window.removeEventListener('popstate', handlePopState);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [inProgress, router]);
+  }, [inProgress]);
+
+  // Once the results show, drop the Back copy so one Back leaves the page again.
+  const backGuardDropped = useRef(false);
+  useEffect(() => {
+    if (!finished || backGuardDropped.current) return;
+    backGuardDropped.current = true;
+    if (window.history.state?.[backGuardKey]) window.history.back();
+  }, [finished]);
 
   const handleCancelExit = useCallback(() => setConfirmExit(false), []);
 
@@ -188,7 +203,6 @@ export default function ExamPage({ slug }: ExamPageProps) {
   // The header shows the full course name, falling back to the slug.
   const courseName = exams.find((exam) => exam.slug === slug)?.name ?? slug.toUpperCase();
   const layoutProps = {
-    pageTitle: courseName,
     headerTitle: courseName,
     className: 'flex flex-col items-center px-4 pt-8 pb-16 sm:px-6 sm:pt-14 lg:px-8'
   };
@@ -374,26 +388,3 @@ export default function ExamPage({ slug }: ExamPageProps) {
     </PageLayout>
   );
 }
-
-/**
- * Generate static paths for each exam in src/lib/exams.ts. If you add new exam
- * JSON files to the `data` directory you should also add them there.
- */
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: exams.map((exam) => ({ params: { slug: exam.slug } })),
-    fallback: false
-  };
-};
-
-/**
- * Only the slug is passed to the page. The questions are downloaded in the
- * browser so they don't bloat the page data.
- */
-export const getStaticProps: GetStaticProps<ExamPageProps> = async ({ params }) => {
-  return {
-    props: {
-      slug: params?.slug as string
-    }
-  };
-};

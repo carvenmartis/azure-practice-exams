@@ -1,3 +1,5 @@
+'use client';
+
 import { useSyncExternalStore } from 'react';
 import { appVersion, commitSha } from '@/lib/version';
 

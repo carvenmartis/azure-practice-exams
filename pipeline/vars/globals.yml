@@ -1,5 +1,0 @@
-variables:
-  imageName: azure-practice-exams
-  dockerHubNamespace: carvenmartisit 
-  dockerImageTag: latest
-  dockerHubServiceConnection: DockerHubServiceConnection 

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
 import { ExamProgress } from '@/components/progress/exam-progress';
@@ -11,7 +13,7 @@ import { reviewQueue, useProgress } from '@/lib/progress-store';
  * My progress: every practice exam taken on this device, grouped by exam,
  * with score trends and the weakest skill areas.
  */
-export default function Progress() {
+export function ProgressOverview() {
   const progress = useProgress();
   const { attempts } = progress;
   const taken = exams
@@ -27,7 +29,7 @@ export default function Progress() {
   ];
 
   return (
-    <PageLayout pageTitle="My progress" headerTitle="My progress">
+    <PageLayout headerTitle="My progress">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Your history</p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">My progress</h1>

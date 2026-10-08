@@ -1,3 +1,5 @@
+'use client';
+
 import { toggleBookmark, useProgress } from '@/lib/progress-store';
 import { cn, focusRing } from '@/lib/utils';
 

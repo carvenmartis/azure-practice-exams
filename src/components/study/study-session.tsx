@@ -1,7 +1,8 @@
+'use client';
+
 import { useEffect, useMemo, useState } from 'react';
-import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { AnswerFeedback } from '@/components/exam/answer-feedback';
 import { AnswerOption } from '@/components/exam/answer-option';
 import type { AnswerState } from '@/components/exam/answer-option';
@@ -20,7 +21,7 @@ interface StudyQuestion extends ExamQuestion {
   topic: string;
 }
 
-interface StudyPageProps {
+interface StudySessionProps {
   slug: string;
 }
 
@@ -37,13 +38,13 @@ function scrollToTop() {
  * Show answer) reveals the answer and explanation straight away, and you
  * can step back and forth. Nothing is saved except bookmarks.
  */
-export default function StudyPage({ slug }: StudyPageProps) {
+export function StudySession({ slug }: StudySessionProps) {
   const [questions, setQuestions] = useState<StudyQuestion[] | null>(null);
   const [loadError, setLoadError] = useState(false);
-  const router = useRouter();
   // Exam guides link here with ?topic=<skill area>; picking another area overrides it.
+  const topicParam = useSearchParams().get('topic');
   const [topicChoice, setTopicChoice] = useState<string | null>(null);
-  const topic = topicChoice ?? (typeof router.query.topic === 'string' ? router.query.topic : allTopics);
+  const topic = topicChoice ?? topicParam ?? allTopics;
   const [currentIndex, setCurrentIndex] = useState(0);
   // Keyed by question id: the option picked, or -1 when the answer was just revealed.
   const [selections, setSelections] = useState<Record<string, number>>({});
@@ -82,7 +83,6 @@ export default function StudyPage({ slug }: StudyPageProps) {
   const visible = (questions ?? []).filter((question) => topic === allTopics || question.topic === topic);
   const courseName = exams.find((exam) => exam.slug === slug)?.name ?? slug.toUpperCase();
   const layoutProps = {
-    pageTitle: `Study ${courseName}`,
     headerTitle: courseName,
     className: 'flex flex-col items-center px-4 pt-8 pb-16 sm:px-6 sm:pt-14 lg:px-8'
   };
@@ -219,20 +219,3 @@ export default function StudyPage({ slug }: StudyPageProps) {
     </PageLayout>
   );
 }
-
-/** One study page per exam in src/lib/exams.ts. */
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: exams.map((exam) => ({ params: { slug: exam.slug } })),
-    fallback: false
-  };
-};
-
-/** Only the slug is passed; the questions are downloaded in the browser. */
-export const getStaticProps: GetStaticProps<StudyPageProps> = async ({ params }) => {
-  return {
-    props: {
-      slug: params?.slug as string
-    }
-  };
-};

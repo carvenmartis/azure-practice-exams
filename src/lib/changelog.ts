@@ -18,6 +18,7 @@ export const changelog: ChangelogEntry[] = [
     changes: [
       'Works offline: once the app has been opened online, every exam keeps working without Wi-Fi, and the corner label shows when you are offline.',
       'Spaced repetition: questions you miss come back for review after 3 days, then after 7, 14 and 30 days each time you get them right, until you know them.',
+      'Rebuilt on the Next.js App Router. Everything works as before, and unknown pages now show a proper page not found.',
       'My progress: past attempts per exam, score trends and your weakest skill areas.',
       'Review mistakes: a practice round built only from questions you got wrong.',
       'Bookmarks: flag tricky questions during an exam and revisit them later.',

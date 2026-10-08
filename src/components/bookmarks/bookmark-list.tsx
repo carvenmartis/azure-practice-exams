@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { BookmarkButton } from '@/components/exam/bookmark-button';
@@ -14,7 +16,7 @@ import { useProgress } from '@/lib/progress-store';
  * Bookmarks: questions flagged during an exam, grouped by exam, with the
  * answer and explanation behind a toggle and a round of just those questions.
  */
-export default function Bookmarks() {
+export function BookmarkList() {
   const { bookmarks } = useProgress();
   const [questionsBySlug, setQuestionsBySlug] = useState<Record<string, ExamQuestion[]>>({});
   const [loadError, setLoadError] = useState(false);
@@ -47,7 +49,7 @@ export default function Bookmarks() {
   }, [missing]);
 
   return (
-    <PageLayout pageTitle="Bookmarks" headerTitle="Bookmarks">
+    <PageLayout headerTitle="Bookmarks">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Saved questions</p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Bookmarks</h1>

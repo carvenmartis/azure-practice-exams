@@ -1,10 +1,13 @@
+import type { Metadata } from 'next';
 import { PageLayout } from '@/components/layout/page-layout';
 import { ThemePicker } from '@/components/settings/theme-picker';
+
+export const metadata: Metadata = { title: 'Settings' };
 
 /** Settings page. The theme choice applies across the whole site. */
 export default function Settings() {
   return (
-    <PageLayout pageTitle="Settings" headerTitle="Settings" >
+    <PageLayout headerTitle="Settings">
       <div className="mx-auto max-w-2xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Preferences</p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Settings</h1>

@@ -1,5 +1,7 @@
+'use client';
+
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
@@ -34,20 +36,17 @@ function useIsClient() {
  * rather than the header's stacking context.
  */
 export function NavMenu() {
-  const [open, setOpen] = useState(false);
-  const router = useRouter();
+  const pathname = usePathname();
+  // The page the menu was opened on, so it closes by itself on any navigation.
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
+  const setOpen = (isOpen: boolean) => setOpenOn(isOpen ? pathname : null);
   const isClient = useIsClient();
-
-  useEffect(() => {
-    const handleRouteChange = () => setOpen(false);
-    router.events.on('routeChangeStart', handleRouteChange);
-    return () => router.events.off('routeChangeStart', handleRouteChange);
-  }, [router.events]);
 
   useEffect(() => {
     if (!open) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') setOpenOn(null);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -60,7 +59,7 @@ export function NavMenu() {
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
         aria-controls="site-menu"
-        onClick={() => setOpen((isOpen) => !isOpen)}
+        onClick={() => setOpen(!open)}
         className={cn(
           'relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] hover:bg-surface-muted',
           focusRing
@@ -114,7 +113,7 @@ export function NavMenu() {
                   </p>
                   <ul className="space-y-1">
                     {menuItems.map((item, index) => {
-                      const active = router.pathname === item.href;
+                      const active = pathname === item.href;
                       return (
                         <motion.li
                           key={item.href}

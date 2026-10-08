@@ -1,4 +1,4 @@
-import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +8,7 @@ import { getExamGuide, trainingSearchUrl } from '@/lib/exam-guides';
 import { exams, splitExamName } from '@/lib/exams';
 
 interface GuidePageProps {
-  slug: string;
+  params: Promise<{ slug: string }>;
 }
 
 const linkClass =
@@ -25,7 +25,8 @@ function weightMidpoint(weight: string) {
  * links to the study guide, training and practice assessment, and a shortcut
  * to study the app's questions for each area.
  */
-export default function GuidePage({ slug }: GuidePageProps) {
+export default async function GuidePage({ params }: GuidePageProps) {
+  const { slug } = await params;
   const exam = exams.find((item) => item.slug === slug);
   const guide = getExamGuide(slug);
   const { code, title } = splitExamName(exam);
@@ -36,7 +37,7 @@ export default function GuidePage({ slug }: GuidePageProps) {
   ];
 
   return (
-    <PageLayout pageTitle={`${code} exam guide`} headerTitle={exam.name} eyebrow="Exam guide">
+    <PageLayout headerTitle={exam.name} eyebrow="Exam guide">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
         <Badge>{code}</Badge>
         <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
@@ -110,19 +111,15 @@ export default function GuidePage({ slug }: GuidePageProps) {
   );
 }
 
-/** One guide page per exam in src/lib/exams.ts that has a guide. */
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: exams.filter((exam) => getExamGuide(exam.slug)).map((exam) => ({ params: { slug: exam.slug } })),
-    fallback: false
-  };
-};
+/** One guide page per exam in src/lib/exams.ts that has a guide; other slugs are a 404. */
+export const dynamicParams = false;
 
-/** Only the slug is passed; the guide data is bundled with the page. */
-export const getStaticProps: GetStaticProps<GuidePageProps> = async ({ params }) => {
-  return {
-    props: {
-      slug: params?.slug as string
-    }
-  };
-};
+export function generateStaticParams() {
+  return exams.filter((exam) => getExamGuide(exam.slug)).map((exam) => ({ slug: exam.slug }));
+}
+
+export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const { code } = splitExamName(exams.find((exam) => exam.slug === slug));
+  return { title: `${code} exam guide` };
+}

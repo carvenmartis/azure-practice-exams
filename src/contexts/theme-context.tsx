@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, useEffect, useSyncExternalStore } from 'react';
 import type { ReactNode } from 'react';
 import { themeColors } from '@/lib/theme';
@@ -72,7 +74,7 @@ interface ThemeProviderProps {
 /**
  * Owns the theme setting (saved in localStorage) and applies it to <html>
  * and the theme-color meta, so dark: utilities, scrollbars and the iOS status
- * bar follow it. The script in _document.tsx applies it before first paint.
+ * bar follow it. The script in src/app/layout.tsx applies it before first paint.
  */
 export function ThemeProvider({ children }: ThemeProviderProps) {
   // The server render uses 'system' and light; the saved choice and the

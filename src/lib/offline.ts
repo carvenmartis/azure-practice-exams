@@ -1,4 +1,5 @@
 import { exams } from '@/lib/exams';
+import { buildId } from '@/lib/version';
 
 /**
  * Every page the service worker (public/sw.js) downloads so the app works
@@ -30,13 +31,14 @@ export const offlineFiles = [
 
 /**
  * Registers the service worker that keeps the app working offline. The build
- * id in the URL makes every new build install a fresh copy with a new cache.
- * Production only: in development the files change on every save.
+ * id in the URL (version and commit, see src/lib/version.ts) makes every new
+ * Docker image install a fresh copy with a new cache; local builds without a
+ * new version reuse the cache name, but pages still come from the network
+ * first. Production only: in development the files change on every save.
  */
 export function registerServiceWorker() {
   if (process.env.NODE_ENV !== 'production' || !('serviceWorker' in navigator)) return;
-  const buildId = (window as Window & { __NEXT_DATA__?: { buildId?: string } }).__NEXT_DATA__?.buildId ?? 'dev';
-  navigator.serviceWorker.register(`/sw.js?v=${encodeURIComponent(buildId)}`).catch(() => {
+  navigator.serviceWorker.register(`/sw.js?v=${encodeURIComponent(buildId || 'dev')}`).catch(() => {
     // Needs HTTPS (or localhost); without it the app simply stays online-only.
   });
 }
