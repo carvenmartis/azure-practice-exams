@@ -44,6 +44,10 @@ export interface ProgressData {
   reviewSchedule: Record<string, Record<string, ReviewSchedule>>;
   /** Bookmarked question ids per exam slug, oldest first. */
   bookmarks: Record<string, string[]>;
+  /** Questions answered per local day ('2026-10-08'), in any mode, for the daily goal. */
+  daily: Record<string, number>;
+  /** Questions per day that count as reaching the daily goal. */
+  dailyGoal: number;
 }
 
 /** One answered question, for updating the mistakes list. */
@@ -66,21 +70,44 @@ export const reviewIntervals = [3, 7, 14, 30];
 
 const dayMs = 24 * 60 * 60 * 1000;
 
-const emptyData: ProgressData = { attempts: [], mistakes: {}, reviewSchedule: {}, bookmarks: {} };
+export const defaultDailyGoal = 20;
+/** Days of daily counts to keep; plenty for any streak worth showing. */
+const maxDailyDays = 400;
+
+const emptyData: ProgressData = {
+  attempts: [],
+  mistakes: {},
+  reviewSchedule: {},
+  bookmarks: {},
+  daily: {},
+  dailyGoal: defaultDailyGoal
+};
 
 let cache: ProgressData | null = null;
 const listeners = new Set<() => void>();
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/** Saved or imported progress with every field present; anything malformed is dropped. */
+export function normalizeProgress(parsed: unknown): ProgressData {
+  const value = isRecord(parsed) ? parsed : {};
+  const goal = Number(value.dailyGoal);
+  return {
+    attempts: Array.isArray(value.attempts) ? value.attempts : [],
+    mistakes: isRecord(value.mistakes) ? (value.mistakes as ProgressData['mistakes']) : {},
+    reviewSchedule: isRecord(value.reviewSchedule) ? (value.reviewSchedule as ProgressData['reviewSchedule']) : {},
+    bookmarks: isRecord(value.bookmarks) ? (value.bookmarks as ProgressData['bookmarks']) : {},
+    daily: isRecord(value.daily) ? (value.daily as ProgressData['daily']) : {},
+    dailyGoal: Number.isInteger(goal) && goal > 0 ? goal : defaultDailyGoal
+  };
+}
+
 function read(): ProgressData {
   if (cache) return cache;
   try {
-    const parsed = JSON.parse(window.localStorage.getItem(storageKey) ?? 'null');
-    cache = {
-      attempts: Array.isArray(parsed?.attempts) ? parsed.attempts : [],
-      mistakes: parsed?.mistakes ?? {},
-      reviewSchedule: parsed?.reviewSchedule ?? {},
-      bookmarks: parsed?.bookmarks ?? {}
-    };
+    cache = normalizeProgress(JSON.parse(window.localStorage.getItem(storageKey) ?? 'null'));
   } catch {
     cache = emptyData;
   }
@@ -227,6 +254,92 @@ export function clearExamHistory(slug: string) {
       attempts: data.attempts.filter((attempt) => attempt.slug !== slug),
       mistakes,
       reviewSchedule
+    };
+  });
+}
+
+/** The local calendar day of `date` as '2026-10-08'. */
+export function localDay(date = new Date()) {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+/** Counts one answered question towards today's goal. */
+export function countDailyAnswer() {
+  const today = localDay();
+  write((data) => {
+    const daily = { ...data.daily, [today]: (data.daily[today] ?? 0) + 1 };
+    const days = Object.keys(daily).sort();
+    for (const old of days.slice(0, -maxDailyDays)) delete daily[old];
+    return { ...data, daily };
+  });
+}
+
+/** Changes how many questions a day reach the daily goal. */
+export function setDailyGoal(goal: number) {
+  write((data) => ({ ...data, dailyGoal: goal }));
+}
+
+/**
+ * Today's count against the goal and the streak: days in a row on which the
+ * goal was reached, up to today. Today only breaks the streak once it's over,
+ * so before reaching the goal the streak still counts from yesterday.
+ */
+export function dailyStatus(data: ProgressData, now = new Date()) {
+  const today = data.daily[localDay(now)] ?? 0;
+  const reached = today >= data.dailyGoal;
+  let streak = reached ? 1 : 0;
+  const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+  while ((data.daily[localDay(day)] ?? 0) >= data.dailyGoal) {
+    streak += 1;
+    day.setDate(day.getDate() - 1);
+  }
+  return { today, goal: data.dailyGoal, reached, streak };
+}
+
+function union(a: string[] = [], b: string[] = []) {
+  return Array.from(new Set([...a, ...b]));
+}
+
+/**
+ * Adds progress from a backup file to what's saved here, without deleting
+ * anything: attempts, mistakes and bookmarks are combined, a question in both
+ * review schedules keeps the later due date, each day keeps the higher count,
+ * and the daily goal comes from the backup.
+ */
+export function mergeProgress(incoming: ProgressData) {
+  write((data) => {
+    const attempts = new Map(data.attempts.map((attempt) => [`${attempt.slug}|${attempt.finishedAt}`, attempt]));
+    for (const attempt of incoming.attempts) attempts.set(`${attempt.slug}|${attempt.finishedAt}`, attempt);
+
+    const mistakes = { ...data.mistakes };
+    for (const [slug, ids] of Object.entries(incoming.mistakes)) mistakes[slug] = union(mistakes[slug], ids);
+
+    const bookmarks = { ...data.bookmarks };
+    for (const [slug, ids] of Object.entries(incoming.bookmarks)) bookmarks[slug] = union(bookmarks[slug], ids);
+
+    const reviewSchedule = { ...data.reviewSchedule };
+    for (const [slug, entries] of Object.entries(incoming.reviewSchedule)) {
+      const merged = { ...reviewSchedule[slug] };
+      for (const [id, entry] of Object.entries(entries)) {
+        if (!merged[id] || entry.due > merged[id].due) merged[id] = entry;
+      }
+      reviewSchedule[slug] = merged;
+    }
+
+    const daily = { ...data.daily };
+    for (const [day, count] of Object.entries(incoming.daily)) daily[day] = Math.max(daily[day] ?? 0, count);
+
+    return {
+      attempts: Array.from(attempts.values())
+        .sort((a, b) => a.finishedAt.localeCompare(b.finishedAt))
+        .slice(-maxAttempts),
+      mistakes,
+      reviewSchedule,
+      bookmarks,
+      daily,
+      dailyGoal: incoming.dailyGoal
     };
   });
 }

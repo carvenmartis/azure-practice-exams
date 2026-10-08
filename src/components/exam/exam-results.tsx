@@ -16,8 +16,12 @@ interface ExamResultsProps {
   endedEarly: boolean;
   /** Time taken, from the first question to the results. */
   durationSeconds?: number;
-  /** Review and bookmark rounds show no score and link back to their list. */
-  mode?: 'exam' | 'review' | 'bookmarks';
+  /** Review, bookmark and drill rounds show no score and link back to their list. */
+  mode?: 'exam' | 'review' | 'bookmarks' | 'drill';
+  /** The skill area of a drill round. */
+  topic?: string;
+  /** Starts another drill round on the same skill area. */
+  drillHref?: string;
 }
 
 /**
@@ -30,13 +34,41 @@ export function ExamResults({
   correctCount,
   endedEarly,
   durationSeconds,
-  mode = 'exam'
+  mode = 'exam',
+  topic,
+  drillHref
 }: ExamResultsProps) {
   const timeTaken = durationSeconds ? (
     <p className="mt-2 text-sm text-ink-subtle">
       Time taken: <span className="font-semibold text-ink-muted lining-nums">{formatDuration(durationSeconds)}</span>
     </p>
   ) : null;
+
+  if (mode === 'drill') {
+    return (
+      <div className="flex w-full max-w-xl flex-col items-center text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+          {endedEarly ? 'Topic drill ended early' : 'Topic drill complete'}
+        </p>
+        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+          {correctCount} of {answeredCount} right
+        </h1>
+        <p className="mt-4 leading-relaxed text-ink-muted">
+          {topic}. {answeredCount > correctCount ? 'The questions you missed are on your review list now.' : ''}
+        </p>
+        {timeTaken}
+        <div className="mt-10 flex flex-wrap justify-center gap-3">
+          {/* A full page load starts a fresh round with new questions. */}
+          <a href={drillHref} className={buttonClasses()}>
+            Another round
+          </a>
+          <Link href="/progress" className={buttonClasses({ variant: 'secondary' })}>
+            Back to My progress
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (mode === 'bookmarks') {
     return (

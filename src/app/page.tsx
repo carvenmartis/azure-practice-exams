@@ -1,4 +1,5 @@
 import { CategoryCard } from '@/components/dashboard/category-card';
+import { DailyGoal } from '@/components/dashboard/daily-goal';
 import { ReviewDueBanner } from '@/components/dashboard/review-due-banner';
 import { PageLayout } from '@/components/layout/page-layout';
 import { StatCard } from '@/components/ui/stat-card';
@@ -38,6 +39,7 @@ export default function Home() {
               <StatCard key={fact.label} label={fact.label} value={fact.value} />
             ))}
           </dl>
+          <DailyGoal />
           <ReviewDueBanner />
         </section>
 

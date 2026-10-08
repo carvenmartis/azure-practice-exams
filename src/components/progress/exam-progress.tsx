@@ -10,7 +10,7 @@ import { splitExamName } from '@/lib/exams';
 import type { Exam } from '@/lib/exams';
 import { clearExamHistory } from '@/lib/progress-store';
 import type { Attempt, TopicTally } from '@/lib/progress-store';
-import { otherTopic } from '@/lib/topics';
+import { drillHref, drillSize, otherTopic } from '@/lib/topics';
 import { formatDuration } from '@/lib/utils';
 import { ScoreTrend } from './score-trend';
 
@@ -95,6 +95,11 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
 
         <section aria-label="Weakest topics">
           <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Weakest topics</h3>
+          {weakest.length > 0 && (
+            <p className="mt-2 text-sm text-ink-muted">
+              A drill is a short round of {drillSize} questions from just that skill area.
+            </p>
+          )}
           {weakest.length ? (
             <ul className="mt-4 space-y-4">
               {weakest.map((item) => (
@@ -108,6 +113,13 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
                   <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-muted" aria-hidden="true">
                     <div className="h-full rounded-full bg-accent" style={{ width: `${Math.round(item.share * 100)}%` }} />
                   </div>
+                  <Link
+                    href={drillHref(exam.slug, item.topic)}
+                    className="mt-2 inline-block text-sm font-semibold text-accent-strong underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
+                    aria-label={`Drill ${item.topic}: ${drillSize} questions`}
+                  >
+                    Drill this topic
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -14,6 +14,16 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   {
     date: '2026-10-08',
+    title: 'Topic drills, backups and a daily goal',
+    changes: [
+      'Topic drills: on My progress, each of your weakest skill areas has a short 10-question round on just that topic.',
+      'Backup and sync: in Settings, export your progress, mistakes, bookmarks and daily goal to a file and import it on another device.',
+      'Daily goal and streak: the dashboard shows how many questions you answered today against your goal, and how many days in a row you reached it.',
+      'Daily reminder: choose a time in Settings and get a notification on days you have not reached your goal yet (needs an https address, and on iPhone and iPad the app added to the Home Screen).'
+    ]
+  },
+  {
+    date: '2026-10-08',
     title: 'Track your progress and study smarter',
     changes: [
       'Exams work with the keyboard: Tab or the up and down arrows move between the answers, Enter picks one and goes on, and Escape exits. Shortcuts in exams and study mode: A-D or 1-4 to answer, S to skip, left and right arrows to move between questions and M to bookmark. Press ? for the list.',

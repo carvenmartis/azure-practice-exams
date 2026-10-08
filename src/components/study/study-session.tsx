@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { fetchExamQuestions } from '@/lib/exam-data';
 import type { ExamQuestion } from '@/lib/exam-data';
 import { getExamGuide } from '@/lib/exam-guides';
+import { recordDailyAnswer } from '@/lib/daily-goal';
 import { exams } from '@/lib/exams';
 import { optionLetters, optionShortcuts, revealFeedback, scrollToTop } from '@/lib/keyboard';
 import { toggleBookmark } from '@/lib/progress-store';
@@ -34,7 +35,8 @@ const allTopics = '';
  * Study mode for one exam: every question in a random order, optionally
  * narrowed to one skill area. No timer and no score; picking an option (or
  * Show answer) reveals the answer and explanation straight away, and you
- * can step back and forth. Nothing is saved except bookmarks.
+ * can step back and forth. Nothing is saved except bookmarks, and each
+ * answer counts towards the daily goal.
  * Keyboard: A-D or 1-4 answer, S shows the answer, Enter goes on, arrows
  * step back and forth, M bookmarks and ? lists the shortcuts.
  */
@@ -131,6 +133,7 @@ export function StudySession({ slug }: StudySessionProps) {
   const handleSelect = (optionIndex: number) => {
     if (revealed) return;
     setSelections({ ...selections, [current.id]: optionIndex });
+    recordDailyAnswer();
   };
 
   const handleNext = () => {

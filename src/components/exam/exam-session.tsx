@@ -16,13 +16,14 @@ import { Button, buttonClasses } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { fetchExamQuestions } from '@/lib/exam-data';
 import type { ExamQuestion } from '@/lib/exam-data';
+import { recordDailyAnswer } from '@/lib/daily-goal';
 import { exams } from '@/lib/exams';
 import { cycleFocus, optionLetters, optionShortcuts, revealFeedback, scrollToTop } from '@/lib/keyboard';
 import { setLeaveGuard } from '@/lib/leave-guard';
 import { getProgress, recordAnswers, recordAttempt, reviewQueue, toggleBookmark } from '@/lib/progress-store';
 import type { TopicTally } from '@/lib/progress-store';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
-import { topicFor } from '@/lib/topics';
+import { drillHref, drillSize, topicFor } from '@/lib/topics';
 
 interface ExamSessionProps {
   slug: string;
@@ -33,11 +34,21 @@ interface ExamSessionProps {
  * 'review': missed questions that are due again (?mode=review), or every
  *   question on the review list (?mode=review&scope=all).
  * 'bookmarks': only bookmarked questions (?mode=bookmarks).
+ * 'drill': a short round from one skill area (?mode=drill&topic=<name>),
+ *   started from the weakest topics on My progress.
  * Every mode updates the mistakes list; only 'exam' adds an attempt.
  */
-export type PracticeMode = 'exam' | 'review' | 'bookmarks';
+export type PracticeMode = 'exam' | 'review' | 'bookmarks' | 'drill';
 
 const questionsPerAttempt = 60;
+
+/** Where the 'nothing to practise' message links back to. */
+const emptyBack: Record<PracticeMode, { href: string; label: string }> = {
+  exam: { href: '/', label: 'Dashboard' },
+  review: { href: '/review', label: 'Review mistakes' },
+  bookmarks: { href: '/bookmarks', label: 'Bookmarks' },
+  drill: { href: '/progress', label: 'My progress' }
+};
 
 /**
  * What Tab and the up/down arrows move between during the exam: the answers,
@@ -58,7 +69,8 @@ const backGuardKey = 'examBackGuard';
  * of 1000 points is calculated and shown. Leaving mid-exam (Exit button,
  * header or menu links, Back) asks first and then shows the results so far.
  * With ?mode=review the questions come from the missed questions that are due
- * for spaced repetition review instead.
+ * for spaced repetition review instead, and ?mode=drill&topic=<skill area>
+ * gives a short round from one skill area.
  * A clock shows the time taken, which is saved with the attempt. Questions
  * can be skipped and answered later from the question overview.
  * Keyboard: focus starts on the first answer (or on Next once answered); Tab
@@ -74,7 +86,9 @@ export function ExamSession({ slug }: ExamSessionProps) {
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const searchParams = useSearchParams();
   const modeParam = searchParams.get('mode');
-  const mode: PracticeMode = modeParam === 'review' || modeParam === 'bookmarks' ? modeParam : 'exam';
+  const mode: PracticeMode =
+    modeParam === 'review' || modeParam === 'bookmarks' || modeParam === 'drill' ? modeParam : 'exam';
+  const topic = searchParams.get('topic') ?? '';
   // Review rounds take only the questions that are due, unless asked for all of them.
   const reviewAll = searchParams.get('scope') === 'all';
 
@@ -87,14 +101,19 @@ export function ExamSession({ slug }: ExamSessionProps) {
         const queue = reviewQueue(saved, slug);
         const reviewIds = reviewAll ? [...queue.due, ...queue.later] : queue.due;
         const picked = new Set((mode === 'review' ? reviewIds : saved.bookmarks[slug]) ?? []);
-        const pool = mode === 'exam' ? exam : exam.filter((question) => picked.has(question.id));
+        const pool =
+          mode === 'exam'
+            ? exam
+            : mode === 'drill'
+              ? exam.filter((question) => topicFor(slug, question) === topic)
+              : exam.filter((question) => picked.has(question.id));
         const shuffled = [...pool];
         for (let i = shuffled.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
         // Each question's answers are reshuffled too, so the correct one moves around.
-        setQuestions(shuffleAllOptions(shuffled.slice(0, questionsPerAttempt)));
+        setQuestions(shuffleAllOptions(shuffled.slice(0, mode === 'drill' ? drillSize : questionsPerAttempt)));
         setStartedAt(Date.now());
       })
       .catch(() => {
@@ -103,7 +122,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
     return () => {
       cancelled = true;
     };
-  }, [slug, mode, reviewAll]);
+  }, [slug, mode, reviewAll, topic]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
@@ -202,7 +221,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
     if (window.history.state?.[backGuardKey]) window.history.back();
   }, [finished]);
 
-  const handleCancelExit = useCallback(() => setConfirmExit(false), []);
+  const handleCancelExit = useCallback(() => setConfirmExit(false), [setConfirmExit]);
 
   const handleConfirmExit = () => {
     setConfirmExit(false);
@@ -245,12 +264,17 @@ export function ExamSession({ slug }: ExamSessionProps) {
       <PageLayout {...layoutProps}>
         <div className="flex max-w-xl flex-col items-center text-center">
           <p className="text-lg text-ink-muted">
-            {mode === 'review'
-              ? `Nothing to review for ${slug.toUpperCase()} right now. Missed questions come back here when they are due.`
-              : `You have no ${slug.toUpperCase()} bookmarks yet.`}
+            {
+              {
+                exam: '',
+                review: `Nothing to review for ${slug.toUpperCase()} right now. Missed questions come back here when they are due.`,
+                bookmarks: `You have no ${slug.toUpperCase()} bookmarks yet.`,
+                drill: `No ${slug.toUpperCase()} questions found for ${topic || 'this skill area'}.`
+              }[mode]
+            }
           </p>
-          <Link href={mode === 'review' ? '/review' : '/bookmarks'} className={buttonClasses({ className: 'mt-8' })}>
-            Back to {mode === 'review' ? 'Review mistakes' : 'Bookmarks'}
+          <Link href={emptyBack[mode].href} className={buttonClasses({ className: 'mt-8' })}>
+            Back to {emptyBack[mode].label}
           </Link>
         </div>
       </PageLayout>
@@ -271,6 +295,8 @@ export function ExamSession({ slug }: ExamSessionProps) {
           endedEarly={endedEarly}
           durationSeconds={durationSeconds}
           mode={mode}
+          topic={topic}
+          drillHref={drillHref(slug, topic)}
         />
       </PageLayout>
     );
@@ -286,6 +312,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
     const newSelections = [...selectedAnswers];
     newSelections[currentIndex] = optionIndex;
     setSelectedAnswers(newSelections);
+    recordDailyAnswer();
   };
 
   const unansweredCount = questions.length - answeredCount;
@@ -356,7 +383,8 @@ export function ExamSession({ slug }: ExamSessionProps) {
         <div className="mb-8 w-full">
           <div className="flex items-center justify-between gap-4">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              {slug.toUpperCase()} {{ exam: 'practice exam', review: 'mistake review', bookmarks: 'bookmarks' }[mode]}
+              {slug.toUpperCase()}{' '}
+              {{ exam: 'practice exam', review: 'mistake review', bookmarks: 'bookmarks', drill: `drill: ${topic}` }[mode]}
             </p>
             <div className="flex items-center gap-3">
               <ShortcutHelp

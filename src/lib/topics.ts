@@ -4,6 +4,14 @@ import type { SkillArea } from './exam-guides';
 /** Used for questions that match none of the exam's skill areas. */
 export const otherTopic = 'Other topics';
 
+/** Questions in a topic drill: a short round from one skill area. */
+export const drillSize = 10;
+
+/** The exam page link for a topic drill on one skill area. */
+export function drillHref(slug: string, topic: string) {
+  return `/exams/${slug}?mode=drill&topic=${encodeURIComponent(topic)}`;
+}
+
 const patternCache = new Map<SkillArea, RegExp[]>();
 
 function escapeRegExp(text: string) {

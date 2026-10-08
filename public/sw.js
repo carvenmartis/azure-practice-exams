@@ -17,6 +17,8 @@
  *   fail, and Next.js then loads the page as a full page load, which the
  *   cached HTML answers. Caching them would need one copy per page and
  *   router state.
+ * - It also shows the daily goal reminders the server pushes
+ *   (src/lib/server/reminders.ts); tapping one opens the dashboard.
  */
 
 const version = new URL(self.location.href).searchParams.get('v') || 'dev';
@@ -57,6 +59,36 @@ self.addEventListener('fetch', (event) => {
   } else {
     event.respondWith(networkFirst(request, { store: true }));
   }
+});
+
+self.addEventListener('push', (event) => {
+  let message = {};
+  try {
+    message = event.data ? event.data.json() : {};
+  } catch {
+    // Not JSON: show the default text.
+  }
+  event.waitUntil(
+    self.registration.showNotification(message.title || 'Time for your daily goal', {
+      body: message.body || 'A few questions keep your streak going.',
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      tag: 'daily-goal',
+      data: { url: message.url || '/' }
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = new URL(event.notification.data?.url || '/', self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windows) => {
+      const open = windows.find((client) => client.url.startsWith(self.location.origin));
+      if (open) return open.focus();
+      return self.clients.openWindow(url);
+    })
+  );
 });
 
 /** Downloads everything the app needs offline into this build's cache. */
