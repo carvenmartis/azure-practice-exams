@@ -44,8 +44,12 @@ interface VapidKeys {
 const dataDir = process.env.REMINDER_DATA_DIR || path.join(process.cwd(), 'reminder-data');
 const keysFile = path.join(dataDir, 'vapid-keys.json');
 const remindersFile = path.join(dataDir, 'reminders.json');
-/** Apple rejects pushes without a contact; set VAPID_SUBJECT to your own mailto: or https: address. */
-const subject = process.env.VAPID_SUBJECT || 'mailto:reminders@azure-practice-exams.local';
+/**
+ * Contact sent with every push. Apple refuses (403 BadJwtToken) subjects it
+ * can't use, such as a mailto: on a .local or localhost domain, so the
+ * default is the app's public Docker Hub page. VAPID_SUBJECT overrides it.
+ */
+const subject = process.env.VAPID_SUBJECT || 'https://hub.docker.com/r/carvenmartisit/azure-practice-exams';
 /** A reminder missed by a restart still goes out this long after its time, not later. */
 const lateLimitMinutes = 120;
 /** A handful of devices per household; old ones drop off beyond this. */
@@ -201,6 +205,19 @@ async function send(reminder: Reminder, today: string) {
   });
 }
 
+/** The push service's status and reason, e.g. '403 BadJwtToken', for error messages. */
+export function pushErrorDetail(error: unknown) {
+  const { statusCode, body, message } = (error ?? {}) as { statusCode?: number; body?: string; message?: string };
+  if (!statusCode) return message ?? 'no answer';
+  let reason = body ?? '';
+  try {
+    reason = JSON.parse(reason).reason ?? reason;
+  } catch {
+    // Not JSON: keep the text.
+  }
+  return `${statusCode} ${reason}`.trim().slice(0, 200);
+}
+
 /** Whether the push service says the subscription is gone for good. */
 function isExpired(error: unknown) {
   const status = (error as { statusCode?: number })?.statusCode;
@@ -233,7 +250,7 @@ async function sendDueReminders() {
       sent.set(reminder.subscription.endpoint, local.day);
     } catch (error) {
       if (isExpired(error)) expired.add(reminder.subscription.endpoint);
-      else console.error('Daily reminder failed:', error);
+      else console.error('Daily reminder failed:', pushErrorDetail(error));
     }
   }
   if (!sent.size && !expired.size) return;

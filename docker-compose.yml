@@ -13,7 +13,7 @@ services:
       - reminder-data:/app/reminder-data
     environment:
       # Contact address sent to Apple and Google with each reminder.
-      VAPID_SUBJECT: "mailto:reminders@azure-practice-exams.local"
+      VAPID_SUBJECT: "https://hub.docker.com/r/carvenmartisit/azure-practice-exams"
     restart: unless-stopped
     labels:
       # Lets watchtower pull new :latest images and restart this container,

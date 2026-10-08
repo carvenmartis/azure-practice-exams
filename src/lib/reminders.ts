@@ -97,7 +97,10 @@ async function post(path: string, body: unknown) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   });
-  if (!res.ok) throw new Error(`The server did not accept the reminder (HTTP ${res.status}).`);
+  if (!res.ok) {
+    const { error } = (await res.json().catch(() => ({}))) as { error?: string };
+    throw new Error(error ?? `The server did not accept the reminder (HTTP ${res.status}).`);
+  }
 }
 
 /**
