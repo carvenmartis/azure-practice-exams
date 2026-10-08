@@ -16,6 +16,8 @@ export const changelog: ChangelogEntry[] = [
     date: '2026-10-08',
     title: 'Track your progress and study smarter',
     changes: [
+      'Keyboard shortcuts in exams and study mode: A-D or 1-4 to answer, Enter for the next question, S to skip, arrow keys to move between questions and M to bookmark. Press ? for the list.',
+      'Clearer keyboard focus everywhere, a Skip to content link, and the menu can be used with the keyboard.',
       'The dashboard shows exam categories (Administration and Architecture, Development and DevOps, AI and Machine Learning); pick one to see its exams.',
       'Works offline: once the app has been opened online, every exam keeps working without Wi-Fi, and the corner label shows when you are offline.',
       'Settings shows whether offline use is ready on this device, or why not (it needs an https address).',

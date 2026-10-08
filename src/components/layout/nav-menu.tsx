@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { canLeave } from '@/lib/leave-guard';
@@ -32,7 +32,8 @@ function useIsClient() {
 /**
  * Burger button that opens a full-height drawer with the site's pages. The
  * drawer slides in from the right edge and closes on navigation, Escape or a
- * click outside it. The drawer is portalled to <body> so it overlays the page
+ * click outside it. Opening it moves keyboard focus to the first link, and
+ * Escape puts focus back on the button. The drawer is portalled to <body> so it overlays the page
  * rather than the header's stacking context.
  */
 export function NavMenu() {
@@ -42,11 +43,16 @@ export function NavMenu() {
   const open = openOn === pathname;
   const setOpen = (isOpen: boolean) => setOpenOn(isOpen ? pathname : null);
   const isClient = useIsClient();
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
+    // The drawer is portalled to the end of <body>, so Tab would not reach it from the button.
+    document.querySelector<HTMLElement>('#site-menu a')?.focus();
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpenOn(null);
+      if (event.key !== 'Escape') return;
+      setOpenOn(null);
+      buttonRef.current?.focus();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -55,6 +61,7 @@ export function NavMenu() {
   return (
     <MotionConfig reducedMotion="user">
       <button
+        ref={buttonRef}
         type="button"
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}

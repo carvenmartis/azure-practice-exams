@@ -14,23 +14,34 @@ interface AnswerOptionProps {
   state: AnswerState;
   disabled: boolean;
   onSelect: () => void;
+  /** Key that picks this option, shown as a key cap (e.g. 'A'). */
+  shortcut?: string;
   children: ReactNode;
 }
 
-/** One answer choice in the quiz. */
-export function AnswerOption({ state, disabled, onSelect, children }: AnswerOptionProps) {
+/** One answer choice in the quiz, with its keyboard letter on larger screens. */
+export function AnswerOption({ state, disabled, onSelect, shortcut, children }: AnswerOptionProps) {
   return (
     <button
       type="button"
       onClick={onSelect}
       disabled={disabled}
+      aria-keyshortcuts={shortcut}
       className={cn(
-        'w-full rounded-xl border px-5 py-3.5 text-left leading-relaxed transition-all duration-200 disabled:cursor-default',
+        'flex w-full items-start gap-3 rounded-xl border px-5 py-3.5 text-left leading-relaxed transition-all duration-200 disabled:cursor-default',
         focusRing,
         stateClasses[state]
       )}
     >
-      {children}
+      {shortcut && (
+        <kbd
+          aria-hidden="true"
+          className="mt-0.5 hidden h-6 min-w-6 shrink-0 items-center justify-center rounded-md border border-line-strong bg-surface-muted px-1.5 font-sans text-xs font-semibold text-ink-muted sm:inline-flex"
+        >
+          {shortcut}
+        </kbd>
+      )}
+      <span className="min-w-0 flex-1">{children}</span>
     </button>
   );
 }

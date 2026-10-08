@@ -8,11 +8,14 @@ import { AnswerOption } from '@/components/exam/answer-option';
 import type { AnswerState } from '@/components/exam/answer-option';
 import { BookmarkButton } from '@/components/exam/bookmark-button';
 import { PageLayout } from '@/components/layout/page-layout';
+import { ShortcutHelp } from '@/components/layout/shortcut-help';
 import { Button } from '@/components/ui/button';
 import { fetchExamQuestions } from '@/lib/exam-data';
 import type { ExamQuestion } from '@/lib/exam-data';
 import { getExamGuide } from '@/lib/exam-guides';
 import { exams } from '@/lib/exams';
+import { optionLetters, optionShortcuts, revealFeedback, scrollToTop } from '@/lib/keyboard';
+import { toggleBookmark } from '@/lib/progress-store';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
 import { otherTopic, topicFor } from '@/lib/topics';
 import { cn, focusRing } from '@/lib/utils';
@@ -27,16 +30,13 @@ interface StudySessionProps {
 
 const allTopics = '';
 
-/** <main> (from PageLayout) is the scroll area, not the window. */
-function scrollToTop() {
-  document.querySelector('main')?.scrollTo({ top: 0 });
-}
-
 /**
  * Study mode for one exam: every question in a random order, optionally
  * narrowed to one skill area. No timer and no score; picking an option (or
  * Show answer) reveals the answer and explanation straight away, and you
  * can step back and forth. Nothing is saved except bookmarks.
+ * Keyboard: A-D or 1-4 answer, S shows the answer, Enter goes on, arrows
+ * step back and forth, M bookmarks and ? lists the shortcuts.
  */
 export function StudySession({ slug }: StudySessionProps) {
   const [questions, setQuestions] = useState<StudyQuestion[] | null>(null);
@@ -143,6 +143,31 @@ export function StudySession({ slug }: StudySessionProps) {
     return optionIndex === selection ? 'incorrect' : 'default';
   };
 
+  const handleShowAnswer = () => setSelections({ ...selections, [current.id]: -1 });
+
+  const shortcutHandlers = {
+    ...optionShortcuts(current.options.length, (idx) => {
+      if (revealed) return;
+      handleSelect(idx);
+      revealFeedback();
+    }),
+    s: () => {
+      if (revealed) return;
+      handleShowAnswer();
+      revealFeedback();
+    },
+    Enter: () => {
+      if (revealed) handleNext();
+    },
+    ArrowLeft: () => {
+      if (index > 0) goTo(index - 1);
+    },
+    ArrowRight: () => {
+      if (!isLast) goTo(index + 1);
+    },
+    m: () => toggleBookmark(slug, current.id)
+  };
+
   return (
     <PageLayout {...layoutProps} eyebrow={`Study mode · ${index + 1} of ${visible.length}`}>
       <div className="flex w-full max-w-3xl flex-col">
@@ -165,12 +190,24 @@ export function StudySession({ slug }: StudySessionProps) {
               ))}
             </select>
           </label>
-          <Link
-            href="/study"
-            className="text-sm font-semibold text-ink-muted transition-colors hover:text-ink"
-          >
-            Other exams
-          </Link>
+          <div className="flex items-center gap-3">
+            <ShortcutHelp
+              handlers={shortcutHandlers}
+              shortcuts={[
+                { keys: ['A–D', '1–4'], label: 'Pick an answer' },
+                { keys: ['S'], label: 'Show the answer' },
+                { keys: ['Enter'], label: 'Next question (after answering)' },
+                { keys: ['←', '→'], label: 'Previous or next question' },
+                { keys: ['M'], label: 'Bookmark the question' }
+              ]}
+            />
+            <Link
+              href="/study"
+              className={cn('text-sm font-semibold text-ink-muted transition-colors hover:text-ink', focusRing)}
+            >
+              Other exams
+            </Link>
+          </div>
         </div>
 
         <div className="mt-8 flex items-center justify-between gap-4">
@@ -184,7 +221,13 @@ export function StudySession({ slug }: StudySessionProps) {
 
         <div className="flex w-full flex-col space-y-3">
           {current.options.map((option, idx) => (
-            <AnswerOption key={idx} state={answerState(idx)} disabled={revealed} onSelect={() => handleSelect(idx)}>
+            <AnswerOption
+              key={idx}
+              state={answerState(idx)}
+              disabled={revealed}
+              onSelect={() => handleSelect(idx)}
+              shortcut={optionLetters[idx]}
+            >
               {option}
             </AnswerOption>
           ))}
@@ -201,17 +244,23 @@ export function StudySession({ slug }: StudySessionProps) {
           />
         ) : (
           <div className="mt-8 flex flex-wrap justify-end gap-3">
-            <Button variant="secondary" onClick={() => setSelections({ ...selections, [current.id]: -1 })}>
+            <Button variant="secondary" onClick={handleShowAnswer} aria-keyshortcuts="S">
               Show answer
             </Button>
           </div>
         )}
 
         <div className="mt-8 flex items-center justify-between border-t border-line pt-5">
-          <Button variant="ghost" size="sm" disabled={index === 0} onClick={() => goTo(index - 1)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={index === 0}
+            onClick={() => goTo(index - 1)}
+            aria-keyshortcuts="ArrowLeft"
+          >
             ← Previous
           </Button>
-          <Button variant="ghost" size="sm" disabled={isLast} onClick={() => goTo(index + 1)}>
+          <Button variant="ghost" size="sm" disabled={isLast} onClick={() => goTo(index + 1)} aria-keyshortcuts="ArrowRight">
             Skip →
           </Button>
         </div>

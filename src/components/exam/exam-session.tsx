@@ -11,13 +11,15 @@ import { ExamResults } from '@/components/exam/exam-results';
 import { ExamTimer } from '@/components/exam/exam-timer';
 import { QuestionNavigator } from '@/components/exam/question-navigator';
 import { PageLayout } from '@/components/layout/page-layout';
+import { ShortcutHelp } from '@/components/layout/shortcut-help';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { fetchExamQuestions } from '@/lib/exam-data';
 import type { ExamQuestion } from '@/lib/exam-data';
 import { exams } from '@/lib/exams';
+import { optionLetters, optionShortcuts, revealFeedback, scrollToTop } from '@/lib/keyboard';
 import { setLeaveGuard } from '@/lib/leave-guard';
-import { getProgress, recordAnswers, recordAttempt, reviewQueue } from '@/lib/progress-store';
+import { getProgress, recordAnswers, recordAttempt, reviewQueue, toggleBookmark } from '@/lib/progress-store';
 import type { TopicTally } from '@/lib/progress-store';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
 import { topicFor } from '@/lib/topics';
@@ -53,6 +55,8 @@ const backGuardKey = 'examBackGuard';
  * for spaced repetition review instead.
  * A clock shows the time taken, which is saved with the attempt. Questions
  * can be skipped and answered later from the question overview.
+ * Keyboard: A-D or 1-4 answer, Enter goes on, S skips, arrows step through
+ * the questions, M bookmarks and ? lists the shortcuts.
  */
 export function ExamSession({ slug }: ExamSessionProps) {
   // Load the questions in the browser, then shuffle, limit to 60 and shuffle each question's answers.
@@ -292,6 +296,36 @@ export function ExamSession({ slug }: ExamSessionProps) {
     return optionIndex === userSelection ? 'incorrect' : 'default';
   };
 
+  const goTo = (index: number) => {
+    setCurrentIndex(index);
+    scrollToTop();
+  };
+
+  const shortcutHandlers = {
+    ...optionShortcuts(currentQuestion.options.length, (idx) => {
+      if (showFeedback) return;
+      handleSelect(idx);
+      revealFeedback();
+    }),
+    Enter: () => {
+      if (!showFeedback) return;
+      handleNext();
+      scrollToTop();
+    },
+    s: () => {
+      if (showFeedback) return;
+      handleNext();
+      scrollToTop();
+    },
+    ArrowLeft: () => {
+      if (currentIndex > 0) goTo(currentIndex - 1);
+    },
+    ArrowRight: () => {
+      if (currentIndex < questions.length - 1) goTo(currentIndex + 1);
+    },
+    m: () => toggleBookmark(slug, currentQuestion.id)
+  };
+
   return (
     <PageLayout {...layoutProps} eyebrow={`Question ${currentIndex + 1} of ${questions.length}`}>
       <div className="flex w-full max-w-3xl flex-col items-center">
@@ -301,6 +335,16 @@ export function ExamSession({ slug }: ExamSessionProps) {
               {slug.toUpperCase()} {{ exam: 'practice exam', review: 'mistake review', bookmarks: 'bookmarks' }[mode]}
             </p>
             <div className="flex items-center gap-3">
+              <ShortcutHelp
+                handlers={shortcutHandlers}
+                shortcuts={[
+                  { keys: ['A–D', '1–4'], label: 'Pick an answer' },
+                  { keys: ['Enter'], label: 'Next question (after answering)' },
+                  { keys: ['S'], label: 'Skip for now' },
+                  { keys: ['←', '→'], label: 'Previous or next question' },
+                  { keys: ['M'], label: 'Bookmark the question' }
+                ]}
+              />
               {startedAt !== null && <ExamTimer startedAt={startedAt} />}
               <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)}>
                 Exit exam
@@ -344,6 +388,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
               state={answerState(idx)}
               disabled={showFeedback}
               onSelect={() => handleSelect(idx)}
+              shortcut={optionLetters[idx]}
             >
               {option}
             </AnswerOption>
@@ -361,7 +406,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
         )}
         {!showFeedback && (
           <div className="mt-6 flex w-full justify-end">
-            <Button variant="secondary" onClick={handleNext}>
+            <Button variant="secondary" onClick={handleNext} aria-keyshortcuts="S">
               Skip for now
             </Button>
           </div>
