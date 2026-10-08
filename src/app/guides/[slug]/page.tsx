@@ -7,6 +7,7 @@ import { buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { getExamGuide, trainingSearchUrl } from '@/lib/exam-guides';
 import { exams, splitExamName } from '@/lib/exams';
+import { getExamNotes } from '@/lib/notes';
 
 interface GuidePageProps {
   params: Promise<{ slug: string }>;
@@ -62,6 +63,13 @@ export default async function GuidePage({ params }: GuidePageProps) {
               </a>
             </li>
           ))}
+          {getExamNotes(slug) && (
+            <li>
+              <Link href={`/notes/${slug}`} className={buttonClasses({ variant: 'secondary', size: 'sm' })}>
+                Study notes
+              </Link>
+            </li>
+          )}
           <li>
             <StartExamLink slug={slug} className={buttonClasses({ size: 'sm' })}>
               Start a practice exam

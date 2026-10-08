@@ -14,6 +14,14 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   {
     date: '2026-10-08',
+    title: 'Study notes for every exam',
+    changes: [
+      'New Study notes page per exam (in the menu, on each exam card and on the exam guide): the key terms, limits and facts of every skill area with a short explanation, plus all abbreviations used in the questions.',
+      'Search the notes, jump to a skill area, or tap Quiz me to hide the meanings and test yourself one term at a time.'
+    ]
+  },
+  {
+    date: '2026-10-08',
     title: 'Four more AI exams',
     changes: [
       'New practice exams with 120 questions each: AI-901 Azure AI Fundamentals, SC-500 Cloud and AI Security Engineer, AB-620 AI Agent Builder and DP-800 SQL AI Developer.',

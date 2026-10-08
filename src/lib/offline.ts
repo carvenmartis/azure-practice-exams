@@ -1,4 +1,5 @@
 import { examCategories, exams } from '@/lib/exams';
+import { getExamNotes } from '@/lib/notes';
 import { buildId } from '@/lib/version';
 
 /**
@@ -10,12 +11,14 @@ export const offlinePages = [
   '/about',
   '/bookmarks',
   '/guides',
+  '/notes',
   '/progress',
   '/review',
   '/settings',
   '/study',
   ...examCategories.map((category) => `/categories/${category.id}`),
-  ...exams.flatMap((exam) => [`/exams/${exam.slug}`, `/study/${exam.slug}`, `/guides/${exam.slug}`])
+  ...exams.flatMap((exam) => [`/exams/${exam.slug}`, `/study/${exam.slug}`, `/guides/${exam.slug}`]),
+  ...exams.filter((exam) => getExamNotes(exam.slug)).map((exam) => `/notes/${exam.slug}`)
 ];
 
 /** Other files the service worker downloads: all questions and the home-screen app files. */

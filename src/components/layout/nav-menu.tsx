@@ -14,6 +14,7 @@ const menuItems = [
   { href: '/review', label: 'Review mistakes' },
   { href: '/bookmarks', label: 'Bookmarks' },
   { href: '/study', label: 'Study mode' },
+  { href: '/notes', label: 'Study notes' },
   { href: '/guides', label: 'Exam guides' },
   { href: '/settings', label: 'Settings' },
   { href: '/about', label: 'About' }
