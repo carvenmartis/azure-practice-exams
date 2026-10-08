@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { PageLayout } from '@/components/layout/page-layout';
+import { OfflineStatus } from '@/components/settings/offline-status';
 import { ThemePicker } from '@/components/settings/theme-picker';
 
 export const metadata: Metadata = { title: 'Settings' };
 
-/** Settings page. The theme choice applies across the whole site. */
+/** Settings page. The theme choice applies across the whole site; offline use shows whether exams work without internet. */
 export default function Settings() {
   return (
     <PageLayout headerTitle="Settings">
@@ -13,6 +14,9 @@ export default function Settings() {
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Settings</h1>
         <div className="mt-10 rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-8">
           <ThemePicker />
+        </div>
+        <div className="mt-6 rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-8">
+          <OfflineStatus />
         </div>
       </div>
     </PageLayout>

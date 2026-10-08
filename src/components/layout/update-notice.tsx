@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { setServerReachable } from '@/lib/connection';
 import { buildId } from '@/lib/version';
 import type { VersionResponse } from '@/lib/version';
 import { cn, focusRing } from '@/lib/utils';
@@ -23,6 +24,7 @@ export function UpdateNotice() {
       try {
         // The timestamp keeps iOS from answering with a cached response.
         const res = await fetch(`/api/version?t=${Date.now()}`, { cache: 'no-store' });
+        setServerReachable(res.ok);
         if (!res.ok) return;
         const latest = (await res.json()) as VersionResponse;
         if (!cancelled && latest.buildId && latest.buildId !== buildId) {
@@ -30,6 +32,7 @@ export function UpdateNotice() {
         }
       } catch {
         // Offline or the server is restarting; try again on the next check.
+        setServerReachable(false);
       }
     };
 
