@@ -238,9 +238,8 @@ export function StudySession({ slug }: StudySessionProps) {
 
         {revealed ? (
           <AnswerFeedback
-            correctAnswer={current.options[current.answerIndex]}
-            explanation={current.explanation}
-            link={current.link}
+            question={current}
+            selectedIndex={selection}
             isLastQuestion={isLast}
             onNext={handleNext}
             nextLabel={isLast ? 'Back to the first question' : 'Next Question'}

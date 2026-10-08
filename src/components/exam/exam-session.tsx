@@ -450,9 +450,8 @@ export function ExamSession({ slug }: ExamSessionProps) {
         </div>
         {showFeedback && (
           <AnswerFeedback
-            correctAnswer={currentQuestion.options[currentQuestion.answerIndex]}
-            explanation={currentQuestion.explanation}
-            link={currentQuestion.link}
+            question={currentQuestion}
+            selectedIndex={userSelection}
             isLastQuestion={nextUnanswered < 0 && unansweredCount === 0}
             onNext={handleNext}
             nextLabel={nextUnanswered < 0 && unansweredCount > 0 ? 'Finish exam' : undefined}

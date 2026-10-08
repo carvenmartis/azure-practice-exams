@@ -9,6 +9,8 @@ export interface ExamQuestion {
   answerIndex: number;
   explanation: string;
   link?: string;
+  /** Why each wrong option is wrong, keyed by the option text (options get shuffled). */
+  wrongAnswers?: Record<string, string>;
 }
 
 /*

@@ -1,0 +1,602 @@
+{
+  "f63092950f62": {
+    "A text-to-speech model": "A text-to-speech model converts written text into spoken audio. It produces audio, not category labels, so it cannot classify support tickets into five categories.",
+    "The largest available reasoning model": "The largest reasoning model would likely classify tickets well, but it costs more and runs slower per call. The scenario says frontier accuracy is not needed and cost matters, so it is overkill.",
+    "An image generation model": "An image generation model creates pictures from text prompts. Classifying short text tickets into categories is a text understanding task, so this model type does not apply."
+  },
+  "59dc3d8ffd7b": {
+    "A text-to-image model": "A text-to-image model generates new images from text prompts. Here the app must read an uploaded photo and answer in text, which is the opposite direction.",
+    "A speech-to-text model": "A speech-to-text model transcribes spoken audio into text. The input in this scenario is a photo, so a speech model cannot interpret the damaged part.",
+    "A text-only embedding model": "A text-only embedding model turns text into vectors for similarity search. It cannot see images and does not generate answers, so it cannot answer questions about the photo."
+  },
+  "417f21a09666": {
+    "Batch deployment": "Batch deployment processes large asynchronous jobs at a discount with a turnaround window of up to 24 hours. It does not reserve capacity or give predictable real-time latency for a steady workload.",
+    "Standard pay-per-token deployment": "Standard pay-per-token deployment bills per token on shared capacity, so latency can vary and you can be throttled at peak. It does not guarantee reserved capacity.",
+    "A local model on a developer laptop": "Running a model on a developer laptop gives no guaranteed capacity, scale or availability. It is unsuitable for a steady, high-volume production workload."
+  },
+  "8eb6c7b8d43d": {
+    "Standard deployment called synchronously": "Calling a standard deployment synchronously charges full real-time pricing and is subject to rate limits. With 24 hours of slack, the discounted batch option is cheaper for 2 million documents.",
+    "Real-time managed online endpoint": "A real-time managed online endpoint is built for low-latency, request-by-request inference and is billed for always-on compute. It does not minimize cost for a deferred bulk job.",
+    "Provisioned throughput deployment": "Provisioned throughput reserves dedicated capacity billed by the hour for predictable latency. Paying for reserved capacity is not the lowest-cost choice for a one-off overnight job that can wait."
+  },
+  "2aedf325a694": {
+    "The model has been retired": "A retired model returns errors indicating the deployment or model is unavailable, not intermittent 429 responses. Errors that appear only at peak hours point to throttling instead.",
+    "The API key has been revoked": "A revoked API key produces HTTP 401 Unauthorized on every call, regardless of load. Errors that appear only during peak hours indicate rate limiting.",
+    "The prompt contains blocked content": "Prompts blocked by content filtering return an HTTP 400 error with a content filter code, tied to the prompt content rather than to traffic volume or time of day."
+  },
+  "26415780fb3e": {
+    "Embed the key in the container image": "Embedding the key in the container image still stores a secret, and anyone who can pull the image can extract it. The requirement is to avoid storing keys entirely.",
+    "Store the key in an environment variable": "Putting the key in an environment variable still stores and manages a secret. Keyless access requires a managed identity with Microsoft Entra ID authentication instead.",
+    "Allow anonymous access on the resource": "Foundry resources do not support anonymous access, and allowing unauthenticated calls would be a serious security risk. Keyless access means authenticating with an identity, not removing authentication."
+  },
+  "60e7ce95fcd2": {
+    "A content filter": "A content filter screens prompts and completions for harmful content. It does not affect network reachability, so the resource would still be exposed to the public internet.",
+    "A semantic ranker": "A semantic ranker reorders search results in Azure AI Search by relevance. It has nothing to do with network isolation of the Foundry resource.",
+    "A larger quota": "A larger quota raises the tokens-per-minute limit of a deployment. It changes capacity, not network exposure, so it does not block public internet access."
+  },
+  "42c590d89c42": {
+    "A single shared project for all environments": "A single shared project for dev, test and prod mixes environments together and removes isolation. It does not deploy each environment consistently from source control.",
+    "Manual configuration in the portal for each environment": "Manual portal configuration per environment is error-prone and leads to drift between dev, test and prod. It is not repeatable or tracked in source control.",
+    "Copying the API key between environments": "Copying API keys between environments only moves credentials around and is a security risk. It does not deploy any infrastructure or configuration from source control."
+  },
+  "adcf4298c26a": {
+    "Disable streaming": "Disabling streaming only changes how tokens are delivered to the client. The same tokens are processed and billed, so it does not reduce the cost of the repeated system prompt.",
+    "Increase temperature": "Raising temperature makes output more random. It has no effect on how many input tokens are processed, so it does not cut the cost of resending a long system prompt.",
+    "Switch to a larger model": "A larger model typically costs more per token, which would increase rather than decrease the cost of sending the same long system prompt on every request."
+  },
+  "518b10384bed": {
+    "Azure Translator": "Azure Translator converts text between languages. It does not classify or block content for hate, sexual, violence or self-harm categories.",
+    "Azure Monitor autoscale": "Azure Monitor autoscale adjusts the instance count of resources based on metrics. It is a scaling feature and does not inspect model inputs or outputs for harmful content.",
+    "Azure Key Vault": "Azure Key Vault securely stores secrets, keys and certificates. It has no role in classifying or filtering harmful content in prompts and completions."
+  },
+  "7e3a916c79ce": {
+    "Semantic ranking": "Semantic ranking reorders search results by meaning in Azure AI Search. It improves retrieval relevance but does not detect attempts to override the assistant's instructions.",
+    "Groundedness evaluation": "Groundedness evaluation checks whether answers are supported by source content. It measures response quality after the fact and does not detect jailbreak attempts in user prompts.",
+    "Token analytics": "Token analytics tracks prompt and completion token counts for cost and usage. It does not analyze prompt intent, so it cannot detect instruction-override attacks."
+  },
+  "ad9ecc5e3f28": {
+    "BLEU score": "BLEU (Bilingual Evaluation Understudy) compares generated text to reference text by word overlap, mainly for translation. It does not check whether an answer is supported by retrieved sources.",
+    "Fluency": "Fluency measures how well-written and grammatically natural a response is. A fluent answer can still contain claims that are not in the retrieved sources.",
+    "Latency": "Latency measures how long a response takes to return. It is a performance metric and says nothing about whether answers are supported by the sources."
+  },
+  "db935aec1369": {
+    "Increase the model temperature": "Temperature controls how random the model's output is. It has no effect on whether a human approves refunds over the $500 threshold.",
+    "Let the agent decide and log the result": "Letting the agent decide and only logging the result skips the required human sign-off. Logging records what happened but does not stop unapproved refunds over $500.",
+    "Remove the refund tool entirely": "Removing the refund tool prevents all refunds, including small ones the agent is allowed to issue. The policy only needs approval above $500, not a full ban."
+  },
+  "86405c6faca2": {
+    "A smaller model": "A smaller model changes cost and quality but does not record which documents and tool calls produced each answer, so it gives auditors no provenance.",
+    "A higher rate limit": "A higher rate limit allows more requests per minute. It does not capture any record of documents or tool calls behind each answer.",
+    "Content filter severity set to high": "Setting content filter severity to high changes which harmful content is blocked. It does not log the retrieval and tool steps auditors need to see."
+  },
+  "435c6d37d80c": {
+    "The number of API keys": "The number of API keys is a static credential count. It tells you nothing about whether retrieved passages are becoming less relevant after new documents are added.",
+    "Only CPU usage of the web app": "CPU usage of the web app reflects compute load, not search quality. Retrieval relevance can drop while CPU looks normal, so this alone would miss the problem.",
+    "Image resolution": "Image resolution is unrelated to text retrieval quality in a RAG app. It does not reveal whether newly added documents are degrading the search index."
+  },
+  "1a47fbcc8ad8": {
+    "Assign Owner on the subscription": "Owner on the subscription grants full control over every resource and role assignments. That is far more access than calling deployed models and violates least privilege.",
+    "Assign Contributor on the tenant root group": "Contributor on the tenant root management group grants broad management rights across all subscriptions. It is a very wide scope and still lacks a focus on the data-plane access actually needed.",
+    "Share the resource key": "Sharing the resource key gives full key-based access with no per-user identity or auditing, and keys are hard to scope or revoke for one person. It is not an RBAC approach."
+  },
+  "8e93fde2d2e4": {
+    "Lowering top_p": "Lowering top_p narrows the set of tokens the model samples from, making output more focused. It adds no company documents, so answers are not grounded in your data.",
+    "Full fine-tuning": "Full fine-tuning retrains the model's weights on your data, which the question rules out. It is also costly and does not keep answers current as documents change.",
+    "Increasing max tokens": "Increasing max tokens only allows longer responses. It does not give the model access to company documents, so answers remain ungrounded."
+  },
+  "b3aab24218f2": {
+    "To detect harmful content": "Detecting harmful content is the job of content filters and Azure AI Content Safety. Embedding models produce vectors for similarity search, not safety classifications.",
+    "To translate the answer": "Translating answers is done by Azure Translator or a language model. An embedding model outputs numeric vectors, not text in another language.",
+    "To generate the final answer": "Generating the final answer is the job of the chat or completion model. The embedding model only turns text into vectors so relevant passages can be retrieved."
+  },
+  "3f1a74b4c367": {
+    "A higher temperature": "Higher temperature makes output more random and creative, which makes strict JSON conformance less reliable rather than more.",
+    "Streaming responses": "Streaming delivers tokens as they are generated. It changes delivery, not format, so it does not guarantee output matches a JSON schema.",
+    "A longer system message only": "Asking for JSON in a long system message alone often works but is not guaranteed. The model can still drift from the schema, which breaks downstream parsing."
+  },
+  "1f32a18fb40e": {
+    "Embeddings": "Embeddings convert text into vectors for similarity search. They do not let the model request a call to your order-status API.",
+    "Prompt caching": "Prompt caching reuses identical prompt prefixes to lower cost and latency. It does not let the model call an external API for live data.",
+    "Content filtering": "Content filtering screens prompts and responses for harmful content. It has nothing to do with letting the model request an API call."
+  },
+  "3015e1384930": {
+    "The full source code of the function": "The model never sees or runs the function's source code; your app executes it. Including the code adds tokens without telling the model when or how to call the tool.",
+    "Only the function name": "A name alone does not tell the model when the tool applies or what arguments it needs. Without a description and parameter schema, tool calls are unreliable.",
+    "The API key of the backing service": "An API key is a secret that belongs in the backing service or a secure store, never in the tool definition the model sees. It does not help the model call the tool correctly."
+  },
+  "7bf14a7df92e": {
+    "Azure Translator": "Azure Translator translates text and documents between languages. It does not host agents, manage conversation state or run tool-calling loops.",
+    "Azure Batch": "Azure Batch runs large-scale parallel compute jobs on pools of virtual machines. It is not an agent framework and does not manage conversations or tools.",
+    "Azure Data Factory": "Azure Data Factory orchestrates data movement and transformation pipelines. It is a data integration service, not a host for conversational agents."
+  },
+  "0409844fb2ca": {
+    "A batch inference job": "A batch inference job processes many requests asynchronously in bulk. It does not involve agents handing requests to one another during a conversation.",
+    "A single-turn completion": "A single-turn completion is one prompt and one response from one model. The scenario has a triage agent handing work to a separate specialist agent.",
+    "A fine-tuned classifier": "A fine-tuned classifier is a model trained to label inputs. It could help triage but does not describe a design where separate agents hand off work."
+  },
+  "8ab84356beb3": {
+    "Paste all documents into the system prompt": "Pasting all documents into the system prompt quickly exceeds context limits, raises cost on every call and goes stale as content changes. It does not connect to live SharePoint or search data.",
+    "Increase the context window only": "A larger context window only lets more text fit in a prompt. It does not connect the agent to SharePoint or the search index or retrieve relevant content.",
+    "Fine-tune the model on the documents": "Fine-tuning changes model behavior and style but is not a reliable way to inject factual knowledge. It also cannot keep up with changes in the SharePoint library or index."
+  },
+  "2f96973501ad": {
+    "Data drift": "Data drift is when input data changes over time compared to what a model was built or tuned on. It is not the term for stating facts absent from retrieved documents.",
+    "Throttling": "Throttling is when a service rejects requests for exceeding rate limits, usually with HTTP 429. It is unrelated to the content of answers.",
+    "Tokenization": "Tokenization is splitting text into tokens before the model processes it. It is a normal processing step, not a name for unsupported claims."
+  },
+  "a99dce808e71": {
+    "Raise the temperature to 1.5": "Raising temperature to 1.5 makes sampling much more random and creative. That is the opposite of the consistent, deterministic answers a compliance assistant needs.",
+    "Remove the system message": "Removing the system message takes away the instructions that set tone, scope and rules. That makes answers less controlled, not more deterministic.",
+    "Raise frequency penalty to maximum": "A maximum frequency penalty pushes the model to avoid repeating tokens, which can cause awkward wording. It does not make answers more deterministic."
+  },
+  "f4d0ce12ab84": {
+    "Retrieval": "Retrieval fetches relevant documents and adds them as context. It supplies facts, not worked input and output examples that show the expected format.",
+    "Fine-tuning": "Fine-tuning trains the model on many examples outside the prompt, changing its weights. The question describes placing a few examples inside the prompt itself.",
+    "Zero-shot prompting": "Zero-shot prompting gives the task instruction with no examples at all. Including a few examples is what defines few-shot prompting."
+  },
+  "c315a6498669": {
+    "Load balancing": "Load balancing spreads requests across multiple deployments or endpoints for capacity. It does not review or revise draft answers against sources.",
+    "Content filtering": "Content filtering screens text for harmful categories like hate or violence. It does not check whether claims are supported by sources or fix them.",
+    "Prompt caching": "Prompt caching reuses identical prompt prefixes to save cost and latency. It does not add a review pass that corrects unsupported claims."
+  },
+  "a2ad7c163037": {
+    "Number of deployments": "The number of deployments is a resource count. It says nothing about whether the app's answers are accurate, relevant or well written.",
+    "Precision of an image classifier only": "Precision of an image classifier measures a different kind of model. It does not assess generated text answers for groundedness, relevance or fluency.",
+    "CPU, memory and disk": "CPU, memory and disk are infrastructure metrics. They show resource load, not whether generated answers are good."
+  },
+  "6d01128d3984": {
+    "Delete the conversation thread": "Deleting the conversation thread throws away the evidence of what happened. It does not explain why the agent chose the wrong tool.",
+    "Switch the region": "Switching regions changes where the service runs but not how the model selects tools. Tool selection errors come from instructions and tool descriptions, not location.",
+    "Increase the quota": "Increasing the quota raises rate limits. Wrong tool selection is a reasoning or configuration problem, not a capacity problem."
+  },
+  "980dffcea250": {
+    "Use the Azure Storage SDK": "The Azure Storage SDK works with blobs, files, queues and tables. It cannot call models or agents in a Foundry project.",
+    "Use FTP to upload prompts": "FTP (File Transfer Protocol) moves files between systems and is not an interface for Foundry. Prompts are sent to models through the project endpoint and SDK.",
+    "Call the Azure Resource Manager API for each chat message": "The Azure Resource Manager API manages resources such as creating deployments. It is the control plane and is not used to send chat messages to models."
+  },
+  "a7b84155d638": {
+    "Provisioned throughput": "Provisioned throughput reserves model capacity for predictable latency. It still returns the full answer at once unless streaming is enabled.",
+    "Batch mode": "Batch mode processes requests asynchronously with results returned later, often hours later. It is the opposite of showing partial output immediately.",
+    "Structured outputs": "Structured outputs force responses to match a JSON schema. They control format, not whether tokens arrive incrementally in the UI."
+  },
+  "b946d01bf927": {
+    "Fine-tuning": "Fine-tuning further trains one model on your data. It does not decide which of several models handles each request.",
+    "Vector indexing": "Vector indexing stores embeddings for similarity search in retrieval. It has nothing to do with choosing between cheap and large models per request.",
+    "Content filtering": "Content filtering screens prompts and responses for harmful content. It does not route requests to different models based on complexity."
+  },
+  "0735e2d38a31": {
+    "DNS query count": "DNS (Domain Name System) query count reflects name lookups, not model usage. Generative AI cost is driven mainly by tokens processed.",
+    "Number of resource groups": "The number of resource groups is an organizational count with no direct cost. It does not show how much the app spends on model calls.",
+    "Disk IOPS of the database": "Disk IOPS (input/output operations per second) of a database measures storage performance. It does not reflect token consumption, which drives generative AI cost."
+  },
+  "9a0420fadd40": {
+    "Disable logging": "Disabling logging removes the audit trail of what the agent sent. It increases risk because mistakes or misuse could go unnoticed.",
+    "Give the agent full mailbox access": "Full mailbox access widens what the agent can do, including reading and deleting mail. That expands risk instead of limiting it, the opposite of least privilege.",
+    "Raise temperature for more natural emails": "Raising temperature makes output more random and unpredictable. It adds risk to customer-facing emails rather than reducing it."
+  },
+  "d48b3681f9b4": {
+    "In the private endpoint": "A private endpoint provides private network access to a resource. It is a networking setting and cannot define extraction, API and summarization steps.",
+    "In the quota settings": "Quota settings control tokens-per-minute and request limits for deployments. They do not define the order of steps in a pipeline.",
+    "In the content filter configuration": "Content filter configuration sets severity thresholds for harmful content. It does not orchestrate multistep extraction, API and summarization tasks."
+  },
+  "b047ba015274": {
+    "An embedding model": "An embedding model turns text or images into vectors for similarity search. It cannot create marketing images from descriptions.",
+    "A speech model": "A speech model converts between speech and text. It produces audio or transcripts, not images.",
+    "A text classification model": "A text classification model assigns labels to text. It analyzes input but cannot generate images."
+  },
+  "a4911d45c917": {
+    "Generate a new image with no reference": "Generating a new image with no reference creates everything from scratch, so the product would not stay untouched. You need the original photo plus a mask.",
+    "Run OCR on the image": "OCR (optical character recognition) reads text from images. It does not edit or replace image regions such as the background.",
+    "Increase image resolution": "Increasing image resolution enlarges or sharpens the photo. It does not replace the background or isolate the product."
+  },
+  "6503fe9f0603": {
+    "Use a vector index only": "A vector index stores embeddings for similarity search. It can find similar images but cannot write a description to use as alt text.",
+    "Use a translator": "A translator converts text between languages. It needs text as input and cannot describe what an image shows.",
+    "Use a speech-to-text model": "A speech-to-text model transcribes spoken audio. Uploaded images contain no speech, so it cannot produce alt text."
+  },
+  "19afa97c8fa7": {
+    "Azure Front Door": "Azure Front Door is a global content delivery and application load-balancing service. It routes web traffic and does not extract fields from content.",
+    "Azure Key Vault": "Azure Key Vault stores secrets, keys and certificates. It does not analyze images, documents, audio or video.",
+    "Azure Event Grid": "Azure Event Grid routes events between services. It can trigger processing but does not itself extract fields or descriptions from content."
+  },
+  "9deeddeafad9": {
+    "Text translation": "Text translation converts text between languages. It cannot watch a video and describe what happens in each segment.",
+    "Speaker recognition only": "Speaker recognition identifies or verifies who is speaking from voice. It does not summarize visual or spoken content per video segment.",
+    "Image inpainting": "Image inpainting edits masked regions of an image. It is a generation and editing technique, not a way to summarize video."
+  },
+  "3d153f12b7b3": {
+    "Model overfitting": "Overfitting is when a trained model memorizes training data and generalizes poorly. Hidden instructions in an uploaded image are an attack, not a training issue.",
+    "Data drift": "Data drift is a gradual change in input data compared with what a model expects. A deliberate hidden instruction is a security attack, not drift.",
+    "Rate limiting": "Rate limiting caps how many requests a client can send. It is a capacity control, not a risk from malicious text hidden in an image."
+  },
+  "f6c15dd068c3": {
+    "Azure Cosmos DB": "Azure Cosmos DB is a globally distributed NoSQL database. It stores data but does not analyze images for violent content.",
+    "Azure App Configuration": "Azure App Configuration centrally stores application settings and feature flags. It has no image analysis or moderation capability.",
+    "Azure Translator": "Azure Translator converts text between languages. It cannot analyze images for violence or other harm categories."
+  },
+  "bad7392eb4bb": {
+    "Text-to-image generation": "Text-to-image generation creates new images from prompts. It cannot analyze the user's photo to count missing screws.",
+    "Speech synthesis": "Speech synthesis turns text into spoken audio. It does not look at images or answer questions about them.",
+    "Keyword search": "Keyword search matches query words against indexed text. It cannot inspect a photo to answer a visual question."
+  },
+  "bd01624c5704": {
+    "Use text-to-speech": "Text-to-speech converts text into spoken audio. It does not identify people, organizations or dates or output JSON.",
+    "Use image generation": "Image generation creates pictures from text prompts. It does not extract entities from contract text.",
+    "Use a vector index only": "A vector index alone supports similarity search over embeddings. It can find relevant passages but does not extract entities into structured JSON."
+  },
+  "ef7d2e456e5e": {
+    "Azure Monitor": "Azure Monitor collects metrics, logs and alerts for resources and apps. It does not translate text.",
+    "Azure Content Safety": "Azure AI Content Safety detects harmful content such as hate or violence. It classifies content but does not translate between languages.",
+    "Azure AI Search": "Azure AI Search indexes and retrieves content, with features like keyword, vector and semantic search. It does not translate text or support custom terminology for translation."
+  },
+  "36ee62606f46": {
+    "Object detection": "Object detection locates and labels objects in images. Customer reviews are text, so it cannot judge whether they are positive or negative.",
+    "Vector search": "Vector search finds content with similar meaning using embeddings. It retrieves similar reviews but does not classify their sentiment.",
+    "Speech synthesis": "Speech synthesis converts text into spoken audio. It does not analyze the opinion expressed in reviews."
+  },
+  "e0a85a9f3648": {
+    "Image captioning and sentiment": "Image captioning describes images, and sentiment analysis classifies text opinion. Neither lets the agent hear the caller or reply with a voice.",
+    "OCR and translation": "OCR (optical character recognition) reads text from images and translation converts languages. Neither handles listening to speech or speaking a reply.",
+    "Embeddings and inpainting": "Embeddings turn content into vectors and inpainting edits image regions. Neither handles audio input or spoken output for a voice agent."
+  },
+  "38642271a453": {
+    "Lower the model temperature": "Temperature controls randomness in a language model's text generation. Speech recognition errors on product names are not fixed by changing a generation parameter.",
+    "Switch to image generation": "Image generation creates pictures from text. It has nothing to do with transcribing caller audio more accurately.",
+    "Increase the token limit": "Increasing the token limit lets a language model produce longer output. It does not teach the speech recognizer your product vocabulary."
+  },
+  "e494a276af96": {
+    "Text sentiment analysis": "Text sentiment analysis classifies opinion in text as positive, negative or neutral. It does not translate speech into another language.",
+    "Image captioning": "Image captioning describes the contents of images. A live spoken presentation needs audio translation, not image descriptions.",
+    "Batch document translation": "Batch document translation translates whole files asynchronously. It does not process live audio or produce Spanish speech in near real time."
+  },
+  "3f1d435da1bc": {
+    "Text to speech": "Text to speech converts written text into synthesized audio. It does nothing to find or remove phone numbers or other personal data in chat transcripts.",
+    "Model routing": "Model routing picks which model handles a request based on cost or capability. It does not detect sensitive entities or redact them from transcripts.",
+    "Image generation": "Image generation creates pictures from text prompts. It has no role in scanning chat transcripts for personal data such as phone numbers."
+  },
+  "03267db4413d": {
+    "Switch to a speech model": "A speech model handles audio input or output. Switching to one does nothing to make text summaries follow a fixed house format for legal teams.",
+    "Use OCR": "Optical character recognition (OCR) extracts text from images and scans. It does not shape how a model writes compliance summaries or enforce an output format.",
+    "Train a new model from scratch": "Training a model from scratch is extremely costly and slow, and is unnecessary for formatting summaries. Prompt design with examples is the practical first step, with fine-tuning only if that fails."
+  },
+  "a9fb84621ad2": {
+    "Pure vector search": "Pure vector search only runs similarity queries over embeddings. It does not include keyword (BM25) matching, so it is not a combined approach.",
+    "Pure keyword search": "Pure keyword search uses only full-text BM25 ranking. It ignores vector similarity, so it does not merge the two result sets as the question requires.",
+    "Faceted navigation only": "Faceted navigation lets users filter results by category values such as brand or price. It is a filtering aid, not a way to combine keyword and vector ranking."
+  },
+  "01ebeb5b1eab": {
+    "Scoring profile with freshness only": "A scoring profile boosts results using field weights or functions such as freshness. A freshness-only profile favors recent documents but does not use a language model to rerank passages by relevance.",
+    "Indexer schedule": "An indexer schedule controls how often an indexer pulls data from its source. It affects index freshness, not the ranking order of query results.",
+    "Synonym maps": "Synonym maps expand query terms with equivalent words to improve recall. They do not apply a model-based reranker to put the most relevant passages first."
+  },
+  "3d33a2c23257": {
+    "A manual upload of vectors only": "Uploading precomputed vectors means you chunk and embed content yourself outside the search service. It does not make Azure AI Search chunk and vectorize documents automatically during indexing.",
+    "A CORS rule": "A cross-origin resource sharing (CORS) rule lets browser apps from other domains call the search endpoint. It has nothing to do with chunking or embedding content.",
+    "Synonym maps": "Synonym maps expand query terms with equivalent words at query time. They do not split documents into chunks or generate embeddings during indexing."
+  },
+  "f49d27771102": {
+    "Sentiment analysis": "Sentiment analysis scores text as positive, negative or neutral. Scanned PDFs are images, so there is no text to analyze until it has first been extracted.",
+    "Text to speech": "Text to speech turns text into spoken audio. It cannot pull text out of scanned images, which is what makes the PDFs searchable.",
+    "Image generation": "Image generation creates new images from prompts. Scanned PDFs need their existing image content converted into text, not new pictures."
+  },
+  "5517add41bf1": {
+    "An index alias": "An index alias is a stable name that points to an index so you can swap indexes without changing client code. It does not run any AI enrichment.",
+    "A query key": "A query key is a read-only API key for sending search requests. It controls access, not content enrichment during indexing.",
+    "A semantic configuration": "A semantic configuration tells the semantic ranker which fields to use at query time. It does not apply skills to content while it is being indexed."
+  },
+  "b1359cbe9a7a": {
+    "Text to speech": "Text to speech converts text to audio. It cannot read invoices or extract fields such as invoice number, vendor and line items.",
+    "A pure keyword search": "Keyword search finds documents containing matching terms. It does not understand varied invoice layouts or produce structured fields for an agent.",
+    "Sentiment analysis": "Sentiment analysis measures opinion in text. Invoices need field extraction across many layouts, not an emotional tone score."
+  },
+  "53f26cdde584": {
+    "Plain text with all formatting removed": "Plain text with formatting removed loses headings and table structure. That makes chunking and grounding harder, which is the opposite of what downstream reasoning needs.",
+    "An audio file": "An audio file is a spoken rendition of content. It discards visual structure such as headings and tables and is not a useful input for text-based reasoning.",
+    "A JPEG image": "A JPEG image is a picture of the page. The text and structure would have to be extracted again, so it does not give downstream reasoning usable headings and tables."
+  },
+  "f126259bde54": {
+    "Export the index to CSV and attach it": "Exporting the index to CSV gives a static snapshot that loses search ranking and goes stale. The agent should query the live index at run time instead.",
+    "Use a content filter": "A content filter screens prompts and outputs for harmful content. It does not connect an agent to a search index or retrieve documents.",
+    "Copy the index into the system prompt": "Copying the index into the system prompt would exceed context limits for most indexes, cost many tokens and go stale. Connecting the index as a tool lets the agent search it on demand."
+  },
+  "0633ad59579e": {
+    "User prompt attack detection, scanning only the user message": "User prompt attack detection targets jailbreak attempts written by the user. Here the instruction is hidden inside a third-party email the user did not write, so it is a document attack.",
+    "Groundedness detection, scanning the model output": "Groundedness detection checks whether model output is supported by source material. It does not detect injected instructions in grounding content before the model sees them.",
+    "Protected material detection, scanning the model output": "Protected material detection flags output that matches known copyrighted text or code. It does not look for malicious instructions embedded in emails or documents."
+  },
+  "136e3f308674": {
+    "Manipulated content": "Manipulated content attacks try to alter or falsify information the model relies on. Fake assistant and user turns inserted into one message fit the conversation mockup subtype instead.",
+    "Encoding attack": "An encoding attack hides instructions using ciphers, character transformations or other encodings to evade filters. This message uses fabricated dialogue turns, not encoded text.",
+    "Role-play": "Role-play attacks ask the model to adopt a persona without restrictions. The message here fabricates prior conversation turns, which is the conversation mockup technique."
+  },
+  "68141b98797c": {
+    "An empty choices array": "An empty choices array is not how annotate-only mode reports an attack. In this mode the response is returned normally with an annotation showing the attack was detected.",
+    "HTTP 400 with no annotation": "HTTP 400 is returned when a prompt is blocked. In annotate-only mode the request is not blocked, and the response carries an annotation rather than an error.",
+    "\"detected\": false and \"filtered\": true": "This combination is inconsistent: content cannot be filtered for an attack that was not detected. In annotate-only mode the attack is detected but left unfiltered."
+  },
+  "334dbf9fe1a2": {
+    "A lower temperature": "Temperature controls randomness of token sampling. Lowering it does not make the model distinguish untrusted document content from instructions.",
+    "Prompt caching": "Prompt caching reuses identical prompt prefixes to cut latency and cost. It offers no protection against instructions embedded in retrieved documents.",
+    "Strict structured outputs": "Strict structured outputs force responses to match a JSON schema. The model could still follow injected instructions while producing valid JSON, so this is not a document attack defense."
+  },
+  "d960468f017d": {
+    "The usage object reports zero tokens": "A filtered completion still reports token usage. A usage object showing zero tokens is not the signal Azure OpenAI uses to indicate output filtering.",
+    "The API returns HTTP 429": "HTTP 429 means a rate limit or quota was exceeded. It has nothing to do with content filtering of the prompt or the output.",
+    "The prompt_filter_results array is missing": "The prompt_filter_results array is not removed to signal output filtering. Output filtering is shown on the choice itself, while a filtered prompt returns an HTTP 400 error instead."
+  },
+  "605f89ff26d7": {
+    "Hate and fairness severity filter": "The hate and fairness filter detects hateful or discriminatory content by severity. It does not check whether generated code matches licensed source code.",
+    "Prompt Shields for user prompts": "Prompt Shields for user prompts detect jailbreak attempts in user input. They do not inspect model output for reproduced licensed code.",
+    "Groundedness detection": "Groundedness detection checks whether output is supported by provided sources. It does not flag verbatim matches to protected code from public repositories."
+  },
+  "187a21fc5c61": {
+    "One API key stored in the agent instructions": "One API key in the agent instructions is shared across agents and exposed to the model, which is a security risk. It also gives no per-agent identity or scoped access.",
+    "A shared service principal secret in app settings": "A shared service principal secret means all agents use the same identity and a secret that must be managed and rotated. The requirement is for each agent to have its own identity.",
+    "Anonymous access behind a private endpoint": "Anonymous access gives no identity at all, so the downstream API cannot authorize individual agents. A private endpoint limits network reach but is not authentication."
+  },
+  "778e6331930a": {
+    "Key-based access with an admin key": "An admin key grants broad access regardless of who is signed in. It cannot limit the agent to only the mailbox data that the specific user is allowed to see.",
+    "Unauthenticated access": "Unauthenticated access gives the tool no identity to authorize against. It cannot act on a user's mailbox safely or restrict access to that user's data.",
+    "The project managed identity with Mail.ReadWrite.All": "Mail.ReadWrite.All is an application permission that reaches every mailbox in the tenant. Using the project managed identity with it ignores the signed-in user's own access limits."
+  },
+  "1c1242e7f639": {
+    "Lower the model temperature": "Temperature only changes how random the model's output is. It does not stop the agent from calling any of the 40 tools the server exposes.",
+    "Rely on the content filter": "Content filters screen for harmful content categories. They do not control which MCP tools an agent is allowed to call.",
+    "List the allowed tools in the system prompt": "Listing allowed tools in the system prompt only asks the model to comply, and the model could still call other tools. Restricting the tool subset in configuration actually enforces the limit."
+  },
+  "0495fb66bd8c": {
+    "Content filters with high severity": "Content filter severity settings control what harmful content is blocked. They do not change where agent conversation state is stored.",
+    "A shorter conversation length": "Shortening conversations reduces how much state is kept but does not change where it lives. The data would still be stored outside your subscription.",
+    "A private DNS zone only": "A private DNS zone resolves private endpoint names inside your network. On its own it does not move conversation storage into your subscription."
+  },
+  "6264f81adf5e": {
+    "BLEU": "Bilingual Evaluation Understudy (BLEU) measures word overlap with a reference text, mainly for translation. It cannot judge whether an agent chose the right tool or passed correct arguments.",
+    "Fluency": "Fluency rates how natural and well written a response is. It says nothing about whether the agent called the correct tool with valid arguments.",
+    "Coherence": "Coherence rates how logically a response flows. It is a text-quality metric and does not assess the agent's tool selection or arguments."
+  },
+  "72abbc3b9747": {
+    "Provisioned throughput": "Provisioned throughput reserves model capacity for predictable performance. It is a deployment option and does not probe the app for harmful outputs.",
+    "Prompt caching": "Prompt caching reuses repeated prompt prefixes to save cost and latency. It has nothing to do with adversarial testing.",
+    "A fluency evaluator": "A fluency evaluator scores how well written responses are. It does not generate adversarial attacks or measure how often the app produces harmful content."
+  },
+  "f921a49072d6": {
+    "HTTP 200 with finish_reason content_filter": "HTTP 200 with finish_reason content_filter is what you get when the generated output is filtered. A filtered user prompt is rejected before generation with an error.",
+    "HTTP 429": "HTTP 429 indicates rate limiting or quota exhaustion. It is not the response for a prompt blocked by the content filter.",
+    "HTTP 200 with an empty message": "A filtered prompt does not return a successful response with an empty message. The request is rejected with an error identifying the content filter."
+  },
+  "4c73db096914": {
+    "Developer fine-tuning deployment": "A developer fine-tuning deployment is a low-cost tier for testing fine-tuned models. It is not meant for production capacity and does not provide EU data zone processing.",
+    "Global Standard deployment": "Global Standard deployments can process data in any Azure region worldwide. That breaks the requirement to keep processing within EU datacenters.",
+    "Standard deployment in a US region": "A Standard deployment in a US region processes data in the United States. It violates EU-only processing and also offers only single-region capacity."
+  },
+  "bef2e9c97861": {
+    "Shorten the deployment name": "The deployment name has no effect on capacity or throttling. Shortening it will not prevent 429 errors during traffic spikes.",
+    "Switch to a batch deployment": "Batch deployments process requests asynchronously, typically within 24 hours. They do not suit latency-sensitive traffic that needs real-time responses.",
+    "Raise max_completion_tokens": "max_completion_tokens caps response length. Raising it would increase token use per call and could make throttling worse, not prevent 429s."
+  },
+  "14ad803ccb18": {
+    "Caching requires temperature 0": "Prompt caching does not depend on temperature. Cache hits come from matching an identical prompt prefix, which this prompt lacks because the varying question comes first.",
+    "The policy is too long to cache": "Long static content is actually a good candidate for caching, since caching applies to prompts of at least 1,024 tokens. The problem is the order of the prompt, not its length.",
+    "Prompt caching only works with batch deployments": "Prompt caching is not limited to batch deployments. It works with standard deployments when requests share an identical prefix."
+  },
+  "c463d203a50f": {
+    "Raise top_p to 1": "top_p is another sampling parameter that most reasoning models also do not support. Raising it would not fix the error and may cause another one.",
+    "Switch max_completion_tokens to max_tokens": "Reasoning models use max_completion_tokens and do not support max_tokens. Switching to max_tokens would introduce a new unsupported parameter error.",
+    "Lower temperature to 0": "Lowering temperature to 0 still sends the temperature parameter, which reasoning models reject. The parameter must be removed entirely."
+  },
+  "1acedd6d107d": {
+    "The deployment is in the wrong region": "Region affects availability and latency but would not produce an incomplete response with no visible text. A token cap reached during reasoning explains that symptom.",
+    "reasoning_effort is set to high": "High reasoning effort makes the model think more, which uses more tokens, but on its own it is not the cause. The real issue is a completion token limit too low to cover reasoning plus output.",
+    "The content filter blocked the prompt": "A blocked prompt returns an HTTP 400 error, not a response with status incomplete. The symptom points to running out of completion tokens."
+  },
+  "16a0879cfcb6": {
+    "function": "The function role is a legacy role for returning function call results. It is not used to give system-level instructions to reasoning models.",
+    "assistant": "The assistant role holds the model's own previous replies. It does not carry the system-style instructions that guide reasoning models.",
+    "tool": "The tool role returns the results of tool calls to the model. It is not used for system-level instructions."
+  },
+  "597a3689fa27": {
+    "Use a higher temperature": "Temperature changes how random the generated text is. It has no effect on how many tokens an input image consumes.",
+    "Send each image twice": "Sending each image twice doubles the image tokens and increases cost. It does nothing to improve quality for simple product photos.",
+    "Raise max_completion_tokens": "max_completion_tokens caps output length. Raising it does not reduce the tokens used by input images and could increase cost."
+  },
+  "dc02dea9e1ef": {
+    "Enable prompt caching": "Prompt caching speeds up and cheapens repeated prompt prefixes. It does not keep the service available when a region goes down.",
+    "Use a larger context window": "A larger context window lets a model handle longer prompts. It provides no resilience against a regional outage.",
+    "Increase the TPM quota in one region": "Raising tokens-per-minute (TPM) quota in one region adds capacity there, but everything still fails if that single region has an outage."
+  },
+  "043b337d68ef": {
+    "The schema needs more than five nesting levels": "Strict structured outputs limit nesting depth rather than requiring more levels. The failure here is caused by the unsupported minLength keyword.",
+    "Strings must be nullable": "Strings do not have to be nullable in strict mode. Null unions are only used to model optional fields, and that is unrelated to the minLength error.",
+    "additionalProperties must be true": "Strict structured outputs require additionalProperties to be false, not true. Setting it to true would cause its own validation failure."
+  },
+  "34c3671753d8": {
+    "Remove it from required": "Strict structured outputs require every property to be listed in required. Removing the field from required makes the schema invalid instead of optional.",
+    "Use anyOf at the root": "The root of a strict schema must be an object, and anyOf is not allowed at the root. It is also not the mechanism for marking a single field optional.",
+    "Set additionalProperties to true": "Strict mode requires additionalProperties to be false. Setting it to true breaks schema validation and does not make a field optional."
+  },
+  "fdb155694036": {
+    "Raise temperature": "Raising temperature makes output more random and does not stop the model from calling two tools at once. It would not fix the parsing failures.",
+    "Remove additionalProperties": "Strict mode requires additionalProperties to be false, so removing it would break the schemas. The real issue is that structured outputs do not support parallel tool calls.",
+    "Switch to a smaller model": "Model size does not address the conflict between strict schemas and parallel tool calls. Disabling parallel calls is what restores reliable parsing."
+  },
+  "ad5a5fb5719a": {
+    "temperature to 0": "Temperature 0 makes output more deterministic but does not force a tool call. The model can still decide to answer directly.",
+    "tool_choice to none": "Setting tool_choice to none prevents the model from calling any tools. That is the opposite of forcing a call to get_weather.",
+    "A longer system message": "A longer system message only asks the model to call the function and does not guarantee it. tool_choice naming the function enforces the call."
+  },
+  "5b0ccff469ec": {
+    "An assistant message with the result": "An assistant message represents the model's own output, not a tool result. The API expects the result in a tool message linked by tool_call_id.",
+    "A new system message with the result": "A system message sets instructions and is not linked to a specific tool call. The API needs a tool message with the matching tool_call_id to complete the call.",
+    "The same user message again": "Resending the user message gives the model no tool result, so it would likely call the tool again. The result must come back as a tool message."
+  },
+  "916a7244167f": {
+    "A fine-tuned model": "A fine-tuned model is a customized model, not an orchestration mechanism. It cannot declaratively branch, call specialist agents in order or pause for human input.",
+    "A batch deployment": "A batch deployment processes large volumes of requests asynchronously. It does not orchestrate multiple agents or support human-in-the-loop steps.",
+    "A prompt agent with one tool": "A prompt agent with one tool is a single agent defined by instructions and tools. It does not provide declarative branching across several specialist agents with human approval steps."
+  },
+  "e03d9c3f4edb": {
+    "A serverless model deployment": "A serverless model deployment hosts a model behind an API. It does not run your own containerized LangGraph agent code.",
+    "A Content Understanding analyzer": "A Content Understanding analyzer extracts structured information from documents, audio and video. It is not a runtime for custom agent containers.",
+    "A prompt agent": "A prompt agent is configured declaratively with instructions, a model and tools inside Foundry. It does not run your own LangGraph code in a container."
+  },
+  "255474ff55cf": {
+    "Switch to a larger embedding model": "A larger embedding model may improve retrieval quality, but the index would still hold day-old prices. The problem is index freshness, not embedding quality.",
+    "Increase temperature": "Temperature affects randomness of generation. It cannot make the model aware of prices that are missing from a stale index.",
+    "Fine-tune the model with current prices": "Fine-tuning bakes facts into model weights, which is slow and costly and would go stale within an hour. Frequently changing data belongs in a regularly refreshed index."
+  },
+  "f0eac43e28ad": {
+    "BLEU low points to the content filter": "Bilingual Evaluation Understudy (BLEU) measures word overlap with reference text. It does not relate to the content filter and cannot separate retrieval failures from generation failures.",
+    "Fluency high but coherence low points to the index": "Fluency and coherence are text-quality metrics for the generated answer. They say nothing about the index or retrieval, so they cannot isolate unsupported claims.",
+    "Latency high but token usage low points to the embedding model": "Latency and token usage are operational metrics. They do not indicate whether answers are grounded or which step introduces unsupported claims."
+  },
+  "a3e96f2c3be8": {
+    "Repeat the full history twice": "Repeating the history twice doubles token usage and pushes the prompt closer to the context limit. It would make both cost and forgetting worse.",
+    "Disable streaming": "Streaming only changes how the response is delivered to the client. Disabling it does not reduce prompt size or help the model keep early instructions.",
+    "Raise the temperature": "Higher temperature makes output more random. It does nothing to control prompt growth or keep early instructions in context."
+  },
+  "a1ed75a96427": {
+    "Use a higher top_p": "top_p controls the range of tokens sampled during generation. It does not link answers to source passages.",
+    "Ask the model to recall sources from training data": "Models cannot reliably recall exact sources from training data and often fabricate citations. Citations should point to retrieved chunks the app supplies.",
+    "Remove retrieval and rely on fine-tuning": "Removing retrieval means no source passages exist to cite. Fine-tuning blends knowledge into weights and cannot trace claims to specific passages."
+  },
+  "9c98cd9f627b": {
+    "Increase the quota": "More quota lets the loop run without throttling but does not stop the repeated calls. Cost and latency would keep rising.",
+    "Remove tracing": "Removing tracing only hides the problem. The agent would still call the search tool ten times per request.",
+    "Use a larger context window": "A larger context window allows more loop iterations to fit in the conversation. It does not stop the agent from calling the tool repeatedly."
+  },
+  "db8cdf2c1f1a": {
+    "A JSON schema": "A JSON schema defines structured text output. It has no role in telling an image model which region of a photo to change.",
+    "Only a new prompt": "A prompt alone gives the model no source image or region to edit. It would generate a new image rather than change only the label area.",
+    "A video file": "A video file is not an input for image editing. The edit needs the original photo and a mask marking the label area."
+  },
+  "ac81ba5b0e83": {
+    "Lower image resolution": "Lowering resolution might make text harder to read but does not reliably remove it, and it degrades legitimate image understanding. It is not a real defense against injection.",
+    "Trust it because it came from an image": "Text inside images is a known channel for indirect prompt injection. Trusting it because it came from an image is exactly the mistake attackers exploit.",
+    "Turn off content filters for images": "Turning off content filters for images removes a layer of protection. It makes the app more exposed to injected instructions, not less."
+  },
+  "b37dda30ab75": {
+    "Generate": "Generate creates free-form values such as summaries or descriptions. It does not restrict output to the fixed labels complaint, inquiry or praise.",
+    "Translate": "Translate is not one of the Content Understanding field methods, which are extract, classify and generate. Translating a recording would not assign it a category anyway.",
+    "Extract": "Extract pulls values that appear directly in the content, such as names or dates. Labelling each call into predefined categories is a classification task."
+  },
+  "65cc4bed4a2c": {
+    "Classify": "Classify assigns content to predefined categories. A free-form scene description is not chosen from a fixed list.",
+    "OCR": "Optical character recognition (OCR) reads text that is visible in images or frames. The description does not appear as text in the video, so there is nothing to read.",
+    "Extract": "Extract only returns values that appear directly in the content. The scene description is not present anywhere, so it has to be generated."
+  },
+  "072dac7ab445": {
+    "A higher temperature": "Temperature controls output randomness. It does not provide source locations or confidence scores for extracted values.",
+    "Markdown-only output": "Markdown output preserves document structure, but on its own it does not report where each extracted field came from or how confident the model was.",
+    "A classification field": "A classification field assigns content to categories. It does not add grounding locations or confidence scores to other extracted values."
+  },
+  "7d1cd74ec627": {
+    "Translate the PDF": "Translating the PDF changes the language of its text. Charts would remain images with no searchable description.",
+    "Store the PDF as a vector only": "Storing a PDF as a single vector loses detail and still does not describe what the charts show. Figures need a text description to be chunked and retrieved.",
+    "Strip all images before indexing": "Stripping images removes the charts entirely, so their information can never be found. The goal is to make charts searchable, not discard them."
+  },
+  "99842622ee60": {
+    "The Translator glossary": "A Translator glossary forces specific term translations. It has nothing to do with blocking images by harm severity.",
+    "The detail parameter": "The detail parameter controls how many tokens an image consumes in a vision model. It does not filter images by violence severity.",
+    "The temperature setting": "Temperature affects randomness of text output. It cannot block uploaded images based on harmful content."
+  },
+  "071f2247fd55": {
+    "Prompt caching": "Prompt caching reuses previously processed prompt prefixes to cut latency and cost for repeated input. It does nothing to mark generated images as AI-made, so it cannot satisfy a disclosure requirement.",
+    "Groundedness detection": "Groundedness detection checks whether a model's text response is supported by supplied source material. It is a text-safety feature and does not attach any provenance or AI-generated label to images.",
+    "A higher image resolution": "Image resolution only changes how many pixels the generated picture has. A sharper image carries no information about how it was created, so it does not disclose that the image is AI-generated."
+  },
+  "d4c2f2f4280a": {
+    "Custom speech for recognition": "Custom speech improves speech to text recognition accuracy for your vocabulary and audio. This bot needs to control how synthesized speech sounds when speaking, which is a text to speech output concern, not recognition.",
+    "Speech translation": "Speech translation converts spoken audio in one language into text or speech in another. It does not let you specify pronunciations of product names or insert natural pauses in the bot's voice.",
+    "A lower temperature": "Temperature controls randomness in a language model's text generation. It has no effect on how a text to speech voice pronounces abbreviations or where it pauses."
+  },
+  "e09a305c3e65": {
+    "Use SSML": "Speech Synthesis Markup Language (SSML) shapes text to speech output, such as pronunciation and pauses. It does not affect how speech to text recognizes spoken part numbers.",
+    "Switch to batch transcription": "Batch transcription processes large volumes of recorded audio asynchronously. It uses the same recognition models, so on its own it will not fix the misrecognized part numbers.",
+    "Train a custom neural voice": "Custom neural voice creates a synthetic text to speech voice from recordings. It is for speech output, not recognition, and it would be a long, approval-gated project rather than a quick fix."
+  },
+  "2c75fe3d4d29": {
+    "It requires no voice talent consent": "This is false: Microsoft requires recorded, verified consent from the voice talent before a custom neural voice can be built, as part of its Responsible AI commitments for this limited access feature.",
+    "It is available instantly to all subscriptions": "Custom neural voice is not instantly available. It is a limited access feature, so you must apply and be approved by Microsoft before you can train a voice from actor recordings.",
+    "It only needs a phrase list": "A phrase list boosts speech to text recognition of specific words. It plays no part in building a synthetic voice, which needs training recordings, consent, and limited access approval."
+  },
+  "83837d4b7a4d": {
+    "An LLM prompt with plain text": "Sending plain text to a large language model (LLM) loses the Word file's structure, so you would have to rebuild the layout and formatting yourself. It does not preserve the document as required.",
+    "Text translation of extracted strings": "Translating extracted strings with text translation discards the original layout, tables, and formatting. You would need custom code to reassemble the Word file, which document translation handles natively.",
+    "Speech translation": "Speech translation works on spoken audio, translating speech into text or speech in another language. It cannot process Word documents at all."
+  },
+  "db40244562ee": {
+    "A lower temperature": "Temperature controls randomness in language model output and is not a Translator setting. It cannot guarantee that a brand name stays untranslated or that company terminology is used.",
+    "Speaker diarization": "Speaker diarization identifies who spoke when in a speech to text transcript. It has nothing to do with enforcing terminology or protecting brand names in translation.",
+    "SSML": "Speech Synthesis Markup Language (SSML) controls how text to speech output sounds. It does not influence which words a translation engine produces or keeps unchanged."
+  },
+  "30d3298824ca": {
+    "Phrase lists": "Phrase lists boost recognition of specific words or names in speech to text. They improve accuracy but do not label which speaker said each line.",
+    "Text to speech visemes": "Visemes are mouth-position events from text to speech used to animate avatars. They relate to synthesized speech output, not to attributing speakers in a call transcript.",
+    "Content filtering": "Content filtering screens AI inputs and outputs for harmful material. It does not separate or label speakers in a transcript."
+  },
+  "397078dc02ac": {
+    "Key phrase extraction only": "Key phrase extraction returns the main talking points in text. It does not identify personally identifiable information (PII), redact it, or report entity categories and offsets for audit.",
+    "Sentiment analysis": "Sentiment analysis scores text as positive, negative, or neutral. It does not detect or redact personally identifiable information (PII) or return the positions of sensitive entities.",
+    "Language detection": "Language detection identifies which language text is written in. It does not find or redact personally identifiable information (PII), so it cannot meet the redaction and audit requirement."
+  },
+  "9778c19d42ae": {
+    "Use translation first": "Translation changes the language of text and does nothing to standardize date formats. The extracted dates would still come back inconsistent and break downstream parsing.",
+    "Ask for dates \"in a nice format\"": "A vague instruction like \"in a nice format\" leaves the model free to choose, so output remains inconsistent. Reliable extraction needs an enforced schema plus deterministic normalization in code.",
+    "Raise temperature": "Raising temperature makes model output more random, which would make date formats even less consistent. Extraction tasks generally benefit from low temperature and strict schemas."
+  },
+  "6502240af9a3": {
+    "Keyword results first, then vector results": "Azure AI Search does not simply list keyword hits followed by vector hits. It merges both ranked lists with Reciprocal Rank Fusion so documents ranking well in either list rise to the top.",
+    "The semantic ranker always replaces both": "The semantic ranker is optional and, when enabled, reranks the already-fused results. It does not replace the keyword and vector rankings, which are still combined first with Reciprocal Rank Fusion.",
+    "Averaging BM25 and cosine scores": "BM25 and cosine similarity scores are on different scales, so averaging them would be unreliable. Azure AI Search instead fuses results by rank position using Reciprocal Rank Fusion."
+  },
+  "9e725cbc5413": {
+    "1": "A k of 1 returns only the single nearest vector match, giving the semantic ranker almost nothing from the vector side to rerank. The recommended value is 50.",
+    "3": "A k of 3 supplies too few vector candidates for the semantic ranker, which can rerank up to 50 results. Microsoft recommends 50 to maximize its inputs.",
+    "Equal to top": "Setting k equal to top can starve the semantic ranker, which reranks up to 50 results. Microsoft recommends k of 50 so the ranker has enough vector candidates to work with."
+  },
+  "86679b5858ed": {
+    "A larger k only": "Increasing k only returns more nearest neighbors. Without a filter, results can still include documents from other departments, so it does not restrict search to allowed documents.",
+    "An orderby clause": "An orderby clause sorts results by a field. It does not exclude unauthorized documents and would also override relevance ranking.",
+    "A filter with vectorFilterMode set to postFilter": "Post-filtering runs the vector search first and filters afterwards, so neighbors are chosen from all documents and you may get fewer than k allowed results. The scenario requires filtering before the search."
+  },
+  "fec8cfa44d1b": {
+    "orderby disables vector search": "orderby does not turn off vector search. The vector query still runs, but the explicit sort replaces the relevance order, which is why relevance appears to drop.",
+    "RRF only works with filters": "Reciprocal Rank Fusion (RRF) works with or without filters. The problem here is that the explicit sort overrides the RRF relevance order.",
+    "Dates cannot be indexed": "Date fields can be indexed and are commonly sortable and filterable. The relevance drop is caused by sorting on the date, not by any indexing limitation."
+  },
+  "74f49f0f08d4": {
+    "Scalar quantization to int8 only": "Scalar quantization to int8 compresses vectors only about four times. Binary quantization gives a much larger reduction for high-dimension embeddings like 3,072-dimension vectors while rescoring preserves quality.",
+    "Adding more replicas": "Adding replicas improves query throughput and availability but duplicates the index, increasing cost. It does not reduce vector storage size.",
+    "Disabling the semantic ranker": "The semantic ranker is a query-time reranking feature and does not store vector data. Disabling it would not shrink the vector index that drives storage costs."
+  },
+  "4d0ac1544fd3": {
+    "It increases the vector dimensions": "Quantization never increases vector dimensions; it compresses each value. Accuracy is recovered by oversampling and rescoring with original vectors, not by changing dimensionality.",
+    "It switches to keyword search": "Azure AI Search does not fall back to keyword search when vectors are compressed. The vector query still runs on compressed vectors, then results are rescored with full-precision originals.",
+    "It retrains the embedding model": "Azure AI Search never retrains your embedding model; the model is external. It recovers accuracy by oversampling candidates and rescoring them with the stored full-precision vectors."
+  },
+  "ae4864bf7931": {
+    "A scoring profile": "A scoring profile boosts relevance based on field values or freshness for text search. It does not change the number of dimensions stored for vectors.",
+    "A smaller k": "A smaller k returns fewer nearest neighbors per query. It does not change how many dimensions each stored vector has, so storage size stays the same.",
+    "A synonym map": "A synonym map expands query terms for keyword search. It has no effect on vector dimensions or storage."
+  },
+  "3a99c441a1de": {
+    "A semantic-only query": "A semantic-only query reranks text search results and does not compute exact vector neighbors. It cannot provide a ground truth for measuring Hierarchical Navigable Small World (HNSW) recall.",
+    "A query with a larger top only": "Raising top on the same approximate query still uses the Hierarchical Navigable Small World (HNSW) graph, so results remain approximate. It cannot serve as exact ground truth.",
+    "A keyword-only query": "A keyword-only query ranks by text relevance using BM25, not vector similarity. It cannot tell you the true nearest vector neighbors."
+  },
+  "64cb908b18a8": {
+    "A synonym map": "A synonym map expands keyword query terms. It does not convert query text into embeddings.",
+    "A semantic configuration": "A semantic configuration tells the semantic ranker which fields to use for reranking. It does not vectorize queries; that is the job of a vectorizer.",
+    "A second indexer": "Indexers run at indexing time to pull and enrich data. A second indexer cannot vectorize user queries at search time."
+  },
+  "01949afcef78": {
+    "As a synonym map": "A synonym map expands search terms at query time. It cannot call an external function during indexing.",
+    "As a scoring profile": "A scoring profile adjusts relevance scores at query time. It cannot invoke your extraction function to enrich documents during indexing.",
+    "As a query-time filter": "A query-time filter restricts search results by field values. It runs when users search, not during indexing, and cannot call your extraction function."
+  },
+  "a495281a8ebc": {
+    "Remove titles to save space": "Removing titles would make the problem worse, since chunks would have even less context about which product they describe.",
+    "Turn off chunking": "Turning off chunking would embed whole documents, which dilutes meaning and can exceed embedding input limits. It does not address the missing context that causes products to be confused.",
+    "Use bigger k only": "A bigger k retrieves more chunks but they still lack titles, so the model can still mix up products. The fix is to add context to each chunk."
+  }
+}

@@ -116,7 +116,7 @@
       "Read‑access geo‑zone‑redundant storage (RA‑GZRS)"
     ],
     "answer": "Geo‑redundant storage (GRS)",
-    "explanation": "GRS and RA‑GRS rely on asynchronous replication to a secondary region. In the event of a regional outage, there is a possibility of some recently written data being lost because it's still being replicated. Applications that require zero data loss should instead use cross‑zone synchronous options (ZRS or GZRS) or replicate the data themselves:contentReference[oaicite:9]{index=9}.",
+    "explanation": "GRS and RA‑GRS rely on asynchronous replication to a secondary region. In the event of a regional outage, there is a possibility of some recently written data being lost because it's still being replicated. Applications that require zero data loss should instead use cross‑zone synchronous options (ZRS or GZRS) or replicate the data themselves. Note: RA-GZRS and GZRS also copy to the secondary region asynchronously, so they carry the same risk of losing the most recent writes in a regional failover.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
   },
   {
@@ -176,7 +176,7 @@
       "Geo‑zone‑redundant storage (GZRS)"
     ],
     "answer": "Geo‑redundant storage (GRS)",
-    "explanation": "GRS replicates data to a secondary region but does not offer read access to that data until a failover occurs. To serve read‑only traffic from the secondary region during normal operations, use RA‑GRS or RA‑GZRS:contentReference[oaicite:14]{index=14}.",
+    "explanation": "GRS replicates data to a secondary region but does not offer read access to that data until a failover occurs. To serve read‑only traffic from the secondary region during normal operations, use RA‑GRS or RA‑GZRS. Note: GZRS has no readable secondary either; only the read-access variants (RA-GRS and RA-GZRS) let you read from the secondary region before a failover.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
   },
   {
@@ -224,7 +224,7 @@
       "Geo‑zone‑redundant storage (GZRS)"
     ],
     "answer": "Geo‑zone‑redundant storage (GZRS)",
-    "explanation": "GZRS replicates synchronously across zones and then asynchronously to the secondary region, providing the lowest RPO among cross‑region options. Because writes are committed in the primary region before replication, data loss risk is minimized compared with options that replicate only within zones or only to another region:contentReference[oaicite:18]{index=18}.",
+    "explanation": "GZRS writes synchronously across three availability zones in the primary region and then copies the data asynchronously to the secondary region, so it is the only option here that meets the three-zone requirement and also survives a regional outage. Note: its cross-region recovery point objective (RPO) is the same as GRS, typically under 15 minutes, because both copy to the secondary region asynchronously.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
   },
   {
@@ -284,7 +284,7 @@
       "RA‑GRS offers the same durability as LRS since both keep three copies of data."
     ],
     "answer": "ZRS and GZRS offer higher durability than LRS by replicating data across zones, giving 12 nines of durability.",
-    "explanation": "The Azure Storage redundancy article notes that ZRS and GZRS provide 12 nines of durability by replicating data across zones, whereas LRS offers 11 nines of durability. GRS and GZRS achieve 16 nines of durability for write operations because they also replicate to another region:contentReference[oaicite:23]{index=23}.",
+    "explanation": "The Azure Storage redundancy article lists at least 11 nines of durability for LRS, 12 nines for ZRS, and 16 nines for GRS, RA-GRS, GZRS and RA-GZRS. Note: the answer groups GZRS with ZRS at 12 nines, but GZRS actually reaches 16 nines because it also replicates to a second region. It is still the best answer, because both zone options are more durable than LRS.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
   },
   {
@@ -368,7 +368,7 @@
       "They support only read and write permissions."
     ],
     "answer": "They cannot be revoked until they expire.",
-    "explanation": "Ad‑hoc SAS tokens include all parameters (permissions, start time, and expiry) in the token itself and are not associated with a stored access policy. Once issued, they cannot be revoked until they expire. To revoke them, you must regenerate the storage account keys or ensure a short expiry time:contentReference[oaicite:30]{index=30}.",
+    "explanation": "Ad-hoc SAS tokens carry their permissions, start time and expiry in the token itself and aren't tied to a stored access policy, so there is no way to revoke one individual token. Note: you can still invalidate them by regenerating the account key that signed them, but that breaks every other SAS signed with that key too, so give ad-hoc tokens a short expiry.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview"
   },
   {
@@ -392,7 +392,7 @@
       "Azure Table storage"
     ],
     "answer": "Azure Files",
-    "explanation": "User delegation SAS is currently available for the Blob service and Data Lake Storage. Other services, including Azure Files, don't support user delegation SAS. For these services, you must use a service SAS signed with the account key:contentReference[oaicite:32]{index=32}.",
+    "explanation": "When this question was written, user delegation SAS worked only for Blob Storage and Data Lake Storage, so Azure Files needed a service SAS signed with the account key. Note: this is now out of date. Microsoft Learn says a user delegation SAS is supported for Blob Storage, Data Lake Storage, Queue Storage, Table Storage and Azure Files.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview"
   },
   {
@@ -560,7 +560,7 @@
       "Trusted Azure services rule"
     ],
     "answer": "Resource instance rule",
-    "explanation": "Resource instance rules allow traffic from specific Azure resource instances (such as a storage replication service) that cannot be assigned to a virtual network or IP range. They are used when you need to permit service access while keeping the storage account otherwise locked down:contentReference[oaicite:46]{index=46}.",
+    "explanation": "Resource instance rules let specific Azure resource instances, such as an Azure Synapse workspace or a Data Factory in your tenant, reach a storage account whose firewall otherwise blocks them, because those services can't be placed in your virtual network or given a fixed IP range. Note: the older 'Allow trusted Microsoft services' exception covers a similar need more broadly; resource instance rules are the more precise option.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security"
   },
   {
@@ -1124,7 +1124,7 @@
       "DeployIfNotExists"
     ],
     "answer": "Deny",
-    "explanation": "The Deny effect blocks the resource creation or update if the evaluated condition is not compliant. Unlike Audit, Deny does not allow the operation to proceed and stops non‑compliant changes. It is used to enforce strict compliance:contentReference[oaicite:92]{index=92}.",
+    "explanation": "The Deny effect blocks a create or update request that doesn't comply, so the change never happens. Note: the denied request is still recorded in the Activity Log as a failed operation with the policy details, so 'without generating an audit log' really means it doesn't just log the problem and let it through, as the Audit effect does.",
     "link": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
   },
   {
@@ -1220,7 +1220,7 @@
       "Assign roles and policies concurrently in a single assignment."
     ],
     "answer": "Assign roles first, then assign policies.",
-    "explanation": "It's generally recommended to assign RBAC roles to grant access and then apply Azure Policies to enforce compliance on resources created or managed by users. RBAC defines what actions users can perform, while policies ensure that those actions adhere to compliance standards:contentReference[oaicite:100]{index=100}.",
+    "explanation": "It's generally recommended to assign RBAC roles to grant access and then apply Azure Policies to enforce compliance on resources created or managed by users. RBAC defines what actions users can perform, while policies ensure that those actions adhere to compliance standards. Note: Microsoft doesn't require a fixed order, because RBAC and Azure Policy work independently; policies are often in place before anyone is given access.",
     "link": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
   },
   {
@@ -1232,7 +1232,7 @@
       "It deploys a remediation script to fix the resource."
     ],
     "answer": "It can block a single write operation even if the user has RBAC permission to perform that operation.",
-    "explanation": "DenyAction is used to prevent specific actions, such as writing certain properties, even when the user has the necessary RBAC permissions. This ensures that compliance requirements are enforced at the property level, overriding RBAC where necessary:contentReference[oaicite:101]{index=101}.",
+    "explanation": "The DenyAction effect blocks a specific action on matching resources even when the user's role-based access control (RBAC) permissions would allow it. Note: the only action it supports today is DELETE, so in practice it protects resources from being deleted rather than blocking writes.",
     "link": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
   },
   {
@@ -1592,7 +1592,7 @@
       "Global peering requires you to use a VPN gateway instead of a basic load balancer."
     ],
     "answer": "A basic load balancer cannot be used to route traffic across globally peered VNets.",
-    "explanation": "When using global VNet peering, traffic to or from a basic load balancer's frontend IP is not allowed across the peering. This limitation does not apply to the Standard Load Balancer, which is recommended for cross‑region scenarios:contentReference[oaicite:131]{index=131}.",
+    "explanation": "When using global VNet peering, traffic to or from a basic load balancer's frontend IP is not allowed across the peering. This limitation does not apply to the Standard Load Balancer, which is recommended for cross‑region scenarios. Note: the Basic Load Balancer was retired on 30 September 2025, so new designs use the Standard Load Balancer and this limitation only matters for older setups.",
     "link": "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview"
   },
   {

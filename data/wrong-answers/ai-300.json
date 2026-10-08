@@ -1,0 +1,602 @@
+{
+  "3b55aa56df32": {
+    "A Kubernetes cluster and a SQL database": "An Azure Machine Learning workspace does not create a Kubernetes cluster or a SQL database by default. Kubernetes compute can be attached later if needed.",
+    "An Event Hubs namespace": "An Event Hubs namespace is not a workspace dependency. The workspace relies on storage, a key vault, Application Insights and optionally a container registry.",
+    "A virtual machine scale set": "No virtual machine scale set is created with the workspace. Compute such as clusters or instances is created separately when you need it."
+  },
+  "33d3fa62aaeb": {
+    "A copy of all your training data inside the workspace": "A datastore does not copy data into the workspace. It stores connection information so jobs can access data where it already lives.",
+    "A registered model": "A registered model is a versioned model asset in the workspace. A datastore instead references a storage service holding data.",
+    "A compute cluster": "A compute cluster provides machines to run jobs. A datastore is a connection reference to storage, not compute."
+  },
+  "f7b213a81470": {
+    "A managed online endpoint": "A managed online endpoint hosts a model for real-time inference. It is not used to run training jobs that scale out to many nodes.",
+    "A serverless API": "A serverless API deploys models for inference billed per token or call. It does not provide compute nodes for running your training jobs.",
+    "A compute instance": "A compute instance is a single-node development workstation. It cannot scale out to 10 nodes for distributed training jobs."
+  },
+  "8772cb710685": {
+    "Batch endpoint": "A batch endpoint runs model inference over large datasets asynchronously. It is not an interactive workstation with Jupyter and VS Code.",
+    "Kubernetes compute": "Kubernetes compute attaches an existing AKS or Arc-enabled cluster for training or inference. It is not a personal development environment.",
+    "Compute cluster": "A compute cluster runs submitted jobs on multiple nodes and scales down when idle. It does not provide an interactive notebook or IDE workstation."
+  },
+  "c047227bd1d3": {
+    "Make the container public": "Making the container public exposes the data to anyone on the internet. It avoids keys but violates security and is not authorized access.",
+    "Use a SAS token in source control": "A shared access signature (SAS) token is a credential, and committing it to source control leaks it. The requirement is to avoid stored keys entirely.",
+    "Store the account key in the training script": "Embedding the account key in the training script stores a powerful secret in code. That directly contradicts the requirement to avoid keys."
+  },
+  "aa59d5ddae7e": {
+    "Data asset": "A data asset is a versioned reference to data used in jobs. It does not define packages or the Docker base image.",
+    "Endpoint": "An endpoint exposes a deployed model for inference. It does not package the dependencies a training job needs.",
+    "Datastore": "A datastore holds connection information for a storage service. It does not define Python packages or a Docker image."
+  },
+  "3a8d862cfc90": {
+    "A workspace": "A workspace is the top-level resource that organizes all assets and jobs. It is not a reusable pipeline step with inputs and outputs.",
+    "A compute instance": "A compute instance is a development workstation. It provides compute, not a reusable, versioned pipeline step definition.",
+    "A datastore": "A datastore references a storage service. It holds data connection information, not a reusable data-prep step."
+  },
+  "9dff40715acf": {
+    "A single workspace for all stages": "One workspace for every stage removes isolation between dev and prod. It also does not satisfy the requirement of a prod workspace in another subscription.",
+    "Manual file copy to a local laptop": "Copying files through a laptop is manual, error-prone and loses versioning and lineage. Registries share assets across workspaces and subscriptions securely.",
+    "A shared compute instance": "A compute instance is a single-user workstation in one workspace. It does not share models or environments across workspaces or subscriptions."
+  },
+  "07d263921c86": {
+    "Clicking through the portal for each environment": "Clicking through the portal is manual and easy to get wrong, so each environment can drift. It is not repeatable or reviewable like infrastructure as code.",
+    "A Jupyter notebook run manually": "Running a notebook manually is not a reliable deployment process. It lacks the declarative, version-controlled definition that Bicep templates provide.",
+    "A PowerShell script stored on a laptop only": "A script kept only on one laptop is not shared, reviewed or version-controlled. Deployments depend on one person and machine, which is not repeatable."
+  },
+  "7d2607fe7d73": {
+    "The storage account key": "A storage account key grants access to storage only and is itself a long-lived secret. It cannot authenticate az ml commands against the workspace.",
+    "Anonymous access to the workspace": "Azure Machine Learning workspaces do not support anonymous access for management commands. The workflow must authenticate with Microsoft Entra ID.",
+    "A personal access token in the workflow file": "Storing a personal access token in the workflow file exposes a secret in source control. GitHub tokens also cannot authenticate to Azure; OIDC federation avoids secrets."
+  },
+  "c0711ee38823": {
+    "A data drift monitor": "A data drift monitor compares production input data against training data to detect distribution changes. It has nothing to do with network access, so it cannot limit the workspace to the corporate network.",
+    "MLflow tracking": "MLflow tracking logs metrics, parameters and models from training runs. It is an experiment tracking feature and offers no network isolation for the workspace.",
+    "A larger compute cluster": "A larger compute cluster adds training capacity but does not change how the workspace is reached. Network restriction requires private endpoints or a managed virtual network with public access disabled."
+  },
+  "e2f75210d07a": {
+    "TensorBoard only": "TensorBoard is a visualization tool for training metrics, mainly for TensorFlow and PyTorch. Azure Machine Learning can display it, but its native tracking API is MLflow, not TensorBoard alone.",
+    "Kubeflow Pipelines only": "Kubeflow Pipelines is an open source workflow orchestrator for Kubernetes. Azure Machine Learning has its own pipelines and uses MLflow, not Kubeflow, for tracking metrics, parameters and models.",
+    "Airflow": "Apache Airflow is a workflow scheduling and orchestration tool, not an experiment tracker. Azure Machine Learning workspaces act as MLflow tracking servers instead."
+  },
+  "f5d23e6fafaa": {
+    "mlflow.set_tracking_uri()": "mlflow.set_tracking_uri() tells MLflow which tracking server to send data to, such as an Azure Machine Learning workspace. It does not log anything automatically by itself.",
+    "mlflow.delete_run()": "mlflow.delete_run() removes an existing run from the tracking server. It is a cleanup call and does not capture parameters, metrics or models.",
+    "mlflow.end_run()": "mlflow.end_run() closes the currently active run. It finishes logging rather than turning on automatic logging for libraries like scikit-learn."
+  },
+  "0005c1613619": {
+    "A data drift monitor": "A data drift monitor watches deployed models for changes in production data. It does not try algorithms or featurization settings to train and select a model.",
+    "A manual training script only": "A manual training script runs only the algorithm and settings you code yourself. It would not automatically explore many algorithms and featurization options and rank the results as the scenario requires.",
+    "A batch endpoint": "A batch endpoint deploys an already trained model to score large datasets asynchronously. It does not train or compare candidate models."
+  },
+  "f2cb34354ed8": {
+    "A pipeline with a single step": "A pipeline with a single step just runs one component once. It does not generate many trials with different hyperparameter values or terminate weak trials early.",
+    "A compute instance schedule": "A compute instance schedule starts and stops a development VM at set times to save cost. It has no role in hyperparameter tuning or early termination.",
+    "A model registry": "A model registry stores and versions trained models. It manages models after training rather than running hyperparameter trials."
+  },
+  "2bdfc4859579": {
+    "Grid sampling": "Grid sampling is a hyperparameter sampling method that tries every combination of discrete values. It chooses which trials to run, but it is not an early termination policy.",
+    "No termination policy": "With no termination policy, every trial runs to completion regardless of how it performs. Nothing is compared against a slack factor or stopped early.",
+    "Truncation selection policy": "The truncation selection policy cancels a fixed percentage of the lowest-performing trials at each evaluation interval. It does not use a slack factor relative to the best trial."
+  },
+  "bceb29d18f95": {
+    "A larger datastore": "A datastore is a reference to storage such as Blob Storage or Data Lake; it has no size setting that affects training. More storage does not spread training across multiple GPU nodes.",
+    "A compute instance": "A compute instance is a single development VM. It cannot run training across multiple GPU nodes; you need a compute cluster with a distributed command job.",
+    "A batch endpoint": "A batch endpoint is used to score data with a trained model. It is a deployment target, not a way to train a model across GPU nodes."
+  },
+  "f50a2b092514": {
+    "Pipelines remove the need for data": "Pipelines still consume and produce data; they organize processing steps around it. They do not remove the need for data in training.",
+    "Pipelines need no compute": "Each pipeline step runs on compute, such as a cluster or serverless compute. Pipelines actually make it easier to choose suitable compute per step, not avoid compute.",
+    "Pipelines automatically fine-tune LLMs": "Pipelines orchestrate whatever steps you define and do not automatically fine-tune large language models. Their main value is reusable, independently runnable and schedulable steps."
+  },
+  "f86f688e27e9": {
+    "Download each log file manually": "Downloading each log file and comparing by hand is slow and error prone. Studio and MLflow already store metrics like AUC and let you compare jobs side by side.",
+    "Use Azure Advisor": "Azure Advisor gives recommendations on cost, security, reliability and performance for Azure resources. It does not show or compare training job metrics.",
+    "Check the compute cluster quota": "The compute cluster quota shows how many cores you can allocate. It says nothing about the metrics produced by individual training jobs."
+  },
+  "b9030de75d46": {
+    "A pickle file with no metadata": "A plain pickle file has no signature, dependency or flavor metadata. Azure Machine Learning would need a scoring script and environment to know how to load and call it.",
+    "A ZIP of the training notebook": "A ZIP of the training notebook contains code, not a packaged model with a signature and dependencies. It cannot be deployed directly to an online endpoint.",
+    "A Docker image without a manifest": "A Docker image is a container package, not a model format, and one without a manifest is not even a valid image. You would still have to define the serving behavior yourself, unlike no-code MLflow deployment."
+  },
+  "56dd9107ea80": {
+    "A batch endpoint": "A batch endpoint scores large datasets with a deployed model. It produces predictions but does not assess performance differences across demographic groups.",
+    "A larger compute cluster": "A larger compute cluster only adds processing capacity. It does not evaluate the loan model for fairness across demographic groups.",
+    "Prompt Shields": "Prompt Shields is an Azure AI Content Safety feature that detects prompt injection attacks on generative AI apps. It is unrelated to fairness assessment of a tabular loan approval model."
+  },
+  "04f0afe8744a": {
+    "Delete the workspace": "Deleting the workspace removes every asset in it, including the model versions you must keep for audit. It is far too destructive for retiring one version.",
+    "Remove the datastore": "A datastore is a connection to storage, not where registered model versions are managed. Removing it would not stop the old version being selected and could break other assets.",
+    "Stop the compute instance": "Stopping a compute instance only shuts down a development VM. It has no effect on which model versions are available for deployment."
+  },
+  "c503bdb1c803": {
+    "A compute instance notebook": "A compute instance notebook is an interactive development environment. It is not a scalable, production serving endpoint for millisecond transaction scoring.",
+    "A batch endpoint": "A batch endpoint runs asynchronous jobs over large datasets and can take minutes to start. It cannot return a fraud score for each transaction in milliseconds.",
+    "A pipeline schedule": "A pipeline schedule runs pipeline jobs at set times or intervals. It suits periodic training or batch work, not real-time per-transaction predictions."
+  },
+  "a46eb28a4fd9": {
+    "A managed online endpoint": "A managed online endpoint is designed for low-latency, request-by-request predictions. Pushing 50 million rows through it nightly would be inefficient compared with a parallel batch job.",
+    "A serverless API for chat": "A serverless API deployment provides pay-per-token access to foundation models such as chat models. It is not meant for scoring your own model over tabular data in a data lake.",
+    "A compute instance": "A compute instance is a single development VM. It is not a deployment option and lacks the parallel, scheduled scale needed for 50 million rows each night."
+  },
+  "066dfb4393d5": {
+    "Use a batch endpoint": "A batch endpoint is a separate deployment type for offline scoring. It cannot split live online traffic between blue and green deployments.",
+    "Create a second workspace": "A second workspace would hold separate resources and does not route a percentage of an endpoint's traffic. Traffic splitting is configured on the online endpoint itself.",
+    "Change the compute instance size": "Changing the compute instance size affects a development VM, not the endpoint. It does not direct 10% of live requests to the green deployment."
+  },
+  "03902afd93a7": {
+    "A larger instance type": "A larger instance type adds capacity to a deployment but does not copy production traffic to the new deployment for testing.",
+    "A batch endpoint": "A batch endpoint runs offline scoring jobs over stored data. It cannot receive a live copy of online requests to test a new deployment.",
+    "Delete the old deployment first": "Deleting the old deployment first would send all users to the untested deployment. That is the opposite of testing safely without affecting responses."
+  },
+  "eccae463c3e4": {
+    "az ml workspace show": "az ml workspace show displays details of the workspace such as its location and linked resources. It does not return container logs from an online deployment.",
+    "az ml compute list": "az ml compute list lists compute targets in the workspace. It does not show inference server logs for a failing deployment.",
+    "az ml data create": "az ml data create registers a data asset. It is unrelated to diagnosing errors in an online endpoint deployment."
+  },
+  "ac70d9093fdd": {
+    "Prompt injection; add Prompt Shields": "Prompt injection is an attack on generative AI apps through crafted inputs, and Prompt Shields defends against it. A shift in feature distributions is data drift, not an attack.",
+    "Overfitting; add more epochs": "Overfitting means a model learns training data too closely, and more epochs usually make it worse. The scenario describes production data changing, which is data drift.",
+    "Throttling; raise quota": "Throttling happens when request rate limits are exceeded and is fixed by raising quota. It does not describe changes in input feature distributions."
+  },
+  "609efa6b2d67": {
+    "A manual weekly email": "A manual weekly email relies on a person to act and may be days late. It does not start retraining automatically when drift crosses the threshold.",
+    "A larger compute instance": "A larger compute instance only increases VM capacity. It does not detect drift alerts or trigger a retraining pipeline.",
+    "A new workspace": "A new workspace just creates another container for resources. It provides no link between drift detection and automated retraining."
+  },
+  "30dffa9aeeec": {
+    "A SQL managed instance": "Azure SQL Managed Instance is a managed relational database service. It cannot host Foundry projects, model deployments or agents.",
+    "An Azure Batch account": "An Azure Batch account runs large-scale parallel and high-performance computing jobs. It is not the resource that hosts Foundry projects and generative AI deployments.",
+    "An Event Hubs namespace": "An Event Hubs namespace is a container for event streaming hubs. It ingests telemetry and events but does not host Foundry projects, models or agents."
+  },
+  "afd596f553f5": {
+    "Share the resource key in the app config": "Sharing the resource key in app configuration is exactly key-based access, which the requirement rules out. Keys can also leak and must be rotated manually.",
+    "Use the subscription ID as a key": "A subscription ID is just an identifier for an Azure subscription, not a credential. It cannot be used to authenticate to a Foundry model.",
+    "Enable anonymous access": "Foundry model endpoints do not support anonymous access; every call must be authenticated. Allowing unauthenticated calls would also be a serious security risk."
+  },
+  "43f71b41a141": {
+    "Portal configuration per environment": "Configuring each environment by hand in the portal is error prone and drifts over time. It is not repeatable or reviewable like infrastructure as code.",
+    "A shared spreadsheet": "A shared spreadsheet documents settings but does not deploy anything. Environments would still be configured manually and could easily differ.",
+    "Copying settings by hand": "Copying settings by hand is slow and easily introduces mistakes between environments. Infrastructure as code such as Bicep deploys the same definition every time."
+  },
+  "1595e9472465": {
+    "A content filter": "A content filter screens prompts and completions for harmful content. It controls what the model says, not which networks can reach the Foundry resource.",
+    "A larger model": "A larger model changes capability and cost but has no effect on network access. Restricting traffic to a virtual network requires private endpoints.",
+    "Prompt variants": "Prompt variants are alternative prompts used for comparison and evaluation. They have nothing to do with network isolation."
+  },
+  "f2254b4552d3": {
+    "Batch endpoint on a compute cluster": "A batch endpoint on a compute cluster runs on compute you provision and is billed for compute time, not per token. You also manage the cluster configuration.",
+    "Provisioned throughput": "Provisioned throughput reserves dedicated model capacity in provisioned throughput units (PTUs), billed for the reserved capacity rather than per token consumed.",
+    "Managed compute with dedicated VMs": "Managed compute runs models on dedicated virtual machines billed by compute time. You choose and manage the VM capacity, so it is not per-token billing with no infrastructure."
+  },
+  "67185a1d6d49": {
+    "Use a batch endpoint for chat": "Batch endpoints process data asynchronously and are not suited to interactive chat. They also do not solve hosting an open-weight model in Foundry for real-time use.",
+    "Call it through Azure Translator": "Azure Translator is a service for translating text between languages. It cannot host or run an arbitrary open-weight model.",
+    "Store it in Key Vault": "Azure Key Vault stores secrets, keys and certificates. It is not a model hosting service and cannot run inference."
+  },
+  "4d301a3d3841": {
+    "A larger temperature": "Temperature controls how random the model's output is. It does not reserve capacity or make latency predictable for a high-volume app.",
+    "A smaller chunk size": "Chunk size affects how documents are split for retrieval. It has no bearing on reserving model capacity for consistent latency.",
+    "More prompt variants": "Prompt variants are alternative prompts for comparison. Adding more of them does not provide dedicated capacity or predictable latency."
+  },
+  "5d3733347505": {
+    "Let auto-upgrade happen silently in production": "Letting auto-upgrade happen silently means a new model version reaches users without evaluation. Behavior changes could break the app, so production versions should be pinned and upgraded deliberately.",
+    "Delete the old deployment first": "Deleting the old deployment first removes the fallback and leaves a gap or untested service. A safe upgrade keeps the old version running until the new one is proven.",
+    "Replace the deployment in place without testing": "Replacing the deployment in place without testing exposes users to an unevaluated model with no easy rollback. It is the opposite of a safe upgrade."
+  },
+  "1674a5472b15": {
+    "Model name length": "The length of a model's name has no relationship to its quality, cost or latency. It is not a meaningful selection criterion.",
+    "The newest model regardless of cost": "The newest model is not always the best fit and may cost more or be slower than needed. Selection should balance evaluated quality with cost and latency.",
+    "The number of parameters only": "Parameter count alone does not predict how well a model performs on your task. Smaller models can be cheaper and faster while meeting quality targets."
+  },
+  "1dab04d66fcd": {
+    "Edit prompts directly in production": "Editing prompts directly in production leaves no reviewable history and risks breaking the live app. You could not reliably link results to the prompt version that produced them.",
+    "Embed prompts in the model weights": "Prompts are not embedded in model weights; changing weights requires fine-tuning. That would make frequent prompt edits impractical and untraceable.",
+    "Keep prompts only in chat history": "Chat history is not a version control system. Keeping prompts only there makes it hard to track changes or tie results to a specific prompt version."
+  },
+  "3f30e8f8304a": {
+    "A new private endpoint": "A private endpoint restricts network access to a resource. It does nothing to compare the quality of two system prompts.",
+    "A larger quota": "A larger quota allows more tokens per minute. It does not set up a comparison of prompts against a shared test dataset.",
+    "Two separate workspaces": "Two separate workspaces add overhead and do not themselves compare anything. Prompt variants evaluated on the same dataset and metrics give a direct comparison."
+  },
+  "a9238f47e093": {
+    "host.json": "host.json is the global configuration file for an Azure Functions app. It does not hold prompt templates or model configuration.",
+    "Dockerfile": "A Dockerfile defines how to build a container image. It is not a format for prompt templates and model settings.",
+    "requirements.txt": "requirements.txt lists Python package dependencies. It does not contain prompts, model configuration or sample inputs."
+  },
+  "d735d3736150": {
+    "Share one owner account": "Sharing one owner account removes individual accountability and gives every team full control. It breaks least privilege and makes auditing impossible.",
+    "Give everyone Owner on the subscription": "Owner on the subscription grants full control of every resource, including access management. That is far broader than any team needs and violates least privilege.",
+    "Disable authentication": "Disabling authentication would let anyone access the project. It removes control entirely rather than limiting what each team can change."
+  },
+  "683483949018": {
+    "Disable logging": "Logging does not count toward the deployment's rate limit. Disabling it removes useful diagnostics without fixing the HTTP 429 errors.",
+    "Lower the temperature": "Temperature changes output randomness, not request or token rate. Lowering it does not prevent rate-limit errors during peaks.",
+    "Shorten the deployment name": "The deployment name has no effect on rate limits. Shortening it changes nothing about the tokens-per-minute quota."
+  },
+  "301a96a18864": {
+    "A compute instance": "Automated evaluations in Foundry can run without you provisioning a compute instance. What is essential is a test dataset mapped to the evaluator inputs.",
+    "Only the model name": "The model name alone gives evaluators nothing to score. You need test queries, responses and, where relevant, context and ground truth.",
+    "A container registry": "A container registry stores container images. It is not required for evaluating a RAG (retrieval-augmented generation) app."
+  },
+  "5da145157f97": {
+    "Hate and unfairness": "The hate and unfairness evaluator is a risk and safety metric that detects hateful or biased content. It does not judge logical organization.",
+    "Latency": "Latency measures how long a response takes. It is an operational metric, not a measure of how logically a response reads.",
+    "Groundedness": "Groundedness checks whether the response is supported by the provided context. It measures factual alignment, not logical flow."
+  },
+  "3846d82741af": {
+    "A hyperparameter sweep": "A hyperparameter sweep tunes training settings for a model. It does not test a deployed app for violent or self-harm outputs under attack.",
+    "A data drift monitor": "A data drift monitor detects changes in input data distributions for machine learning models. It does not probe an app with adversarial prompts.",
+    "A fluency evaluation only": "Fluency only evaluates grammar and readability of responses. It cannot detect harmful content or test behavior under attack."
+  },
+  "20f2e2fec41b": {
+    "Increase max tokens": "Max tokens limits response length. Raising it does not provide a new evaluation metric for your domain.",
+    "Skip evaluation": "Skipping evaluation leaves domain-specific quality unmeasured. Custom evaluators let you measure what built-in ones miss.",
+    "Use only BLEU": "BLEU measures n-gram overlap with reference text, mainly for translation. Using only BLEU would not capture a domain-specific metric the built-ins lack."
+  },
+  "4247e813756c": {
+    "Evaluate only in production": "Evaluating only in production means regressions reach users before they are detected. Evaluations should also run before deployment when prompts or code change.",
+    "Use a compute instance schedule": "A compute instance schedule starts and stops a development VM at set times. It does not trigger evaluations when prompts or code change.",
+    "Run them manually once a year": "Running evaluations manually once a year would miss nearly every regression. It is neither automatic nor tied to changes."
+  },
+  "35f084832727": {
+    "Number of Git branches": "The number of Git branches reflects development activity, not production spend. Model costs are driven mainly by token usage.",
+    "Number of evaluators": "The number of evaluators affects evaluation work, not the ongoing cost of serving production requests. Token consumption is the key cost signal.",
+    "Disk size of the workspace": "Workspace disk size is a minor storage cost. Generative AI app costs are dominated by per-token model billing."
+  },
+  "d26046d4ffd6": {
+    "The quota page only": "The quota page shows rate limits and allocated capacity. It does not break down latency across retrieval and model calls for a request.",
+    "The resource group tags": "Resource group tags are metadata for organizing and billing resources. They contain no performance data about requests.",
+    "The evaluation dataset": "The evaluation dataset holds test inputs and expected outputs. It does not capture timing for live requests."
+  },
+  "3de4ae6174fe": {
+    "The storage account archive tier": "The archive tier of a storage account is for rarely accessed data with hours of retrieval delay. Foundry does not send traces and monitoring data there.",
+    "Azure Key Vault": "Azure Key Vault stores secrets, keys and certificates. It is not a destination for telemetry or traces.",
+    "The container registry": "A container registry stores container images. It does not receive traces or monitoring data from apps and agents."
+  },
+  "7d6f000fb4ab": {
+    "Lower token prices": "Continuous evaluation does not change token prices. Its value is measuring quality and safety on live traffic.",
+    "Faster model training": "Continuous evaluation scores deployed app responses and has nothing to do with training speed.",
+    "Automatic fine-tuning": "Continuous evaluation measures quality but does not fine-tune the model automatically. Any fine-tuning would be a separate, deliberate step."
+  },
+  "47d9e4eb8509": {
+    "Use a smaller top_k of 0": "A top_k of 0 would retrieve no chunks at all, leaving the model without context. It does nothing to stop sentences being split.",
+    "Remove the embedding model": "Removing the embedding model would break vector retrieval entirely. The problem is how documents are chunked, not the embeddings.",
+    "Raise the temperature": "Temperature affects output randomness during generation. It cannot repair chunks that were split mid-sentence during indexing."
+  },
+  "9c4b25d0d769": {
+    "A smaller embedding dimension": "A smaller embedding dimension compresses vectors and may slightly reduce accuracy. Exact codes still need keyword matching, which vector search alone does not provide.",
+    "A higher temperature": "Temperature controls the randomness of generated text. It does not affect how the search index matches exact product codes.",
+    "Disabling the index": "Disabling the index would stop retrieval entirely. The fix is to add keyword search alongside vectors, not remove search."
+  },
+  "6946bc9b0713": {
+    "Lower max tokens": "Max tokens limits response length, not which passages are retrieved. Lowering it does not remove loosely related context.",
+    "Remove the system prompt": "Removing the system prompt takes away instructions that guide the model. It does not improve the relevance of retrieved passages.",
+    "Retrieve more passages without filtering": "Retrieving more passages without filtering adds even more loosely related text. That increases the noise that is already confusing the model."
+  },
+  "00dd925d7cd7": {
+    "Remove metadata filters": "Metadata filters narrow results by fields such as source or date. Removing them does not help embeddings understand medical terminology.",
+    "Use a smaller LLM for generation": "The generation model does not affect how well the embeddings match medical terms. Retrieval accuracy depends on the embedding model.",
+    "Increase the temperature": "Temperature affects randomness in generated text. It has no effect on embedding similarity or retrieval accuracy."
+  },
+  "7a123ff7242c": {
+    "Ask one user": "One user's opinion is anecdotal and not representative of production traffic. It cannot show reliably whether the configuration is better.",
+    "Deploy it and stop monitoring": "Deploying without monitoring gives no evidence of whether results improved or worsened. Regressions could go unnoticed.",
+    "Compare token prices only": "Token price comparisons address cost only. They do not show whether the new configuration retrieves more relevant results."
+  },
+  "a467f2db5a50": {
+    "Before trying any prompt engineering": "Prompt engineering is cheaper and faster to try, so it should come before fine-tuning. Fine-tuning is used when prompting and retrieval cannot reach the needed behavior.",
+    "When facts change daily": "Facts that change daily are better handled by retrieval-augmented generation (RAG), which pulls current data. A fine-tuned model would be outdated as soon as facts change.",
+    "When you have no training data": "Fine-tuning requires quality training examples. Without training data there is nothing to fine-tune the model on."
+  },
+  "f4c974d0e8cd": {
+    "Use test data for training": "Using test data for training leaks it into the model, so evaluation results become unreliable. It does not solve the shortage of training examples.",
+    "Skip validation data": "Validation data is needed to detect overfitting during fine-tuning. Skipping it does not add training examples and removes a key quality check.",
+    "Duplicate the same example 1,000 times": "Duplicating one example adds no new information and encourages overfitting to it. The model would not learn to generalize."
+  },
+  "64dce2dee7ea": {
+    "Retrieval-augmented generation": "Retrieval-augmented generation (RAG) adds retrieved documents to the prompt at inference time. It is not a fine-tuning method and does not train on preferred versus rejected responses.",
+    "Supervised fine-tuning with single answers": "Supervised fine-tuning (SFT) trains on prompts paired with a single target answer. It does not use comparisons between preferred and rejected responses.",
+    "Prompt caching": "Prompt caching reuses processed prompt prefixes to cut latency and cost. It is not a training method."
+  },
+  "04de901c1ce4": {
+    "Deploy it to all users immediately": "Releasing to every user at once skips any comparison with the base model, so regressions would reach production undetected. A controlled evaluation and gradual rollout are needed first.",
+    "Check only the training loss": "Training loss only shows how well the model fits the data it was trained on. It cannot reveal overfitting or whether the model beats the base model on unseen data.",
+    "Compare the model file sizes": "File size says nothing about output quality. A fine-tuned model can be the same size as the base model and still be better or worse at the task."
+  },
+  "9258e760790e": {
+    "An account with soft delete enabled": "Soft delete is a data-protection setting on a general-purpose account and does not stop the account being used as the workspace default storage.",
+    "A general-purpose v2 standard account": "A general-purpose v2 standard account is exactly the supported type for the workspace default storage, so it is not rejected.",
+    "An account in the same region": "Keeping the storage account in the same region as the workspace is normal and recommended. Region alignment is not a reason for rejection."
+  },
+  "3590c76e7992": {
+    "Immediately at workspace creation": "Azure Container Registry is not provisioned at workspace creation by default. It is created lazily the first time an image actually needs to be built.",
+    "Never, you must always bring one": "You can bring your own registry, but you do not have to. Azure Machine Learning creates one automatically when a custom image is first built.",
+    "Only when you deploy to AKS": "The registry is created when any custom image is built, such as a custom environment, not only when deploying to Azure Kubernetes Service (AKS)."
+  },
+  "b21b8c1c863a": {
+    "Environments cannot use Docker": "Environments in Azure Machine Learning are built as Docker images, so Docker is fully supported. The failure comes from the untaggable auto-created registry.",
+    "Compute clusters need tags": "Compute clusters can be tagged, and the failing step here is the environment image build, which depends on the container registry rather than the cluster.",
+    "Workspaces cannot be tagged": "Workspaces support tags like other Azure resources. The problem is the container registry that Azure Machine Learning creates on demand without tags."
+  },
+  "5d197d7de0f2": {
+    "A registry": "An Azure Machine Learning registry shares models, environments and components across workspaces, but it does not share network settings, connections or compute.",
+    "One workspace per user": "Per-user workspaces duplicate configuration and isolate resources, which is the opposite of sharing network settings, connections and compute centrally.",
+    "Separate standalone workspaces with copied settings": "Copying settings into standalone workspaces must be repeated and kept in sync by hand. A hub shares these settings with its projects natively."
+  },
+  "63ac3c778f48": {
+    "MLflow tracking": "MLflow tracking works in a managed virtual network with approved-outbound isolation, because it talks to the workspace itself rather than an unapproved external destination.",
+    "Compute clusters": "Compute clusters are supported inside the managed virtual network and are a core feature of network-isolated workspaces.",
+    "Registered models": "Registered models are stored in the workspace and remain available under approved-outbound isolation. Only model monitoring is listed as unsupported."
+  },
+  "673cf29add23": {
+    "Anonymous blob access": "Anonymous blob access exposes data publicly and is not how monitoring authenticates. It also fails the requirement for secure, identity-based access.",
+    "An account key in the monitoring job": "An account key is a stored credential, which the scenario explicitly rules out. Identity-based access with a managed identity avoids keys.",
+    "A SAS token in the schedule": "A shared access signature (SAS) token is still a stored credential that can leak and expire. The requirement is credential-less identity-based access."
+  },
+  "80ddb5517d8c": {
+    "A dedicated compute instance per job": "A compute instance is a single development VM billed while running. Dedicating one per job is more expensive and does not use cheap preemptible capacity.",
+    "A managed online endpoint": "A managed online endpoint hosts models for real-time inference. It is not a training compute and would not reduce training cost.",
+    "More always-on nodes": "Keeping more nodes always on increases cost because you pay for idle time. Scaling to zero and using low-priority nodes reduces it."
+  },
+  "ffa2dd0b0396": {
+    "A compute instance": "A compute instance is a compute resource you must create, start and manage yourself, which the scenario wants to avoid.",
+    "An attached VM": "An attached VM is an existing virtual machine you manage and attach to the workspace, so you still own the compute.",
+    "A Kubernetes cluster": "A Kubernetes cluster must be created, configured and attached to the workspace, which is more management, not less."
+  },
+  "b2fd3266ec7f": {
+    "0.6 (0.8 - 0.2)": "Subtracting 0.2 treats it as an absolute gap, which is how slack_amount works. slack_factor is a ratio, so the threshold is 0.8 divided by 1.2.",
+    "0.2": "0.2 is just the slack_factor value itself, not a metric threshold. The cut-off is derived from the best run as 0.8 / (1 + 0.2).",
+    "0.64 (0.8 x 0.8)": "Multiplying by 0.8 is not how Bandit applies slack. slack_factor divides the best metric by one plus the factor, giving about 0.667."
+  },
+  "ef950e013755": {
+    "Truncation selection with 80 percent": "Truncation selection cancels a fixed percentage of the lowest-performing runs at each interval, which is aggressive and can cut promising runs.",
+    "No termination": "Using no policy avoids losing good runs but provides no compute savings, which fails the goal of saving compute.",
+    "Bandit with slack_factor 0.01": "A very small Bandit slack cancels any run slightly behind the best, which is aggressive rather than conservative."
+  },
+  "e7386235f6d3": {
+    "loguniform requires early termination": "Early termination policies are optional and unrelated to which distributions a sampler accepts. loguniform fails because Bayesian sampling does not support it.",
+    "Bayesian sampling needs grid search": "Bayesian sampling is its own sampling algorithm and does not depend on grid search. The issue is the unsupported loguniform distribution.",
+    "Learning rates must be integers": "Learning rates are typically small floats, and nothing requires integers. The failure is about the distribution type, not the value type."
+  },
+  "aa973bf0c99e": {
+    "Switch to quniform": "quniform is still a sampled distribution, and grid sampling supports only discrete choice values, so switching to quniform would also fail.",
+    "Add an early termination policy": "An early termination policy affects when runs are cancelled, not which parameter types grid sampling accepts, so validation would still fail.",
+    "Use more concurrent trials": "Concurrency controls how many trials run in parallel. It does not change the requirement that grid parameters use choice."
+  },
+  "df8b4dbe3696": {
+    "4": "Four trials gives just one per hyperparameter, too few for Bayesian sampling to learn a useful model of the search space.",
+    "10": "Ten trials is far below the guidance of 20 times the number of hyperparameters, which would be 80 for four hyperparameters.",
+    "1,000": "1,000 trials is far more than the recommended minimum and would waste compute. The guidance is at least 20 per hyperparameter, about 80 here."
+  },
+  "2d0d1e963b2b": {
+    "It forces grid search": "Bayesian sampling never turns into grid search. Concurrency affects how much prior information each new trial can use, not the sampling algorithm.",
+    "It reduces the search space": "The search space is defined by your parameter expressions and does not shrink with lower concurrency. What improves is the information used per choice.",
+    "Concurrency is not supported at all": "Bayesian sampling does support concurrent trials. Fewer concurrent trials simply let each new suggestion use more completed results."
+  },
+  "27542da25aa7": {
+    "When the best trial reaches the target": "Reaching a target metric is not one of the limits set here. The sweep stops at whichever of max_total_trials or timeout is hit first.",
+    "Only after one hour": "The sweep does not wait for the full hour if 100 trials finish first. Whichever limit is reached first ends it.",
+    "Only after 100 trials": "The sweep does not keep going until 100 trials if the 3,600-second timeout expires first. The first limit reached wins."
+  },
+  "19f8296fe7ca": {
+    "The training notebook": "A notebook contains exploratory code but is not a packaged, machine-readable definition that inference can use to look up the same features.",
+    "The sweep job YAML": "A sweep job YAML defines hyperparameter tuning. It has nothing to do with retrieving the same features at inference time.",
+    "The compute cluster ID": "A compute cluster ID identifies training hardware and is irrelevant at inference, where the model needs the feature lookup definition."
+  },
+  "ae7a9fd2d19b": {
+    "The datastore URI": "A datastore URI points to stored data, not a registration instruction. log_model registers a model only when given registered_model_name.",
+    "An environment name": "An environment name defines the runtime dependencies. It does not cause MLflow to register the logged model.",
+    "A run tag named register": "A run tag is just metadata on the run. There is no special tag named register that triggers model registration."
+  },
+  "af7d0cc9c0fa": {
+    "That the pipeline has a schedule": "A schedule controls when the pipeline runs, not whether a step's previous output is reused. Reuse depends on unchanged inputs and settings.",
+    "That MLflow autolog is on": "MLflow autolog captures metrics and parameters. It has no effect on whether pipeline steps reuse cached outputs.",
+    "That the step uses a GPU": "GPU usage affects speed and cost per run, not whether the step is skipped via reuse when nothing has changed."
+  },
+  "5224b9b9c8b0": {
+    "50 percent": "Traffic is not split evenly automatically. A new deployment receives no live traffic until you change the endpoint traffic allocation.",
+    "100 percent": "A new deployment only gets all traffic when created with --all-traffic, which was not used here.",
+    "10 percent by default": "There is no 10 percent default. A new deployment starts at 0 percent until you explicitly route traffic to it."
+  },
+  "b31d85c40121": {
+    "Use a batch endpoint": "A batch endpoint is a separate endpoint type for asynchronous scoring and cannot call a deployment on an online endpoint.",
+    "Temporarily delete blue": "Deleting blue would take down the live deployment users depend on. The deployment header lets testers reach green without affecting traffic.",
+    "Set traffic to green=1": "Giving green 1 percent sends real user traffic to it, which is not what testers need. The header targets green directly at 0 percent."
+  },
+  "549776d11a69": {
+    "It works and halves bandwidth": "Mirroring does not halve bandwidth and is not accepted above 50 percent, so a 70 percent mirror request is rejected.",
+    "Mirrored responses replace blue": "Mirrored responses are discarded and never replace the live deployment's responses to clients.",
+    "Mirroring requires 100 percent": "Mirroring has a maximum of 50 percent, not a requirement of 100 percent. A 70 percent value exceeds the limit."
+  },
+  "af8a527c355d": {
+    "Responses from both deployments": "Clients receive only one response per request. The mirrored copy is processed for metrics and logs, not returned.",
+    "The fastest response": "Mirroring does not race deployments. Clients always get the live deployment's response regardless of which responds faster.",
+    "Responses from the mirrored deployment": "Mirrored responses are discarded. Clients continue to receive responses from the deployment that holds live traffic."
+  },
+  "ecde1f454fcd": {
+    "Only two deployments are allowed": "Endpoints can hold more than two deployments. The rejection is because 60 plus 30 equals 90, not 0 or 100.",
+    "Green must be created with --all-traffic": "--all-traffic is just a shortcut at creation. Any deployment can be assigned traffic later as long as the total is 0 or 100.",
+    "Traffic must be in steps of 25": "There is no 25 percent step requirement. Any integer split works if the total is 0 or 100."
+  },
+  "86e025f85e73": {
+    "Only with GPU nodes": "GPU nodes do not enable mirroring. Mirroring is a managed online endpoint feature and is unsupported on Kubernetes online endpoints regardless of hardware.",
+    "Only to two deployments": "Even on managed endpoints you can mirror to only one deployment, and Kubernetes online endpoints do not support mirroring at all.",
+    "Yes, up to 100 percent": "Mirroring is capped at 50 percent on managed online endpoints and is not available on Kubernetes online endpoints."
+  },
+  "ab6678796a6a": {
+    "The scoring script": "The scoring script is code, not data. Drift signals compare data distributions, here model outputs against reference outputs.",
+    "The training script": "The training script is code that produced the model. Prediction drift needs reference prediction data such as validation or recent production outputs.",
+    "Ground truth labels only": "Ground truth labels are needed for model performance signals, not for prediction drift, which compares output distributions over time."
+  },
+  "ba1bb62800b4": {
+    "A GPU compute": "GPU compute is not a requirement for computing accuracy. The essential input is ground truth to compare predictions against.",
+    "Only the training data": "Training data cannot show production accuracy. You need actual outcomes for production predictions.",
+    "Only model inputs": "Model inputs alone support drift or data quality signals but cannot measure accuracy without ground truth labels."
+  },
+  "063c7bd68160": {
+    "Groundedness and fluency": "Groundedness and fluency are generative AI quality metrics, not data quality checks on tabular model inputs.",
+    "Accuracy, precision and recall": "Accuracy, precision and recall are model performance metrics that need ground truth, not data quality metrics.",
+    "Latency and throughput": "Latency and throughput are operational endpoint metrics, not checks on nulls, types or out-of-range values in data."
+  },
+  "8bb4ba9881f7": {
+    "Groundedness and coherence": "Groundedness and coherence evaluate generative AI text responses, not distribution drift in numerical features.",
+    "RMSE and MAE": "Root mean square error (RMSE) and mean absolute error (MAE) are regression performance metrics that need ground truth, not drift distance measures.",
+    "BLEU and ROUGE": "Bilingual Evaluation Understudy (BLEU) and Recall-Oriented Understudy for Gisting Evaluation (ROUGE) score generated text against references, unrelated to feature drift."
+  },
+  "fde14acb0253": {
+    "It is not possible to monitor": "Batch deployments can be monitored. You just need to collect and register the inference data yourself.",
+    "Enable the data collector on the batch endpoint": "The automatic data collector is for online endpoints, so there is no setting on the batch endpoint that enables it.",
+    "Monitoring reads it from MLflow": "Model monitoring does not pull production inference data from MLflow. You must collect batch inference data and provide it as an asset."
+  },
+  "ddea38c2905c": {
+    "Exactly one day": "A one-day offset leaves the reference window overlapping six days of the seven-day production window.",
+    "P0D": "P0D means no offset, so the reference window would fully overlap the production window.",
+    "It cannot be configured": "The reference window offset is configurable in the monitoring signal settings, so the claim that it cannot be set is false."
+  },
+  "d8185ef56b5e": {
+    "Green is deleted too": "Deleting a single deployment removes only that deployment. Green is unaffected and continues serving.",
+    "The endpoint is deleted": "The endpoint is removed only when you delete the endpoint itself, not when you delete one of its deployments.",
+    "Traffic resets to 0 percent": "Traffic allocation for green stays at 100 percent. Removing blue, which had 0 percent, does not reset other allocations."
+  },
+  "0d687f7080d0": {
+    "mlflow.set_experiment": "mlflow.set_experiment selects or creates an experiment for future runs. It does not register a model.",
+    "mlflow.start_run": "mlflow.start_run begins a new run for logging. It does not register a model from a finished run.",
+    "mlflow.log_metric": "mlflow.log_metric records a numeric metric in a run. It has nothing to do with model registration."
+  },
+  "f837038b4b5b": {
+    "A registry component": "Registry components are reusable pipeline steps, not prebuilt, Microsoft-patched runtime environments with ML frameworks.",
+    "A compute instance image": "A compute instance image is the development VM's operating system image, not an environment you reference in jobs.",
+    "A custom Dockerfile environment": "A custom Dockerfile environment is one you build and maintain yourself, which the scenario wants to avoid."
+  },
+  "f1adf2974e91": {
+    "Global": "Global training is cheaper but can copy data and weights to another region, breaking the residency requirement.",
+    "Any type keeps data in region": "Not every training type keeps data in region. Global and Developer do not guarantee data residency.",
+    "Developer": "Developer training uses idle capacity with no data residency guarantee, so it cannot meet a compliance requirement."
+  },
+  "c989057c59c1": {
+    "Global": "Global training is cheaper than Standard but is not the lowest-cost, preemptible tier intended for experimentation.",
+    "Provisioned": "Provisioned is a deployment type for reserved inference throughput, not a fine-tuning training type.",
+    "Standard": "Standard training runs in your region with data residency and costs more. It is not the cheapest preemptible option."
+  },
+  "3aee639031ca": {
+    "Increase the learning rate multiplier": "Raising the learning rate multiplier makes the model fit training data faster, which usually worsens overfitting.",
+    "Remove the validation set": "Removing the validation set only hides the overfitting signal. It does not fix the model.",
+    "Train for more epochs": "More epochs would increase overfitting, since validation loss is already rising after epoch 2."
+  },
+  "0af316937bd4": {
+    "Fine-tuned models expire after 7 days": "Fine-tuned models do not expire after seven days. Deployments are removed after more than 15 days of inactivity.",
+    "The quota was reduced": "A quota reduction limits new deployments but does not silently delete an existing one. Inactivity caused the removal here.",
+    "The training data was deleted": "The trained model does not depend on the training file after training. The deployment was removed for inactivity."
+  },
+  "a9955c064754": {
+    "Storage Blob Data Reader": "Storage Blob Data Reader grants read access to blob data. It does not grant permission to create model deployments.",
+    "Key Vault Secrets User": "Key Vault Secrets User reads secrets from Azure Key Vault and is unrelated to deploying a fine-tuned model.",
+    "Reader on the subscription": "Reader gives view-only access and cannot write deployments. The missing permission is deployments/write."
+  },
+  "106de1f01b1e": {
+    "The model is not deployed in a Data Zone": "A Data Zone deployment controls where processing occurs, not whether the model follows its trained persona.",
+    "Prompt caching is on": "Prompt caching reduces cost and latency for repeated prompt prefixes. It does not change the model's learned behavior.",
+    "Too many epochs": "Too many epochs causes overfitting but would not make the model ignore a persona it learned. The mismatched system message is the likely cause."
+  },
+  "8dcdcbc0bfb9": {
+    "Set temperature to 0": "Temperature is an inference sampling setting, not a field that marks training turns as excluded.",
+    "Mark it as a system message": "Changing the role to system alters the conversation meaning and does not exclude an assistant turn from training. Use weight 0.",
+    "Delete the user message": "Deleting the user message breaks the conversation flow and does not control training on assistant turns. Weight 0 does that."
+  },
+  "8e5568083f41": {
+    "Prompt caching": "Prompt caching reuses repeated prompt prefixes for lower cost and latency. It is not a training method.",
+    "Direct preference optimization": "Direct preference optimization (DPO) learns from pairs of preferred and rejected responses, not from grader reward scores.",
+    "Supervised fine-tuning": "Supervised fine-tuning learns from labeled example responses. It does not use reward signals from a grader."
+  },
+  "27246cea0955": {
+    "A single JSON array": "A single JSON array is not accepted. Training files are JSONL with one conversation per line.",
+    "Parquet files": "Parquet is a columnar format not accepted for chat fine-tuning data, which must be JSONL.",
+    "CSV with prompt and completion columns": "Prompt and completion columns in CSV is not the chat format. Chat fine-tuning uses JSONL conversations with a messages array."
+  },
+  "82593958b7b1": {
+    "Latency and throughput": "Latency and throughput are performance metrics. They do not assess whether the agent understood or completed the user's task.",
+    "Accuracy and recall": "Accuracy and recall are classification metrics. They do not evaluate agent intent understanding or rule adherence.",
+    "Fluency and BLEU": "Fluency measures readability, and BLEU (Bilingual Evaluation Understudy) measures text overlap. Neither checks intent resolution or task adherence."
+  },
+  "5abfa63d05d5": {
+    "Disable the safety evaluator": "Disabling the safety evaluator removes the check but not the harm. The gate exists to catch this regression.",
+    "Ship because quality improved": "Quality gains do not offset a safety regression. A gate must require both quality and safety thresholds.",
+    "Average the two scores": "Averaging hides the safety regression behind quality gains. Safety needs its own threshold."
+  },
+  "54f51cfaee35": {
+    "A sweep job": "A sweep job tunes hyperparameters for training. It does not score live agent conversations.",
+    "A nightly fine-tuning job": "Fine-tuning changes the model. It does not monitor or score production conversations.",
+    "A larger PTU deployment": "A larger provisioned throughput unit (PTU) deployment adds capacity but does not evaluate quality or safety."
+  },
+  "5c47eb9c31ca": {
+    "The model card": "The model card describes a model's capabilities and pricing in general, not your token usage per prompt version.",
+    "The registry": "The registry stores models and assets. It does not track per-request token consumption.",
+    "The Key Vault audit log": "The Key Vault audit log records secret access, not token usage by prompt."
+  },
+  "7ad6e3ac814d": {
+    "The number of prompt variants": "The number of prompt variants does not measure reserved capacity use. Utilization is the metric for sizing PTUs.",
+    "Index size": "Index size relates to search storage, not provisioned model throughput capacity.",
+    "Disk IOPS": "Disk input/output operations per second (IOPS) is a storage metric unrelated to provisioned model capacity."
+  },
+  "e7ee734924a2": {
+    "Switch to keyword search": "Switching to keyword search abandons vector similarity entirely, which changes the query type rather than recovering vector recall.",
+    "Lower k to 1": "Lowering k to 1 returns fewer results and does not improve recall. Oversampling widens the candidate pool instead.",
+    "Disable rescoring": "Disabling rescoring removes the step that recovers precision from original vectors, reducing recall further."
+  },
+  "3df08cdcc19b": {
+    "Quality improves": "Discarding originals removes the full-precision vectors used for rescoring, so quality can drop, not improve.",
+    "Scalar quantization is enabled": "discardOriginals applies to binary quantization and does not switch to scalar quantization, which is a separate compression method.",
+    "Queries switch to exhaustive KNN": "Queries still use the approximate vector index. Discarding originals does not switch to exhaustive k-nearest neighbors (KNN)."
+  },
+  "7705bf0145c8": {
+    "Binary quantization, which works best below 512 dimensions": "Binary quantization actually works best on high-dimensional embeddings, roughly above 1,024 dimensions; at 384 dimensions it discards too much information, so it is the riskier choice here.",
+    "No compression is possible": "Compression is possible for 384-dimension vectors; scalar int8 quantization reduces each value from 32 bits to 8 bits regardless of dimension count, while keeping recall acceptable.",
+    "Truncation to 32 dimensions": "Truncating 384 dimensions down to 32 would throw away most of the embedding's information and badly hurt recall; truncation only suits models trained for it, such as Matryoshka embeddings, and never this aggressively."
+  },
+  "0f45eb3ab0f7": {
+    "Rescoring needs binary quantization": "Rescoring works with both scalar and binary quantization; the quantization type is not the issue, because exhaustive KNN never uses the compressed approximate search that rescoring corrects.",
+    "Oversampling only works with filters": "Oversampling has nothing to do with filters; it retrieves extra candidates from an approximate HNSW (Hierarchical Navigable Small World) search, which exhaustive KNN does not perform.",
+    "Exhaustive KNN needs k=50": "No particular k value enables rescoring; exhaustive KNN already compares the query to every vector, so there is no approximation for oversampling and rescoring to compensate for."
+  },
+  "166f4832747b": {
+    "Add orderby": "Adding orderby sorts results by a field value, which overrides relevance ordering rather than giving the semantic ranker better candidates to rerank.",
+    "Lower k to 1": "Lowering k to 1 gives the semantic ranker only one vector candidate, leaving it almost nothing to reorder, which would reduce rather than improve its impact.",
+    "Remove the vector query": "Removing the vector query drops the semantic-similarity half of hybrid search, shrinking recall; the problem is too few candidates for the ranker, not the presence of vectors."
+  },
+  "9e3187a7bf23": {
+    "Only the number of chunks": "The number of chunks just reflects chunk size and says nothing about whether retrieval finds the right content or answers are grounded, so it cannot justify the decision.",
+    "Only index build time": "Index build time is an operational detail that ignores answer quality entirely; a faster build is worthless if retrieval relevance or groundedness gets worse.",
+    "Only user count": "User count measures traffic, not quality; it does not show which chunk size retrieves better passages or produces more grounded answers on comparable queries."
+  },
+  "821bc8946b3b": {
+    "Only query vectors change": "Changing only the query vectors would compare embeddings from two different models living in different vector spaces, so similarity scores against the old document vectors would be meaningless.",
+    "Increase k": "Raising k just returns more neighbors; it cannot fix the mismatch between query vectors from the new model and document vectors produced by the old one.",
+    "Nothing, old vectors are compatible": "Vectors from different embedding models are not compatible, even with identical dimensions, so the existing document vectors must be regenerated with the fine-tuned model."
+  },
+  "48aae7a8c98a": {
+    "Use exhaustive KNN only": "Exhaustive KNN only makes vector search exact instead of approximate; it is still semantic similarity, so it will keep missing literal error codes that need keyword matching.",
+    "Increase vector dimensions": "More vector dimensions do not make embeddings reliable at matching exact tokens like error codes; that precision comes from keyword (BM25) full-text search.",
+    "Lower oversampling": "Lowering oversampling reduces the candidates considered during rescoring, which can only hurt recall and does nothing to help match exact error codes."
+  },
+  "04660d5c1e45": {
+    "Evaluate only in production": "Production-only evaluation uses shifting real traffic and catches regressions after users see them, so it cannot give repeatable comparisons between RAG (retrieval-augmented generation) changes.",
+    "Let the model generate new tests each run": "Generating new tests each run changes the benchmark every time, so score differences could come from the test set rather than your change; a fixed, versioned set is required.",
+    "Use whatever queries come in today": "Today's incoming queries vary from day to day and lack expected answers, so results are not comparable across runs and regressions cannot be reliably detected."
+  },
+  "ae5166b43619": {
+    "It always overfits": "Synthetic data does not always overfit; overfitting depends on volume, diversity and training settings. The key risk is inheriting the generator model's errors and bias.",
+    "Synthetic data cannot be JSONL": "Synthetic Q&A pairs can be written in JSONL (JSON Lines) like any other fine-tuning data; file format is not a limitation of synthetic data.",
+    "It needs a GPU cluster": "Generating synthetic data does not require your own GPU cluster, and Azure fine-tuning is a managed service; compute is not the main risk to control here."
+  },
+  "d27b50509a78": {
+    "Continued pretraining": "Continued pretraining trains on large amounts of unlabeled domain text to extend a model's knowledge; it does not use paired preferred and non-preferred responses.",
+    "Supervised fine-tuning": "Supervised fine-tuning learns from prompt and single ideal response pairs; it has no notion of a rejected response to contrast against.",
+    "Reinforcement fine-tuning": "Reinforcement fine-tuning scores model outputs with a grader that assigns rewards, rather than learning from fixed pairs of preferred and non-preferred responses."
+  },
+  "c4c803e2d4f3": {
+    "Check token counts only": "Token counts measure prompt and output length or cost, not groundedness, so they cannot detect a 5 percent drop in answer quality.",
+    "Ask reviewers to read samples": "Manual review of samples is slow, subjective and not automatable in CI (continuous integration), so it cannot reliably fail a build on a precise groundedness threshold.",
+    "Deploy both and wait for complaints": "Waiting for complaints only finds regressions after deployment to users, which is exactly what an automated pre-deployment quality gate is meant to prevent."
+  }
+}

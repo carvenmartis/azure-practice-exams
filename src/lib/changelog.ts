@@ -14,6 +14,15 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   {
     date: '2026-10-08',
+    title: 'Learn from the wrong answers too',
+    changes: [
+      'After answering, every wrong option now says why it is wrong, with your own pick at the top.',
+      'Abbreviations used in a question, such as LRS, RBAC or RU, are spelled out under the explanation.',
+      'Removed leftover source markers like 【123†L74-L112】 from the explanations.'
+    ]
+  },
+  {
+    date: '2026-10-08',
     title: 'Safer taps and a start prompt',
     changes: [
       'Tapping the new version notice no longer also opens the category or exam card behind it.',

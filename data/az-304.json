@@ -3080,7 +3080,7 @@
       "Active-active patterns are always recommended regardless of cost and complexity."
     ],
     "answer": "Some virtual machine SKUs, such as Azure Ultra Disk Storage, require using availability zones.",
-    "explanation": "This statement aligns with the recommended guidance for Azure workloads. See the design principle documentation for details\u3010278218844427847\u2020L68-L161\u3011.",
+    "explanation": "Availability zones are a core part of business continuity and disaster recovery (BCDR) design, and some Azure features have zone requirements. Note: Azure Ultra Disk Storage is a managed disk type rather than a VM SKU, and in regions without availability zones Ultra Disks can be used without a zone, so treat this statement as a simplification.",
     "link": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/management-business-continuity-disaster-recovery"
   },
   {

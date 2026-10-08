@@ -476,7 +476,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -488,7 +488,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -500,7 +500,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -512,7 +512,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -524,7 +524,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -536,7 +536,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -548,7 +548,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -560,7 +560,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -572,7 +572,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -584,7 +584,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -596,7 +596,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -608,7 +608,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -620,7 +620,7 @@
       "It can be any data type and can be changed after deployment through the portal."
     ],
     "answer": "It should be an immutable string with high cardinality that evenly distributes RU/s and storage, and it cannot be changed after creation.",
-    "explanation": "When selecting a partition key for Azure Cosmos DB, choose a property that is immutable, has high cardinality, and evenly distributes storage and throughput. Once selected, the partition key cannot be changed in place\u3010207350690489306\u2020L529-L556\u3011.",
+    "explanation": "Choose a partition key property whose value doesn't change, has high cardinality and spreads storage and request units (RU/s) evenly. You can't change a container's partition key in place: to use a different key you copy the data into a new container, which the portal's change partition key feature does for you. Note: partition key values don't have to be strings; numbers and booleans work too, although a string such as an id is the usual choice.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/partitioning-overview"
   },
   {
@@ -2312,7 +2312,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2324,7 +2324,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2336,7 +2336,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2348,7 +2348,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2360,7 +2360,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2372,7 +2372,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2384,7 +2384,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2396,7 +2396,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2408,7 +2408,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2420,7 +2420,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2432,7 +2432,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2444,7 +2444,7 @@
       "Consistent prefix ensures that reads can show writes out of order; eventual consistency provides read-your-writes guarantee."
     ],
     "answer": "Strong consistency provides linearizability and always returns the most recent committed version; bounded staleness guarantees that reads lag behind writes by at most K versions or T time and uses quorum reads across regions; session consistency guarantees read-your-writes within a session using a session token; consistent prefix ensures writes are never seen out of order but may be stale; eventual consistency offers the weakest guarantee with no ordering, where reads may return stale data.",
-    "explanation": "Azure Cosmos DB offers multiple consistency levels. Strong consistency delivers linearizability, ensuring reads always return the most recent committed write. Bounded staleness limits staleness by controlling the number of versions (K) or time (T) a read may lag behind, using quorum reads across regions. Session consistency provides read-your-writes guarantees within a session using session tokens. Consistent prefix ensures writes are never observed out of order but allows eventual consistency. Eventual consistency offers the weakest guarantee with no ordering or staleness guarantee\u3010417970124120858\u2020L455-L461\u3011\u3010417970124120858\u2020L492-L530\u3011\u3010417970124120858\u2020L559-L605\u3011\u3010417970124120858\u2020L617-L634\u3011\u3010417970124120858\u2020L644-L657\u3011.",
+    "explanation": "Azure Cosmos DB offers five consistency levels. Strong gives linearizability, so reads always return the latest committed write. Bounded staleness lets reads lag behind writes by at most K versions or T time. Session guarantees read-your-writes within a session through a session token. Consistent prefix never shows writes out of order but may be stale. Eventual has no ordering guarantee at all. Note: bounded staleness reads are served from a quorum of replicas in the local region, not from a quorum across regions as the answer puts it.",
     "link": "https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/consistency-levels"
   },
   {
@@ -2600,7 +2600,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2612,7 +2612,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2624,7 +2624,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2636,7 +2636,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2648,7 +2648,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2660,7 +2660,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2672,7 +2672,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2684,7 +2684,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2696,7 +2696,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2708,7 +2708,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2720,7 +2720,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
@@ -2732,7 +2732,7 @@
       "Messages are never moved to the dead-letter queue; Service Bus silently discards undeliverable messages."
     ],
     "answer": "Every Service Bus queue and subscription has a built-in dead-letter queue that cannot be created or deleted separately. Messages are automatically moved to the DLQ when they exceed the maximum delivery count (default 10), the queue or subscription is configured with auto-forwarding to a dead-letter destination, or when the application explicitly dead-letters a message for reasons like malformed payloads. Messages in the DLQ must be explicitly retrieved and processed.",
-    "explanation": "Service Bus queues and topic subscriptions automatically include a dead-letter queue (DLQ). Messages are moved to the DLQ after they exceed the maximum delivery count (10 by default), when forwarding across multiple queues fails, or when the application dead-letters a message due to errors. DLQ messages must be retrieved explicitly and the DLQ cannot be created or deleted separately\u3010935608750278255\u2020L143-L156\u3011\u3010935608750278255\u2020L214-L224\u3011\u3010935608750278255\u2020L255-L266\u3011.",
+    "explanation": "Every Service Bus queue and topic subscription has a built-in dead-letter queue (DLQ) that can't be created or deleted separately. Messages move there when they exceed the maximum delivery count (10 by default), when their time to live runs out and dead-lettering on expiration is turned on, when a subscription filter can't be evaluated, when auto-forwarding to another entity fails, or when the application dead-letters them itself. DLQ messages stay there until you read them explicitly. Note: the answer's 'auto-forwarding to a dead-letter destination' is loose wording; the real trigger is a failed auto-forward.",
     "link": "https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues"
   },
   {
