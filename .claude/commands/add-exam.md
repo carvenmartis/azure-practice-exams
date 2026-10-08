@@ -11,7 +11,8 @@ Add a new practice exam. Arguments: $ARGUMENTS
    `answer` isn't in `options`, since the build script silently falls back to option 0.
 2. Add `{ slug, name, description }` to the `exams` array in `src/lib/exams.ts`, matching
    the existing name format (`CODE: Title`). The dashboard card, the exam page header and
-   the static path in `src/pages/exams/[slug].tsx` all come from that list.
+   the static params in `src/app/exams/[slug]/page.tsx` (and the study and guide pages)
+   all come from that list.
 3. Update the exam list in `README.md` if it names the exams.
 4. Run `npm run exam-data`, `npm run lint` and `npm run build`, and report the question
    count printed for the new exam.

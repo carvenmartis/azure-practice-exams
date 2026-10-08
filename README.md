@@ -17,13 +17,14 @@ npm run build
 
 ```
 src/
-  pages/           routes (Pages Router): index, settings, exams/[slug], api/version
+  app/             routes (App Router): layout.tsx, page.tsx per route (exams/[slug],
+                   study, guides, progress, review, bookmarks, settings, about), api/version
   components/
     ui/            reusable UI: button, card, badge, stat-card, radio-card, confirm-dialog
     layout/        page-layout, course-header, nav-menu, update-notice, version-badge
     dashboard/     exam-card
-    exam/          answer-option, answer-feedback, exam-results
-    settings/      theme-picker
+    exam/          exam-session, answer-option, answer-feedback, exam-results, ...
+    study/ progress/ review/ bookmarks/ settings/   the interactive part of each page
   contexts/        theme-context (Light / Dark / System)
   lib/             exams list, theme colours, version, leave-guard, utils
   styles/          globals.css (Tailwind v4)
@@ -56,4 +57,4 @@ Add these repository secrets in GitHub (Settings > Secrets and variables > Actio
 
 ## Adding an exam
 
-Add `data/<slug>.json`, then add `{ slug, name, description }` to the `exams` list in `src/lib/exams.ts`. The dashboard, the exam page header and the static exam paths all read from it.
+Add `data/<slug>.json`, then add `{ slug, name, description }` to the `exams` list in `src/lib/exams.ts`. The dashboard, the exam page header and the static exam pages all read from it.
