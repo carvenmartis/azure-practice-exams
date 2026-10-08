@@ -104,7 +104,7 @@
       "Read‑access geo‑zone‑redundant storage (RA‑GZRS)"
     ],
     "answer": "Geo‑zone‑redundant storage (GZRS)",
-    "explanation": "GZRS combines ZRS and GRS: it synchronously replicates across availability zones in the primary region and asynchronously replicates to a secondary region. Unlike RA‑GZRS, it doesn't provide a read‑only endpoint on the secondary region:contentReference[oaicite:8]{index=8}.",
+    "explanation": "GZRS combines ZRS and GRS: it synchronously replicates across availability zones in the primary region and asynchronously replicates to a secondary region. Unlike RA‑GZRS, it doesn't provide a read‑only endpoint on the secondary region:contentReference[oaicite:8]{index=8}. Note: GRS also copies synchronously within the primary region (three copies in one datacenter) and has no readable secondary, so it fits this description too; GZRS is the answer when the synchronous copies are spread across availability zones.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy"
   },
   {
@@ -728,7 +728,7 @@
       "Google Workspace"
     ],
     "answer": "Microsoft Entra Domain Services",
-    "explanation": "When you have cloud‑only users and need to authenticate using Azure Files, you should deploy Microsoft Entra Domain Services. This service provides domain join and Kerberos without requiring an on‑premises domain controller and is the recommended option for cloud‑only identities:contentReference[oaicite:60]{index=60}.",
+    "explanation": "When you have cloud‑only users and need to authenticate using Azure Files, you should deploy Microsoft Entra Domain Services. This service provides domain join and Kerberos without requiring an on‑premises domain controller and is the recommended option for cloud‑only identities:contentReference[oaicite:60]{index=60}. Note: Microsoft Entra Kerberos now also supports cloud-only identities for Azure Files on Entra-joined Windows 11 and Windows Server 2025 clients, without any domain controller, so it is a valid alternative today.",
     "link": "https://learn.microsoft.com/en-us/azure/storage/files/file-authentication-overview"
   },
   {

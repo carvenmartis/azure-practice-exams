@@ -73,7 +73,6 @@ self.addEventListener('push', (event) => {
       body: message.body || 'A few questions keep your streak going.',
       icon: '/icons/icon-192.png',
       badge: '/icons/icon-192.png',
-      tag: 'daily-goal',
       data: { url: message.url || '/' }
     })
   );

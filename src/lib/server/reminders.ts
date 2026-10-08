@@ -224,6 +224,22 @@ function isExpired(error: unknown) {
   return status === 404 || status === 410;
 }
 
+/** What the server knows about one device's reminder, for Settings. */
+export async function reminderStatus(endpoint: string) {
+  const reminder = (await loadReminders()).find((item) => item.subscription.endpoint === endpoint);
+  if (!reminder) return { registered: false as const };
+  const local = localNow(reminder.timeZone, new Date());
+  const progress = reminder.progress;
+  return {
+    registered: true as const,
+    time: reminder.time,
+    timeZone: reminder.timeZone,
+    serverTime: `${String(Math.floor(local.minutes / 60)).padStart(2, '0')}:${String(local.minutes % 60).padStart(2, '0')}`,
+    sentToday: reminder.lastSent === local.day,
+    goalReachedToday: progress?.day === local.day && progress.count >= progress.goal
+  };
+}
+
 /** Sends a reminder now, for the Settings test button. */
 export async function sendTest(endpoint: string, progress?: ProgressReport) {
   const reminder = (await loadReminders()).find((item) => item.subscription.endpoint === endpoint);

@@ -9,11 +9,13 @@ import {
   defaultReminderTime,
   disableReminder,
   enableReminder,
+  fetchReminderStatus,
   getReminderSettings,
+  syncReminder,
   reminderSupport,
   sendTestReminder
 } from '@/lib/reminders';
-import type { ReminderSupport } from '@/lib/reminders';
+import type { ReminderSupport, ServerReminderStatus } from '@/lib/reminders';
 import { cn, focusRing } from '@/lib/utils';
 
 const supportMessages: Record<Exclude<ReminderSupport, 'ok'>, string> = {
@@ -24,6 +26,19 @@ const supportMessages: Record<Exclude<ReminderSupport, 'ok'>, string> = {
   unsupported: 'This browser cannot show reminders.',
   blocked: 'Notifications are turned off for this app. Allow them in your device settings, then come back here.'
 };
+
+/** One line on what the server will do with this device's reminder today. */
+function describeStatus(status: ServerReminderStatus) {
+  if (!status.registered) {
+    return 'The server does not know this device right now (it forgets after an app update). Open the dashboard or tap Update reminder to sign it up again.';
+  }
+  const today = status.sentToday
+    ? 'Today’s reminder has been sent.'
+    : status.goalReachedToday
+      ? 'You reached your goal today, so no reminder today.'
+      : `Next reminder today at ${status.time}.`;
+  return `The server has your reminder for ${status.time} (${status.timeZone}, it is ${status.serverTime} there now). ${today}`;
+}
 
 /**
  * Settings section for the daily goal (questions per day, shown on the
@@ -37,6 +52,13 @@ export function DailyGoalSettings() {
   const [time, setTime] = useState(defaultReminderTime);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<{ text: string; error?: boolean } | null>(null);
+  const [serverStatus, setServerStatus] = useState<ServerReminderStatus | null>(null);
+
+  const refreshStatus = () => {
+    fetchReminderStatus()
+      .then(setServerStatus)
+      .catch(() => setServerStatus(null));
+  };
 
   // Support and the saved reminder are only known in the browser.
   useEffect(() => {
@@ -45,6 +67,7 @@ export function DailyGoalSettings() {
     setSupport(reminderSupport());
     setEnabled(saved.enabled);
     setTime(saved.time);
+    if (saved.enabled) void syncReminder().then(refreshStatus);
   }, []);
 
   const run = async (action: () => Promise<void>, success: string) => {
@@ -59,6 +82,7 @@ export function DailyGoalSettings() {
       setBusy(false);
       setEnabled(getReminderSettings().enabled);
       setSupport(reminderSupport());
+      refreshStatus();
     }
   };
 
@@ -125,6 +149,11 @@ export function DailyGoalSettings() {
           </>
         )}
       </div>
+      {enabled && serverStatus && (
+        <p className="mt-3 text-sm text-ink-muted" role="status">
+          {describeStatus(serverStatus)}
+        </p>
+      )}
       {message && (
         <p className={message.error ? 'mt-3 text-sm font-semibold text-danger' : 'mt-3 text-sm text-ink-muted'} role="status">
           {message.text}

@@ -188,3 +188,29 @@ export function reportReminderProgress() {
     }
   }, 3000);
 }
+
+/** What the server knows about this device's reminder (see reminderStatus on the server). */
+export type ServerReminderStatus =
+  | { registered: false }
+  | {
+      registered: true;
+      time: string;
+      timeZone: string;
+      serverTime: string;
+      sentToday: boolean;
+      goalReachedToday: boolean;
+    };
+
+/** Asks the server about this device's reminder; null when that isn't possible here. */
+export async function fetchReminderStatus(): Promise<ServerReminderStatus | null> {
+  const registration = await navigator.serviceWorker?.getRegistration();
+  const subscription = await registration?.pushManager.getSubscription();
+  if (!subscription) return null;
+  const res = await fetch('/api/push/status', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ endpoint: subscription.endpoint }),
+    cache: 'no-store'
+  });
+  return res.ok ? res.json() : null;
+}

@@ -636,7 +636,7 @@
   },
   "bf1471b9ab3f": {
     "On‑premises Active Directory Domain Services (AD DS)": "On-premises AD DS requires identities that exist in an on-premises domain and are synced to Microsoft Entra ID. Cloud-only accounts are not in AD DS, so this source does not fit.",
-    "Microsoft Entra Kerberos": "Microsoft Entra Kerberos for Azure Files was designed for hybrid identities synced from on-premises AD DS. Support for cloud-only identities has only appeared as a preview, so the established choice for cloud-only users is Entra Domain Services.",
+    "Microsoft Entra Kerberos": "Microsoft Entra Kerberos started out for hybrid identities synced from on-premises AD DS. It now also supports cloud-only users on Entra-joined Windows 11 and Windows Server 2025 clients, but the marked answer reflects the long-established choice, Entra Domain Services.",
     "Google Workspace": "Google Workspace is not an identity source supported by Azure Files. Kerberos authentication for file shares comes only from AD DS, Microsoft Entra Domain Services, or Microsoft Entra Kerberos."
   },
   "00d3a7430a1a": {
