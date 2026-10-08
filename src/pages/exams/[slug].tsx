@@ -1,28 +1,37 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AnswerFeedback } from '@/components/exam/answer-feedback';
+import { BookmarkButton } from '@/components/exam/bookmark-button';
 import { AnswerOption } from '@/components/exam/answer-option';
 import type { AnswerState } from '@/components/exam/answer-option';
 import { ExamResults } from '@/components/exam/exam-results';
 import { PageLayout } from '@/components/layout/page-layout';
-import { Button } from '@/components/ui/button';
+import { Button, buttonClasses } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+import { fetchExamQuestions } from '@/lib/exam-data';
+import type { ExamQuestion } from '@/lib/exam-data';
 import { exams } from '@/lib/exams';
 import { setLeaveGuard } from '@/lib/leave-guard';
+import { getProgress, recordAnswers, recordAttempt } from '@/lib/progress-store';
+import type { TopicTally } from '@/lib/progress-store';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
-
-interface ProcessedQuestion {
-  question: string;
-  options: string[];
-  answerIndex: number;
-  explanation: string;
-  link?: string;
-}
+import { topicFor } from '@/lib/topics';
 
 interface ExamPageProps {
   slug: string;
 }
+
+/**
+ * 'exam': 60 random questions, scored and saved to My progress.
+ * 'review': only questions answered wrong before (?mode=review).
+ * 'bookmarks': only bookmarked questions (?mode=bookmarks).
+ * Every mode updates the mistakes list; only 'exam' adds an attempt.
+ */
+export type PracticeMode = 'exam' | 'review' | 'bookmarks';
+
+const questionsPerAttempt = 60;
 
 /**
  * The ExamPage component displays a quiz for a given exam. It
@@ -33,28 +42,33 @@ interface ExamPageProps {
  * are revealed. When all questions have been answered a score out
  * of 1000 points is calculated and shown. Leaving mid-exam (Exit button,
  * header or menu links, Back) asks first and then shows the results so far.
+ * With ?mode=review the questions come from the saved mistakes instead.
  */
 export default function ExamPage({ slug }: ExamPageProps) {
   // Load the questions in the browser, then shuffle, limit to 60 and shuffle each question's answers.
-  const [questions, setQuestions] = useState<ProcessedQuestion[] | null>(null);
+  const [questions, setQuestions] = useState<ExamQuestion[] | null>(null);
   const [loadError, setLoadError] = useState(false);
+  const router = useRouter();
+  const mode: PracticeMode =
+    router.query.mode === 'review' || router.query.mode === 'bookmarks' ? router.query.mode : 'exam';
 
   useEffect(() => {
+    // The query string is only known once the router is ready.
+    if (!router.isReady) return;
     let cancelled = false;
-    fetch(`/exam-data/${slug}.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json() as Promise<ProcessedQuestion[]>;
-      })
+    fetchExamQuestions(slug)
       .then((exam) => {
         if (cancelled) return;
-        const shuffled = [...exam];
+        const saved = getProgress();
+        const picked = new Set((mode === 'review' ? saved.mistakes[slug] : saved.bookmarks[slug]) ?? []);
+        const pool = mode === 'exam' ? exam : exam.filter((question) => picked.has(question.id));
+        const shuffled = [...pool];
         for (let i = shuffled.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
         // Each question's answers are reshuffled too, so the correct one moves around.
-        setQuestions(shuffleAllOptions(shuffled.slice(0, 60)));
+        setQuestions(shuffleAllOptions(shuffled.slice(0, questionsPerAttempt)));
       })
       .catch(() => {
         if (!cancelled) setLoadError(true);
@@ -62,15 +76,49 @@ export default function ExamPage({ slug }: ExamPageProps) {
     return () => {
       cancelled = true;
     };
-  }, [slug]);
+  }, [slug, mode, router.isReady]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
   const [endedEarly, setEndedEarly] = useState(false);
   const [confirmExit, setConfirmExit] = useState(false);
-  const router = useRouter();
 
-  const inProgress = questions !== null && !endedEarly && currentIndex < questions.length;
+  const inProgress = questions !== null && questions.length > 0 && !endedEarly && currentIndex < questions.length;
+  const finished = questions !== null && !inProgress;
+
+  // Save the attempt and the wrong answers once, when the results appear.
+  const saved = useRef(false);
+  useEffect(() => {
+    if (!finished || saved.current) return;
+    saved.current = true;
+    const answered = questions
+      .map((question, idx) => ({ question, selection: selectedAnswers[idx] }))
+      .filter(({ selection }) => selection !== undefined);
+    if (!answered.length) return;
+    const topics: Record<string, TopicTally> = {};
+    for (const { question, selection } of answered) {
+      const topic = topicFor(slug, question);
+      topics[topic] ??= { correct: 0, total: 0 };
+      topics[topic].total += 1;
+      if (selection === question.answerIndex) topics[topic].correct += 1;
+    }
+    const correct = answered.filter(({ question, selection }) => selection === question.answerIndex).length;
+    recordAnswers(
+      slug,
+      answered.map(({ question, selection }) => ({ id: question.id, correct: selection === question.answerIndex }))
+    );
+    if (mode !== 'exam') return;
+    recordAttempt({
+      slug,
+      finishedAt: new Date().toISOString(),
+      total: questions.length,
+      answered: answered.length,
+      correct,
+      score: Math.round((correct / questions.length) * 1000),
+      endedEarly,
+      topics
+    });
+  }, [finished, questions, selectedAnswers, slug, endedEarly, mode]);
 
   // While the exam is running, ask before leaving: header and menu links go
   // through the leave guard, Back through beforePopState, and closing or
@@ -126,6 +174,23 @@ export default function ExamPage({ slug }: ExamPageProps) {
     );
   }
 
+  if (!questions.length) {
+    return (
+      <PageLayout {...layoutProps}>
+        <div className="flex max-w-xl flex-col items-center text-center">
+          <p className="text-lg text-ink-muted">
+            {mode === 'review'
+              ? `Nothing to review for ${slug.toUpperCase()}: you have answered every question you missed correctly since.`
+              : `You have no ${slug.toUpperCase()} bookmarks yet.`}
+          </p>
+          <Link href={mode === 'review' ? '/review' : '/bookmarks'} className={buttonClasses({ className: 'mt-8' })}>
+            Back to {mode === 'review' ? 'Review mistakes' : 'Bookmarks'}
+          </Link>
+        </div>
+      </PageLayout>
+    );
+  }
+
   const answeredCount = selectedAnswers.filter((sel) => sel !== undefined).length;
 
   // Once all questions are answered, or the exam was exited early, show the result.
@@ -140,6 +205,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
           answeredCount={answeredCount}
           correctCount={correctCount}
           endedEarly={endedEarly}
+          mode={mode}
         />
       </PageLayout>
     );
@@ -173,7 +239,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
         <div className="mb-8 w-full">
           <div className="flex items-center justify-between gap-4">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              {slug.toUpperCase()} practice exam
+              {slug.toUpperCase()} {{ exam: 'practice exam', review: 'mistake review', bookmarks: 'bookmarks' }[mode]}
             </p>
             <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)}>
               Exit exam
@@ -194,9 +260,12 @@ export default function ExamPage({ slug }: ExamPageProps) {
           </div>
         </div>
         <div className="mb-8 w-full">
-          <p className="text-sm font-medium text-ink-subtle">
-            Question {currentIndex + 1} <span className="text-ink-subtle/70">of {questions.length}</span>
-          </p>
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-sm font-medium text-ink-subtle">
+              Question {currentIndex + 1} <span className="text-ink-subtle/70">of {questions.length}</span>
+            </p>
+            <BookmarkButton slug={slug} questionId={currentQuestion.id} />
+          </div>
           <h1 className="mt-3 text-lg leading-relaxed font-semibold sm:text-xl">
             {currentQuestion.question}
           </h1>

@@ -6,10 +6,12 @@ interface AnswerFeedbackProps {
   link?: string;
   isLastQuestion: boolean;
   onNext: () => void;
+  /** Replaces the default 'Next Question' / 'View Results' label. */
+  nextLabel?: string;
 }
 
 /** Shown after answering: the correct answer, why, a docs link and Next. */
-export function AnswerFeedback({ correctAnswer, explanation, link, isLastQuestion, onNext }: AnswerFeedbackProps) {
+export function AnswerFeedback({ correctAnswer, explanation, link, isLastQuestion, onNext, nextLabel }: AnswerFeedbackProps) {
   return (
     <div className="mt-8 flex w-full flex-col rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-7">
       <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-accent">Correct answer</p>
@@ -26,7 +28,7 @@ export function AnswerFeedback({ correctAnswer, explanation, link, isLastQuestio
         </a>
       )}
       <Button className="mt-6 self-end" onClick={onNext}>
-        {isLastQuestion ? 'View Results' : 'Next Question'}
+        {nextLabel ?? (isLastQuestion ? 'View Results' : 'Next Question')}
       </Button>
     </div>
   );

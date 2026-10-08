@@ -1,6 +1,7 @@
 // Converts the raw exam files in data/ into public/exam-data/<slug>.json.
 // The exam page downloads these on demand instead of embedding every
 // question in the page props, which keeps the page data small.
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -18,6 +19,8 @@ for (const file of fs.readdirSync(dataDir).filter((f) => f.endsWith('.json'))) {
     .map((item) => {
       const answerIndex = item.options.findIndex((option) => option === item.answer);
       return {
+        // Stable id for saved mistakes and bookmarks; changes only if the question or answer text does
+        id: crypto.createHash('sha1').update(`${item.question}\n${item.answer}`).digest('hex').slice(0, 12),
         question: item.question,
         options: item.options,
         answerIndex: answerIndex >= 0 ? answerIndex : 0,

@@ -8,7 +8,13 @@ import { cn, focusRing } from '@/lib/utils';
 
 const menuItems = [
   { href: '/', label: 'Dashboard' },
-  { href: '/settings', label: 'Settings' }
+  { href: '/progress', label: 'My progress' },
+  { href: '/review', label: 'Review mistakes' },
+  { href: '/bookmarks', label: 'Bookmarks' },
+  { href: '/study', label: 'Study mode' },
+  { href: '/guides', label: 'Exam guides' },
+  { href: '/settings', label: 'Settings' },
+  { href: '/about', label: 'About' }
 ];
 
 const lineClass = 'absolute left-0 block h-0.5 w-5 rounded-full bg-ink';
