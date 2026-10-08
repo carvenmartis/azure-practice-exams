@@ -19,6 +19,7 @@ export const changelog: ChangelogEntry[] = [
       'The dashboard shows exam categories (Administration and Architecture, Development and DevOps, AI and Machine Learning); pick one to see its exams.',
       'Works offline: once the app has been opened online, every exam keeps working without Wi-Fi, and the corner label shows when you are offline.',
       'Settings shows whether offline use is ready on this device, or why not (it needs an https address).',
+      'Exam questions are saved on the device too, so an exam opened without a connection loads its questions instead of asking you to refresh.',
       'Spaced repetition: questions you miss come back for review after 3 days, then after 7, 14 and 30 days each time you get them right, until you know them.',
       'Rebuilt on the Next.js App Router. Everything works as before, and unknown pages now show a proper page not found.',
       'My progress: past attempts per exam, score trends and your weakest skill areas.',
