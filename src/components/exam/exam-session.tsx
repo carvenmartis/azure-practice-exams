@@ -17,7 +17,7 @@ import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { fetchExamQuestions } from '@/lib/exam-data';
 import type { ExamQuestion } from '@/lib/exam-data';
 import { exams } from '@/lib/exams';
-import { optionLetters, optionShortcuts, revealFeedback, scrollToTop } from '@/lib/keyboard';
+import { cycleFocus, optionLetters, optionShortcuts, revealFeedback, scrollToTop } from '@/lib/keyboard';
 import { setLeaveGuard } from '@/lib/leave-guard';
 import { getProgress, recordAnswers, recordAttempt, reviewQueue, toggleBookmark } from '@/lib/progress-store';
 import type { TopicTally } from '@/lib/progress-store';
@@ -39,6 +39,12 @@ export type PracticeMode = 'exam' | 'review' | 'bookmarks';
 
 const questionsPerAttempt = 60;
 
+/**
+ * What Tab and the up/down arrows move between during the exam: the answers,
+ * then Next once answered or Skip before. The header and menu are left out.
+ */
+const examFocusSelector = '#exam-answers button:not(:disabled), #answer-feedback button, #exam-skip';
+
 /** Marks the extra history entry that catches Back during an exam. */
 const backGuardKey = 'examBackGuard';
 
@@ -55,8 +61,10 @@ const backGuardKey = 'examBackGuard';
  * for spaced repetition review instead.
  * A clock shows the time taken, which is saved with the attempt. Questions
  * can be skipped and answered later from the question overview.
- * Keyboard: A-D or 1-4 answer, Enter goes on, S skips, arrows step through
- * the questions, M bookmarks and ? lists the shortcuts.
+ * Keyboard: focus starts on the first answer (or on Next once answered); Tab
+ * and the up/down arrows move between the answers, Enter or Space picks one.
+ * A-D or 1-4 answer directly, S skips, left/right step through the
+ * questions, M bookmarks, Escape asks to exit and ? lists the shortcuts.
  */
 export function ExamSession({ slug }: ExamSessionProps) {
   // Load the questions in the browser, then shuffle, limit to 60 and shuffle each question's answers.
@@ -176,6 +184,15 @@ export function ExamSession({ slug }: ExamSessionProps) {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [inProgress]);
+
+  // Put keyboard focus on the first answer of each question, or on Next once
+  // it is answered; also when a prompt is dismissed and the exam goes on.
+  const currentAnswered = selectedAnswers[currentIndex] !== undefined;
+  useEffect(() => {
+    if (!inProgress || confirmExit || confirmFinish) return;
+    const target = currentAnswered ? '#answer-feedback button' : '#exam-answers button';
+    document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
+  }, [inProgress, currentIndex, currentAnswered, confirmExit, confirmFinish]);
 
   // Once the results show, drop the Back copy so one Back leaves the page again.
   const backGuardDropped = useRef(false);
@@ -323,7 +340,14 @@ export function ExamSession({ slug }: ExamSessionProps) {
     ArrowRight: () => {
       if (currentIndex < questions.length - 1) goTo(currentIndex + 1);
     },
-    m: () => toggleBookmark(slug, currentQuestion.id)
+    m: () => toggleBookmark(slug, currentQuestion.id),
+    Tab: (event: KeyboardEvent) => cycleFocus(examFocusSelector, event.shiftKey),
+    ArrowDown: () => cycleFocus(examFocusSelector),
+    ArrowUp: () => cycleFocus(examFocusSelector, true),
+    Escape: () => {
+      // Escape closes the menu drawer first, if it is open.
+      if (!document.getElementById('site-menu')) setConfirmExit(true);
+    }
   };
 
   return (
@@ -338,15 +362,17 @@ export function ExamSession({ slug }: ExamSessionProps) {
               <ShortcutHelp
                 handlers={shortcutHandlers}
                 shortcuts={[
-                  { keys: ['A–D', '1–4'], label: 'Pick an answer' },
-                  { keys: ['Enter'], label: 'Next question (after answering)' },
+                  { keys: ['Tab', '↑ ↓'], label: 'Move between the answers' },
+                  { keys: ['Enter', 'Space'], label: 'Choose the answer in focus, then go on' },
+                  { keys: ['A–D', '1–4'], label: 'Pick an answer directly' },
                   { keys: ['S'], label: 'Skip for now' },
                   { keys: ['←', '→'], label: 'Previous or next question' },
-                  { keys: ['M'], label: 'Bookmark the question' }
+                  { keys: ['M'], label: 'Bookmark the question' },
+                  { keys: ['Esc'], label: 'Exit the exam' }
                 ]}
               />
               {startedAt !== null && <ExamTimer startedAt={startedAt} />}
-              <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)}>
+              <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)} aria-keyshortcuts="Escape">
                 Exit exam
               </Button>
             </div>
@@ -381,7 +407,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
             {currentQuestion.question}
           </h1>
         </div>
-        <div className="flex w-full flex-col space-y-3">
+        <div id="exam-answers" className="flex w-full flex-col space-y-3">
           {currentQuestion.options.map((option, idx) => (
             <AnswerOption
               key={idx}
@@ -406,7 +432,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
         )}
         {!showFeedback && (
           <div className="mt-6 flex w-full justify-end">
-            <Button variant="secondary" onClick={handleNext} aria-keyshortcuts="S">
+            <Button id="exam-skip" variant="secondary" onClick={handleNext} aria-keyshortcuts="S">
               Skip for now
             </Button>
           </div>

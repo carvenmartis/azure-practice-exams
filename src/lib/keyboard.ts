@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 /** Maps a key (lower case, as in KeyboardEvent.key) to what it does. */
-export type ShortcutHandlers = Partial<Record<string, () => void>>;
+export type ShortcutHandlers = Partial<Record<string, (event: KeyboardEvent) => void>>;
 
 /** One row of the shortcut help: the keys and what they do. */
 export interface ShortcutHelpItem {
@@ -42,7 +42,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers, enabled = true)
       const handler = handlersRef.current[key];
       if (!handler) return;
       event.preventDefault();
-      handler();
+      handler(event);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -72,4 +72,20 @@ export function revealFeedback() {
   requestAnimationFrame(() => {
     document.getElementById('answer-feedback')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   });
+}
+
+/**
+ * Moves keyboard focus to the next (or previous) element matching
+ * `selector`, wrapping around at either end. Starts at the first (or last)
+ * one when focus is elsewhere.
+ */
+export function cycleFocus(selector: string, backwards = false) {
+  const items = Array.from(document.querySelectorAll<HTMLElement>(selector));
+  if (!items.length) return;
+  const current = items.indexOf(document.activeElement as HTMLElement);
+  const next =
+    current < 0
+      ? backwards ? items.length - 1 : 0
+      : (current + (backwards ? items.length - 1 : 1)) % items.length;
+  items[next].focus();
 }
