@@ -18,6 +18,8 @@ export interface Attempt {
   /** Out of 1000, unanswered questions count as wrong. */
   score: number;
   endedEarly: boolean;
+  /** Time from the first question to the results; missing on older attempts. */
+  durationSeconds?: number;
   /** Keyed by skill area name. */
   topics: Record<string, TopicTally>;
 }

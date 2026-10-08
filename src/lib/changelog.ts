@@ -21,7 +21,9 @@ export const changelog: ChangelogEntry[] = [
       'Bookmarks: flag tricky questions during an exam and revisit them later.',
       'Study mode: no score, and the answer and explanation show right after each question.',
       'Exam guides: the official skills outline per exam with Microsoft Learn links.',
-      'About: the app version and this list of changes.'
+      'About: the app version and this list of changes.',
+      'Exams show how long you have been working, and the time is saved with each attempt.',
+      'Skip a question and come back to it later from the question overview.'
     ]
   },
   {

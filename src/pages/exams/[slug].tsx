@@ -7,6 +7,8 @@ import { BookmarkButton } from '@/components/exam/bookmark-button';
 import { AnswerOption } from '@/components/exam/answer-option';
 import type { AnswerState } from '@/components/exam/answer-option';
 import { ExamResults } from '@/components/exam/exam-results';
+import { ExamTimer } from '@/components/exam/exam-timer';
+import { QuestionNavigator } from '@/components/exam/question-navigator';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
@@ -43,11 +45,15 @@ const questionsPerAttempt = 60;
  * of 1000 points is calculated and shown. Leaving mid-exam (Exit button,
  * header or menu links, Back) asks first and then shows the results so far.
  * With ?mode=review the questions come from the saved mistakes instead.
+ * A clock shows the time taken, which is saved with the attempt. Questions
+ * can be skipped and answered later from the question overview.
  */
 export default function ExamPage({ slug }: ExamPageProps) {
   // Load the questions in the browser, then shuffle, limit to 60 and shuffle each question's answers.
   const [questions, setQuestions] = useState<ExamQuestion[] | null>(null);
   const [loadError, setLoadError] = useState(false);
+  // Wall-clock start (questions shown) and end (results shown) of the attempt.
+  const [startedAt, setStartedAt] = useState<number | null>(null);
   const router = useRouter();
   const mode: PracticeMode =
     router.query.mode === 'review' || router.query.mode === 'bookmarks' ? router.query.mode : 'exam';
@@ -69,6 +75,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
         }
         // Each question's answers are reshuffled too, so the correct one moves around.
         setQuestions(shuffleAllOptions(shuffled.slice(0, questionsPerAttempt)));
+        setStartedAt(Date.now());
       })
       .catch(() => {
         if (!cancelled) setLoadError(true);
@@ -80,11 +87,16 @@ export default function ExamPage({ slug }: ExamPageProps) {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-  const [endedEarly, setEndedEarly] = useState(false);
+  const [endedAt, setEndedAt] = useState<number | null>(null);
   const [confirmExit, setConfirmExit] = useState(false);
+  const [confirmFinish, setConfirmFinish] = useState(false);
 
-  const inProgress = questions !== null && questions.length > 0 && !endedEarly && currentIndex < questions.length;
-  const finished = questions !== null && !inProgress;
+  const inProgress = questions !== null && questions.length > 0 && endedAt === null;
+  const finished = questions !== null && questions.length > 0 && endedAt !== null;
+  const answeredCount = selectedAnswers.filter((sel) => sel !== undefined).length;
+  // Exited, or finished with skipped questions left unanswered.
+  const endedEarly = finished && answeredCount < questions.length;
+  const durationSeconds = endedAt !== null && startedAt !== null ? Math.round((endedAt - startedAt) / 1000) : 0;
 
   // Save the attempt and the wrong answers once, when the results appear.
   const saved = useRef(false);
@@ -116,9 +128,10 @@ export default function ExamPage({ slug }: ExamPageProps) {
       correct,
       score: Math.round((correct / questions.length) * 1000),
       endedEarly,
+      durationSeconds,
       topics
     });
-  }, [finished, questions, selectedAnswers, slug, endedEarly, mode]);
+  }, [finished, questions, selectedAnswers, slug, endedEarly, durationSeconds, mode]);
 
   // While the exam is running, ask before leaving: header and menu links go
   // through the leave guard, Back through beforePopState, and closing or
@@ -151,7 +164,19 @@ export default function ExamPage({ slug }: ExamPageProps) {
 
   const handleConfirmExit = () => {
     setConfirmExit(false);
-    setEndedEarly(true);
+    setEndedAt(Date.now());
+  };
+
+  const handleConfirmFinish = () => {
+    setConfirmFinish(false);
+    setEndedAt(Date.now());
+  };
+
+  // Go back to the first question that was skipped.
+  const handleAnswerSkipped = () => {
+    setConfirmFinish(false);
+    const firstSkipped = questions?.findIndex((_, idx) => selectedAnswers[idx] === undefined) ?? -1;
+    if (firstSkipped >= 0) setCurrentIndex(firstSkipped);
   };
 
   // The header shows the full course name, falling back to the slug.
@@ -191,10 +216,8 @@ export default function ExamPage({ slug }: ExamPageProps) {
     );
   }
 
-  const answeredCount = selectedAnswers.filter((sel) => sel !== undefined).length;
-
-  // Once all questions are answered, or the exam was exited early, show the result.
-  if (endedEarly || currentIndex >= questions.length) {
+  // Once the exam is finished or exited, show the result.
+  if (finished) {
     const correctCount = selectedAnswers.filter(
       (sel, idx) => sel === questions[idx].answerIndex
     ).length;
@@ -205,6 +228,7 @@ export default function ExamPage({ slug }: ExamPageProps) {
           answeredCount={answeredCount}
           correctCount={correctCount}
           endedEarly={endedEarly}
+          durationSeconds={durationSeconds}
           mode={mode}
         />
       </PageLayout>
@@ -223,8 +247,23 @@ export default function ExamPage({ slug }: ExamPageProps) {
     setSelectedAnswers(newSelections);
   };
 
+  const unansweredCount = questions.length - answeredCount;
+
+  // Next and Skip both go to the next unanswered question. When none is left
+  // after this one, the exam ends, or with skipped questions still open asks
+  // whether to go back to them first.
+  const nextUnanswered = questions.findIndex(
+    (_, idx) => idx > currentIndex && selectedAnswers[idx] === undefined
+  );
+
   const handleNext = () => {
-    setCurrentIndex((prev) => prev + 1);
+    if (nextUnanswered >= 0) {
+      setCurrentIndex(nextUnanswered);
+    } else if (unansweredCount > 0) {
+      setConfirmFinish(true);
+    } else {
+      setEndedAt(Date.now());
+    }
   };
 
   const answerState = (optionIndex: number): AnswerState => {
@@ -241,9 +280,12 @@ export default function ExamPage({ slug }: ExamPageProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
               {slug.toUpperCase()} {{ exam: 'practice exam', review: 'mistake review', bookmarks: 'bookmarks' }[mode]}
             </p>
-            <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)}>
-              Exit exam
-            </Button>
+            <div className="flex items-center gap-3">
+              {startedAt !== null && <ExamTimer startedAt={startedAt} />}
+              <Button variant="ghost" size="sm" onClick={() => setConfirmExit(true)}>
+                Exit exam
+              </Button>
+            </div>
           </div>
           <div
             className="mt-3 h-1 w-full overflow-hidden rounded-full bg-surface-muted"
@@ -258,6 +300,11 @@ export default function ExamPage({ slug }: ExamPageProps) {
               style={{ width: `${(answeredCount / questions.length) * 100}%` }}
             />
           </div>
+          <QuestionNavigator
+            answered={questions.map((_, idx) => selectedAnswers[idx] !== undefined)}
+            currentIndex={currentIndex}
+            onJump={setCurrentIndex}
+          />
         </div>
         <div className="mb-8 w-full">
           <div className="flex items-center justify-between gap-4">
@@ -287,9 +334,17 @@ export default function ExamPage({ slug }: ExamPageProps) {
             correctAnswer={currentQuestion.options[currentQuestion.answerIndex]}
             explanation={currentQuestion.explanation}
             link={currentQuestion.link}
-            isLastQuestion={currentIndex === questions.length - 1}
+            isLastQuestion={nextUnanswered < 0 && unansweredCount === 0}
             onNext={handleNext}
+            nextLabel={nextUnanswered < 0 && unansweredCount > 0 ? 'Finish exam' : undefined}
           />
+        )}
+        {!showFeedback && (
+          <div className="mt-6 flex w-full justify-end">
+            <Button variant="secondary" onClick={handleNext}>
+              Skip for now
+            </Button>
+          </div>
         )}
       </div>
       <ConfirmDialog
@@ -300,6 +355,15 @@ export default function ExamPage({ slug }: ExamPageProps) {
         cancelLabel="Keep practicing"
         onConfirm={handleConfirmExit}
         onCancel={handleCancelExit}
+      />
+      <ConfirmDialog
+        open={confirmFinish}
+        title={`${unansweredCount} question${unansweredCount === 1 ? '' : 's'} still unanswered`}
+        message="You skipped some questions. Go back and answer them, or finish now and count them as wrong."
+        confirmLabel="Finish exam"
+        cancelLabel="Answer skipped questions"
+        onConfirm={handleConfirmFinish}
+        onCancel={handleAnswerSkipped}
       />
     </PageLayout>
   );

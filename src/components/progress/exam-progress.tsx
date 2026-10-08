@@ -9,6 +9,7 @@ import type { Exam } from '@/lib/exams';
 import { clearExamHistory } from '@/lib/progress-store';
 import type { Attempt, TopicTally } from '@/lib/progress-store';
 import { otherTopic } from '@/lib/topics';
+import { formatDuration } from '@/lib/utils';
 import { ScoreTrend } from './score-trend';
 
 interface ExamProgressProps {
@@ -84,7 +85,7 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
       <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
         <section aria-label="Score trend">
           <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Score trend</h3>
-          <div className="mt-4">
+          <div className="mt-4 max-w-md">
             <ScoreTrend attempts={attempts.slice(-20)} />
           </div>
         </section>
@@ -122,6 +123,7 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
             <tr>
               <th scope="col">Date</th>
               <th scope="col">Result</th>
+              <th scope="col">Time</th>
               <th scope="col">Score</th>
             </tr>
           </thead>
@@ -131,6 +133,9 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
                 <td className="py-2.5 pr-3 text-ink-muted">{formatDate(attempt.finishedAt)}</td>
                 <td className="py-2.5 pr-3 text-ink-muted">
                   {attempt.correct} of {attempt.total} right{attempt.endedEarly ? ', ended early' : ''}
+                </td>
+                <td className="py-2.5 pr-3 text-right text-ink-subtle lining-nums">
+                  {attempt.durationSeconds ? formatDuration(attempt.durationSeconds) : ''}
                 </td>
                 <td className="py-2.5 text-right font-semibold lining-nums">{attempt.score}</td>
               </tr>
