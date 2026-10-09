@@ -26,24 +26,50 @@ function countIds(lists: Record<string, string[]>) {
   return Object.values(lists).reduce((sum, ids) => sum + (Array.isArray(ids) ? ids.length : 0), 0);
 }
 
-/** Downloads everything saved in this browser as a JSON file. */
-export function downloadBackup() {
+/** Everything saved in this browser as a backup file. */
+function backupFile() {
   const backup: BackupFile = {
     app: backupApp,
     version: backupVersion,
     exportedAt: new Date().toISOString(),
     progress: getProgress()
   };
-  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
+  return new File([JSON.stringify(backup, null, 2)], `azure-exams-backup-${localDay()}.json`, { type: 'application/json' });
+}
+
+/** Downloads everything saved in this browser as a JSON file. */
+export function downloadBackup() {
+  const file = backupFile();
+  const url = URL.createObjectURL(file);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `azure-exams-backup-${localDay()}.json`;
+  link.download = file.name;
   document.body.appendChild(link);
   link.click();
   link.remove();
   // Safari needs the URL a little longer than the click.
   window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+}
+
+/**
+ * Opens the share sheet with the backup file, so on iPhone and iPad it can go
+ * to iCloud Drive with Save to Files. Downloads it where sharing files isn't
+ * supported. Resolves to what happened.
+ */
+export async function shareBackup(): Promise<'shared' | 'downloaded' | 'cancelled'> {
+  const file = backupFile();
+  if (!navigator.canShare?.({ files: [file] })) {
+    downloadBackup();
+    return 'downloaded';
+  }
+  try {
+    await navigator.share({ files: [file], title: 'Azure exams backup' });
+    return 'shared';
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') return 'cancelled';
+    downloadBackup();
+    return 'downloaded';
+  }
 }
 
 /** Reads a backup file; throws an Error with a readable message if it isn't one. */

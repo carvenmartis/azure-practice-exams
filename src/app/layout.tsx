@@ -2,6 +2,7 @@ import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { ProgressSync } from '@/components/layout/progress-sync';
 import { ServiceWorker } from '@/components/layout/service-worker';
 import { UpdateNotice } from '@/components/layout/update-notice';
 import { VersionBadge } from '@/components/layout/version-badge';
@@ -40,8 +41,9 @@ interface RootLayoutProps {
 
 /**
  * Root layout that wraps every page with the global styles, fonts, the theme
- * provider, the update notice and the version badge, and registers the
- * service worker that keeps the app working offline. The inline script sets
+ * provider, the update notice and the version badge, registers the
+ * service worker that keeps the app working offline, and keeps progress in
+ * sync with the server. The inline script sets
  * the theme and the status bar / toolbar colour (theme-color meta) before the
  * page paints, so <html> is allowed to differ from the server render. The
  * theme context keeps both in sync afterwards.
@@ -60,6 +62,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <VersionBadge />
           </div>
           <ServiceWorker />
+          <ProgressSync />
         </ThemeProvider>
       </body>
     </html>

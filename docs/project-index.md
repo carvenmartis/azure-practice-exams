@@ -27,6 +27,7 @@ push reminders.
 | Release history | `src/lib/changelog.ts` | About page; every repository change must be recorded here |
 | Version identity | `package.json`, `next.config.js`, `src/lib/version.ts` | Footer badge, update polling and service-worker cache version |
 | Reminder persistence and scheduler | `src/lib/server/reminders.ts` | Push API routes and `src/instrumentation.ts` |
+| Progress sync between devices | `src/lib/sync.ts`, `src/lib/server/sync.ts` | `/api/sync`, `ProgressSync` in the root layout, Settings Sync section |
 
 ## Route index
 
@@ -84,6 +85,17 @@ assets, and precaches them. Navigations and exam JSON are network-first with a
 six-second cached fallback; immutable `/_next/static` assets are cache-first;
 API and RSC requests are never cached. Its cache key uses the build ID. The
 update notice polls `/api/version` and detects a changed build.
+
+### Progress sync
+
+Progress stays in localStorage first. Devices that enter the same sync code
+in Settings share one server profile, stored under the SHA-256 of the code
+(no accounts; the raw code is never stored). `src/lib/sync.ts` merges with it
+on open, after changes,
+when back online and every two minutes, using a three-way merge in
+`src/lib/progress-data.ts` against the copy from the last sync, so removals
+propagate. The server keeps the copy in `SYNC_DATA_DIR` (default `sync-data/`)
+with a revision; a stale save gets 409 and the device merges again.
 
 ### Reminders
 

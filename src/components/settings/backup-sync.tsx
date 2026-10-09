@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { downloadBackup, importBackup, readBackup } from '@/lib/backup';
+import { downloadBackup, importBackup, readBackup, shareBackup } from '@/lib/backup';
 import type { BackupSummary } from '@/lib/backup';
 
 function plural(count: number, word: string) {
@@ -36,10 +36,11 @@ export function BackupSync() {
 
   return (
     <section>
-      <h2 className="font-display text-xl font-semibold">Backup and sync</h2>
+      <h2 className="font-display text-xl font-semibold">Backup</h2>
       <p className="mt-1 text-sm text-ink-muted">
-        Your progress, mistakes, bookmarks and daily goal are saved only in this browser. Export them to a file, then
-        import that file on another device to carry on there.
+        Export your progress, mistakes, bookmarks and daily goal to a file to keep a copy, or import it on a device
+        that can&apos;t reach the server. On iPhone and iPad, Save to iCloud Drive opens the share sheet: choose Save
+        to Files, then iCloud Drive, and use Import backup on the other device to read it back.
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
         <Button
@@ -49,6 +50,17 @@ export function BackupSync() {
           }}
         >
           Export backup
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            void shareBackup().then((result) => {
+              if (result === 'shared') setMessage({ text: 'Backup shared. Import it from Files on your other device.' });
+              if (result === 'downloaded') setMessage({ text: 'Sharing isn\'t available here, so the backup was downloaded instead.' });
+            });
+          }}
+        >
+          Save to iCloud Drive
         </Button>
         <Button variant="secondary" onClick={() => fileInput.current?.click()}>
           Import backup

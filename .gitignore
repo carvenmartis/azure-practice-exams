@@ -17,6 +17,8 @@
 
 # daily reminder keys and subscriptions (src/lib/server/reminders.ts)
 /reminder-data/
+# progress shared by every device (src/lib/server/sync.ts)
+/sync-data/
 
 # production
 /build

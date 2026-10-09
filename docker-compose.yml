@@ -11,6 +11,9 @@ services:
     # register again the next time the app is opened after an update.
     volumes:
       - reminder-data:/app/reminder-data
+      # Progress synced between devices (src/lib/server/sync.ts). Keep this
+      # mapped, or every image update starts the shared copy from scratch.
+      - sync-data:/app/sync-data
     environment:
       # Contact address sent to Apple and Google with each reminder.
       VAPID_SUBJECT: "https://hub.docker.com/r/carvenmartisit/azure-practice-exams"
@@ -38,3 +41,4 @@ services:
 
 volumes:
   reminder-data:
+  sync-data:

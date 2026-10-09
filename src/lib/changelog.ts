@@ -21,7 +21,8 @@ export const changelog: ChangelogEntry[] = [
       'Lists, settings and the Course page use simple rows instead of stacks of cards.',
       'Answers show a check or cross once answered, and the question text is larger.',
       'Pages fade in, buttons respond to a press, and menus open faster and work reliably on iOS.',
-      'The Dashboard is now called Course.'
+      'The Dashboard is now called Course.',
+      'Progress, mistakes, bookmarks and the daily goal can sync between your devices through the NAS: create a sync code in Settings and enter it on your other devices. Backups can also be saved to iCloud Drive from the share sheet.'
     ]
   },
   {

@@ -28,7 +28,8 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0
 
 RUN addgroup -S nodejs -g 1001 && adduser -S nextjs -u 1001 -G nodejs \
-    && mkdir -p /app/reminder-data && chown nextjs:nodejs /app/reminder-data
+    && mkdir -p /app/reminder-data /app/sync-data \
+    && chown nextjs:nodejs /app/reminder-data /app/sync-data
 
 # Standalone output contains the server and only the node_modules it needs
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./

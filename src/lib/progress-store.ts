@@ -1,64 +1,11 @@
 import { useSyncExternalStore } from 'react';
+import { emptyProgress, maxAttempts, maxDailyDays, mergeProgressData, normalizeProgress } from './progress-data';
+import type { AnswerResult, Attempt, ProgressData, ReviewSchedule } from './progress-data';
 
-/** Right and total answers for one skill area in one attempt. */
-export interface TopicTally {
-  correct: number;
-  total: number;
-}
-
-/** One finished (or exited) practice exam. */
-export interface Attempt {
-  slug: string;
-  /** ISO date and time the attempt ended. */
-  finishedAt: string;
-  /** Questions in the attempt, answered or not. */
-  total: number;
-  answered: number;
-  correct: number;
-  /** Out of 1000, unanswered questions count as wrong. */
-  score: number;
-  endedEarly: boolean;
-  /** Time from the first question to the results; missing on older attempts. */
-  durationSeconds?: number;
-  /** Keyed by skill area name. */
-  topics: Record<string, TopicTally>;
-}
-
-/** When a missed question comes back for review. */
-export interface ReviewSchedule {
-  /** ISO date and time (local midnight) from which the question is due. */
-  due: string;
-  /** Index into `reviewIntervals`: how many due reviews were answered right in a row. */
-  step: number;
-}
-
-/** Everything saved on this device. */
-export interface ProgressData {
-  attempts: Attempt[];
-  /** Question ids answered wrong and not yet learned, per exam slug. */
-  mistakes: Record<string, string[]>;
-  /**
-   * When each id in `mistakes` is due again, per exam slug and question id.
-   * Ids without an entry (saved before spaced repetition) are due now.
-   */
-  reviewSchedule: Record<string, Record<string, ReviewSchedule>>;
-  /** Bookmarked question ids per exam slug, oldest first. */
-  bookmarks: Record<string, string[]>;
-  /** Questions answered per local day ('2026-10-08'), in any mode, for the daily goal. */
-  daily: Record<string, number>;
-  /** Questions per day that count as reaching the daily goal. */
-  dailyGoal: number;
-}
-
-/** One answered question, for updating the mistakes list. */
-export interface AnswerResult {
-  id: string;
-  correct: boolean;
-}
+// Callers import everything about progress from here.
+export * from './progress-data';
 
 const storageKey = 'practice-progress';
-/** Keep the history small enough for localStorage. */
-const maxAttempts = 500;
 
 /**
  * Spaced repetition: days until a missed question is due again. A miss
@@ -70,46 +17,15 @@ export const reviewIntervals = [3, 7, 14, 30];
 
 const dayMs = 24 * 60 * 60 * 1000;
 
-export const defaultDailyGoal = 20;
-/** Days of daily counts to keep; plenty for any streak worth showing. */
-const maxDailyDays = 400;
-
-const emptyData: ProgressData = {
-  attempts: [],
-  mistakes: {},
-  reviewSchedule: {},
-  bookmarks: {},
-  daily: {},
-  dailyGoal: defaultDailyGoal
-};
-
 let cache: ProgressData | null = null;
 const listeners = new Set<() => void>();
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-/** Saved or imported progress with every field present; anything malformed is dropped. */
-export function normalizeProgress(parsed: unknown): ProgressData {
-  const value = isRecord(parsed) ? parsed : {};
-  const goal = Number(value.dailyGoal);
-  return {
-    attempts: Array.isArray(value.attempts) ? value.attempts : [],
-    mistakes: isRecord(value.mistakes) ? (value.mistakes as ProgressData['mistakes']) : {},
-    reviewSchedule: isRecord(value.reviewSchedule) ? (value.reviewSchedule as ProgressData['reviewSchedule']) : {},
-    bookmarks: isRecord(value.bookmarks) ? (value.bookmarks as ProgressData['bookmarks']) : {},
-    daily: isRecord(value.daily) ? (value.daily as ProgressData['daily']) : {},
-    dailyGoal: Number.isInteger(goal) && goal > 0 ? goal : defaultDailyGoal
-  };
-}
 
 function read(): ProgressData {
   if (cache) return cache;
   try {
     cache = normalizeProgress(JSON.parse(window.localStorage.getItem(storageKey) ?? 'null'));
   } catch {
-    cache = emptyData;
+    cache = emptyProgress;
   }
   return cache;
 }
@@ -124,7 +40,8 @@ function write(update: (data: ProgressData) => ProgressData) {
   listeners.forEach((listener) => listener());
 }
 
-function subscribe(listener: () => void) {
+/** Calls `listener` whenever the progress changes, in this tab or another one. */
+export function subscribeProgress(listener: () => void) {
   listeners.add(listener);
   // Another tab saved progress: drop the cache so the next read sees it.
   const handleStorage = (event: StorageEvent) => {
@@ -149,7 +66,7 @@ export function getProgress(): ProgressData {
  * Empty during the server render and hydration, filled in right after.
  */
 export function useProgress(): ProgressData {
-  return useSyncExternalStore(subscribe, read, () => emptyData);
+  return useSyncExternalStore(subscribeProgress, read, () => emptyProgress);
 }
 
 /** Local midnight `days` days after `from`, so a question is due for the whole day. */
@@ -298,10 +215,6 @@ export function dailyStatus(data: ProgressData, now = new Date()) {
   return { today, goal: data.dailyGoal, reached, streak };
 }
 
-function union(a: string[] = [], b: string[] = []) {
-  return Array.from(new Set([...a, ...b]));
-}
-
 /**
  * Adds progress from a backup file to what's saved here, without deleting
  * anything: attempts, mistakes and bookmarks are combined, a question in both
@@ -309,37 +222,14 @@ function union(a: string[] = [], b: string[] = []) {
  * and the daily goal comes from the backup.
  */
 export function mergeProgress(incoming: ProgressData) {
-  write((data) => {
-    const attempts = new Map(data.attempts.map((attempt) => [`${attempt.slug}|${attempt.finishedAt}`, attempt]));
-    for (const attempt of incoming.attempts) attempts.set(`${attempt.slug}|${attempt.finishedAt}`, attempt);
+  write((data) => ({ ...mergeProgressData(emptyProgress, data, incoming), dailyGoal: incoming.dailyGoal }));
+}
 
-    const mistakes = { ...data.mistakes };
-    for (const [slug, ids] of Object.entries(incoming.mistakes)) mistakes[slug] = union(mistakes[slug], ids);
-
-    const bookmarks = { ...data.bookmarks };
-    for (const [slug, ids] of Object.entries(incoming.bookmarks)) bookmarks[slug] = union(bookmarks[slug], ids);
-
-    const reviewSchedule = { ...data.reviewSchedule };
-    for (const [slug, entries] of Object.entries(incoming.reviewSchedule)) {
-      const merged = { ...reviewSchedule[slug] };
-      for (const [id, entry] of Object.entries(entries)) {
-        if (!merged[id] || entry.due > merged[id].due) merged[id] = entry;
-      }
-      reviewSchedule[slug] = merged;
-    }
-
-    const daily = { ...data.daily };
-    for (const [day, count] of Object.entries(incoming.daily)) daily[day] = Math.max(daily[day] ?? 0, count);
-
-    return {
-      attempts: Array.from(attempts.values())
-        .sort((a, b) => a.finishedAt.localeCompare(b.finishedAt))
-        .slice(-maxAttempts),
-      mistakes,
-      reviewSchedule,
-      bookmarks,
-      daily,
-      dailyGoal: incoming.dailyGoal
-    };
-  });
+/**
+ * Takes in the result of a sync. `sent` is the copy that went to the server
+ * and `synced` what came back; anything saved here while the sync was under
+ * way is kept on top.
+ */
+export function applySyncedProgress(sent: ProgressData, synced: ProgressData) {
+  write((data) => (data === sent ? synced : mergeProgressData(sent, data, synced)));
 }
