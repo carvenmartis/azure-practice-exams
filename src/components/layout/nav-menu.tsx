@@ -1,24 +1,11 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { MotionConfig, motion } from 'framer-motion';
-import { canLeave } from '@/lib/leave-guard';
 import { cn, focusRing } from '@/lib/utils';
-
-const menuItems = [
-  { href: '/', label: 'Course' },
-  { href: '/progress', label: 'My progress' },
-  { href: '/review', label: 'Review mistakes' },
-  { href: '/bookmarks', label: 'Bookmarks' },
-  { href: '/study', label: 'Study mode' },
-  { href: '/notes', label: 'Study notes' },
-  { href: '/guides', label: 'Exam guides' },
-  { href: '/settings', label: 'Settings' },
-  { href: '/about', label: 'About' }
-];
+import { DrawerContent } from './nav-drawer';
 
 const lineClass = 'absolute left-0 block h-0.5 w-5 rounded-full bg-ink';
 const lineTransition = { duration: 0.25, ease: 'easeInOut' } as const;
@@ -31,9 +18,11 @@ function useIsClient() {
 }
 
 /**
- * Burger button that opens a full-height drawer with the site's pages. The
- * drawer slides in from the right edge and closes on navigation, Escape or a
- * click outside it. Opening it moves keyboard focus to the first link, and
+ * Burger button that opens a full-height drawer with the site's pages, grouped
+ * with counts, plus the theme switch and a backup button (DrawerContent in
+ * nav-drawer.tsx). The drawer slides in from the right edge, fills the width
+ * on phones, and closes on navigation, Escape, its Close button or a click
+ * outside it. Opening it moves keyboard focus to the first link, and
  * Escape puts focus back on the button. The drawer is portalled to the app
  * shell (#app-shell in src/app/layout.tsx) and positioned absolute, not
  * fixed: iOS Safari misplaces fixed elements over the scrolling <main>.
@@ -52,6 +41,12 @@ export function NavMenu() {
   const [shown, setShown] = useState(false);
 
   if (open && !mounted) setMounted(true);
+
+  // The Close button and Escape both hand focus back to the burger.
+  const closeAndFocusButton = () => {
+    setOpenOn(null);
+    buttonRef.current?.focus({ preventScroll: true });
+  };
   const visible = open && shown;
 
   useEffect(() => {
@@ -128,7 +123,7 @@ export function NavMenu() {
             <div
               aria-hidden="true"
               className={cn(
-                'absolute inset-0 bg-black/45 transition-opacity duration-200 ease-out motion-reduce:transition-none',
+                'absolute inset-0 bg-black/35 backdrop-blur-[3px] transition-opacity duration-200 ease-out motion-reduce:transition-none',
                 visible ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
               )}
               onClick={() => setOpen(false)}
@@ -137,44 +132,11 @@ export function NavMenu() {
               id="site-menu"
               aria-label="Site"
               className={cn(
-                'pointer-events-auto absolute top-0 right-0 bottom-0 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
+                'pointer-events-auto absolute top-0 right-0 bottom-0 flex w-full flex-col border-l border-line bg-surface shadow-lifted transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none sm:w-100 md:w-108',
                 visible ? 'translate-x-0' : 'translate-x-full'
               )}
             >
-              <p className="mb-3 px-4 text-xs font-medium text-ink-subtle">Menu</p>
-              <ul className="space-y-1">
-                {menuItems.map((item, index) => {
-                  const active = pathname === item.href;
-                  return (
-                    <li
-                      key={item.href}
-                      className={cn(
-                        'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none',
-                        visible ? 'translate-x-0 opacity-100' : 'translate-x-2 opacity-0'
-                      )}
-                      style={{ transitionDelay: visible ? `${50 + index * 30}ms` : '0ms' }}
-                    >
-                      <Link
-                        href={item.href}
-                        aria-current={active ? 'page' : undefined}
-                        onClick={(event) => {
-                          if (!canLeave()) event.preventDefault();
-                          setOpen(false);
-                        }}
-                        className={cn(
-                          'block rounded-lg border-l-2 px-4 py-3 text-base font-medium transition-colors',
-                          focusRing,
-                          active
-                            ? 'border-accent bg-accent-soft text-accent-strong'
-                            : 'border-transparent text-ink-muted hover:bg-surface-muted hover:text-ink'
-                        )}
-                      >
-                        {item.label}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+              <DrawerContent pathname={pathname} visible={visible} onClose={closeAndFocusButton} onNavigate={() => setOpen(false)} />
             </nav>
           </div>,
           document.getElementById('app-shell') ?? document.body
