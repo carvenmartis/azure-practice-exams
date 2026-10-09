@@ -84,7 +84,7 @@ export function StudySession({ slug }: StudySessionProps) {
   const courseName = exams.find((exam) => exam.slug === slug)?.name ?? slug.toUpperCase();
   const layoutProps = {
     headerTitle: courseName,
-    className: 'flex flex-col items-center px-4 pt-8 pb-16 sm:px-6 sm:pt-14 lg:px-8'
+    className: 'flex flex-col items-center px-4 pt-10 pb-20 sm:px-6 sm:pt-16 lg:px-8'
   };
 
   if (!questions) {
@@ -108,8 +108,9 @@ export function StudySession({ slug }: StudySessionProps) {
     return (
       <PageLayout {...layoutProps} eyebrow="Study mode">
         <div className="flex max-w-xl flex-col items-center text-center">
-          <p className="text-lg text-ink-muted">There are no {slug.toUpperCase()} questions for this skill area yet.</p>
-          <Button className="mt-8" onClick={() => handleTopicChange(allTopics)}>
+          <p className="font-display text-xl font-semibold tracking-tight">No questions here yet</p>
+          <p className="mt-2 text-ink-muted">There are no {slug.toUpperCase()} questions for this skill area yet.</p>
+          <Button className="mt-6" onClick={() => handleTopicChange(allTopics)}>
             Study all skill areas
           </Button>
         </div>
@@ -180,7 +181,7 @@ export function StudySession({ slug }: StudySessionProps) {
               value={topic}
               onChange={(event) => handleTopicChange(event.target.value)}
               className={cn(
-                'w-full max-w-md rounded-xl border border-line-strong bg-surface px-3 py-2 text-sm font-medium tracking-normal text-ink normal-case',
+                'w-full max-w-md rounded-lg border border-line-strong bg-surface px-3 py-2 text-sm font-medium tracking-normal text-ink normal-case',
                 focusRing
               )}
             >
@@ -196,7 +197,7 @@ export function StudySession({ slug }: StudySessionProps) {
             <ShortcutHelp
               handlers={shortcutHandlers}
               shortcuts={[
-                { keys: ['A–D', '1–4'], label: 'Pick an answer' },
+                { keys: ['A-D', '1-4'], label: 'Pick an answer' },
                 { keys: ['S'], label: 'Show the answer' },
                 { keys: ['Enter'], label: 'Next question (after answering)' },
                 { keys: ['←', '→'], label: 'Previous or next question' },
@@ -206,7 +207,7 @@ export function StudySession({ slug }: StudySessionProps) {
             />
             <Link
               href="/study"
-              className={cn('text-sm font-semibold text-ink-muted transition-colors hover:text-ink', focusRing)}
+              className={cn('text-sm font-semibold text-ink-muted transition-colors duration-150 ease-out hover:text-ink', focusRing)}
             >
               Other exams
             </Link>
@@ -214,7 +215,7 @@ export function StudySession({ slug }: StudySessionProps) {
         </div>
 
         <div className="mt-8 flex items-center justify-between gap-4">
-          <p className="text-sm font-medium text-ink-subtle">
+          <p className="text-sm font-medium text-ink-subtle tabular-nums">
             Question {index + 1} <span className="text-ink-subtle/70">of {visible.length}</span>
             {topic === allTopics && <span className="hidden sm:inline"> · {current.topic}</span>}
           </p>

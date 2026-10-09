@@ -15,6 +15,19 @@ export interface ChangelogEntry {
 export const changelog: ChangelogEntry[] = [
   {
     date: '2026-10-09',
+    title: 'Every page redesigned',
+    changes: [
+      'Every page now starts at the same left edge as the header and opens with a plain title and a short intro, without the small label above it.',
+      'The Course page shows its figures in one line, puts your daily goal beside the title, and lists the categories as rows instead of three equal cards.',
+      'Settings, study lists, review, bookmarks and progress use divided rows and one panel instead of a stack of separate cards.',
+      'Answers have a clearer hover, a check or cross once answered, and larger question text.',
+      'Pages fade in once when they open; nothing animates for keyboard shortcuts or when reduced motion is on.',
+      'The menu drawer no longer uses fixed positioning or JavaScript animation, so it opens reliably on iOS.',
+      'Developer note: new PageContainer and PageIntro components in src/components/ui carry the page layout.'
+    ]
+  },
+  {
+    date: '2026-10-09',
     title: 'A calmer, sharper look',
     changes: [
       'New typeface (Geist) replaces the serif headings; the cream, gold and navy colours stay.',

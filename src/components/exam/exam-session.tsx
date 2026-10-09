@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AnswerFeedback } from '@/components/exam/answer-feedback';
 import { BookmarkButton } from '@/components/exam/bookmark-button';
 import { LearnSearchLink, openLearnSearch } from '@/components/exam/learn-search-link';
@@ -62,6 +62,13 @@ const examFocusSelector = '#exam-answers button:not(:disabled), #answer-feedback
 const backGuardKey = 'examBackGuard';
 
 /**
+ * Marks the history entry of a round that has ended. Coming back to it with
+ * Back (or Forward) goes to the mode's list page instead of starting a new
+ * round on that URL.
+ */
+const finishedKey = 'examFinished';
+
+/**
  * The ExamSession component displays a quiz for a given exam. It
  * downloads the questions from public/exam-data/<slug>.json (generated
  * by scripts/build-exam-data.mjs), randomly selects up to 60 of them while
@@ -79,6 +86,7 @@ const backGuardKey = 'examBackGuard';
  * and the up/down arrows move between the answers, Enter or Space picks one.
  * A-D or 1-4 answer directly, S skips, left/right step through the
  * questions, M bookmarks, Escape asks to exit and ? lists the shortcuts.
+ * Once the results show, Back and Forward never lead into the round again.
  */
 export function ExamSession({ slug }: ExamSessionProps) {
   // Load the questions in the browser, then shuffle, limit to 60 and shuffle each question's answers.
@@ -93,8 +101,14 @@ export function ExamSession({ slug }: ExamSessionProps) {
   const topic = searchParams.get('topic') ?? '';
   // Review rounds take only the questions that are due, unless asked for all of them.
   const reviewAll = searchParams.get('scope') === 'all';
+  const router = useRouter();
 
   useEffect(() => {
+    // This entry belongs to a round that already ended (see finishedKey).
+    if (window.history.state?.[finishedKey]) {
+      router.replace(emptyBack[mode].href);
+      return;
+    }
     let cancelled = false;
     fetchExamQuestions(slug)
       .then((exam) => {
@@ -120,7 +134,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
     return () => {
       cancelled = true;
     };
-  }, [slug, mode, reviewAll, topic]);
+  }, [slug, mode, reviewAll, topic, router]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
@@ -211,12 +225,21 @@ export function ExamSession({ slug }: ExamSessionProps) {
     document.querySelector<HTMLElement>(target)?.focus({ preventScroll: true });
   }, [inProgress, currentIndex, currentAnswered, confirmExit, confirmFinish]);
 
-  // Once the results show, drop the Back copy so one Back leaves the page again.
+  // Once the results show, drop the Back copy so one Back leaves the page
+  // again, and mark the entry left behind as finished so history can't lead
+  // back into the round.
   const backGuardDropped = useRef(false);
   useEffect(() => {
     if (!finished || backGuardDropped.current) return;
     backGuardDropped.current = true;
-    if (window.history.state?.[backGuardKey]) window.history.back();
+    const markFinished = () =>
+      window.history.replaceState({ ...window.history.state, [finishedKey]: true }, '', window.location.href);
+    if (window.history.state?.[backGuardKey]) {
+      window.addEventListener('popstate', markFinished, { once: true });
+      window.history.back();
+    } else {
+      markFinished();
+    }
   }, [finished]);
 
   const handleCancelExit = useCallback(() => setConfirmExit(false), [setConfirmExit]);
@@ -434,11 +457,11 @@ export function ExamSession({ slug }: ExamSessionProps) {
               <BookmarkButton slug={slug} questionId={currentQuestion.id} />
             </div>
           </div>
-          <h1 className="mt-3 text-lg leading-relaxed font-semibold sm:text-xl">
+          <h1 className="mt-3 text-xl leading-snug font-semibold tracking-tight sm:text-2xl">
             {currentQuestion.question}
           </h1>
         </div>
-        <div id="exam-answers" className="flex w-full flex-col space-y-3">
+        <div id="exam-answers" className="flex w-full flex-col gap-2.5">
           {currentQuestion.options.map((option, idx) => (
             <AnswerOption
               key={idx}

@@ -5,7 +5,7 @@ import { cn, focusRing } from '@/lib/utils';
 export type AnswerState = 'default' | 'correct' | 'incorrect';
 
 const stateClasses: Record<AnswerState, string> = {
-  default: 'border-line bg-surface shadow-card enabled:hover:border-line-strong enabled:active:scale-[0.99] motion-reduce:enabled:active:scale-100',
+  default: 'border-line bg-surface enabled:hover:border-accent/60 enabled:hover:bg-accent-soft/50 enabled:active:scale-[0.99] motion-reduce:enabled:active:scale-100',
   correct: 'border-success bg-success-soft',
   incorrect: 'border-danger bg-danger-soft'
 };
@@ -28,7 +28,7 @@ export function AnswerOption({ state, disabled, onSelect, shortcut, children }: 
       disabled={disabled}
       aria-keyshortcuts={shortcut}
       className={cn(
-        'flex w-full items-start gap-3 rounded-xl border px-5 py-3.5 text-left leading-relaxed transition-[border-color,background-color,transform] duration-150 ease-out disabled:cursor-default',
+        'flex w-full items-start gap-3.5 rounded-xl border px-5 py-4 text-left leading-relaxed transition-[border-color,background-color,transform] duration-150 ease-out disabled:cursor-default',
         focusRing,
         stateClasses[state]
       )}
@@ -42,6 +42,14 @@ export function AnswerOption({ state, disabled, onSelect, shortcut, children }: 
         </kbd>
       )}
       <span className="min-w-0 flex-1">{children}</span>
+      {state !== 'default' && (
+        <span
+          aria-hidden="true"
+          className={cn('mt-0.5 shrink-0 font-semibold', state === 'correct' ? 'text-success' : 'text-danger')}
+        >
+          {state === 'correct' ? '✓' : '✕'}
+        </span>
+      )}
     </button>
   );
 }

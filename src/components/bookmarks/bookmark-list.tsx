@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { BookmarkButton } from '@/components/exam/bookmark-button';
 import { PageLayout } from '@/components/layout/page-layout';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { Badge } from '@/components/ui/badge';
 import { buttonClasses } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { fetchExamQuestions } from '@/lib/exam-data';
 import type { ExamQuestion } from '@/lib/exam-data';
 import { exams, splitExamName } from '@/lib/exams';
@@ -50,20 +51,18 @@ export function BookmarkList() {
 
   return (
     <PageLayout headerTitle="Bookmarks">
-      <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-sm font-medium text-ink-subtle">Saved questions</p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Bookmarks</h1>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          Flag a tricky question with Bookmark during an exam and it waits for you here. Bookmarks are saved in this
-          browser.
-        </p>
+      <PageContainer width="reading">
+        <PageIntro
+          title="Bookmarks"
+          lede="Saved questions. Flag a tricky question with Bookmark during an exam and it waits for you here. Bookmarks are saved in this browser."
+        />
 
         {loadError && (
-          <p className="mt-8 text-ink-muted">Could not load some of the questions. Please refresh the page.</p>
+          <p className="mb-8 text-ink-muted">Could not load some of the questions. Please refresh the page.</p>
         )}
 
         {slugs.length ? (
-          <div className="mt-10 space-y-10">
+          <div className="space-y-12">
             {slugs.map((slug) => {
               const exam = exams.find((item) => item.slug === slug);
               const { code, title } = splitExamName(exam);
@@ -79,22 +78,22 @@ export function BookmarkList() {
                       </h2>
                     </div>
                     <Link href={`/exams/${slug}?mode=bookmarks`} className={buttonClasses({ size: 'sm' })}>
-                      Practice {ids.length} bookmark{ids.length === 1 ? '' : 's'}
+                      Practice <span className="tabular">{ids.length}</span> bookmark{ids.length === 1 ? '' : 's'}
                     </Link>
                   </div>
-                  <ul className="mt-5 space-y-4">
+                  <ul className="divide-y divide-line">
                     {ids.map((id) => {
                       const question = byId.get(id);
                       if (!questionsBySlug[slug]) {
                         return (
-                          <li key={id} className="text-sm text-ink-muted">
+                          <li key={id} className="py-5 text-sm text-ink-muted">
                             Loading question...
                           </li>
                         );
                       }
                       return (
-                        <li key={id}>
-                          <Card className="p-5 sm:p-6">
+                        <li key={id} className="py-6">
+                          <div>
                             {question ? (
                               <>
                                 <p className="font-semibold leading-relaxed">{question.question}</p>
@@ -123,10 +122,10 @@ export function BookmarkList() {
                             ) : (
                               <p className="text-ink-muted">This question was changed or removed from the exam.</p>
                             )}
-                            <div className="mt-4 flex justify-end border-t border-line pt-3">
+                            <div className="mt-4 flex justify-end">
                               <BookmarkButton slug={slug} questionId={id} />
                             </div>
-                          </Card>
+                          </div>
                         </li>
                       );
                     })}
@@ -136,15 +135,15 @@ export function BookmarkList() {
             })}
           </div>
         ) : (
-          <Card className="mt-10 px-6 py-10 text-center">
+          <div className="py-8">
             <p className="font-display text-xl font-semibold tracking-tight">No bookmarks yet</p>
-            <p className="mt-3 text-ink-muted">During an exam, tap Bookmark above a question to save it here.</p>
+            <p className="mt-2 max-w-[60ch] text-ink-muted">During an exam, tap Bookmark above a question to save it here.</p>
             <Link href="/" className={buttonClasses({ className: 'mt-6' })}>
               Choose an exam
             </Link>
-          </Card>
+          </div>
         )}
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

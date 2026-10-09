@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { PageLayout } from '@/components/layout/page-layout';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { ExamProgress } from '@/components/progress/exam-progress';
 import { buttonClasses } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { StatCard } from '@/components/ui/stat-card';
 import { exams } from '@/lib/exams';
 import { reviewQueue, useProgress } from '@/lib/progress-store';
@@ -30,21 +31,20 @@ export function ProgressOverview() {
 
   return (
     <PageLayout headerTitle="My progress">
-      <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-sm font-medium text-ink-subtle">Your history</p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">My progress</h1>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          Every practice exam you finish or exit is saved in this browser, so your history stays on this device.
-        </p>
+      <PageContainer width="wide">
+        <PageIntro
+          title="My progress"
+          lede="Your history. Every practice exam you finish or exit is saved in this browser, so your history stays on this device."
+        />
 
         {taken.length ? (
           <>
-            <dl className="mt-10 grid grid-cols-3 gap-3 sm:gap-5">
+            <dl className="grid grid-cols-3 gap-3 sm:gap-5">
               {stats.map((stat) => (
                 <StatCard key={stat.label} label={stat.label} value={stat.value} />
               ))}
             </dl>
-            <div className="mt-8 space-y-6">
+            <div className="mt-12 space-y-14">
               {taken.map(({ exam, attempts: examAttempts }) => (
                 <ExamProgress
                   key={exam.slug}
@@ -56,15 +56,15 @@ export function ProgressOverview() {
             </div>
           </>
         ) : (
-          <Card className="mt-10 px-6 py-10 text-center">
+          <div className="py-8">
             <p className="font-display text-xl font-semibold tracking-tight">No attempts yet</p>
-            <p className="mt-3 text-ink-muted">Finish a practice exam and your score and weakest topics appear here.</p>
+            <p className="mt-2 max-w-[60ch] text-ink-muted">Finish a practice exam and your score and weakest topics appear here.</p>
             <Link href="/" className={buttonClasses({ className: 'mt-6' })}>
               Choose an exam
             </Link>
-          </Card>
+          </div>
         )}
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import type { CSSProperties } from 'react';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Badge } from '@/components/ui/badge';
-import { cardClasses } from '@/components/ui/card';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { exams, splitExamName } from '@/lib/exams';
 import { getExamNotes, noteCount } from '@/lib/notes';
 import { cn, focusRing } from '@/lib/utils';
@@ -14,34 +16,39 @@ export default function NotesIndex() {
   const withNotes = exams.filter((exam) => getExamNotes(exam.slug));
   return (
     <PageLayout headerTitle="Study notes">
-      <div className="mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-sm font-medium text-ink-subtle">Know it by heart</p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Study notes</h1>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          The good-to-knows of each exam: key terms with what they mean, important limits and defaults, and every
-          abbreviation used in the questions. Read them before a practice round, then quiz yourself.
-        </p>
-        <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {withNotes.map((exam) => {
+      <PageContainer>
+        <PageIntro
+          title="Study notes"
+          lede="The good-to-knows of each exam: key terms with what they mean, important limits and defaults, and every abbreviation used in the questions. Read them before a practice round, then quiz yourself."
+        />
+        <ul className="divide-y divide-line border-y border-line">
+          {withNotes.map((exam, index) => {
             const { code, title } = splitExamName(exam);
             return (
-              <li key={exam.slug}>
+              <li key={exam.slug} className={index < 8 ? 'reveal-item' : undefined} style={{ '--i': index } as CSSProperties}>
                 <Link
                   href={`/notes/${exam.slug}`}
-                  className={cardClasses(
-                    cn('flex h-full flex-col p-6 transition-all hover:border-accent/60 hover:shadow-lifted', focusRing)
+                  className={cn(
+                    'group flex flex-wrap items-center gap-x-4 gap-y-2 py-5 transition-colors duration-150 ease-out sm:py-6',
+                    focusRing
                   )}
                 >
-                  <Badge className="self-start">{code}</Badge>
-                  <span className="mt-4 font-display text-lg font-semibold leading-snug">{title}</span>
-                  <span className="mt-2 text-sm text-ink-muted">{noteCount(exam.slug)} key terms plus abbreviations</span>
-                  <span className="mt-auto pt-5 text-sm font-semibold text-accent-strong">Read the notes →</span>
+                  <Badge>{code}</Badge>
+                  <span className="min-w-0 flex-1 basis-60">
+                    <span className="block font-display text-lg leading-snug font-semibold tracking-tight">{title}</span>
+                    <span className="mt-1 block text-sm text-ink-muted">
+                      <span className="tabular">{noteCount(exam.slug)}</span> key terms plus abbreviations
+                    </span>
+                  </span>
+                  <span className="text-sm font-semibold text-accent-strong transition-transform duration-200 ease-out group-hover:translate-x-0.5">
+                    Read the notes <span aria-hidden="true">→</span>
+                  </span>
                 </Link>
               </li>
             );
           })}
         </ul>
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

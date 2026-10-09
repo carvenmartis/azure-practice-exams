@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useId, useState } from 'react';
 import type { StudyNote } from '@/lib/notes';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { cn, focusRing } from '@/lib/utils';
 
 export interface NoteSection {
@@ -101,7 +100,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
         )}
       </div>
       <p className="mt-3 text-sm text-ink-subtle" aria-live="polite">
-        {words.length ? `${shown} of ${total} notes match` : `${total} notes`}
+        <span className="tabular">{words.length ? `${shown} of ${total} notes match` : `${total} notes`}</span>
         {quiz && ' · Tap a term to check what it means.'}
       </p>
 
@@ -115,11 +114,11 @@ export function StudyNotes({ sections }: StudyNotesProps) {
                 type="button"
                 onClick={() => document.getElementById(sectionId(index))?.scrollIntoView({ behavior: 'smooth' })}
                 className={cn(
-                  'rounded-lg border border-line bg-surface px-3 py-1 text-sm text-ink-muted transition-colors hover:border-accent hover:text-accent-strong',
+                  'rounded-lg border border-line bg-surface px-3 py-1.5 text-sm text-ink-muted transition-[background-color,border-color,color,transform] duration-150 ease-out hover:border-accent hover:text-accent-strong active:scale-[0.97] motion-reduce:active:scale-100',
                   focusRing
                 )}
               >
-                {section.title} <span className="text-ink-subtle">{section.notes.length}</span>
+                {section.title} <span className="tabular text-ink-subtle">{section.notes.length}</span>
               </button>
             );
           })}
@@ -133,7 +132,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
       {visible.map((section) => {
         const index = sections.findIndex((item) => item.title === section.title);
         return (
-          <section key={section.title} id={sectionId(index)} className="mt-12 scroll-mt-6">
+          <section key={section.title} id={sectionId(index)} className="mt-14 scroll-mt-6">
             <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-1 border-b border-line pb-3">
               <h2 className="font-display text-xl font-semibold tracking-tight">{section.title}</h2>
               {section.studyHref && (
@@ -147,7 +146,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
                 const key = `${section.title}/${term}`;
                 const hidden = quiz && !revealed.has(key);
                 return (
-                  <Card key={key} className="p-5">
+                  <div key={key} className="rounded-2xl border border-line bg-surface p-5">
                     <dt className="font-display text-lg font-semibold leading-snug text-ink">
                       {quiz ? (
                         <button
@@ -167,8 +166,8 @@ export function StudyNotes({ sections }: StudyNotesProps) {
                     </dt>
                     <dd
                       className={cn(
-                        'mt-2 text-sm leading-relaxed text-ink-muted',
-                        hidden && 'cursor-pointer select-none rounded-md bg-surface-muted text-transparent'
+                        'mt-2 max-w-[65ch] text-sm leading-relaxed text-ink-muted',
+                        hidden && 'cursor-pointer select-none rounded-lg bg-surface-muted text-transparent'
                       )}
                       aria-hidden={hidden || undefined}
                       // The term button is the keyboard control; this only makes the grey block tappable too.
@@ -176,7 +175,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
                     >
                       {definition}
                     </dd>
-                  </Card>
+                  </div>
                 );
               })}
             </dl>

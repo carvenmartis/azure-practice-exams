@@ -50,7 +50,7 @@ export function ExamResults({
         <p className="text-sm font-medium text-ink-subtle">
           {endedEarly ? 'Topic drill ended early' : 'Topic drill complete'}
         </p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter tabular-nums sm:text-4xl">
           {correctCount} of {answeredCount} right
         </h1>
         <p className="mt-4 leading-relaxed text-ink-muted">
@@ -76,7 +76,7 @@ export function ExamResults({
         <p className="text-sm font-medium text-ink-subtle">
           {endedEarly ? 'Bookmarks round ended early' : 'Bookmarks round complete'}
         </p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter tabular-nums sm:text-4xl">
           {correctCount} of {answeredCount} right
         </h1>
         <p className="mt-4 leading-relaxed text-ink-muted">
@@ -97,7 +97,7 @@ export function ExamResults({
         <p className="text-sm font-medium text-ink-subtle">
           {endedEarly ? 'Review ended early' : 'Review complete'}
         </p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter tabular-nums sm:text-4xl">
           {correctCount} of {answeredCount} right
         </h1>
         <p className="mt-4 leading-relaxed text-ink-muted">

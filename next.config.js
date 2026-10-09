@@ -4,6 +4,10 @@ const { version } = require('./package.json');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // `next dev` blocks scripts requested from other addresses, so a phone opening the
+  // dev server over the network got a page that never became interactive. These
+  // patterns allow any device on a home or office network (each * is one number).
+  allowedDevOrigins: ['10.10.1.*'],
   env: {
     // Shown in the bottom-right corner of every page. The GitHub workflow
     // sets APP_VERSION to <major>.<minor>.<build number> on each build.

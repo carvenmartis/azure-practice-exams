@@ -4,7 +4,8 @@ import { StartExamLink } from '@/components/exam/start-exam-link';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Badge } from '@/components/ui/badge';
 import { buttonClasses } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { getExamGuide, trainingSearchUrl } from '@/lib/exam-guides';
 import { exams, splitExamName } from '@/lib/exams';
 import { getExamNotes } from '@/lib/notes';
@@ -40,17 +41,19 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   return (
     <PageLayout headerTitle={exam.name} eyebrow="Exam guide">
-      <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <Badge>{code}</Badge>
-        <h1 className="mt-4 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">{title}</h1>
-        {exam.description && <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">{exam.description}</p>}
+      <PageContainer width="reading">
+        <PageIntro
+          back={<Badge>{code}</Badge>}
+          title={title}
+          lede={exam.description || undefined}
+        />
         {guide.note && (
-          <p className="mt-6 rounded-xl border border-accent/40 bg-accent-soft px-4 py-3 text-sm leading-relaxed text-ink">
+          <p className="-mt-4 mb-8 rounded-2xl border border-accent/40 bg-accent-soft px-5 py-4 text-sm leading-relaxed text-ink">
             {guide.note}
           </p>
         )}
 
-        <ul className="mt-8 flex flex-wrap gap-3">
+        <ul className="flex flex-wrap gap-3">
           {links.map((link) => (
             <li key={link.href}>
               <a
@@ -59,7 +62,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
                 rel="noreferrer"
                 className={buttonClasses({ variant: 'secondary', size: 'sm' })}
               >
-                {link.label} ↗
+                {link.label} <span aria-hidden="true">↗</span>
               </a>
             </li>
           ))}
@@ -77,45 +80,41 @@ export default async function GuidePage({ params }: GuidePageProps) {
           </li>
         </ul>
 
-        <h2 className="mt-14 border-b border-line pb-4 font-display text-xl font-semibold tracking-tight sm:text-2xl">
-          Skills measured
-        </h2>
-        <ol className="mt-6 space-y-5">
+        <h2 className="mt-14 font-display text-xl font-semibold tracking-tight sm:text-2xl">Skills measured</h2>
+        <ol className="mt-6 divide-y divide-line border-y border-line">
           {guide.areas.map((area) => (
-            <li key={area.name}>
-              <Card className="p-6 sm:p-7">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="font-display text-lg font-semibold tracking-tight leading-snug">{area.name}</h3>
-                  <p className="text-sm font-semibold text-accent-strong tabular-nums">{area.weight}</p>
-                </div>
-                <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-muted" aria-hidden="true">
-                  <div
-                    className="h-full rounded-full bg-accent"
-                    style={{ width: `${Math.min(100, weightMidpoint(area.weight) * 2)}%` }}
-                  />
-                </div>
-                <ul className="mt-5 list-disc space-y-1.5 pl-5 text-ink-muted marker:text-accent">
-                  {area.skills.map((skill) => (
-                    <li key={skill}>{skill}</li>
-                  ))}
-                </ul>
-                <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-4">
-                  <a href={trainingSearchUrl(area)} target="_blank" rel="noreferrer" className={linkClass}>
-                    Find training on Microsoft Learn
-                  </a>
-                  <Link href={{ pathname: `/study/${slug}`, query: { topic: area.name } }} className={linkClass}>
-                    Study these questions
-                  </Link>
-                </div>
-              </Card>
+            <li key={area.name} className="py-7">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                <h3 className="font-display text-lg leading-snug font-semibold tracking-tight">{area.name}</h3>
+                <p className="tabular text-sm font-semibold text-accent-strong">{area.weight}</p>
+              </div>
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-muted" aria-hidden="true">
+                <div
+                  className="h-full rounded-full bg-accent"
+                  style={{ width: `${Math.min(100, weightMidpoint(area.weight) * 2)}%` }}
+                />
+              </div>
+              <ul className="mt-5 max-w-[65ch] list-disc space-y-1.5 pl-5 text-ink-muted marker:text-accent">
+                {area.skills.map((skill) => (
+                  <li key={skill}>{skill}</li>
+                ))}
+              </ul>
+              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+                <a href={trainingSearchUrl(area)} target="_blank" rel="noreferrer" className={linkClass}>
+                  Find training on Microsoft Learn
+                </a>
+                <Link href={{ pathname: `/study/${slug}`, query: { topic: area.name } }} className={linkClass}>
+                  Study these questions
+                </Link>
+              </div>
             </li>
           ))}
         </ol>
-        <p className="mt-6 text-sm text-ink-subtle">
+        <p className="mt-6 max-w-[65ch] text-sm text-ink-subtle">
           Weights are Microsoft&apos;s share of the exam for each area. The bars show the middle of each range, where a
           full bar would be half the exam.
         </p>
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

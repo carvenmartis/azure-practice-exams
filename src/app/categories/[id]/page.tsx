@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
+import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import { ExamCard } from '@/components/dashboard/exam-card';
 import { PageLayout } from '@/components/layout/page-layout';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { examCategories, examsInCategory } from '@/lib/exams';
 import { focusRing } from '@/lib/utils';
 
@@ -17,22 +20,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <PageLayout headerTitle={category.title} eyebrow="Category">
-      <div className="mx-auto max-w-6xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20 sm:pb-24">
-        <Link
-          href="/"
-          className={`text-sm font-semibold text-ink-muted transition-colors hover:text-accent-strong ${focusRing}`}
-        >
-          <span aria-hidden="true">←</span> All categories
-        </Link>
-        <section className="mt-8 mb-12 sm:mb-14">
-          <p className="text-sm font-medium text-ink-subtle">
-            Category
-          </p>
-          <h1 className="mt-3 max-w-3xl font-display text-3xl leading-[1.1] font-semibold tracking-tighter sm:text-4xl">
-            {category.title}
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">{category.description}</p>
-        </section>
+      <PageContainer>
+        <PageIntro
+          back={
+            <Link
+              href="/"
+              className={`font-semibold text-ink-muted transition-colors hover:text-accent-strong ${focusRing}`}
+            >
+              <span aria-hidden="true">←</span> All categories
+            </Link>
+          }
+          title={category.title}
+          lede={category.description}
+        />
 
         <section aria-labelledby="category-exams-heading">
           <div className="mb-6 flex items-baseline justify-between gap-4">
@@ -43,15 +43,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               {categoryExams.length} {categoryExams.length === 1 ? 'exam' : 'exams'}
             </p>
           </div>
-          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {categoryExams.map((exam) => (
-              <li key={exam.slug}>
+          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {categoryExams.map((exam, index) => (
+              <li key={exam.slug} className="reveal-item" style={{ '--i': index } as CSSProperties}>
                 <ExamCard exam={exam} />
               </li>
             ))}
           </ul>
         </section>
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

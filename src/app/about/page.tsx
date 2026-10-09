@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { PageLayout } from '@/components/layout/page-layout';
 import { Card } from '@/components/ui/card';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { changelog } from '@/lib/changelog';
 import { appVersion, commitSha } from '@/lib/version';
 
@@ -18,37 +20,29 @@ function formatDate(iso: string) {
 export default function About() {
   return (
     <PageLayout headerTitle="About">
-      <div className="mx-auto max-w-3xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-sm font-medium text-ink-subtle">About</p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Azure Practice Exams</h1>
-        <p className="mt-4 leading-relaxed text-ink-muted">
-          Untimed practice for Microsoft Azure certification exams. Your progress, mistakes and bookmarks are saved in
-          this browser only.
-        </p>
+      <PageContainer width="reading">
+        <PageIntro
+          title="Azure Practice Exams"
+          lede="Untimed practice for Microsoft Azure certification exams. Your progress, mistakes and bookmarks are saved in this browser only."
+        />
 
-        <Card className="mt-10 flex flex-wrap items-end justify-between gap-4 px-6 py-5">
+        <Card className="flex flex-wrap items-end justify-between gap-4 px-6 py-5">
           <div>
             <p className="text-xs font-medium text-ink-subtle">Version</p>
-            <p className="mt-1 font-display text-3xl font-semibold tabular-nums">{appVersion ? `v${appVersion}` : 'Local build'}</p>
+            <p className="tabular mt-1 font-display text-3xl font-semibold">{appVersion ? `v${appVersion}` : 'Local build'}</p>
           </div>
           {commitSha && <p className="font-mono text-sm text-ink-subtle">Build {commitSha}</p>}
         </Card>
 
-        <h2 className="mt-14 border-b border-line pb-4 font-display text-xl font-semibold tracking-tight sm:text-2xl">
-          What&apos;s new
-        </h2>
-        <ol className="mt-8 space-y-10 border-l border-line pl-6">
+        <h2 className="mt-14 font-display text-xl font-semibold tracking-tight sm:text-2xl">What&apos;s new</h2>
+        <ol className="mt-6 divide-y divide-line border-y border-line">
           {changelog.map((entry) => (
-            <li key={entry.date} className="relative">
-              <span
-                aria-hidden="true"
-                className="absolute top-1.5 -left-[1.95rem] h-3 w-3 rounded-full border-2 border-surface bg-accent"
-              />
-              <p className="text-sm font-medium text-ink-subtle">
+            <li key={`${entry.date}-${entry.title}`} className="py-8">
+              <p className="tabular text-sm font-medium text-ink-subtle">
                 <time dateTime={entry.date}>{formatDate(entry.date)}</time>
               </p>
-              <h3 className="mt-2 font-display text-xl font-semibold">{entry.title}</h3>
-              <ul className="mt-3 list-disc space-y-1.5 pl-5 leading-relaxed text-ink-muted marker:text-accent">
+              <h3 className="mt-2 font-display text-xl font-semibold tracking-tight">{entry.title}</h3>
+              <ul className="mt-3 max-w-[65ch] list-disc space-y-1.5 pl-5 leading-relaxed text-ink-muted marker:text-accent">
                 {entry.changes.map((change) => (
                   <li key={change}>{change}</li>
                 ))}
@@ -56,7 +50,7 @@ export default function About() {
             </li>
           ))}
         </ol>
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

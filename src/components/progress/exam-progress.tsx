@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { StartExamLink } from '@/components/exam/start-exam-link';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonClasses } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { splitExamName } from '@/lib/exams';
 import type { Exam } from '@/lib/exams';
@@ -66,7 +65,7 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
   ];
 
   return (
-    <Card className="p-6 sm:p-8">
+    <section aria-label={`${code} progress`} className="border-t border-line pt-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <Badge>{code}</Badge>
@@ -79,7 +78,7 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
 
       <dl className="mt-6 grid grid-cols-3 gap-3">
         {stats.map((stat) => (
-          <div key={stat.label} className="rounded-xl bg-surface-muted px-4 py-3">
+          <div key={stat.label} className="rounded-lg bg-surface-muted px-4 py-3">
             <dt className="text-xs font-medium text-ink-subtle">{stat.label}</dt>
             <dd className="mt-1 font-display text-xl font-semibold tracking-tight tabular-nums">{stat.value}</dd>
           </div>
@@ -102,9 +101,9 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
             </p>
           )}
           {weakest.length ? (
-            <ul className="mt-4 space-y-4">
+            <ul className="mt-4 divide-y divide-line">
               {weakest.map((item) => (
-                <li key={item.topic}>
+                <li key={item.topic} className="py-4 first:pt-0">
                   <div className="flex items-baseline justify-between gap-3 text-sm">
                     <span className="font-medium">{item.topic}</span>
                     <span className="shrink-0 text-ink-muted tabular-nums">
@@ -146,14 +145,14 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
           <tbody className="divide-y divide-line">
             {recent.map((attempt) => (
               <tr key={attempt.finishedAt}>
-                <td className="py-2.5 pr-3 text-ink-muted">{formatDate(attempt.finishedAt)}</td>
-                <td className="py-2.5 pr-3 text-ink-muted">
+                <td className="py-3.5 pr-3 text-ink-muted tabular-nums">{formatDate(attempt.finishedAt)}</td>
+                <td className="py-3.5 pr-3 text-ink-muted tabular-nums">
                   {attempt.correct} of {attempt.total} right{attempt.endedEarly ? ', ended early' : ''}
                 </td>
-                <td className="py-2.5 pr-3 text-right text-ink-subtle tabular-nums">
+                <td className="py-3.5 pr-3 text-right text-ink-subtle tabular-nums">
                   {attempt.durationSeconds ? formatDuration(attempt.durationSeconds) : ''}
                 </td>
-                <td className="py-2.5 text-right font-semibold tabular-nums">{attempt.score}</td>
+                <td className="py-3.5 text-right font-semibold tabular-nums">{attempt.score}</td>
               </tr>
             ))}
           </tbody>
@@ -188,6 +187,6 @@ export function ExamProgress({ exam, attempts, mistakeCount }: ExamProgressProps
         }}
         onCancel={() => setConfirmClear(false)}
       />
-    </Card>
+    </section>
   );
 }

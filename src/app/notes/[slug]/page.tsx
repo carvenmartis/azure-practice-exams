@@ -6,6 +6,8 @@ import { PageLayout } from '@/components/layout/page-layout';
 import { StudyNotes } from '@/components/notes/study-notes';
 import type { NoteSection } from '@/components/notes/study-notes';
 import { Badge } from '@/components/ui/badge';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { findAbbreviations } from '@/lib/abbreviations';
 import { getExamGuide } from '@/lib/exam-guides';
 import { exams, splitExamName } from '@/lib/exams';
@@ -50,23 +52,25 @@ export default async function NotesPage({ params }: NotesPageProps) {
 
   return (
     <PageLayout headerTitle={exam.name} eyebrow="Study notes">
-      <div className="mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <Link
-          href="/notes"
-          className={`text-sm font-semibold text-ink-muted transition-colors hover:text-accent-strong ${focusRing}`}
-        >
-          <span aria-hidden="true">←</span> All study notes
-        </Link>
-        <div className="mt-8">
-          <Badge>{code}</Badge>
-        </div>
-        <h1 className="mt-4 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">{title}</h1>
-        <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
-          The terms, abbreviations and facts worth knowing by heart for {code}, grouped by the skill areas of the
-          official outline. Read them through, then use Quiz me to hide the meanings and test yourself.
-        </p>
+      <PageContainer>
+        <PageIntro
+          back={
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <Link
+              href="/notes"
+              className={`font-semibold text-ink-muted transition-colors duration-150 ease-out hover:text-accent-strong ${focusRing}`}
+            >
+              <span aria-hidden="true">←</span> All study notes
+            </Link>
+              <Badge>{code}</Badge>
+            </div>
+          }
+          title={title}
+          lede={`The terms, abbreviations and facts worth knowing by heart for ${code}, grouped by the skill areas of the official outline. Read them through, then use Quiz me to hide the meanings and test yourself.`}
+          className="mb-8 sm:mb-8"
+        />
         <StudyNotes sections={sections} />
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

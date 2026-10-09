@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
+import { MotionConfig, motion } from 'framer-motion';
 import { canLeave } from '@/lib/leave-guard';
 import { cn, focusRing } from '@/lib/utils';
 
@@ -34,8 +34,10 @@ function useIsClient() {
  * Burger button that opens a full-height drawer with the site's pages. The
  * drawer slides in from the right edge and closes on navigation, Escape or a
  * click outside it. Opening it moves keyboard focus to the first link, and
- * Escape puts focus back on the button. The drawer is portalled to <body> so it overlays the page
- * rather than the header's stacking context.
+ * Escape puts focus back on the button. The drawer is portalled to the app
+ * shell (#app-shell in src/app/layout.tsx) and positioned absolute, not
+ * fixed: iOS Safari misplaces fixed elements over the scrolling <main>.
+ * It uses plain CSS transitions, so it does not depend on JS animation.
  */
 export function NavMenu() {
   const pathname = usePathname();
@@ -45,19 +47,44 @@ export function NavMenu() {
   const setOpen = (isOpen: boolean) => setOpenOn(isOpen ? pathname : null);
   const isClient = useIsClient();
   const buttonRef = useRef<HTMLButtonElement>(null);
+  // The drawer stays mounted while it slides out; `shown` drives the slide.
+  const [mounted, setMounted] = useState(false);
+  const [shown, setShown] = useState(false);
+
+  if (open && !mounted) setMounted(true);
+  const visible = open && shown;
 
   useEffect(() => {
-    if (!open) return;
-    // The drawer is portalled to the end of <body>, so Tab would not reach it from the button.
-    document.querySelector<HTMLElement>('#site-menu a')?.focus();
+    if (open) {
+      // Two frames: the drawer must paint off-screen once before it slides in.
+      let second = 0;
+      const first = requestAnimationFrame(() => {
+        second = requestAnimationFrame(() => setShown(true));
+      });
+      return () => {
+        cancelAnimationFrame(first);
+        cancelAnimationFrame(second);
+      };
+    }
+    const timer = window.setTimeout(() => {
+      setShown(false);
+      setMounted(false);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || !mounted) return;
+    // The drawer is portalled to the app shell, so Tab would not reach it from the button.
+    document.querySelector<HTMLElement>('#site-menu a')?.focus({ preventScroll: true });
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
       setOpenOn(null);
-      buttonRef.current?.focus();
+      buttonRef.current?.focus({ preventScroll: true });
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open]);
+  }, [open, mounted]);
 
   return (
     <MotionConfig reducedMotion="user">
@@ -93,68 +120,64 @@ export function NavMenu() {
       </button>
 
       {isClient &&
+        mounted &&
         createPortal(
-          <AnimatePresence>
-            {open && (
-              <>
-                {/* Dims the page below the header only, so the header keeps matching the status bar */}
-                <motion.div
-                  key="backdrop"
-                  className="fixed inset-x-0 top-(--header-height) bottom-0 z-40 bg-black/45"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={() => setOpen(false)}
-                />
-                <motion.nav
-                  key="panel"
-                  id="site-menu"
-                  aria-label="Site"
-                  className="fixed top-(--header-height) right-0 bottom-0 z-50 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted"
-                  initial={{ x: '100%' }}
-                  animate={{ x: 0 }}
-                  exit={{ x: '100%' }}
-                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-                >
-                  <p className="mb-3 px-4 text-xs font-medium text-ink-subtle">
-                    Menu
-                  </p>
-                  <ul className="space-y-1">
-                    {menuItems.map((item, index) => {
-                      const active = pathname === item.href;
-                      return (
-                        <motion.li
-                          key={item.href}
-                          initial={{ opacity: 0, x: 8 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.05 + index * 0.03, duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                        >
-                          <Link
-                            href={item.href}
-                            aria-current={active ? 'page' : undefined}
-                            onClick={(event) => {
-                              if (!canLeave()) event.preventDefault();
-                              setOpen(false);
-                            }}
-                            className={cn(
-                              'block rounded-lg border-l-2 px-4 py-3 text-base font-medium transition-colors',
-                              focusRing,
-                              active
-                                ? 'border-accent bg-accent-soft text-accent-strong'
-                                : 'border-transparent text-ink-muted hover:bg-surface-muted hover:text-ink'
-                            )}
-                          >
-                            {item.label}
-                          </Link>
-                        </motion.li>
-                      );
-                    })}
-                  </ul>
-                </motion.nav>
-              </>
-            )}
-          </AnimatePresence>,
-          document.body
+          <div className="pointer-events-none absolute inset-x-0 top-(--header-height) bottom-0 z-50 overflow-clip">
+            {/* Dims the page below the header only, so the header keeps matching the status bar. The wrapper
+                clips the off-screen drawer so it can never widen or scroll the page. */}
+            <div
+              aria-hidden="true"
+              className={cn(
+                'absolute inset-0 bg-black/45 transition-opacity duration-200 ease-out motion-reduce:transition-none',
+                visible ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+              )}
+              onClick={() => setOpen(false)}
+            />
+            <nav
+              id="site-menu"
+              aria-label="Site"
+              className={cn(
+                'pointer-events-auto absolute top-0 right-0 bottom-0 w-72 max-w-[85vw] overflow-y-auto border-l border-line bg-surface px-4 py-6 shadow-lifted transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
+                visible ? 'translate-x-0' : 'translate-x-full'
+              )}
+            >
+              <p className="mb-3 px-4 text-xs font-medium text-ink-subtle">Menu</p>
+              <ul className="space-y-1">
+                {menuItems.map((item, index) => {
+                  const active = pathname === item.href;
+                  return (
+                    <li
+                      key={item.href}
+                      className={cn(
+                        'transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none',
+                        visible ? 'translate-x-0 opacity-100' : 'translate-x-2 opacity-0'
+                      )}
+                      style={{ transitionDelay: visible ? `${50 + index * 30}ms` : '0ms' }}
+                    >
+                      <Link
+                        href={item.href}
+                        aria-current={active ? 'page' : undefined}
+                        onClick={(event) => {
+                          if (!canLeave()) event.preventDefault();
+                          setOpen(false);
+                        }}
+                        className={cn(
+                          'block rounded-lg border-l-2 px-4 py-3 text-base font-medium transition-colors',
+                          focusRing,
+                          active
+                            ? 'border-accent bg-accent-soft text-accent-strong'
+                            : 'border-transparent text-ink-muted hover:bg-surface-muted hover:text-ink'
+                        )}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          </div>,
+          document.getElementById('app-shell') ?? document.body
         )}
     </MotionConfig>
   );

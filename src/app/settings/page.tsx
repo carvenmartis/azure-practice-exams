@@ -3,6 +3,8 @@ import { PageLayout } from '@/components/layout/page-layout';
 import { BackupSync } from '@/components/settings/backup-sync';
 import { DailyGoalSettings } from '@/components/settings/daily-goal-settings';
 import { OfflineStatus } from '@/components/settings/offline-status';
+import { PageContainer } from '@/components/ui/page-container';
+import { PageIntro } from '@/components/ui/page-intro';
 import { ThemePicker } from '@/components/settings/theme-picker';
 
 export const metadata: Metadata = { title: 'Settings' };
@@ -15,22 +17,16 @@ export const metadata: Metadata = { title: 'Settings' };
 export default function Settings() {
   return (
     <PageLayout headerTitle="Settings">
-      <div className="mx-auto max-w-2xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-sm font-medium text-ink-subtle">Preferences</p>
-        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Settings</h1>
-        <div className="mt-10 rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-8">
-          <ThemePicker />
+      <PageContainer width="reading">
+        <PageIntro title="Settings" lede="Theme, daily goal, backup and offline use. Everything is saved on this device." />
+        <div className="divide-y divide-line rounded-2xl border border-line bg-surface shadow-card">
+          {[ThemePicker, DailyGoalSettings, BackupSync, OfflineStatus].map((Section, index) => (
+            <div key={index} className="p-6 sm:p-8">
+              <Section />
+            </div>
+          ))}
         </div>
-        <div className="mt-6 rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-8">
-          <DailyGoalSettings />
-        </div>
-        <div className="mt-6 rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-8">
-          <BackupSync />
-        </div>
-        <div className="mt-6 rounded-2xl border border-line bg-surface p-6 shadow-card sm:p-8">
-          <OfflineStatus />
-        </div>
-      </div>
+      </PageContainer>
     </PageLayout>
   );
 }

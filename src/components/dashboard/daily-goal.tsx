@@ -22,7 +22,7 @@ export function DailyGoal() {
   const left = status.goal - status.today;
 
   return (
-    <Card className="mt-6 px-5 py-5 sm:px-6">
+    <Card className="px-5 py-5 sm:px-6 sm:py-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-ink-subtle">Daily goal</p>
@@ -43,7 +43,7 @@ export function DailyGoal() {
         </div>
       </div>
       <div
-        className="mt-4 h-2 overflow-hidden rounded-full bg-surface-muted"
+        className="mt-5 h-1.5 overflow-hidden rounded-full bg-surface-muted"
         role="progressbar"
         aria-label="Daily goal"
         aria-valuemin={0}
@@ -51,7 +51,7 @@ export function DailyGoal() {
         aria-valuenow={Math.min(status.today, status.goal)}
       >
         <div
-          className={cn('h-full rounded-full transition-[width] duration-300 ease-out', status.reached ? 'bg-success' : 'bg-accent')}
+          className={cn('h-full rounded-full transition-[width] duration-500 ease-out', status.reached ? 'bg-success' : 'bg-accent')}
           style={{ width: `${share * 100}%` }}
         />
       </div>

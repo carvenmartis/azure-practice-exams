@@ -17,7 +17,9 @@ interface PageLayoutProps {
  * Page shell: course header and <main>. <main> is the scroll area and fills
  * the screen below the header, so the header never moves. The tab title
  * comes from each page's `metadata` (see src/app/layout.tsx). A "Skip to
- * content" link (SkipLink) jumps past the header.
+ * content" link (SkipLink) jumps past the header. Every page renders its own
+ * PageLayout, so <main> mounts again on each navigation and `page-enter`
+ * (globals.css) plays the page transition; the header doesn't animate.
  */
 export function PageLayout({ headerTitle, eyebrow, className, children }: PageLayoutProps) {
   return (
@@ -27,7 +29,7 @@ export function PageLayout({ headerTitle, eyebrow, className, children }: PageLa
       <main
         id="main-content"
         tabIndex={-1}
-        className={cn('min-h-0 flex-1 overflow-y-auto overscroll-contain focus:outline-none', className)}
+        className={cn('page-enter min-h-0 flex-1 overflow-y-auto overscroll-contain focus:outline-none', className)}
       >
         {children}
       </main>

@@ -15,7 +15,7 @@ export function ReviewDueBanner() {
     <Link
       href="/review"
       className={cn(
-        'mt-6 flex items-center justify-between gap-4 rounded-2xl border border-accent/40 bg-surface px-5 py-4 shadow-card transition-colors hover:border-accent',
+        'flex items-center justify-between gap-4 rounded-2xl border border-accent/40 bg-accent-soft px-5 py-4 transition-colors hover:border-accent',
         focusRing
       )}
     >

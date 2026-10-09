@@ -1,43 +1,43 @@
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
-import { cardClasses } from '@/components/ui/card';
 import { examsInCategory, splitExamName } from '@/lib/exams';
 import type { ExamCategory } from '@/lib/exams';
-import { cn, focusRing } from '@/lib/utils';
+import { focusRing } from '@/lib/utils';
 
 interface CategoryCardProps {
   category: ExamCategory;
 }
 
-/** Dashboard card that links to a category page: title, summary and its exam codes. */
+/**
+ * Dashboard row that links to a category page: title, summary and its exam
+ * codes. The rows sit in a divided list, so a category reads as a line to
+ * scan, not a tile to compare.
+ */
 export function CategoryCard({ category }: CategoryCardProps) {
   const categoryExams = examsInCategory(category.id);
 
   return (
     <Link
       href={`/categories/${category.id}`}
-      className={cardClasses(
-        cn(
-          'group relative flex h-full flex-col overflow-hidden p-7 transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-line-strong hover:shadow-lifted active:scale-[0.99] motion-reduce:transform-none',
-          focusRing
-        )
-      )}
+      className={`group -mx-4 grid gap-x-8 gap-y-3 rounded-xl px-4 py-7 transition-colors duration-150 hover:bg-surface-muted/60 sm:-mx-6 sm:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_auto] sm:items-center sm:px-6 ${focusRing}`}
     >
-      <p className="text-sm font-medium text-ink-subtle">
-        {categoryExams.length} {categoryExams.length === 1 ? 'exam' : 'exams'}
-      </p>
-      <h3 className="mt-4 font-display text-xl font-semibold tracking-tight leading-snug">{category.title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-ink-muted">{category.description}</p>
-      <ul className="mt-5 mb-6 flex flex-wrap gap-2">
+      <span>
+        <span className="block font-display text-xl font-semibold tracking-tight">{category.title}</span>
+        <span className="mt-1.5 block max-w-[52ch] text-sm leading-relaxed text-ink-muted">{category.description}</span>
+      </span>
+      <ul className="flex flex-wrap gap-2">
         {categoryExams.map((exam) => (
           <li key={exam.slug}>
             <Badge>{splitExamName(exam).code}</Badge>
           </li>
         ))}
       </ul>
-      <span className="mt-auto flex items-center gap-2 border-t border-line pt-5 text-sm font-semibold text-ink transition-colors group-hover:text-accent-strong">
-        View exams
-        <span aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">
+      <span className="flex items-center gap-2 text-sm font-semibold text-ink transition-colors group-hover:text-accent-strong">
+        {categoryExams.length} {categoryExams.length === 1 ? 'exam' : 'exams'}
+        <span
+          aria-hidden="true"
+          className="transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transform-none"
+        >
           →
         </span>
       </span>

@@ -49,7 +49,7 @@ export function ScoreTrend({ attempts }: ScoreTrendProps) {
           strokeWidth={1}
           strokeDasharray="4 4"
         />
-        <text x={width} y={y(passingScore) - 4} textAnchor="end" className="fill-ink-subtle text-[9px]">
+        <text x={width} y={y(passingScore) - 4} textAnchor="end" className="fill-ink-subtle text-[9px] tabular-nums">
           Pass {passingScore}
         </text>
         {attempts.length > 1 && (
