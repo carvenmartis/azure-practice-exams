@@ -155,7 +155,7 @@ export function ExamResults({
       )}
 
       <Link href="/" className={buttonClasses({ className: 'mt-10' })}>
-        Back to Dashboard
+        Back to Course
       </Link>
     </div>
   );

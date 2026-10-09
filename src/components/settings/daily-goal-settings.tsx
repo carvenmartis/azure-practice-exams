@@ -30,7 +30,7 @@ const supportMessages: Record<Exclude<ReminderSupport, 'ok'>, string> = {
 /** One line on what the server will do with this device's reminder today. */
 function describeStatus(status: ServerReminderStatus) {
   if (!status.registered) {
-    return 'The server does not know this device right now (it forgets after an app update). Open the dashboard or tap Update reminder to sign it up again.';
+    return 'The server does not know this device right now (it forgets after an app update). Open Course or tap Update reminder to sign it up again.';
   }
   const today = status.sentToday
     ? 'Today’s reminder has been sent.'
@@ -91,7 +91,7 @@ export function DailyGoalSettings() {
       <fieldset>
         <legend className="font-display text-xl font-semibold">Daily goal</legend>
         <p className="mt-1 text-sm text-ink-muted">
-          Questions to answer each day. The dashboard shows how far you are and your streak of days in a row.
+          Questions to answer each day. Course shows how far you are and your streak of days in a row.
         </p>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {dailyGoalChoices.map((goal) => (

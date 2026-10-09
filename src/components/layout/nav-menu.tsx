@@ -9,7 +9,7 @@ import { canLeave } from '@/lib/leave-guard';
 import { cn, focusRing } from '@/lib/utils';
 
 const menuItems = [
-  { href: '/', label: 'Dashboard' },
+  { href: '/', label: 'Course' },
   { href: '/progress', label: 'My progress' },
   { href: '/review', label: 'Review mistakes' },
   { href: '/bookmarks', label: 'Bookmarks' },

@@ -20,6 +20,7 @@ export const changelog: ChangelogEntry[] = [
       'New typeface (Geist) replaces the serif headings; the cream, gold and navy colours stay.',
       'Section labels are plain sentence case, page titles are smaller, and exam codes and answer keys use a monospaced font.',
       'Buttons, cards and answers give a slight press response; menus and dialogs open faster, and the keyboard shortcuts overlay opens instantly.',
+      'The Dashboard is now called Course, in the menu and on the back links.',
       'Added CLAUDE.md and the Emil Kowalski and Taste design skills for Claude Code under .claude/skills.'
     ]
   },

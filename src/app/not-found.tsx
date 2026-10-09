@@ -13,7 +13,7 @@ export default function NotFound() {
       <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Page not found</h1>
       <p className="mt-4 max-w-md leading-relaxed text-ink-muted">This page doesn&apos;t exist or has moved.</p>
       <Link href="/" className={buttonClasses({ className: 'mt-8' })}>
-        Back to the dashboard
+        Back to the course
       </Link>
     </PageLayout>
   );

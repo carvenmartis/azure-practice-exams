@@ -46,7 +46,7 @@ const questionsPerAttempt = 60;
 
 /** Where the 'nothing to practise' message links back to. */
 const emptyBack: Record<PracticeMode, { href: string; label: string }> = {
-  exam: { href: '/', label: 'Dashboard' },
+  exam: { href: '/', label: 'Course' },
   review: { href: '/review', label: 'Review mistakes' },
   bookmarks: { href: '/bookmarks', label: 'Bookmarks' },
   drill: { href: '/progress', label: 'My progress' }
