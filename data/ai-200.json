@@ -2,9 +2,9 @@
   {
     "question": "Which Azure service stores and versions private container images for your AI back end?",
     "options": [
-      "Azure Key Vault",
-      "Azure App Configuration",
-      "Azure Blob Storage static website",
+      "Azure Blob Storage",
+      "Azure Container Apps",
+      "Azure Artifacts feeds",
       "Azure Container Registry"
     ],
     "answer": "Azure Container Registry",
@@ -14,10 +14,10 @@
   {
     "question": "You want images built in the cloud whenever code is pushed, without a local Docker daemon. What should you use?",
     "options": [
-      "Azure Event Grid",
+      "Azure Container Instances",
       "Azure Container Registry Tasks",
-      "Azure Batch",
-      "Azure Functions Premium plan"
+      "Azure Container Apps jobs",
+      "Azure Container Registry webhooks"
     ],
     "answer": "Azure Container Registry Tasks",
     "explanation": "ACR Tasks build, test and push images in Azure, and can trigger on source commits or base image updates.",
@@ -26,10 +26,10 @@
   {
     "question": "Which Azure CLI command builds an image from a Dockerfile in the current folder and pushes it to a registry in one step?",
     "options": [
-      "az acr import --name myreg",
-      "az acr repository list --name myreg",
+      "az acr import --name myreg --source app:v1",
+      "az acr run --registry myreg --cmd app:v1 .",
       "az acr build --registry myreg --image app:v1 .",
-      "az acr login --name myreg"
+      "az acr task create --registry myreg --image app:v1"
     ],
     "answer": "az acr build --registry myreg --image app:v1 .",
     "explanation": "az acr build uploads the build context, builds the image with ACR Tasks and pushes it to the registry.",
@@ -38,9 +38,9 @@
   {
     "question": "An App Service web app runs a custom container that needs a database connection string. How should you supply it without baking it into the image?",
     "options": [
-      "Put it in the image label",
-      "Store it in a public blob",
-      "Hard-code it in the Dockerfile",
+      "Pass it as a Docker build argument in the image pipeline",
+      "Mount it from an Azure Files share listed in the Dockerfile",
+      "Store it as an ENV instruction set in the Dockerfile",
       "Set it as an app setting, ideally as a Key Vault reference"
     ],
     "answer": "Set it as an app setting, ideally as a Key Vault reference",
@@ -51,9 +51,9 @@
     "question": "Which Azure service runs containerized microservices with built-in revisions, HTTP ingress and scale-to-zero, without managing Kubernetes?",
     "options": [
       "Azure Container Apps",
-      "Azure Batch",
+      "Azure Container Instances",
       "Azure Kubernetes Service",
-      "Azure Virtual Machines"
+      "Azure App Service for Containers"
     ],
     "answer": "Azure Container Apps",
     "explanation": "Azure Container Apps is a serverless container platform built on Kubernetes, KEDA and Envoy, with revisions and scale to zero.",
@@ -63,9 +63,9 @@
     "question": "You deploy a new version of a container app and want to send 10% of traffic to it. What should you configure?",
     "options": [
       "Multiple revision mode with traffic splitting",
-      "A new Container Apps environment",
-      "A Key Vault access policy",
-      "Single revision mode"
+      "Single revision mode with a new revision suffix",
+      "Two deployment slots with a 10% routing rule",
+      "Multiple replicas with a 10% scale rule"
     ],
     "answer": "Multiple revision mode with traffic splitting",
     "explanation": "In multiple revision mode you can keep several revisions active and split ingress traffic between them by percentage.",
@@ -75,9 +75,9 @@
     "question": "A container app processes messages from a Service Bus queue and should scale with queue length. What should you configure?",
     "options": [
       "A KEDA scale rule for Azure Service Bus",
-      "An Event Grid filter",
-      "A CPU-only scale rule",
-      "Manual replica count of 1"
+      "A KEDA scale rule for Azure Event Hubs",
+      "An HTTP scale rule on concurrent requests",
+      "A custom CPU scale rule set to 70%"
     ],
     "answer": "A KEDA scale rule for Azure Service Bus",
     "explanation": "Container Apps uses KEDA scalers. An azure-servicebus scale rule adds replicas based on message count and can scale to zero.",
@@ -86,10 +86,10 @@
   {
     "question": "Two container apps must share a virtual network and Log Analytics workspace. Where are these settings defined?",
     "options": [
-      "Each revision",
-      "The container registry",
+      "The container app's ingress settings",
+      "Each container app revision template",
       "The Container Apps environment",
-      "The App Configuration store"
+      "The Azure Monitor diagnostic settings"
     ],
     "answer": "The Container Apps environment",
     "explanation": "A Container Apps environment is the secure boundary for a group of apps and defines the shared virtual network and logging destination.",
@@ -99,9 +99,9 @@
     "question": "Which command applies a Kubernetes manifest to deploy an app to AKS?",
     "options": [
       "kubectl apply -f deployment.yaml",
-      "az acr build deployment.yaml",
-      "docker run deployment.yaml",
-      "az aks create -f deployment.yaml"
+      "kubectl create -f service.yaml --dry-run",
+      "az aks command invoke deployment.yaml",
+      "kubectl rollout status -f deployment.yaml"
     ],
     "answer": "kubectl apply -f deployment.yaml",
     "explanation": "kubectl apply creates or updates the resources described in a manifest file on the cluster.",
@@ -110,9 +110,9 @@
   {
     "question": "Which Kubernetes object keeps a desired number of identical pods running and handles rolling updates?",
     "options": [
-      "Service",
-      "ConfigMap",
-      "Namespace",
+      "DaemonSet",
+      "StatefulSet",
+      "Job",
       "Deployment"
     ],
     "answer": "Deployment",
@@ -122,9 +122,9 @@
   {
     "question": "AKS must pull images from a private Azure Container Registry without image pull secrets. What should you do?",
     "options": [
-      "Make the registry public",
-      "Store the admin password in a ConfigMap",
-      "Copy images to every node",
+      "Enable the registry admin user and set it in the pod spec",
+      "Assign the AcrPush role to the cluster's control plane identity",
+      "Create a repository-scoped registry token for the cluster nodes",
       "Attach the registry to the cluster so the kubelet identity gets the AcrPull role"
     ],
     "answer": "Attach the registry to the cluster so the kubelet identity gets the AcrPull role",
@@ -135,9 +135,9 @@
     "question": "A pod in AKS is stuck in CrashLoopBackOff. Which command shows the output of the failed container?",
     "options": [
       "kubectl logs <pod> --previous",
-      "kubectl get nodes",
-      "kubectl apply -f pod.yaml",
-      "az aks list"
+      "kubectl get pod <pod> -o yaml",
+      "kubectl top pod <pod> --containers",
+      "kubectl get events --watch"
     ],
     "answer": "kubectl logs <pod> --previous",
     "explanation": "kubectl logs with --previous shows logs from the last terminated container instance, which usually reveals why it crashed.",
@@ -146,10 +146,10 @@
   {
     "question": "A container app fails to start. Where can you view its console output and system events?",
     "options": [
-      "Azure Advisor",
-      "Azure Cost Management",
+      "Container Apps revision history and the AppServiceConsoleLogs and AppServicePlatformLogs tables in Log Analytics",
+      "Container Apps metrics explorer and the ContainerLogV2 and KubeEvents tables in Log Analytics",
       "Container Apps log streams and the ContainerAppConsoleLogs and ContainerAppSystemLogs tables in Log Analytics",
-      "The registry webhook history only"
+      "Container Apps ingress logs and the AzureDiagnostics and AzureActivity tables in Log Analytics"
     ],
     "answer": "Container Apps log streams and the ContainerAppConsoleLogs and ContainerAppSystemLogs tables in Log Analytics",
     "explanation": "Container Apps sends console logs and system events to Log Analytics, and the portal offers a live log stream for troubleshooting.",
@@ -158,9 +158,9 @@
   {
     "question": "Which kubectl command shows recent events, such as image pull errors, for a pod?",
     "options": [
-      "kubectl scale deployment",
-      "kubectl config view",
-      "kubectl top nodes",
+      "kubectl get pod <pod>",
+      "kubectl logs <pod>",
+      "kubectl top pod <pod>",
       "kubectl describe pod <pod>"
     ],
     "answer": "kubectl describe pod <pod>",
@@ -171,9 +171,9 @@
     "question": "Which Azure Cosmos DB consistency level provides the lowest latency and highest availability, with no ordering guarantee?",
     "options": [
       "Eventual",
-      "Bounded staleness",
-      "Strong",
-      "Session"
+      "Consistent prefix",
+      "Session",
+      "Bounded staleness"
     ],
     "answer": "Eventual",
     "explanation": "Eventual consistency offers the weakest guarantees but the lowest latency and RU cost for reads.",
@@ -185,7 +185,7 @@
       "Strong",
       "Consistent prefix",
       "Session",
-      "Eventual"
+      "Bounded staleness"
     ],
     "answer": "Session",
     "explanation": "Session is the default level. Within a session token a client always reads its own writes, with good performance.",
@@ -194,10 +194,10 @@
   {
     "question": "Your Cosmos DB writes are expensive because every property is indexed. How can you reduce RU consumption for writes?",
     "options": [
-      "Disable the partition key",
+      "Add composite indexes for every property you write",
       "Customize the indexing policy to exclude paths you never query",
-      "Switch to Strong consistency",
-      "Increase the item size"
+      "Switch the indexing mode from consistent to lazy",
+      "Lower the default consistency level to eventual"
     ],
     "answer": "Customize the indexing policy to exclude paths you never query",
     "explanation": "By default every property is indexed. Excluding unused paths reduces the RU cost of writes and storage.",
@@ -206,10 +206,10 @@
   {
     "question": "You store embeddings in Azure Cosmos DB for NoSQL. What must you define to run efficient similarity searches?",
     "options": [
-      "A time-to-live of zero",
+      "A composite index on the embedding path and a full-text policy",
       "A container vector policy and a vector index on the embedding path",
-      "A stored procedure for each query",
-      "A unique key policy"
+      "A spatial index on the embedding path and a geospatial policy",
+      "A unique key policy and a range index on the embedding path"
     ],
     "answer": "A container vector policy and a vector index on the embedding path",
     "explanation": "Cosmos DB for NoSQL vector search requires a vector embedding policy (dimensions, data type, distance) and a vector index such as diskANN or quantizedFlat.",
@@ -218,10 +218,10 @@
   {
     "question": "Which Cosmos DB NoSQL query function returns how similar a stored vector is to a query vector?",
     "options": [
-      "IS_DEFINED",
-      "VectorDistance",
       "ST_DISTANCE",
-      "ARRAY_CONTAINS"
+      "VectorDistance",
+      "FullTextScore",
+      "RRF"
     ],
     "answer": "VectorDistance",
     "explanation": "VectorDistance computes the similarity score between two vectors and is used with ORDER BY to return the nearest items.",
@@ -231,9 +231,9 @@
     "question": "Each time a product document is added or updated in Cosmos DB, you must regenerate its embedding. What should you use?",
     "options": [
       "The change feed processor or an Azure Functions Cosmos DB trigger",
-      "Event Grid custom topic polling",
-      "A scheduled full table scan",
-      "A unique key constraint"
+      "A Cosmos DB post-trigger defined on the container",
+      "An Event Grid system topic for the Cosmos DB account",
+      "Azure Synapse Link with the analytical store enabled"
     ],
     "answer": "The change feed processor or an Azure Functions Cosmos DB trigger",
     "explanation": "The change feed exposes inserts and updates in order. The change feed processor or Functions Cosmos DB trigger reacts to each change.",
@@ -242,9 +242,9 @@
   {
     "question": "What is the main factor when choosing a partition key for a Cosmos DB container?",
     "options": [
-      "The shortest property name",
-      "A boolean flag",
-      "A property that never appears in queries",
+      "A property used in every query filter, whatever its cardinality",
+      "Low cardinality so related items always share one logical partition",
+      "A property that is updated often so data moves between partitions",
       "High cardinality and even distribution of requests and storage"
     ],
     "answer": "High cardinality and even distribution of requests and storage",
@@ -254,10 +254,10 @@
   {
     "question": "Which PostgreSQL extension adds a vector data type and similarity search to Azure Database for PostgreSQL?",
     "options": [
-      "PostGIS",
-      "pg_stat_statements",
+      "azure_ai",
+      "pg_diskann",
       "pgvector (vector)",
-      "hstore"
+      "postgis"
     ],
     "answer": "pgvector (vector)",
     "explanation": "The pgvector extension (enabled as vector) adds the vector type, distance operators and approximate indexes such as HNSW and IVFFlat.",
@@ -267,9 +267,9 @@
     "question": "Which pgvector operator returns cosine distance between two vectors?",
     "options": [
       "<->",
-      "||",
+      "<#>",
       "<=>",
-      "<#>"
+      "<+>"
     ],
     "answer": "<=>",
     "explanation": "In pgvector, <=> is cosine distance, <-> is Euclidean (L2) distance and <#> is negative inner product.",
@@ -278,9 +278,9 @@
   {
     "question": "Vector queries on a large pgvector table are slow because they scan every row. What should you add?",
     "options": [
-      "A CHECK constraint",
-      "A B-tree index on the vector column",
-      "A foreign key",
+      "A GIN index on the embedding column for fast lookups",
+      "A B-tree index on the embedding column plus ANALYZE",
+      "A BRIN index on the embedding column for range scans",
       "An approximate nearest neighbor index such as HNSW"
     ],
     "answer": "An approximate nearest neighbor index such as HNSW",
@@ -291,9 +291,9 @@
     "question": "A RAG query must return only documents from a given tenant that are most similar to the question. How should you write it in PostgreSQL?",
     "options": [
       "Combine a WHERE filter on tenant_id with ORDER BY embedding distance and LIMIT",
-      "Create a separate database per query",
-      "Use a full text search only",
-      "Run the vector search, then filter in the app across all rows"
+      "Order the whole table by embedding distance with LIMIT, then filter tenant_id in the app",
+      "Combine a GROUP BY on tenant_id with MIN(embedding distance) and HAVING",
+      "Use a full text tsvector search on tenant_id with ts_rank ordering"
     ],
     "answer": "Combine a WHERE filter on tenant_id with ORDER BY embedding distance and LIMIT",
     "explanation": "Metadata filtering in the WHERE clause together with ORDER BY distance and LIMIT returns the nearest matching rows for that tenant.",
@@ -302,9 +302,9 @@
   {
     "question": "An app opens a new PostgreSQL connection for every request and hits connection limits. What should you implement?",
     "options": [
-      "A new server per request",
-      "Strong consistency",
-      "A larger vector dimension",
+      "Read replicas, for example with in-region replication",
+      "A higher max_connections, for example set to 5000",
+      "Elastic clusters, for example with Citus sharding",
       "Connection pooling, for example with the built-in PgBouncer"
     ],
     "answer": "Connection pooling, for example with the built-in PgBouncer",
@@ -314,10 +314,10 @@
   {
     "question": "Vector index builds on Azure Database for PostgreSQL run out of memory. Which setting should you raise for the build session?",
     "options": [
-      "timezone",
+      "work_mem",
       "maintenance_work_mem",
-      "max_connections",
-      "log_statement"
+      "shared_buffers",
+      "effective_cache_size"
     ],
     "answer": "maintenance_work_mem",
     "explanation": "HNSW and IVFFlat index builds use maintenance_work_mem. Increasing it (and choosing an adequate compute tier) speeds builds and avoids spilling to disk.",
@@ -326,10 +326,10 @@
   {
     "question": "You want to reduce latency and cost by returning cached answers for repeated LLM prompts. Which service fits?",
     "options": [
-      "Azure Service Bus",
+      "Azure Cosmos DB analytical store",
       "Azure Managed Redis as a cache",
-      "Azure Container Registry",
-      "Azure Blob archive tier"
+      "Azure Front Door caching rules",
+      "Azure API Management rate limits"
     ],
     "answer": "Azure Managed Redis as a cache",
     "explanation": "Azure Managed Redis provides in-memory caching, which can store previous responses (including semantic caching with vector search).",
@@ -339,9 +339,9 @@
     "question": "Cached product prices in Redis must disappear automatically after 10 minutes. What should you set?",
     "options": [
       "An expiration (TTL) on each key",
-      "A larger cache size",
-      "Geo-replication",
-      "A Lua script that runs hourly"
+      "A maxmemory eviction policy",
+      "A data persistence RDB snapshot",
+      "Keyspace notifications on keys"
     ],
     "answer": "An expiration (TTL) on each key",
     "explanation": "Setting a time-to-live with EXPIRE or the SET EX option makes Redis remove keys automatically after the given time.",
@@ -350,10 +350,10 @@
   {
     "question": "When a product is updated in the database, the cached copy in Redis must not be served. What is the simplest pattern?",
     "options": [
-      "Use a larger eviction policy",
+      "Switch the cache to the allkeys-lru eviction policy",
       "Delete (invalidate) the cache key when the record changes",
-      "Increase the TTL",
-      "Disable persistence"
+      "Enable active geo-replication for the cache keys",
+      "Increase the cache key's expiration time (TTL)"
     ],
     "answer": "Delete (invalidate) the cache key when the record changes",
     "explanation": "Cache-aside with explicit invalidation removes the key on update so the next read reloads fresh data from the database.",
@@ -362,9 +362,9 @@
   {
     "question": "Which Azure Managed Redis capability lets you store embeddings and run similarity search for semantic caching?",
     "options": [
-      "Pub/Sub channels only",
-      "Geo commands",
-      "Keyspace notifications",
+      "JSON documents with the RedisJSON module",
+      "Probabilistic filters with RedisBloom",
+      "Time series data with RedisTimeSeries",
       "Vector search with the RediSearch module"
     ],
     "answer": "Vector search with the RediSearch module",
@@ -375,9 +375,9 @@
     "question": "Long-running document summarization jobs must be processed reliably by background workers, with each job handled once. Which service fits?",
     "options": [
       "Azure Service Bus queue",
-      "Azure Front Door",
-      "Azure CDN",
-      "Azure Event Grid"
+      "Azure Event Hubs",
+      "Azure Event Grid",
+      "Azure Queue Storage"
     ],
     "answer": "Azure Service Bus queue",
     "explanation": "Service Bus queues provide durable, ordered (with sessions) messaging with competing consumers, locks and dead-lettering.",
@@ -386,10 +386,10 @@
   {
     "question": "Several independent services need their own copy of each order message. Which Service Bus feature should you use?",
     "options": [
-      "A partitioned queue",
-      "A single queue",
+      "A queue with one session per service",
+      "A partitioned queue with duplicate detection",
       "A topic with one subscription per service",
-      "Duplicate detection"
+      "Auto-forwarding from one queue to another"
     ],
     "answer": "A topic with one subscription per service",
     "explanation": "Topics publish each message to every subscription, so each consumer gets its own copy and can filter with rules.",
@@ -398,9 +398,9 @@
   {
     "question": "A Service Bus message fails processing more times than the MaxDeliveryCount. What happens to it?",
     "options": [
-      "It is moved to Event Grid",
-      "It is sent back to the sender",
-      "It is deleted permanently",
+      "It is moved to the transfer dead-letter queue",
+      "It is deferred until the consumer requests it",
+      "It is abandoned and its lock is renewed",
       "It is moved to the dead-letter queue"
     ],
     "answer": "It is moved to the dead-letter queue",
@@ -410,9 +410,9 @@
   {
     "question": "A consumer must process a message and only remove it from the queue after success. Which receive mode should it use?",
     "options": [
-      "Auto-forwarding",
-      "Scheduled messages",
-      "ReceiveAndDelete",
+      "ReceiveAndDelete, then abandon on failure",
+      "PeekLock, then defer the message",
+      "Peek, then complete the message",
       "PeekLock, then complete the message"
     ],
     "answer": "PeekLock, then complete the message",
@@ -422,10 +422,10 @@
   {
     "question": "When a new blob is uploaded you want to start an embedding pipeline with near real-time, push-based notification. Which service should deliver the event?",
     "options": [
-      "Azure Monitor autoscale",
+      "Azure Event Hubs",
       "Azure Event Grid",
-      "Azure Service Bus polling",
-      "Azure Container Registry"
+      "Azure Logic Apps",
+      "Azure Storage queues"
     ],
     "answer": "Azure Event Grid",
     "explanation": "Event Grid pushes Blob Storage events such as BlobCreated to handlers like Functions, webhooks or queues.",
@@ -435,9 +435,9 @@
     "question": "You only want Event Grid to deliver BlobCreated events for files ending in .pdf. What should you configure?",
     "options": [
       "An event subscription filter on subject ends with .pdf",
-      "A larger retry count",
-      "A KEDA scaler",
-      "A Service Bus rule"
+      "An event subscription filter on subject begins with .pdf",
+      "A topic input schema mapping on the data.url field",
+      "A dead-letter destination for events not ending in .pdf"
     ],
     "answer": "An event subscription filter on subject ends with .pdf",
     "explanation": "Event subscriptions support event type, subject begins with or ends with, and advanced filters to limit delivered events.",
@@ -446,10 +446,10 @@
   {
     "question": "An Event Grid handler is temporarily unavailable. What does Event Grid do by default?",
     "options": [
-      "Drops the event immediately",
+      "Retries every 5 minutes for up to 7 days, then moves it to the topic's dead-letter queue",
       "Retries delivery with exponential backoff, and can dead-letter after retries expire",
-      "Converts it to email",
-      "Stores it in Cosmos DB"
+      "Holds the event in the topic until the handler acknowledges it, with no expiration time",
+      "Dead-letters it immediately to the subscription's storage container without any retries"
     ],
     "answer": "Retries delivery with exponential backoff, and can dead-letter after retries expire",
     "explanation": "By default Event Grid retries with exponential backoff for up to 30 attempts or 24 hours. Dead-lettering is off by default; configure a storage container to keep undeliverable events.",
@@ -458,10 +458,10 @@
   {
     "question": "Your app publishes its own \"DocumentIndexed\" events for other services. What should you create in Event Grid?",
     "options": [
-      "A system topic for Blob Storage",
-      "An Azure Monitor alert",
+      "A system topic for your app",
+      "A partner topic (or partner namespace)",
       "A custom topic (or namespace topic)",
-      "A Service Bus queue"
+      "An Event Hubs namespace with a consumer group"
     ],
     "answer": "A custom topic (or namespace topic)",
     "explanation": "Custom topics let your application publish its own events that subscribers can filter and handle.",
@@ -470,10 +470,10 @@
   {
     "question": "You need a lightweight HTTP API that calls an LLM and scales automatically with no servers to manage. Which option fits best?",
     "options": [
-      "Azure Data Factory pipeline",
-      "Azure Batch pool",
+      "Azure Functions with a Timer trigger",
+      "Azure Logic Apps Standard on a dedicated plan",
       "Azure Functions with an HTTP trigger",
-      "A dedicated virtual machine"
+      "Azure App Service on a Basic plan"
     ],
     "answer": "Azure Functions with an HTTP trigger",
     "explanation": "HTTP-triggered Functions provide serverless APIs that scale with demand and bill per execution on consumption-based plans.",
@@ -482,10 +482,10 @@
   {
     "question": "In Azure Functions, what lets a function write to a Service Bus queue without writing SDK connection code?",
     "options": [
-      "A deployment slot",
-      "An input trigger",
+      "An input binding",
+      "A Service Bus trigger",
       "An output binding",
-      "A host.json log level"
+      "A host.json extension"
     ],
     "answer": "An output binding",
     "explanation": "Bindings connect functions to other services declaratively. An output binding sends the return value or parameter to the target, such as a queue.",
@@ -494,9 +494,9 @@
   {
     "question": "Each function can have how many triggers?",
     "options": [
-      "None",
-      "Up to five",
-      "Unlimited",
+      "One or more",
+      "Zero or one",
+      "Up to two",
       "Exactly one"
     ],
     "answer": "Exactly one",
@@ -507,9 +507,9 @@
     "question": "A function app needs fast cold starts, virtual network integration and scale to zero with per-execution billing. Which hosting plan should you choose?",
     "options": [
       "Flex Consumption plan",
-      "Azure Batch",
-      "Legacy Consumption plan on Windows",
-      "Free App Service plan"
+      "Elastic Premium plan",
+      "Consumption plan on Linux",
+      "Dedicated App Service plan"
     ],
     "answer": "Flex Consumption plan",
     "explanation": "The Flex Consumption plan offers event-driven scale to zero, always-ready instances to reduce cold starts and virtual network integration.",
@@ -518,9 +518,9 @@
   {
     "question": "Where are app-wide settings such as logging and extension configuration for all functions in a function app stored?",
     "options": [
-      "package.json",
-      "local.settings.json in production",
-      "function.json of each trigger only",
+      "function.json",
+      "local.settings.json",
+      "extensions.csproj",
       "host.json"
     ],
     "answer": "host.json",
@@ -531,9 +531,9 @@
     "question": "How do function apps read connection strings in production?",
     "options": [
       "From application settings, which appear as environment variables",
-      "From the README",
-      "From the function URL",
-      "From local.settings.json deployed with the code"
+      "From the function.json binding file as literal connection string values",
+      "From host.json, which is deployed with the code and applies to all functions",
+      "From local.settings.json, which is published with the code to Azure"
     ],
     "answer": "From application settings, which appear as environment variables",
     "explanation": "local.settings.json is only for local development. In Azure, application settings provide configuration as environment variables, and can reference Key Vault.",
@@ -542,10 +542,10 @@
   {
     "question": "Where should you store the API key of a third-party AI service used by your back end?",
     "options": [
-      "In the source repository",
+      "Azure App Configuration",
       "Azure Key Vault",
-      "In the container image",
-      "In an App Configuration plain key-value"
+      "Azure Managed HSM",
+      "Azure Storage Table"
     ],
     "answer": "Azure Key Vault",
     "explanation": "Key Vault securely stores secrets with access control, auditing and versioning.",
@@ -554,10 +554,10 @@
   {
     "question": "Your app should read secrets from Key Vault without any stored credentials. What should you use?",
     "options": [
-      "The vault access key",
+      "A service principal with a client secret and the Key Vault Reader role",
       "A managed identity with an RBAC role such as Key Vault Secrets User",
-      "A shared admin password",
-      "Anonymous access"
+      "A managed identity with an RBAC role such as Key Vault Certificate User",
+      "A managed identity with the Key Vault Crypto Service Encryption User role"
     ],
     "answer": "A managed identity with an RBAC role such as Key Vault Secrets User",
     "explanation": "Managed identities authenticate to Key Vault with Microsoft Entra ID. Grant Key Vault Secrets User for read-only secret access.",
@@ -566,10 +566,10 @@
   {
     "question": "A secret must change every 90 days with minimal app impact. What should you implement?",
     "options": [
-      "Store two copies in the app",
+      "Key Vault soft delete, and have apps read the deleted version rather than a pinned one",
       "Key Vault rotation, and have apps read the latest version rather than a pinned one",
-      "Disable soft delete",
-      "Hard-code the secret and redeploy"
+      "Key Vault expiration dates, and have apps pin the version that was current at deployment",
+      "Key Vault backup and restore, and have apps redeploy each time a new backup is created"
     ],
     "answer": "Key Vault rotation, and have apps read the latest version rather than a pinned one",
     "explanation": "Key Vault supports rotation policies and event notifications. Apps that reference the latest version pick up rotated secrets without code changes.",
@@ -579,9 +579,9 @@
     "question": "Which service centrally stores feature flags and non-secret settings for many microservices?",
     "options": [
       "Azure App Configuration",
-      "Azure Key Vault only",
-      "Azure Container Registry",
-      "Azure Event Grid"
+      "Azure Key Vault",
+      "Azure API Management",
+      "Azure Resource Manager tags"
     ],
     "answer": "Azure App Configuration",
     "explanation": "App Configuration stores key-values and feature flags centrally, with labels per environment and Key Vault references for secrets.",
@@ -590,9 +590,9 @@
   {
     "question": "In App Configuration, how do you keep separate values of the same key for development and production?",
     "options": [
-      "Use tags on the resource group",
-      "Use different regions",
-      "Use different key vaults",
+      "Use snapshots",
+      "Use tags on key-values",
+      "Use feature filters",
       "Use labels"
     ],
     "answer": "Use labels",
@@ -602,10 +602,10 @@
   {
     "question": "An App Configuration value must point at a database password stored in Key Vault. What should you create?",
     "options": [
-      "A snapshot",
+      "A feature flag with a filter",
       "A Key Vault reference",
-      "A feature flag",
-      "A plain key-value with the password"
+      "A plain key-value with the URI",
+      "A snapshot of the store"
     ],
     "answer": "A Key Vault reference",
     "explanation": "Key Vault references store the secret URI in App Configuration; the client library resolves the secret from Key Vault using the app identity.",
@@ -614,9 +614,9 @@
   {
     "question": "Which open standard should you use to emit distributed traces across your API, functions and database calls?",
     "options": [
-      "Syslog only",
-      "FTP",
-      "SNMP",
+      "OpenAPI",
+      "OpenMetrics",
+      "Fluent Bit",
       "OpenTelemetry"
     ],
     "answer": "OpenTelemetry",
@@ -626,10 +626,10 @@
   {
     "question": "In a distributed trace, what links spans from different services into one request?",
     "options": [
-      "The function app name",
+      "A shared span ID reused by every service in the request",
       "A shared trace ID propagated through context headers",
-      "The subscription ID",
-      "The container image tag"
+      "A shared session ID stored in the Application Insights cloud role",
+      "A shared operation name set on each dependency telemetry item"
     ],
     "answer": "A shared trace ID propagated through context headers",
     "explanation": "W3C trace context headers carry the trace ID between services so each span is correlated into one end-to-end trace.",
@@ -639,9 +639,9 @@
     "question": "Which KQL query returns failed requests in the last hour from Application Insights?",
     "options": [
       "requests | where timestamp > ago(1h) and success == false",
-      "GET /requests?failed=true",
-      "SELECT * FROM requests WHERE failed",
-      "requests.filter(success=false)"
+      "requests | where timestamp > ago(1h) and resultCode == true",
+      "requests | filter timestamp > ago(1h) and success == false",
+      "requests | where timestamp < ago(1h) and success == false"
     ],
     "answer": "requests | where timestamp > ago(1h) and success == false",
     "explanation": "Kusto Query Language uses the pipe operator and where clauses. ago(1h) filters by time and success == false finds failures.",
@@ -650,10 +650,10 @@
   {
     "question": "Which KQL operator counts rows grouped by a column, for example requests per operation?",
     "options": [
-      "project count by operation_Name",
+      "extend count() by operation_Name",
       "summarize count() by operation_Name",
-      "join count",
-      "extend group operation_Name"
+      "project count() by operation_Name",
+      "make-series count() on operation_Name"
     ],
     "answer": "summarize count() by operation_Name",
     "explanation": "summarize aggregates rows, for example summarize count() by operation_Name returns a count per operation.",
@@ -662,10 +662,10 @@
   {
     "question": "You need to chart the average duration of requests in 5-minute buckets. Which KQL expression fits?",
     "options": [
-      "project duration, 5m",
-      "where duration > 5m",
+      "summarize avg(duration) by timestamp, 5m",
+      "make-series avg(duration) by bin(5m, timestamp)",
       "summarize avg(duration) by bin(timestamp, 5m)",
-      "top 5 by duration"
+      "extend avg(duration) by bin(timestamp, 5m)"
     ],
     "answer": "summarize avg(duration) by bin(timestamp, 5m)",
     "explanation": "bin() groups timestamps into fixed buckets, and summarize avg() computes the average per bucket, ready for a time chart.",
@@ -674,9 +674,9 @@
   {
     "question": "Which Azure Monitor feature collects telemetry such as requests, dependencies and exceptions from your application code?",
     "options": [
-      "Cost Management",
-      "Azure Advisor",
-      "Azure Policy",
+      "Container insights",
+      "VM insights",
+      "Network Watcher",
       "Application Insights"
     ],
     "answer": "Application Insights",
@@ -686,10 +686,10 @@
   {
     "question": "A dependency call to the LLM endpoint sometimes takes 20 seconds. Where can you see which downstream call caused a slow request?",
     "options": [
-      "The container registry tags",
+      "The Live Metrics view in Application Insights",
       "The end-to-end transaction view in Application Insights",
-      "The Azure status page",
-      "The Key Vault audit log"
+      "The Usage Funnels view in Application Insights",
+      "The Availability tests view in Application Insights"
     ],
     "answer": "The end-to-end transaction view in Application Insights",
     "explanation": "The transaction view shows the request and each dependency span with durations, making slow downstream calls easy to find.",
@@ -698,9 +698,9 @@
   {
     "question": "You want an alert when the exception rate of your API exceeds a threshold. What should you create?",
     "options": [
-      "A container registry webhook",
-      "An App Configuration label",
-      "A Key Vault access policy",
+      "An Azure Monitor activity log alert on an Application Insights resource health event",
+      "An Application Insights availability test with a threshold on failed locations",
+      "An Azure Monitor diagnostic setting on an Application Insights metric",
       "An Azure Monitor alert rule on an Application Insights metric or log query"
     ],
     "answer": "An Azure Monitor alert rule on an Application Insights metric or log query",
@@ -710,9 +710,9 @@
   {
     "question": "An app must authenticate to Azure services in both local development and Azure without code changes. Which credential type should you use?",
     "options": [
-      "A storage account key",
-      "A shared access signature in code",
-      "A hard-coded client secret",
+      "ManagedIdentityCredential",
+      "AzureCliCredential",
+      "ClientSecretCredential",
       "DefaultAzureCredential"
     ],
     "answer": "DefaultAzureCredential",
@@ -722,10 +722,10 @@
   {
     "question": "A container app has no scale rule defined and ingress enabled. What scaling behavior does it get by default?",
     "options": [
-      "No scaling until a rule is added",
-      "CPU scaling with 1 to 100 replicas",
+      "HTTP scaling with 1 to 10 replicas",
+      "CPU scaling with 0 to 10 replicas",
       "HTTP scaling with 0 to 10 replicas",
-      "A fixed single replica"
+      "HTTP scaling with 0 to 30 replicas"
     ],
     "answer": "HTTP scaling with 0 to 10 replicas",
     "explanation": "Without a scale rule, Container Apps applies an HTTP rule with minimum 0 and maximum 10 replicas.",
@@ -734,9 +734,9 @@
   {
     "question": "A container app has ingress disabled, no custom scale rule and minReplicas not set. What happens?",
     "options": [
-      "It scales on CPU automatically",
-      "It runs one replica permanently",
-      "Deployment fails validation",
+      "It gets a default HTTP rule and scales from 0 to 10",
+      "It keeps one replica because minReplicas defaults to 1",
+      "It fails deployment until a scale rule is added",
       "It scales to zero and cannot start again"
     ],
     "answer": "It scales to zero and cannot start again",
@@ -746,9 +746,9 @@
   {
     "question": "A Service Bus scale rule should authenticate without connection strings. What should you configure on the rule?",
     "options": [
-      "A secretRef to the namespace key",
-      "A Dapr component",
-      "An HTTP concurrency value",
+      "A secretRef pointing to a secret that holds the namespace connection string",
+      "A Dapr pub/sub component that authenticates with the app's managed identity",
+      "A KEDA TriggerAuthentication resource with podIdentity set to azure-workload",
       "The identity property set to a system or user-assigned managed identity"
     ],
     "answer": "The identity property set to a system or user-assigned managed identity",
@@ -758,10 +758,10 @@
   {
     "question": "A queue-driven container app takes several minutes to scale from one replica back to zero after the queue empties. Why?",
     "options": [
-      "Scale-down is disabled by default",
-      "KEDA polls every 10 minutes",
+      "KEDA polls custom rules every 300 seconds before evaluating queue length",
+      "Scale-down waits for a 10-minute stabilization window on every replica removal",
       "Custom rules use a 300-second cooldown before removing the last replica",
-      "Replicas only stop on redeploy"
+      "minReplicas defaults to 1, so the last replica is kept until a manual restart"
     ],
     "answer": "Custom rules use a 300-second cooldown before removing the last replica",
     "explanation": "Custom scale rules poll every 30 seconds and apply a 300-second cooldown only when scaling from the final replica to zero.",
@@ -770,10 +770,10 @@
   {
     "question": "Each queue message triggers a batch task that runs for 20 minutes and then exits. Which Container Apps feature fits best?",
     "options": [
-      "A single always-on replica",
-      "A container app with HTTP scaling",
+      "A scheduled Container Apps job",
+      "A manual Container Apps job",
       "An event-driven Container Apps job",
-      "An App Service WebJob"
+      "A container app with a Service Bus scale rule"
     ],
     "answer": "An event-driven Container Apps job",
     "explanation": "Container Apps jobs run tasks to completion. Event-driven jobs start executions from KEDA-supported events such as queue messages.",
@@ -782,9 +782,9 @@
   {
     "question": "A container app needs a database password from Key Vault and must pick up rotated values. What should you configure?",
     "options": [
-      "An environment variable with the plain password",
-      "A Dapr state store",
-      "A Dockerfile ARG",
+      "A Container Apps secret holding the password value copied from Key Vault at deploy time",
+      "An environment variable with a Key Vault reference using the @Microsoft.KeyVault syntax",
+      "A Key Vault CSI driver volume mounted into the container app with secret rotation enabled",
       "A Container Apps secret that references the Key Vault secret through a managed identity"
     ],
     "answer": "A Container Apps secret that references the Key Vault secret through a managed identity",
@@ -794,10 +794,10 @@
   {
     "question": "A web container listens on port 8080 in App Service and the site returns errors because the platform probes port 80. What should you set?",
     "options": [
-      "A KEDA scaler",
-      "A new deployment slot",
+      "The SCM_DO_BUILD_DURING_DEPLOYMENT setting to true",
+      "The Always On general setting to On",
       "The WEBSITES_PORT app setting to 8080",
-      "The container image tag"
+      "The HTTP version general setting to 2.0"
     ],
     "answer": "The WEBSITES_PORT app setting to 8080",
     "explanation": "For custom containers, WEBSITES_PORT tells App Service which port the container listens on.",
@@ -806,9 +806,9 @@
   {
     "question": "Your Dockerfile builds FROM a base image that receives security patches. Images must rebuild automatically when the base changes. What should you use?",
     "options": [
-      "Event Grid on the container app",
-      "Geo-replication",
-      "A nightly kubectl rollout restart",
+      "An ACR task with a timer trigger set to run daily",
+      "An ACR webhook that fires on the base image push",
+      "An ACR task with a source code commit trigger",
       "An ACR task with a base image update trigger"
     ],
     "answer": "An ACR task with a base image update trigger",
@@ -818,10 +818,10 @@
   {
     "question": "Teams in three regions pull large images from one registry and suffer slow pulls. Which feature helps, and what SKU does it need?",
     "options": [
-      "Geo-replication, available in Basic",
+      "Geo-replication, which requires the Standard tier",
       "Geo-replication, which requires the Premium tier",
-      "Zone redundancy in Basic",
-      "Content trust in Standard"
+      "Zone redundancy, which requires the Premium tier",
+      "Artifact cache, which works in the Basic tier"
     ],
     "answer": "Geo-replication, which requires the Premium tier",
     "explanation": "Geo-replication keeps a registry replica in each region for fast local pulls and is a Premium tier feature.",
@@ -830,10 +830,10 @@
   {
     "question": "Pods in AKS must call Azure Key Vault using an Entra identity without secrets mounted in the cluster. What should you use?",
     "options": [
-      "Anonymous access",
+      "The Secrets Store CSI driver with a service principal secret stored in a Kubernetes secret",
       "Microsoft Entra Workload ID with a federated credential for the Kubernetes service account",
-      "The node pool admin password",
-      "A client secret stored in a ConfigMap"
+      "Microsoft Entra pod-managed identity with an AzureIdentityBinding for the pod",
+      "A Kubernetes service account token mounted into the pod and sent directly to Key Vault"
     ],
     "answer": "Microsoft Entra Workload ID with a federated credential for the Kubernetes service account",
     "explanation": "Workload ID federates a Kubernetes service account with a managed identity or app registration, issuing tokens without stored secrets.",
@@ -843,9 +843,9 @@
     "question": "An AKS deployment receives traffic before the model finishes loading, causing errors. What should you add?",
     "options": [
       "A readiness probe that passes only after the model is loaded",
-      "More nodes",
-      "A liveness probe with a short timeout",
-      "A larger image"
+      "A liveness probe that fails until the model is loaded",
+      "A preStop lifecycle hook that waits for the model to load",
+      "A PodDisruptionBudget with minAvailable set to the replica count"
     ],
     "answer": "A readiness probe that passes only after the model is loaded",
     "explanation": "Readiness probes control whether a pod receives Service traffic. Liveness probes restart unhealthy containers instead.",
@@ -854,10 +854,10 @@
   {
     "question": "The Horizontal Pod Autoscaler never scales your deployment on CPU. kubectl describe hpa shows unknown metrics. What is the most likely cause?",
     "options": [
-      "The cluster has too many nodes",
+      "The containers have no CPU resource limits",
       "The containers have no CPU resource requests",
-      "The image is in ACR",
-      "The Service type is ClusterIP"
+      "The cluster autoscaler is disabled on the node pool",
+      "The deployment has no PodDisruptionBudget defined"
     ],
     "answer": "The containers have no CPU resource requests",
     "explanation": "HPA computes CPU utilization as a percentage of the requested CPU. Without resource requests the metric cannot be calculated.",
@@ -866,10 +866,10 @@
   {
     "question": "You store 1,536-dimension embeddings in Cosmos DB for NoSQL. Which vector index type cannot be used?",
     "options": [
-      "diskANN",
-      "quantizedFlat",
+      "diskANN, because it supports at most 512 dimensions",
+      "quantizedFlat, because it supports at most 1,024 dimensions",
       "flat, because it supports at most 505 dimensions",
-      "Any type works at any dimension"
+      "None, since all three types support up to 4,096 dimensions"
     ],
     "answer": "flat, because it supports at most 505 dimensions",
     "explanation": "flat supports up to 505 dimensions. quantizedFlat and diskANN support up to 4,096.",
@@ -878,10 +878,10 @@
   {
     "question": "Each tenant has about 5,000 vectors and queries are filtered to one tenant. Which index type is recommended?",
     "options": [
-      "No vector index",
+      "flat",
       "diskANN",
       "quantizedFlat",
-      "flat"
+      "hnsw"
     ],
     "answer": "quantizedFlat",
     "explanation": "quantizedFlat is recommended for search scopes of roughly 50,000 vectors or fewer. diskANN suits larger scopes.",
@@ -891,9 +891,9 @@
     "question": "You must change an embedding's distance function from cosine to dotproduct on an existing container. What is required?",
     "options": [
       "Drop the existing vector policy and index for that path, then add it back with the new setting",
-      "Disable vector search on the container",
-      "Edit the dimension in place",
-      "Nothing, it updates automatically"
+      "Update the distanceFunction in the vector policy and let the index rebuild in place",
+      "Change the vector index type to flat first, then edit the distance function in place",
+      "Disable vector search on the container, change the policy, then enable it again"
     ],
     "answer": "Drop the existing vector policy and index for that path, then add it back with the new setting",
     "explanation": "Settings of an existing vector embedding or indexing policy cannot be changed in place. You remove and re-add the configuration. Vector search itself cannot be disabled once enabled.",
@@ -902,10 +902,10 @@
   {
     "question": "A Cosmos DB vector query omits TOP and is very expensive. Why?",
     "options": [
-      "The index switches to flat",
+      "Without TOP N the query falls back to the flat index and scans all vectors",
       "Without TOP N the query returns more results than needed and consumes more RUs",
-      "VectorDistance needs a GROUP BY",
-      "TOP is required for the query to compile"
+      "Without TOP N the query runs cross-partition and fans out to every partition",
+      "Without TOP N VectorDistance computes scores with bruteForce set to true"
     ],
     "answer": "Without TOP N the query returns more results than needed and consumes more RUs",
     "explanation": "Always include TOP N with ORDER BY VectorDistance so only the nearest items are returned.",
@@ -915,9 +915,9 @@
     "question": "A container has only 400 vectors indexed with diskANN and RU charges are higher than expected. Why?",
     "options": [
       "diskANN and quantizedFlat need at least 1,000 vectors, otherwise a full scan runs",
-      "diskANN does not support cosine",
-      "Vectors must be float16",
-      "The partition key is wrong"
+      "diskANN needs at least 10,000 vectors, otherwise it falls back to a flat index",
+      "diskANN does not support cosine, so the query falls back to a full scan",
+      "diskANN requires float16 vectors, otherwise each query rereads full-precision data"
     ],
     "answer": "diskANN and quantizedFlat need at least 1,000 vectors, otherwise a full scan runs",
     "explanation": "Below 1,000 indexed vectors the service falls back to a full scan, which can cost more RUs.",
@@ -928,8 +928,8 @@
     "options": [
       "Use float32 as the vector data type",
       "Use float16 as the vector data type",
-      "Increase dimensions",
-      "Switch distance to euclidean"
+      "Use euclidean as the distance function",
+      "Use flat as the vector index type"
     ],
     "answer": "Use float16 as the vector data type",
     "explanation": "float16 halves vector storage compared with float32, with some possible accuracy loss.",
@@ -939,9 +939,9 @@
     "question": "An embedding pipeline must also remove vectors when source items are deleted. Which change feed setup is required?",
     "options": [
       "All versions and deletes mode, which needs continuous backup",
-      "Latest version mode",
-      "A higher RU setting",
-      "The pull model in latest version mode"
+      "Latest version mode, which needs continuous backup",
+      "All versions and deletes mode, which needs periodic backup",
+      "Latest version mode with the change feed processor and TTL"
     ],
     "answer": "All versions and deletes mode, which needs continuous backup",
     "explanation": "Latest version mode does not capture deletes. All versions and deletes mode includes deletes and TTL expirations but requires continuous backup.",
@@ -950,10 +950,10 @@
   {
     "question": "Two updates to different products arrive in the change feed in a different order than they were written. Is this expected?",
     "options": [
-      "Only when using the pull model",
+      "Yes, ordering is guaranteed only within a physical partition",
       "Yes, ordering is guaranteed only within a partition key",
-      "Only in multi-region accounts",
-      "No, the change feed is globally ordered"
+      "No, the change feed is ordered globally by modification time",
+      "Yes, but only when the pull model is used instead of the processor"
     ],
     "answer": "Yes, ordering is guaranteed only within a partition key",
     "explanation": "Change feed order is guaranteed per partition key value. There is no guaranteed order across partition keys.",
@@ -962,10 +962,10 @@
   {
     "question": "Several workers must share change feed processing with automatic checkpointing. What extra resource does the change feed processor need?",
     "options": [
-      "An Event Hubs namespace",
-      "A second database account",
+      "An Azure Storage checkpoint container",
+      "An Event Hubs consumer group",
       "A lease container",
-      "A stored procedure"
+      "A Durable Functions task hub"
     ],
     "answer": "A lease container",
     "explanation": "The change feed processor uses a lease container to distribute partitions across consumers and store checkpoints.",
@@ -975,9 +975,9 @@
     "question": "A multi-tenant app stores chat history by tenantId and then userId and a single tenant exceeds 20 GB. What partitioning feature helps?",
     "options": [
       "Hierarchical partition keys (for example tenantId, userId)",
-      "Strong consistency",
-      "A unique key policy",
-      "A larger item size"
+      "A unique key policy on the tenantId and userId paths",
+      "A composite index on the tenantId and userId properties",
+      "Partition merge to combine tenants into larger partitions"
     ],
     "answer": "Hierarchical partition keys (for example tenantId, userId)",
     "explanation": "Hierarchical partition keys allow up to three levels, letting a large tenant spread across physical partitions while keeping efficient queries.",
@@ -986,10 +986,10 @@
   {
     "question": "You know an item's id and partition key. Which operation is the cheapest way to read it?",
     "options": [
-      "Reading the change feed",
-      "A SELECT query filtered by id",
+      "A query filtered by id and partition key",
+      "A change feed read filtered to that partition key",
       "A point read using id and partition key",
-      "A cross-partition query"
+      "A cross-partition query using the id index"
     ],
     "answer": "A point read using id and partition key",
     "explanation": "Point reads skip the query engine. A 1 KB point read costs about 1 RU, cheaper than an equivalent query.",
@@ -998,10 +998,10 @@
   {
     "question": "Traffic is spiky and you want Cosmos DB to scale throughput automatically between a floor and a maximum. What should you configure?",
     "options": [
-      "Strong consistency",
+      "Autoscale throughput, which scales between 50% and 100% of the max RU/s",
       "Autoscale throughput, which scales between 10% and 100% of the max RU/s",
-      "Serverless with a fixed RU limit",
-      "Manual throughput at the peak"
+      "Serverless throughput, which scales between 10% and 100% of the max RU/s",
+      "Manual throughput with a burst capacity limit set to the max RU/s"
     ],
     "answer": "Autoscale throughput, which scales between 10% and 100% of the max RU/s",
     "explanation": "Autoscale adjusts RU/s instantly between 10% of the configured maximum and the maximum.",
@@ -1010,10 +1010,10 @@
   {
     "question": "You create an IVFFlat index on an empty table and then load a million embeddings. Recall is poor. Why?",
     "options": [
-      "IVFFlat only supports L2 distance",
-      "The table needs a primary key on the vector",
+      "IVFFlat supports only L2 distance, so cosine queries return poor matches",
+      "IVFFlat needs hnsw.ef_search raised after a large load to restore recall",
       "IVFFlat builds its lists from existing data, so it should be created after loading",
-      "pgvector needs a B-tree index too"
+      "IVFFlat rebalances its lists on insert, so recall drops until VACUUM runs"
     ],
     "answer": "IVFFlat builds its lists from existing data, so it should be created after loading",
     "explanation": "IVFFlat clusters the data present at build time. Building it on an empty table produces poor lists; create or rebuild the index after loading data.",
@@ -1023,9 +1023,9 @@
     "question": "HNSW queries return too few relevant rows. Which query-time setting improves recall at the cost of speed?",
     "options": [
       "Increase hnsw.ef_search",
-      "Increase max_connections",
-      "Decrease hnsw.ef_search",
-      "Lower work_mem"
+      "Increase ef_construction",
+      "Increase ivfflat.probes",
+      "Decrease hnsw.ef_search"
     ],
     "answer": "Increase hnsw.ef_search",
     "explanation": "ef_search sets the size of the candidate list during HNSW search. Larger values improve recall and increase latency.",
@@ -1035,9 +1035,9 @@
     "question": "For IVFFlat, which query-time parameter controls how many lists are scanned?",
     "options": [
       "ivfflat.probes",
-      "hnsw.m",
+      "hnsw.ef_search",
       "lists",
-      "ef_construction"
+      "ivfflat.iterative_scan"
     ],
     "answer": "ivfflat.probes",
     "explanation": "ivfflat.probes sets how many lists each query searches. More probes increase recall and latency. lists is set when the index is built.",
@@ -1046,10 +1046,10 @@
   {
     "question": "You want PostgreSQL itself to call Azure OpenAI to generate embeddings in SQL during inserts. Which extension enables this?",
     "options": [
-      "pg_trgm",
+      "pg_diskann",
       "azure_ai",
-      "pg_cron only",
-      "postgis"
+      "vector",
+      "azure_storage"
     ],
     "answer": "azure_ai",
     "explanation": "The azure_ai extension adds functions such as azure_openai.create_embeddings to call Azure OpenAI from SQL.",
@@ -1058,10 +1058,10 @@
   {
     "question": "A table holds 50 million vectors and HNSW memory needs are too high. Which Azure Database for PostgreSQL option is designed for very large vector sets?",
     "options": [
-      "A bigger IVFFlat lists value only",
-      "Disabling autovacuum",
+      "The azure_ai extension with an in-database vector index",
+      "The pg_hint_plan extension with an HNSW index hint",
       "The pg_diskann extension with a DiskANN index",
-      "A B-tree index"
+      "The pg_trgm extension with a GIN index on the vectors"
     ],
     "answer": "The pg_diskann extension with a DiskANN index",
     "explanation": "pg_diskann provides the DiskANN algorithm on Azure Database for PostgreSQL, designed for high recall at scale with lower memory.",
@@ -1070,10 +1070,10 @@
   {
     "question": "You create a partial HNSW index with the predicate WHERE tier = 'premium'. Queries that filter with tier LIKE 'premium' still scan the table. Why?",
     "options": [
-      "LIKE disables all indexes in PostgreSQL",
+      "LIKE comparisons cannot use any index without a pg_trgm GIN index",
       "The query condition must match the partial index predicate exactly",
-      "Partial indexes only work with IVFFlat",
-      "The index needs more lists"
+      "Partial indexes are supported only for IVFFlat, not for HNSW indexes",
+      "The partial HNSW index must be rebuilt after each batch of new inserts"
     ],
     "answer": "The query condition must match the partial index predicate exactly",
     "explanation": "The planner uses a partial index only when the query WHERE clause matches its predicate. Write the filter exactly as in the index predicate.",
@@ -1082,10 +1082,10 @@
   {
     "question": "You must index 3,072-dimension embeddings with pgvector HNSW and index creation fails. What is the cause?",
     "options": [
-      "The column must not declare dimensions",
-      "HNSW needs float16 vectors",
+      "pgvector HNSW indexes support up to 1,536 dimensions for vector columns",
+      "pgvector HNSW indexes require halfvec columns above 1,024 dimensions",
       "pgvector HNSW and IVFFlat indexes support up to 2,000 dimensions",
-      "HNSW cannot use cosine distance"
+      "pgvector HNSW indexes support up to 4,000 dimensions for vector columns"
     ],
     "answer": "pgvector HNSW and IVFFlat indexes support up to 2,000 dimensions",
     "explanation": "Vectors above 2,000 dimensions can be stored but not indexed with HNSW or IVFFlat. Reduce dimensions or use another approach.",
@@ -1096,8 +1096,8 @@
     "options": [
       "Only when the cache is created",
       "Any time from the portal",
-      "After enabling geo-replication",
-      "Only after scaling up"
+      "After geo-replication is enabled",
+      "Only after scaling up the SKU"
     ],
     "answer": "Only when the cache is created",
     "explanation": "Modules in Azure Managed Redis are selected at cache creation and cannot be added to an existing cache.",
@@ -1106,10 +1106,10 @@
   {
     "question": "Which eviction policy is required when using the RediSearch module?",
     "options": [
-      "allkeys-lru",
-      "volatile-ttl",
+      "AllKeysLRU",
+      "VolatileLRU",
       "NoEviction",
-      "allkeys-random"
+      "VolatileTTL"
     ],
     "answer": "NoEviction",
     "explanation": "RediSearch requires the NoEviction policy so index data is not evicted silently.",
@@ -1118,10 +1118,10 @@
   {
     "question": "A semantic cache returns an answer meant for a different question with a similar wording. What should you tune?",
     "options": [
-      "Use a larger cache SKU only",
-      "Disable vector indexing",
+      "Lower the similarity threshold for a cache hit",
+      "Increase the cache TTL so entries live longer",
       "Raise the similarity threshold for a cache hit",
-      "Lower the TTL to zero"
+      "Switch the vector index from HNSW to FLAT"
     ],
     "answer": "Raise the similarity threshold for a cache hit",
     "explanation": "Semantic caches reuse answers when a new prompt is similar enough. A stricter threshold reduces wrong hits at the cost of fewer hits.",
@@ -1130,10 +1130,10 @@
   {
     "question": "Messages for the same order must be processed strictly in sequence while other orders run in parallel. What should you use?",
     "options": [
-      "Event Grid with retries",
-      "A partitioned queue without sessions",
+      "Service Bus partitioning with the order ID as partition key",
+      "Service Bus duplicate detection with the order ID as message ID",
       "Service Bus sessions with the order ID as session ID",
-      "Duplicate detection"
+      "Event Hubs consumer groups with one group per order ID"
     ],
     "answer": "Service Bus sessions with the order ID as session ID",
     "explanation": "Sessions group related messages and deliver them in order to one receiver at a time, while different sessions are processed in parallel.",
@@ -1142,10 +1142,10 @@
   {
     "question": "A producer retries after network timeouts and creates duplicate messages. What Service Bus feature prevents this?",
     "options": [
-      "Dead-lettering",
-      "Auto-forwarding",
+      "Duplicate detection based on SessionId within a time window",
+      "Sessions with the producer ID set as the session ID",
       "Duplicate detection based on MessageId within a time window",
-      "Sessions"
+      "Dead-lettering based on MaxDeliveryCount for each message"
     ],
     "answer": "Duplicate detection based on MessageId within a time window",
     "explanation": "Duplicate detection drops messages with a MessageId seen within the configured window.",
@@ -1154,9 +1154,9 @@
   {
     "question": "Expired messages disappear instead of reaching the dead-letter queue. What setting is missing?",
     "options": [
-      "Partitioning",
-      "MaxDeliveryCount",
-      "Sessions",
+      "Dead-lettering on filter evaluation exceptions",
+      "A MaxDeliveryCount higher than the default",
+      "Auto-forwarding to a dead-letter queue",
       "Dead-lettering on message expiration"
     ],
     "answer": "Dead-lettering on message expiration",
@@ -1168,8 +1168,8 @@
     "options": [
       "10",
       "5",
-      "Unlimited",
-      "1"
+      "3",
+      "100"
     ],
     "answer": "10",
     "explanation": "By default a message is dead-lettered after 10 failed delivery attempts.",
@@ -1178,9 +1178,9 @@
   {
     "question": "Your AI pipeline must send messages up to 50 MB through Service Bus. Which tier is required?",
     "options": [
-      "Basic",
-      "Any tier",
       "Standard",
+      "Basic",
+      "Standard with large message support",
       "Premium"
     ],
     "answer": "Premium",
@@ -1190,10 +1190,10 @@
   {
     "question": "An Event Grid webhook handler returns HTTP 400 for a malformed event. What does Event Grid do?",
     "options": [
-      "It retries 30 times",
+      "It retries with exponential backoff for up to 24 hours before dead-lettering",
       "It does not retry and dead-letters immediately if dead-lettering is configured",
-      "It retries for 24 hours",
-      "It converts the event to a Service Bus message"
+      "It retries up to 30 times and then drops the event if no dead-letter is set",
+      "It retries once after 10 seconds, then dead-letters if dead-lettering is configured"
     ],
     "answer": "It does not retry and dead-letters immediately if dead-lettering is configured",
     "explanation": "400 and 413 are not retried. If a dead-letter location is configured the event goes there right away; otherwise it is dropped.",
@@ -1202,10 +1202,10 @@
   {
     "question": "Your Event Grid endpoint takes 45 seconds to respond. What happens?",
     "options": [
-      "It waits indefinitely",
-      "It drops the event",
+      "Event Grid waits up to 60 seconds for the response, so the delivery succeeds without any retry",
+      "Event Grid treats the delivery as failed after 30 seconds and dead-letters the event right away",
       "Event Grid treats the delivery as failed after 30 seconds and queues a retry, so duplicates are possible",
-      "It switches to pull delivery"
+      "Event Grid treats the delivery as failed after 10 seconds and drops the event without retrying"
     ],
     "answer": "Event Grid treats the delivery as failed after 30 seconds and queues a retry, so duplicates are possible",
     "explanation": "Event Grid waits 30 seconds for a response before scheduling a retry. Handlers must be idempotent because duplicates can occur.",
@@ -1214,9 +1214,9 @@
   {
     "question": "What are Event Grid's default retry limits for an event subscription?",
     "options": [
-      "10 attempts or 1 hour",
-      "Unlimited until dead-lettered",
-      "5 attempts or 7 days",
+      "10 attempts or 1 hour, whichever comes first",
+      "30 attempts or 7 days, whichever comes first",
+      "18 attempts or 24 hours, whichever comes first",
       "30 attempts or 24 hours, whichever comes first"
     ],
     "answer": "30 attempts or 24 hours, whichever comes first",
@@ -1226,10 +1226,10 @@
   {
     "question": "Is Event Grid dead-lettering enabled by default?",
     "options": [
-      "Yes, events go to a hidden queue",
-      "Yes, to Service Bus",
+      "Yes, undeliverable events go to a built-in dead-letter queue on the topic",
+      "No, you must configure a Service Bus queue as the dead-letter destination",
       "No, you must configure a storage blob container as the dead-letter destination",
-      "Only for system topics"
+      "Yes, but only for system topics, which use a storage account by default"
     ],
     "answer": "No, you must configure a storage blob container as the dead-letter destination",
     "explanation": "Dead-lettering is off by default. Without it, undeliverable events are dropped.",
@@ -1239,9 +1239,9 @@
     "question": "You need to ingest millions of telemetry events per second for later stream processing. Which service fits best?",
     "options": [
       "Azure Event Grid",
-      "Service Bus queues",
+      "Azure Service Bus",
       "Azure Event Hubs",
-      "Azure Functions HTTP trigger"
+      "Azure Queue Storage"
     ],
     "answer": "Azure Event Hubs",
     "explanation": "Event Hubs is built for high-throughput streaming with partitions and retention. Event Grid is for discrete events and Service Bus for transactional messaging.",
@@ -1251,9 +1251,9 @@
     "question": "You plan to host a .NET in-process function app on the Flex Consumption plan. What is the problem?",
     "options": [
       "Flex Consumption supports only the isolated worker model for C#",
-      "In-process apps need a premium SKU of Flex",
-      "Flex Consumption does not support .NET",
-      "There is no problem"
+      "Flex Consumption supports only the in-process model on Windows",
+      "Flex Consumption supports .NET only through custom handlers",
+      "Flex Consumption requires .NET in-process apps to use always ready instances"
     ],
     "answer": "Flex Consumption supports only the isolated worker model for C#",
     "explanation": "Flex Consumption runs on Linux and supports C# only with the isolated worker model.",
@@ -1262,9 +1262,9 @@
   {
     "question": "A Flex Consumption app needs zero-downtime releases. Your team plans to use deployment slots. What should you do?",
     "options": [
-      "Use a Dapr sidecar",
-      "Enable slots in the portal",
-      "Move to Windows Flex Consumption",
+      "Enable deployment slots, because Flex Consumption supports up to two slots",
+      "Use slot swap with preview, because Flex Consumption supports staging slots",
+      "Use zip deploy with WEBSITE_RUN_FROM_PACKAGE, because slots are not supported",
       "Use Flex Consumption site update strategies, because slots are not supported"
     ],
     "answer": "Use Flex Consumption site update strategies, because slots are not supported",
@@ -1274,10 +1274,10 @@
   {
     "question": "Integrating a Flex Consumption app with a virtual network fails. What does the subnet need?",
     "options": [
-      "A NAT gateway only",
-      "A service endpoint for Storage",
+      "Delegation to Microsoft.Web/serverFarms",
+      "Delegation to Microsoft.ContainerInstance/containerGroups",
       "Delegation to Microsoft.App/environments",
-      "Delegation to Microsoft.Web/serverFarms"
+      "A service endpoint for Microsoft.Web"
     ],
     "answer": "Delegation to Microsoft.App/environments",
     "explanation": "Flex Consumption VNet integration requires the Microsoft.App resource provider and a subnet delegated to Microsoft.App/environments.",
@@ -1286,9 +1286,9 @@
   {
     "question": "On Flex Consumption, a blob-triggered function never fires with the polling-based trigger. What should you use?",
     "options": [
-      "Deployment slots",
-      "A Service Bus trigger",
-      "A timer trigger every second",
+      "The blob trigger with the LogsAndContainerScan source",
+      "The blob trigger with a shorter polling interval",
+      "The blob trigger with always ready instances enabled",
       "The blob trigger with the Event Grid source"
     ],
     "answer": "The blob trigger with the Event Grid source",
@@ -1298,10 +1298,10 @@
   {
     "question": "An HTTP-triggered function must only be callable by clients that present a key. Which authLevel should you set?",
     "options": [
-      "public",
+      "anonymous",
       "function",
-      "none",
-      "anonymous"
+      "user",
+      "none"
     ],
     "answer": "function",
     "explanation": "With authLevel function, callers must supply a function or host key in the x-functions-key header or code query parameter.",
@@ -1310,9 +1310,9 @@
   {
     "question": "A function must fan out embedding work to hundreds of parallel activities and then aggregate the results reliably. What should you use?",
     "options": [
-      "A timer trigger",
-      "Event Grid filters",
-      "A single HTTP function with a loop",
+      "Durable Functions with the function chaining pattern",
+      "Durable Functions with the monitor pattern",
+      "A Service Bus trigger with batch receiving enabled",
       "Durable Functions with the fan-out/fan-in pattern"
     ],
     "answer": "Durable Functions with the fan-out/fan-in pattern",
@@ -1323,9 +1323,9 @@
     "question": "A Key Vault secret was deleted by mistake yesterday. Soft delete is on with default settings. What can you do?",
     "options": [
       "Recover it, since deleted secrets are retained for 90 days by default",
-      "Recreate the vault",
-      "Nothing, deletes are immediate",
-      "Restore it only from App Configuration"
+      "Nothing, since purge protection is needed to keep deleted secrets",
+      "Recreate it with the same name, since soft delete frees the name at once",
+      "Restore it from the vault's automatic daily backup in the portal"
     ],
     "answer": "Recover it, since deleted secrets are retained for 90 days by default",
     "explanation": "Soft delete keeps deleted vaults and objects for a retention period of 7 to 90 days (90 by default) so they can be recovered.",
@@ -1334,10 +1334,10 @@
   {
     "question": "Security requires that no one, including admins, can permanently delete secrets before the retention period ends. What should you enable?",
     "options": [
-      "Secret versioning",
+      "Soft delete",
       "Purge protection",
-      "Firewall rules",
-      "Access policies"
+      "Resource locks",
+      "Azure RBAC authorization"
     ],
     "answer": "Purge protection",
     "explanation": "Purge protection prevents permanent deletion of soft-deleted objects until the retention period expires.",
@@ -1346,9 +1346,9 @@
   {
     "question": "Which App Service app setting value pulls a secret from Key Vault?",
     "options": [
-      "${KeyVault:db}",
-      "keyvault://myvault/db",
-      "secret:myvault/db",
+      "@KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/db/)",
+      "{\"uri\":\"https://myvault.vault.azure.net/secrets/db/\"}",
+      "@Microsoft.AppConfiguration(Endpoint=https://myconfig.azconfig.io; Key=db)",
       "@Microsoft.KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/db/)"
     ],
     "answer": "@Microsoft.KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/db/)",
@@ -1358,10 +1358,10 @@
   {
     "question": "Apps must reload many App Configuration values at once only when a release is ready, not one key at a time. What pattern fits?",
     "options": [
-      "Restart the app every minute",
+      "Watch every key individually and refresh each one when it changes",
       "Watch a sentinel key and refresh all settings when it changes",
-      "Store all values in one key",
-      "Poll every key individually"
+      "Set the cache expiration to zero so all keys reload on every request",
+      "Subscribe to Event Grid and restart the app after each key-value change"
     ],
     "answer": "Watch a sentinel key and refresh all settings when it changes",
     "explanation": "A sentinel key signals that a consistent set of changes is complete, so clients refresh all configuration together.",
@@ -1370,10 +1370,10 @@
   {
     "question": "A new AI feature must be enabled only for 10% of users in a beta group. What should you use?",
     "options": [
-      "An Event Grid topic",
-      "A separate deployment per user",
+      "An App Configuration feature flag with a time window filter",
+      "An App Configuration key with a label for the beta group",
       "An App Configuration feature flag with a targeting filter",
-      "A Key Vault secret"
+      "An App Service slot with 10% traffic routing to the beta build"
     ],
     "answer": "An App Configuration feature flag with a targeting filter",
     "explanation": "Feature flags with targeting filters enable features for specific users, groups or a percentage of the audience.",
@@ -1383,9 +1383,9 @@
     "question": "Which KQL returns the 95th percentile request duration per operation?",
     "options": [
       "requests | summarize percentile(duration, 95) by operation_Name",
-      "requests | top 95 by duration",
-      "requests | project percentile(95)",
-      "requests | where duration > 95"
+      "requests | summarize percentile(duration, 95) by operation_Id",
+      "requests | top 95 by duration | summarize by operation_Name",
+      "requests | summarize percentiles(duration, 5) by operation_Name"
     ],
     "answer": "requests | summarize percentile(duration, 95) by operation_Name",
     "explanation": "percentile() inside summarize computes a percentile per group.",
@@ -1394,10 +1394,10 @@
   {
     "question": "You need failed requests together with their exceptions in one result. Which KQL operator links them by operation?",
     "options": [
-      "distinct",
+      "join on operation_Name",
       "join on operation_Id",
-      "union",
-      "extend"
+      "union with exceptions",
+      "mv-expand operation_Id"
     ],
     "answer": "join on operation_Id",
     "explanation": "join combines rows from requests and exceptions that share an operation_Id, which correlates telemetry for the same operation.",
@@ -1406,10 +1406,10 @@
   {
     "question": "Which KQL ending turns an hourly count into a line chart in Log Analytics?",
     "options": [
-      "project count | chart",
+      "summarize count() by bin(timestamp, 1h) | render piechart",
       "summarize count() by bin(timestamp, 1h) | render timechart",
-      "top 1h | plot",
-      "extend chart = true"
+      "summarize count() by bin(timestamp, 1h) | render barchart",
+      "summarize count() by bin(timestamp, 1d) | render timechart"
     ],
     "answer": "summarize count() by bin(timestamp, 1h) | render timechart",
     "explanation": "bin groups by hour and render timechart draws the result as a time series.",
@@ -1418,10 +1418,10 @@
   {
     "question": "A Python service should send traces, metrics and logs to Application Insights with minimal code. What should you use?",
     "options": [
-      "The legacy instrumentation key SDK only",
-      "A custom HTTP logger",
+      "The OpenCensus Azure exporter with the instrumentation key in each handler",
+      "The Azure Monitor Agent with a data collection rule for the Python process",
       "The Azure Monitor OpenTelemetry Distro with configure_azure_monitor and the connection string",
-      "Azure Advisor"
+      "The Azure Monitor Ingestion client with a data collection endpoint and stream name"
     ],
     "answer": "The Azure Monitor OpenTelemetry Distro with configure_azure_monitor and the connection string",
     "explanation": "The Azure Monitor OpenTelemetry Distro configures exporters and instrumentations in one call, using APPLICATIONINSIGHTS_CONNECTION_STRING.",
@@ -1430,9 +1430,9 @@
   {
     "question": "Telemetry volume and cost are too high, but you still need representative traces. What should you configure?",
     "options": [
-      "Send traces to Key Vault",
-      "Disable dependency tracking entirely",
-      "Lower the Log Analytics retention to zero",
+      "A daily cap on the Log Analytics workspace",
+      "Shorter retention on the Log Analytics workspace",
+      "Live Metrics disabled in the OpenTelemetry configuration",
       "Sampling in the OpenTelemetry configuration"
     ],
     "answer": "Sampling in the OpenTelemetry configuration",

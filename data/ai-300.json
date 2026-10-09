@@ -2,10 +2,10 @@
   {
     "question": "Which resources are created alongside an Azure Machine Learning workspace by default?",
     "options": [
-      "A Kubernetes cluster and a SQL database",
-      "An Event Hubs namespace",
+      "A storage account, a container registry and a Cosmos DB account (plus optional key vault)",
+      "An Azure Kubernetes Service cluster, a key vault and a compute instance (plus optional storage)",
       "A storage account, a key vault and Application Insights (plus optional container registry)",
-      "A virtual machine scale set"
+      "A Data Lake Storage Gen2 account, an Azure SQL database and Application Insights"
     ],
     "answer": "A storage account, a key vault and Application Insights (plus optional container registry)",
     "explanation": "A workspace depends on a storage account, key vault and Application Insights; a container registry is created when first needed or can be attached.",
@@ -14,10 +14,10 @@
   {
     "question": "What is a datastore in Azure Machine Learning?",
     "options": [
-      "A copy of all your training data inside the workspace",
+      "A versioned asset that points to a specific file or folder used as job input",
       "A reference to an Azure storage service that holds connection information",
-      "A registered model",
-      "A compute cluster"
+      "A managed copy of your training data stored inside the workspace's default storage",
+      "A connection to an external Git repository that stores training scripts and configs"
     ],
     "answer": "A reference to an Azure storage service that holds connection information",
     "explanation": "Datastores securely store connection information to storage such as Blob or ADLS Gen2 so jobs can access data without embedding credentials.",
@@ -27,9 +27,9 @@
     "question": "You need compute that scales from 0 to 10 nodes for training jobs and stops when idle. What should you create?",
     "options": [
       "A compute cluster with minimum nodes set to 0",
-      "A managed online endpoint",
-      "A serverless API",
-      "A compute instance"
+      "A compute instance with an idle shutdown schedule set",
+      "A compute cluster with minimum nodes set to 10",
+      "An attached Kubernetes cluster with ten fixed nodes"
     ],
     "answer": "A compute cluster with minimum nodes set to 0",
     "explanation": "Compute clusters autoscale between min and max nodes. Setting minimum to 0 avoids cost when no jobs are running.",
@@ -38,10 +38,10 @@
   {
     "question": "A data scientist needs a personal cloud workstation with Jupyter and VS Code for experimentation. Which compute type should you provide?",
     "options": [
-      "Batch endpoint",
+      "Compute cluster",
       "Compute instance",
-      "Kubernetes compute",
-      "Compute cluster"
+      "Serverless compute",
+      "Kubernetes compute"
     ],
     "answer": "Compute instance",
     "explanation": "A compute instance is a managed single-node development workstation with notebooks and IDE integration.",
@@ -50,10 +50,10 @@
   {
     "question": "Training jobs must access a storage account without storing keys. What should you configure?",
     "options": [
-      "Make the container public",
+      "Credential-based datastore access with the storage account key saved in the workspace",
       "Identity-based data access with a managed identity granted Storage Blob Data Reader",
-      "Use a SAS token in source control",
-      "Store the account key in the training script"
+      "A user delegation SAS token stored as a secret in the workspace key vault",
+      "Identity-based data access with a managed identity granted the Storage Account Contributor role"
     ],
     "answer": "Identity-based data access with a managed identity granted Storage Blob Data Reader",
     "explanation": "Datastores and jobs can use identity-based access, so the compute managed identity or user identity is authorized through RBAC.",
@@ -62,10 +62,10 @@
   {
     "question": "Which asset type packages the Python packages and Docker base image a training job needs, so runs are reproducible?",
     "options": [
-      "Data asset",
-      "Endpoint",
+      "Component",
+      "Compute target",
       "Environment",
-      "Datastore"
+      "Data asset"
     ],
     "answer": "Environment",
     "explanation": "Environments define the Docker image and conda or pip dependencies, and are versioned for reproducible training and inference.",
@@ -75,9 +75,9 @@
     "question": "You want to reuse the same data-prep step across many pipelines with defined inputs and outputs. What should you create?",
     "options": [
       "A component",
-      "A workspace",
-      "A compute instance",
-      "A datastore"
+      "An environment",
+      "A command job",
+      "A data asset"
     ],
     "answer": "A component",
     "explanation": "Components are self-contained, versioned pipeline steps with defined interfaces that can be reused across pipelines.",
@@ -86,10 +86,10 @@
   {
     "question": "Models and environments trained in a dev workspace must be promoted to a prod workspace in another subscription. What should you use?",
     "options": [
-      "A single workspace for all stages",
+      "A shared datastore linked to both workspaces",
       "An Azure Machine Learning registry",
-      "Manual file copy to a local laptop",
-      "A shared compute instance"
+      "An Azure Container Registry with geo-replication",
+      "A hub workspace shared by both projects"
     ],
     "answer": "An Azure Machine Learning registry",
     "explanation": "Registries share models, environments, components and data across workspaces, regions and subscriptions, supporting promotion across environments.",
@@ -98,9 +98,9 @@
   {
     "question": "Which approach should you use to deploy an Azure Machine Learning workspace and its dependencies repeatably?",
     "options": [
-      "Clicking through the portal for each environment",
-      "A Jupyter notebook run manually",
-      "A PowerShell script stored on a laptop only",
+      "The Azure Machine Learning studio workspace creation wizard per environment",
+      "An Azure ML pipeline job that provisions the workspace on each run",
+      "A compute instance setup script that creates the workspace resources",
       "A Bicep template deployed with Azure CLI or a GitHub Actions workflow"
     ],
     "answer": "A Bicep template deployed with Azure CLI or a GitHub Actions workflow",
@@ -110,10 +110,10 @@
   {
     "question": "A GitHub Actions workflow must run az ml commands against your workspace without storing a client secret. What should you configure?",
     "options": [
-      "The storage account key",
-      "Anonymous access to the workspace",
+      "A service principal client secret stored as a GitHub encrypted secret",
+      "A system-assigned managed identity on the GitHub-hosted runner VM",
       "OpenID Connect federated credentials for a Microsoft Entra app or managed identity",
-      "A personal access token in the workflow file"
+      "A workspace access key passed to az ml through an environment variable"
     ],
     "answer": "OpenID Connect federated credentials for a Microsoft Entra app or managed identity",
     "explanation": "Workload identity federation (OIDC) lets GitHub Actions obtain Azure tokens without long-lived secrets.",
@@ -123,9 +123,9 @@
     "question": "Policy requires that the Machine Learning workspace is reachable only from your corporate network. What should you configure?",
     "options": [
       "A managed virtual network or private endpoint and disable public network access",
-      "A data drift monitor",
-      "MLflow tracking",
-      "A larger compute cluster"
+      "A network security group on the compute cluster subnet that blocks internet traffic",
+      "Service endpoints for Azure Machine Learning on the corporate virtual network subnet",
+      "Workspace managed identity with Azure RBAC roles assigned only to corporate users"
     ],
     "answer": "A managed virtual network or private endpoint and disable public network access",
     "explanation": "Private endpoints and managed virtual network isolation restrict workspace access to private networks.",
@@ -134,10 +134,10 @@
   {
     "question": "Which open source framework does Azure Machine Learning use natively to track metrics, parameters and models from training runs?",
     "options": [
-      "TensorBoard only",
+      "TensorBoard",
       "MLflow",
-      "Kubeflow Pipelines only",
-      "Airflow"
+      "Kubeflow",
+      "Apache Airflow"
     ],
     "answer": "MLflow",
     "explanation": "Azure Machine Learning workspaces are MLflow-compatible tracking servers, so mlflow.log_metric and autologging work out of the box.",
@@ -146,10 +146,10 @@
   {
     "question": "Which MLflow call automatically logs parameters, metrics and the model for supported libraries such as scikit-learn?",
     "options": [
-      "mlflow.set_tracking_uri()",
+      "mlflow.log_params()",
       "mlflow.autolog()",
-      "mlflow.delete_run()",
-      "mlflow.end_run()"
+      "mlflow.start_run()",
+      "mlflow.sklearn.log_model()"
     ],
     "answer": "mlflow.autolog()",
     "explanation": "mlflow.autolog() enables automatic logging for supported frameworks so you do not need explicit log calls.",
@@ -158,10 +158,10 @@
   {
     "question": "You want Azure Machine Learning to try many algorithms and featurization settings and pick the best model for a tabular classification problem. What should you use?",
     "options": [
-      "A data drift monitor",
+      "A sweep job with Bayesian sampling",
       "Automated machine learning (AutoML)",
-      "A manual training script only",
-      "A batch endpoint"
+      "The Designer with a Train Model component",
+      "A parallel job across a compute cluster"
     ],
     "answer": "Automated machine learning (AutoML)",
     "explanation": "AutoML iterates over algorithms and hyperparameters, ranks the models by your primary metric and returns the best one.",
@@ -170,10 +170,10 @@
   {
     "question": "Which feature runs many trials of a training script with different learning rates and batch sizes and stops poor trials early?",
     "options": [
-      "A pipeline with a single step",
+      "A sweep job with a Bayesian sampling algorithm",
       "A sweep job with an early termination policy",
-      "A compute instance schedule",
-      "A model registry"
+      "A parallel job with a mini-batch error threshold",
+      "An AutoML job with early stopping enabled"
     ],
     "answer": "A sweep job with an early termination policy",
     "explanation": "Sweep jobs perform hyperparameter tuning with random, grid or Bayesian sampling, and early termination policies like Bandit stop weak trials.",
@@ -182,10 +182,10 @@
   {
     "question": "Which early termination policy stops trials whose primary metric is not within a slack factor of the best trial?",
     "options": [
-      "Grid sampling",
-      "No termination policy",
+      "Median stopping policy",
+      "Truncation selection policy",
       "Bandit policy",
-      "Truncation selection policy"
+      "Random sampling"
     ],
     "answer": "Bandit policy",
     "explanation": "The Bandit policy compares each trial to the best one using a slack factor or slack amount and cancels those that fall behind.",
@@ -195,9 +195,9 @@
     "question": "You need to train a large deep learning model across multiple GPU nodes. What should you configure in the command job?",
     "options": [
       "Distributed training with instance_count greater than 1 and a distribution such as PyTorch",
-      "A larger datastore",
-      "A compute instance",
-      "A batch endpoint"
+      "A parallel job with instance_count greater than 1 and a mini_batch_size per node",
+      "A sweep job with max_concurrent_trials greater than 1 on a GPU cluster",
+      "Distributed training with process_count_per_instance greater than 1 and instance_count set to 1"
     ],
     "answer": "Distributed training with instance_count greater than 1 and a distribution such as PyTorch",
     "explanation": "Command jobs support distributed training by setting the number of instances and a distribution type such as PyTorch, TensorFlow or MPI.",
@@ -206,10 +206,10 @@
   {
     "question": "What is the main advantage of building training as an Azure Machine Learning pipeline rather than a single script?",
     "options": [
-      "Pipelines remove the need for data",
-      "Pipelines need no compute",
+      "Pipelines run every step in one container, so dependencies are installed only once per run",
+      "Pipelines deploy the trained model to an online endpoint automatically when training finishes",
       "Steps are reusable, can run on different compute and can be scheduled and rerun independently",
-      "Pipelines automatically fine-tune LLMs"
+      "Pipelines automatically select the best algorithm and tune hyperparameters across all steps"
     ],
     "answer": "Steps are reusable, can run on different compute and can be scheduled and rerun independently",
     "explanation": "Pipelines split a workflow into components that can be reused, cached, run on suitable compute and automated.",
@@ -218,9 +218,9 @@
   {
     "question": "How can you compare metrics such as AUC across several training jobs in a workspace?",
     "options": [
-      "Download each log file manually",
-      "Use Azure Advisor",
-      "Check the compute cluster quota",
+      "Open Azure Monitor metrics for the workspace and chart AUC per job",
+      "Query the compute cluster's Log Analytics table for each job's AUC",
+      "Run az ml job show for each job, which returns its logged metrics",
       "Select the jobs in studio and compare them, or query them with MLflow"
     ],
     "answer": "Select the jobs in studio and compare them, or query them with MLflow",
@@ -231,9 +231,9 @@
     "question": "Which model format lets Azure Machine Learning deploy a model to an online endpoint without a scoring script or environment?",
     "options": [
       "MLflow model format",
-      "A pickle file with no metadata",
-      "A ZIP of the training notebook",
-      "A Docker image without a manifest"
+      "Custom model format",
+      "ONNX model format",
+      "Pickle (.pkl) model file"
     ],
     "answer": "MLflow model format",
     "explanation": "MLflow models carry their signature and dependencies, enabling no-code deployment to online and batch endpoints.",
@@ -242,9 +242,9 @@
   {
     "question": "Before releasing a loan approval model, you must check performance differences across demographic groups. What should you use?",
     "options": [
-      "A batch endpoint",
-      "A larger compute cluster",
-      "Prompt Shields",
+      "Model monitoring with prediction drift signals",
+      "Azure AI Content Safety with custom categories",
+      "The Responsible AI dashboard with counterfactual what-if analysis",
       "The Responsible AI dashboard with fairness assessment"
     ],
     "answer": "The Responsible AI dashboard with fairness assessment",
@@ -255,9 +255,9 @@
     "question": "An old model version should no longer be selectable for new deployments but kept for audit. What should you do?",
     "options": [
       "Archive the model version",
-      "Delete the workspace",
-      "Remove the datastore",
-      "Stop the compute instance"
+      "Delete the model version",
+      "Add a deprecated tag to the model version",
+      "Set the model stage to Archived in MLflow"
     ],
     "answer": "Archive the model version",
     "explanation": "Archiving hides a model version from default lists and new use while keeping it for lineage and audit.",
@@ -266,9 +266,9 @@
   {
     "question": "A fraud model must score each transaction within milliseconds. Which deployment option fits?",
     "options": [
-      "A compute instance notebook",
-      "A batch endpoint",
-      "A pipeline schedule",
+      "A batch endpoint with a model deployment",
+      "A parallel job on a compute cluster",
+      "A Kubernetes batch inference job",
       "A managed online endpoint"
     ],
     "answer": "A managed online endpoint",
@@ -280,8 +280,8 @@
     "options": [
       "A batch endpoint",
       "A managed online endpoint",
-      "A serverless API for chat",
-      "A compute instance"
+      "A Kubernetes online endpoint",
+      "A serverless API endpoint"
     ],
     "answer": "A batch endpoint",
     "explanation": "Batch endpoints run asynchronous, parallel scoring jobs over large datasets on compute clusters.",
@@ -290,10 +290,10 @@
   {
     "question": "You deploy a new model as the green deployment on an online endpoint. How do you send 10% of live traffic to it?",
     "options": [
-      "Use a batch endpoint",
-      "Create a second workspace",
+      "Set mirror traffic to green at 10 percent of live requests",
+      "Set the endpoint traffic split to blue 10 and green 90",
       "Set the endpoint traffic split to blue 90 and green 10",
-      "Change the compute instance size"
+      "Scale the green deployment to 10 percent of blue's instance count"
     ],
     "answer": "Set the endpoint traffic split to blue 90 and green 10",
     "explanation": "Online endpoints support multiple deployments with traffic allocation, enabling safe rollout and quick rollback by changing percentages.",
@@ -302,10 +302,10 @@
   {
     "question": "You want to test a new deployment with a copy of production traffic without affecting responses to users. What should you use?",
     "options": [
-      "A larger instance type",
+      "Live traffic split of 10% to the new deployment",
       "Mirrored traffic to the new deployment",
-      "A batch endpoint",
-      "Delete the old deployment first"
+      "A batch endpoint scoring last week's request logs",
+      "Blue-green swap with instant rollback enabled"
     ],
     "answer": "Mirrored traffic to the new deployment",
     "explanation": "Traffic mirroring copies a percentage of live requests to a deployment while users still receive responses from the primary deployment.",
@@ -314,10 +314,10 @@
   {
     "question": "An online endpoint returns errors after deployment. Which command retrieves the container logs?",
     "options": [
-      "az ml workspace show",
+      "az ml online-endpoint get-logs",
       "az ml online-deployment get-logs",
-      "az ml compute list",
-      "az ml data create"
+      "az ml online-deployment show",
+      "az monitor activity-log list"
     ],
     "answer": "az ml online-deployment get-logs",
     "explanation": "get-logs returns logs from the inference server container, which helps diagnose scoring script or dependency errors.",
@@ -326,10 +326,10 @@
   {
     "question": "Production input features have shifted compared with the training data. What is this called and what should you monitor?",
     "options": [
-      "Prompt injection; add Prompt Shields",
-      "Overfitting; add more epochs",
+      "Concept drift; retrain the model on a schedule with the latest labeled data",
+      "Prediction drift; configure an alert on the endpoint's request latency",
       "Data drift; configure model monitoring with drift signals",
-      "Throttling; raise quota"
+      "Data quality issue; add a data quality signal for null values"
     ],
     "answer": "Data drift; configure model monitoring with drift signals",
     "explanation": "Data drift is a change in the distribution of production data. Model monitoring computes drift signals and alerts when thresholds are exceeded.",
@@ -339,9 +339,9 @@
     "question": "You want retraining to start automatically when model monitoring detects drift above a threshold. What should you set up?",
     "options": [
       "An alert on the monitoring signal that triggers a retraining pipeline",
-      "A manual weekly email",
-      "A larger compute instance",
-      "A new workspace"
+      "A recurrence schedule that retrains the pipeline every night",
+      "An Azure Monitor autoscale rule on the online endpoint deployment",
+      "A data quality signal configured to retrain the model automatically"
     ],
     "answer": "An alert on the monitoring signal that triggers a retraining pipeline",
     "explanation": "Model monitoring sends alerts and emits events to Azure Event Grid, which can start a retraining pipeline job when a threshold is exceeded.",
@@ -350,9 +350,9 @@
   {
     "question": "Which resource do you create to host projects, model deployments and agents for generative AI apps in Microsoft Foundry?",
     "options": [
-      "A SQL managed instance",
-      "An Azure Batch account",
-      "An Event Hubs namespace",
+      "An Azure Machine Learning workspace with compute clusters",
+      "An Azure OpenAI resource with a prompt flow runtime",
+      "An Azure AI Search service with indexers",
       "A Foundry resource with one or more projects"
     ],
     "answer": "A Foundry resource with one or more projects",
@@ -363,9 +363,9 @@
     "question": "A generative AI app must call a Foundry model without keys. Which configuration should you apply?",
     "options": [
       "Give the app a managed identity and an appropriate Foundry RBAC role",
-      "Share the resource key in the app config",
-      "Use the subscription ID as a key",
-      "Enable anonymous access"
+      "Store the Foundry API key in Key Vault and read it at startup",
+      "Give the app a managed identity and the Reader role on the Foundry resource",
+      "Issue a shared access signature scoped to the model deployment"
     ],
     "answer": "Give the app a managed identity and an appropriate Foundry RBAC role",
     "explanation": "Managed identities with RBAC roles provide keyless access and are the recommended production pattern.",
@@ -374,9 +374,9 @@
   {
     "question": "How should you deploy Foundry resources, projects and model deployments consistently across environments?",
     "options": [
-      "Portal configuration per environment",
-      "A shared spreadsheet",
-      "Copying settings by hand",
+      "Foundry portal settings exported to a JSON file per environment",
+      "A Prompty file per environment that defines the deployments",
+      "Manual portal setup documented in a runbook per environment",
       "Bicep templates deployed with Azure CLI from a pipeline"
     ],
     "answer": "Bicep templates deployed with Azure CLI from a pipeline",
@@ -386,10 +386,10 @@
   {
     "question": "You need to restrict Foundry traffic to your virtual network. What should you configure?",
     "options": [
-      "A content filter",
-      "A larger model",
+      "Azure AI Content Safety filters on each model deployment",
+      "A network security group on the Foundry resource",
       "Private endpoints and disable public network access",
-      "Prompt variants"
+      "Microsoft Entra ID authentication with keys disabled"
     ],
     "answer": "Private endpoints and disable public network access",
     "explanation": "Private networking keeps inference and management traffic on private IPs within your network.",
@@ -398,10 +398,10 @@
   {
     "question": "Which deployment option charges per token and requires no infrastructure to manage for supported foundation models?",
     "options": [
-      "Batch endpoint on a compute cluster",
-      "Provisioned throughput",
+      "Provisioned throughput deployment billed per PTU hour",
+      "Managed compute deployment on dedicated virtual machines",
       "Standard (serverless, pay-as-you-go) deployment",
-      "Managed compute with dedicated VMs"
+      "Managed online endpoint with autoscaling enabled"
     ],
     "answer": "Standard (serverless, pay-as-you-go) deployment",
     "explanation": "Standard or serverless API deployments bill per token and Microsoft manages the hosting infrastructure.",
@@ -410,10 +410,10 @@
   {
     "question": "An open-weight model is not available as a serverless API. How can you still host it in Foundry?",
     "options": [
-      "Use a batch endpoint for chat",
-      "Call it through Azure Translator",
+      "Deploy it as a Global Standard deployment in another region",
+      "Deploy it with provisioned throughput units instead",
       "Deploy it to managed compute on dedicated virtual machines",
-      "Store it in Key Vault"
+      "Import it into Azure OpenAI as a fine-tuned base model"
     ],
     "answer": "Deploy it to managed compute on dedicated virtual machines",
     "explanation": "Managed compute deployments run models on dedicated VMs in your subscription, billed by compute time.",
@@ -422,10 +422,10 @@
   {
     "question": "A high-volume app needs predictable latency for a model. Which capacity option should you configure?",
     "options": [
-      "A larger temperature",
-      "A smaller chunk size",
+      "Global Standard deployment type",
+      "Data Zone Standard deployment type",
       "Provisioned throughput units (PTUs)",
-      "More prompt variants"
+      "Higher tokens-per-minute quota"
     ],
     "answer": "Provisioned throughput units (PTUs)",
     "explanation": "Provisioned throughput reserves model capacity measured in PTUs, giving consistent latency for steady high-volume workloads.",
@@ -434,10 +434,10 @@
   {
     "question": "How should you upgrade a production app to a newer model version safely?",
     "options": [
-      "Let auto-upgrade happen silently in production",
+      "Enable auto-update to default version on the production deployment",
       "Deploy the new version side by side, evaluate it, then switch traffic",
-      "Delete the old deployment first",
-      "Replace the deployment in place without testing"
+      "Upgrade the production deployment in place, then run evaluations",
+      "Delete the old deployment, then redeploy using the new version name"
     ],
     "answer": "Deploy the new version side by side, evaluate it, then switch traffic",
     "explanation": "Side-by-side deployments and evaluation before switching reduce risk; pin versions in production and control upgrades.",
@@ -446,9 +446,9 @@
   {
     "question": "Which factor is most important when selecting a foundation model for a use case?",
     "options": [
-      "Model name length",
-      "The newest model regardless of cost",
-      "The number of parameters only",
+      "Position on the public model leaderboard regardless of your own data",
+      "The largest context window available in your deployment region",
+      "The highest parameter count that fits within your quota limits",
       "Quality on your evaluation data balanced against cost and latency"
     ],
     "answer": "Quality on your evaluation data balanced against cost and latency",
@@ -458,10 +458,10 @@
   {
     "question": "Your team edits prompts often and needs to know which prompt version produced which results. What should you do?",
     "options": [
-      "Edit prompts directly in production",
-      "Embed prompts in the model weights",
+      "Save prompts in the Foundry playground and overwrite them after each test",
+      "Keep prompts in application settings and change them per environment",
       "Store prompts as files in a Git repository and version them with the app",
-      "Keep prompts only in chat history"
+      "Embed prompts in the fine-tuning dataset and retrain when they change"
     ],
     "answer": "Store prompts as files in a Git repository and version them with the app",
     "explanation": "Versioning prompts in Git (for example as prompty files) gives history, reviews and links between prompt versions and evaluation results.",
@@ -470,10 +470,10 @@
   {
     "question": "You want to compare two system prompts on the same test dataset. What should you create?",
     "options": [
-      "A new private endpoint",
-      "A larger quota",
+      "Two model deployments with different temperature and top_p values",
+      "A red teaming run with the AI Red Teaming Agent on each prompt",
       "Prompt variants evaluated against the same dataset and metrics",
-      "Two separate workspaces"
+      "Continuous evaluation on live production traffic for each prompt"
     ],
     "answer": "Prompt variants evaluated against the same dataset and metrics",
     "explanation": "Prompt variants run against the same inputs and evaluators let you compare quality objectively before choosing one.",
@@ -494,10 +494,10 @@
   {
     "question": "A Foundry project is shared by several teams. How do you limit what each team can change?",
     "options": [
-      "Share one owner account",
-      "Give everyone Owner on the subscription",
+      "Assign every team the Azure AI Account Owner role on the resource",
+      "Create a separate API key for each team on the shared resource",
       "Assign RBAC roles at the narrowest scope for each team",
-      "Disable authentication"
+      "Use Azure Policy to deny each team's sign-in to other projects"
     ],
     "answer": "Assign RBAC roles at the narrowest scope for each team",
     "explanation": "Role-based access control at resource or project scope enforces least privilege for each team.",
@@ -506,10 +506,10 @@
   {
     "question": "Your production app gets HTTP 429 errors from a standard model deployment during peaks. What is the most direct fix?",
     "options": [
-      "Disable logging",
-      "Lower the temperature",
+      "Increase max_tokens in each request so fewer calls are needed",
+      "Lower the temperature and top_p so the model responds faster",
       "Increase the deployment tokens-per-minute quota or add provisioned capacity",
-      "Shorten the deployment name"
+      "Disable diagnostic logging on the resource to reduce request overhead"
     ],
     "answer": "Increase the deployment tokens-per-minute quota or add provisioned capacity",
     "explanation": "HTTP 429 means the rate limit was exceeded. Raise quota, distribute load, retry with backoff or move to provisioned throughput.",
@@ -519,9 +519,9 @@
     "question": "What do you need before running an automated evaluation of a RAG app?",
     "options": [
       "A test dataset of queries, with context and ground truth where relevant, mapped to evaluator inputs",
-      "A compute instance",
-      "Only the model name",
-      "A container registry"
+      "A deployed online endpoint for the RAG app, with Application Insights tracing turned on",
+      "A provisioned throughput deployment of the judge model, sized to the number of test rows",
+      "A fine-tuned evaluator model trained on labeled examples of good and bad answers for your domain"
     ],
     "answer": "A test dataset of queries, with context and ground truth where relevant, mapped to evaluator inputs",
     "explanation": "Evaluations run over a dataset. Column mapping connects fields such as query, context, response and ground truth to evaluator inputs.",
@@ -530,10 +530,10 @@
   {
     "question": "Which evaluator checks whether a response is logically organized and reads naturally as a whole?",
     "options": [
-      "Hate and unfairness",
-      "Latency",
+      "Groundedness",
+      "Relevance",
       "Coherence",
-      "Groundedness"
+      "Response completeness"
     ],
     "answer": "Coherence",
     "explanation": "Coherence measures logical flow and organization. Fluency measures grammar and readability; groundedness measures support by context.",
@@ -542,10 +542,10 @@
   {
     "question": "You need to check that your app does not produce violent or self-harm content when attacked. What should you run?",
     "options": [
-      "A hyperparameter sweep",
-      "A data drift monitor",
+      "Quality evaluations, including groundedness and relevance scoring",
+      "Prompt Shields on user inputs with jailbreak detection enabled",
       "Risk and safety evaluations, including adversarial simulation",
-      "A fluency evaluation only"
+      "Model monitoring with data drift signals on production inputs"
     ],
     "answer": "Risk and safety evaluations, including adversarial simulation",
     "explanation": "Risk and safety evaluators score harmful content categories, and adversarial simulators generate attack prompts to test the app.",
@@ -554,9 +554,9 @@
   {
     "question": "Your domain needs a metric that the built-in evaluators do not cover. What should you do?",
     "options": [
-      "Increase max tokens",
-      "Skip evaluation",
-      "Use only BLEU",
+      "Adjust the built-in evaluator's pass threshold to fit your metric",
+      "Fine-tune the judge model used by the built-in quality evaluators",
+      "Use the built-in F1 score evaluator with a domain ground truth",
       "Create a custom code-based or prompt-based evaluator"
     ],
     "answer": "Create a custom code-based or prompt-based evaluator",
@@ -566,9 +566,9 @@
   {
     "question": "How can evaluations run automatically whenever prompts or code change?",
     "options": [
-      "Evaluate only in production",
-      "Use a compute instance schedule",
-      "Run them manually once a year",
+      "Enable continuous evaluation on the production deployment after each release",
+      "Schedule a nightly evaluation run from the Foundry portal for each project",
+      "Turn on Application Insights tracing and review the dashboard after each change",
       "Run the evaluation SDK in a CI pipeline and fail the build when metrics drop"
     ],
     "answer": "Run the evaluation SDK in a CI pipeline and fail the build when metrics drop",
@@ -578,10 +578,10 @@
   {
     "question": "Which signal helps you control the cost of a generative AI app in production?",
     "options": [
-      "Number of Git branches",
+      "Average request latency by deployment and region",
       "Token consumption by deployment and operation",
-      "Number of evaluators",
-      "Disk size of the workspace"
+      "Groundedness score trends across evaluation runs",
+      "Count of HTTP 429 responses per deployment"
     ],
     "answer": "Token consumption by deployment and operation",
     "explanation": "Most model billing is per token, so tracking prompt and completion tokens shows where to optimize cost.",
@@ -591,9 +591,9 @@
     "question": "Users report slow answers. Which observability data shows whether retrieval or the model call is the bottleneck?",
     "options": [
       "Distributed traces with spans for retrieval, tool calls and model calls",
-      "The quota page only",
-      "The resource group tags",
-      "The evaluation dataset"
+      "Token usage metrics per deployment from Azure Monitor",
+      "Evaluation results with groundedness and relevance scores per query",
+      "Azure activity log entries for the Foundry resource and search service"
     ],
     "answer": "Distributed traces with spans for retrieval, tool calls and model calls",
     "explanation": "Tracing (OpenTelemetry into Application Insights) breaks down latency per step so you can find the slow component.",
@@ -602,9 +602,9 @@
   {
     "question": "Where does Foundry send traces and monitoring data for deployed apps and agents?",
     "options": [
-      "The storage account archive tier",
-      "Azure Key Vault",
-      "The container registry",
+      "A connected Azure Storage account",
+      "The project's Azure Event Hubs namespace",
+      "A linked Microsoft Purview account",
       "A connected Application Insights resource"
     ],
     "answer": "A connected Application Insights resource",
@@ -615,9 +615,9 @@
     "question": "What does continuous evaluation in production provide that offline evaluation does not?",
     "options": [
       "Quality and safety scores on real, sampled production traffic over time",
-      "Lower token prices",
-      "Faster model training",
-      "Automatic fine-tuning"
+      "Scores on a larger synthetic dataset generated from the test set",
+      "Automatic rollback of the deployment when a score drops below target",
+      "Ground truth comparisons for every production request in real time"
     ],
     "answer": "Quality and safety scores on real, sampled production traffic over time",
     "explanation": "Continuous evaluation samples live interactions and scores them, revealing regressions that test datasets missed.",
@@ -626,10 +626,10 @@
   {
     "question": "Retrieved chunks often cut sentences in half and lose context. Which change is most likely to help?",
     "options": [
-      "Use a smaller top_k of 0",
-      "Remove the embedding model",
+      "Increase top_k so more chunks are retrieved per query",
+      "Switch to a larger embedding model with more dimensions",
       "Tune chunk size and add overlap between chunks",
-      "Raise the temperature"
+      "Enable semantic ranker on the search index"
     ],
     "answer": "Tune chunk size and add overlap between chunks",
     "explanation": "Chunk size and overlap strongly affect retrieval quality; overlap keeps context that would otherwise be split across chunks.",
@@ -639,9 +639,9 @@
     "question": "Queries with exact product codes perform poorly with pure vector search. What should you implement?",
     "options": [
       "Hybrid search combining keyword and vector retrieval",
-      "A smaller embedding dimension",
-      "A higher temperature",
-      "Disabling the index"
+      "A larger embedding model with more vector dimensions",
+      "Vector search with HNSW instead of exhaustive KNN",
+      "Increase k for nearest neighbors in the vector query"
     ],
     "answer": "Hybrid search combining keyword and vector retrieval",
     "explanation": "Keyword search matches exact terms such as codes while vector search handles meaning. Hybrid search combines both.",
@@ -650,10 +650,10 @@
   {
     "question": "Your RAG app retrieves loosely related passages that confuse the model. Which tuning can help?",
     "options": [
-      "Lower max tokens",
+      "Increase top_k so the model sees more passages and can pick the relevant ones",
       "Apply a reranker and a minimum relevance threshold before passing results to the model",
-      "Remove the system prompt",
-      "Retrieve more passages without filtering"
+      "Lower the temperature so the model ignores passages that do not match",
+      "Raise max_tokens so the model has room to process every retrieved passage"
     ],
     "answer": "Apply a reranker and a minimum relevance threshold before passing results to the model",
     "explanation": "Reranking and score thresholds keep only the most relevant passages, reducing noise in the context.",
@@ -662,10 +662,10 @@
   {
     "question": "General-purpose embeddings perform poorly on your medical terminology. What can improve retrieval accuracy?",
     "options": [
-      "Remove metadata filters",
+      "Fine-tune the generation model on medical text and keep the general embeddings",
       "Evaluate domain-suited embedding models and fine-tune one on domain pairs if needed",
-      "Use a smaller LLM for generation",
-      "Increase the temperature"
+      "Reduce the embedding dimensions to cut noise from unrelated general vocabulary",
+      "Increase the chat model's context window so more medical passages fit per query"
     ],
     "answer": "Evaluate domain-suited embedding models and fine-tune one on domain pairs if needed",
     "explanation": "Choosing or fine-tuning embedding models for the domain improves similarity for specialist vocabulary.",
@@ -674,9 +674,9 @@
   {
     "question": "How should you decide whether a new retrieval configuration is better in production?",
     "options": [
-      "Ask one user",
-      "Deploy it and stop monitoring",
-      "Compare token prices only",
+      "Run it once on a few hand-picked queries and compare the answers",
+      "Compare its average latency and token cost with the current configuration",
+      "Deploy it to all users and watch for an increase in support tickets",
       "A/B test it with relevance metrics against the current configuration"
     ],
     "answer": "A/B test it with relevance metrics against the current configuration",
@@ -686,9 +686,9 @@
   {
     "question": "When should you consider fine-tuning a model rather than improving prompts or retrieval?",
     "options": [
-      "Before trying any prompt engineering",
-      "When facts change daily",
-      "When you have no training data",
+      "When the model must answer from documents that change daily and you need the latest facts in each response",
+      "When you have not yet tried prompt engineering or retrieval and want the fastest possible improvement",
+      "When responses must cite the specific source documents they used so users can verify every answer",
       "When you need consistent style or task behavior that prompting cannot reach and you have quality training examples"
     ],
     "answer": "When you need consistent style or task behavior that prompting cannot reach and you have quality training examples",
@@ -698,10 +698,10 @@
   {
     "question": "You have too few real examples to fine-tune a model. What can you do?",
     "options": [
-      "Use test data for training",
+      "Add the evaluation test set to the training data to increase the example count",
       "Generate synthetic training data with a larger model and review it for quality",
-      "Skip validation data",
-      "Duplicate the same example 1,000 times"
+      "Duplicate the existing examples and raise the number of epochs to compensate",
+      "Skip the validation file so that every example can be used for training"
     ],
     "answer": "Generate synthetic training data with a larger model and review it for quality",
     "explanation": "Synthetic data generated by a stronger model, then filtered and reviewed, can expand training sets for fine-tuning or distillation.",
@@ -710,10 +710,10 @@
   {
     "question": "Which fine-tuning method trains the model using preferred versus rejected responses?",
     "options": [
-      "Retrieval-augmented generation",
-      "Supervised fine-tuning with single answers",
+      "Supervised fine-tuning (SFT)",
+      "Reinforcement fine-tuning (RFT)",
       "Direct preference optimization (DPO)",
-      "Prompt caching"
+      "Distillation with stored completions"
     ],
     "answer": "Direct preference optimization (DPO)",
     "explanation": "DPO learns from pairs of preferred and non-preferred outputs to align responses with human preferences.",
@@ -723,9 +723,9 @@
     "question": "After fine-tuning, how should you confirm the model is better before production?",
     "options": [
       "Evaluate it against the base model on a held-out test set and monitor after release",
-      "Deploy it to all users immediately",
-      "Check only the training loss",
-      "Compare the model file sizes"
+      "Compare final training and validation loss in the job metrics, then deploy to all users",
+      "Run the evaluators on the training file it learned from and promote it if scores rise",
+      "Check the token accuracy metric in the fine-tuning results file and swap the deployment"
     ],
     "answer": "Evaluate it against the base model on a held-out test set and monitor after release",
     "explanation": "Compare against a baseline on held-out data with the same evaluators, then deploy gradually and monitor.",
@@ -734,10 +734,10 @@
   {
     "question": "You want to attach an existing storage account to a new Machine Learning workspace. Which account type is rejected as the workspace default storage?",
     "options": [
-      "An account with soft delete enabled",
-      "A general-purpose v2 standard account",
+      "A general-purpose v2 standard account with geo-redundant storage",
+      "A general-purpose v1 standard account that you upgrade later",
       "A premium account or one with hierarchical namespace enabled",
-      "An account in the same region"
+      "A standard account with blob soft delete and versioning enabled"
     ],
     "answer": "A premium account or one with hierarchical namespace enabled",
     "explanation": "The workspace storage account cannot be BlobStorage, premium or hierarchical namespace enabled. You can add those later as datastores.",
@@ -746,10 +746,10 @@
   {
     "question": "A new workspace has no container registry yet. When is one created automatically?",
     "options": [
-      "Immediately at workspace creation",
+      "When the first compute cluster is provisioned",
       "When a custom Docker environment is first built",
-      "Never, you must always bring one",
-      "Only when you deploy to AKS"
+      "When the workspace is created with default settings",
+      "When the first model is registered in the workspace"
     ],
     "answer": "When a custom Docker environment is first built",
     "explanation": "Azure Container Registry is provisioned lazily when you build custom images, for example for a custom environment or AutoML deployment.",
@@ -759,9 +759,9 @@
     "question": "Your subscription policy requires tags on every resource, and the workspace build of a custom environment fails. Why?",
     "options": [
       "The automatically created container registry cannot be tagged, so policy blocks it; bring your own registry",
-      "Environments cannot use Docker",
-      "Compute clusters need tags",
-      "Workspaces cannot be tagged"
+      "The compute cluster used for the image build has no tags, so policy blocks it; add tags to the cluster",
+      "The default key vault cannot be tagged, so policy blocks it; bring your own key vault to the workspace",
+      "Application Insights is created on demand without tags, so policy blocks it; attach your own instance"
     ],
     "answer": "The automatically created container registry cannot be tagged, so policy blocks it; bring your own registry",
     "explanation": "If tags are required, the registry that Azure Machine Learning creates fails because tags cannot be set on it. Attach your own registry instead.",
@@ -771,9 +771,9 @@
     "question": "Several project workspaces must share network settings, connections and compute. What should you create?",
     "options": [
       "A hub workspace with project workspaces under it",
-      "A registry",
-      "One workspace per user",
-      "Separate standalone workspaces with copied settings"
+      "An Azure Machine Learning registry shared by all the workspaces",
+      "Standalone workspaces that share one peered virtual network",
+      "A management group with Azure Policy applied to each workspace"
     ],
     "answer": "A hub workspace with project workspaces under it",
     "explanation": "A hub workspace groups project workspaces and shares security settings, connections and compute. Hubs are the same resource type as Foundry hubs.",
@@ -784,8 +784,8 @@
     "options": [
       "Model monitoring",
       "MLflow tracking",
-      "Compute clusters",
-      "Registered models"
+      "Serverless compute",
+      "Managed online endpoints"
     ],
     "answer": "Model monitoring",
     "explanation": "Model monitoring is not supported with the AllowOnlyApprovedOutbound managed virtual network isolation mode.",
@@ -794,10 +794,10 @@
   {
     "question": "Model monitoring must read production data from a datastore without stored credentials. What should you configure?",
     "options": [
-      "Anonymous blob access",
+      "A user-assigned managed identity with datastore access and systemDatastoresAuthMode set to accesskey",
       "A user-assigned managed identity with datastore access and systemDatastoresAuthMode set to identity",
-      "An account key in the monitoring job",
-      "A SAS token in the schedule"
+      "A service principal secret in Key Vault referenced by the datastore used by the monitoring schedule",
+      "A SAS token on the datastore, rotated by Key Vault, with systemDatastoresAuthMode set to identity"
     ],
     "answer": "A user-assigned managed identity with datastore access and systemDatastoresAuthMode set to identity",
     "explanation": "Attach a user-assigned managed identity, grant it access to the datastore and set the workspace property systemDatastoresAuthMode to identity.",
@@ -807,9 +807,9 @@
     "question": "Training costs are high and jobs tolerate interruption. Which compute choice reduces cost?",
     "options": [
       "Low-priority (spot) VMs in a compute cluster",
-      "A dedicated compute instance per job",
-      "A managed online endpoint",
-      "More always-on nodes"
+      "Dedicated VMs in a compute cluster with minimum nodes set to 2",
+      "Dedicated-priority nodes in an attached Kubernetes cluster",
+      "A managed online endpoint running the training script"
     ],
     "answer": "Low-priority (spot) VMs in a compute cluster",
     "explanation": "Low-priority VMs are much cheaper but can be preempted, which suits restartable training jobs.",
@@ -819,8 +819,8 @@
     "question": "You want to run a training job without creating or managing any compute cluster. What should you use?",
     "options": [
       "A compute instance",
-      "An attached VM",
-      "A Kubernetes cluster",
+      "An attached Kubernetes cluster",
+      "A low-priority compute cluster",
       "Serverless compute"
     ],
     "answer": "Serverless compute",
@@ -832,7 +832,7 @@
     "options": [
       "About 0.667 (0.8 / 1.2)",
       "0.6 (0.8 - 0.2)",
-      "0.2",
+      "About 0.96 (0.8 x 1.2)",
       "0.64 (0.8 x 0.8)"
     ],
     "answer": "About 0.667 (0.8 / 1.2)",
@@ -843,9 +843,9 @@
     "question": "You want conservative early termination that saves compute with almost no loss on the primary metric. Which policy does Microsoft recommend?",
     "options": [
       "Median stopping with evaluation_interval 1 and delay_evaluation 5",
-      "Truncation selection with 80 percent",
-      "No termination",
-      "Bandit with slack_factor 0.01"
+      "Truncation selection with truncation_percentage 20 and evaluation_interval 1",
+      "Bandit with slack_factor 0.01, evaluation_interval 1 and delay_evaluation 5",
+      "No termination policy, with max_concurrent_trials set to 1"
     ],
     "answer": "Median stopping with evaluation_interval 1 and delay_evaluation 5",
     "explanation": "Median stopping with those settings is the conservative recommendation. Bandit with small slack or truncation selection is more aggressive.",
@@ -854,9 +854,9 @@
   {
     "question": "A sweep space uses a loguniform learning rate and Bayesian sampling fails validation. Why?",
     "options": [
-      "loguniform requires early termination",
-      "Bayesian sampling needs grid search",
-      "Learning rates must be integers",
+      "Bayesian sampling requires a Bandit early termination policy",
+      "Bayesian sampling supports only choice and normal distributions",
+      "loguniform is valid only with grid sampling in a sweep job",
       "Bayesian sampling supports only choice, uniform and quniform"
     ],
     "answer": "Bayesian sampling supports only choice, uniform and quniform",
@@ -866,10 +866,10 @@
   {
     "question": "A grid sweep fails because one hyperparameter is defined with uniform(0.01, 0.1). What is the fix?",
     "options": [
-      "Switch to quniform",
-      "Add an early termination policy",
+      "Use quniform values, because grid sampling needs discrete steps",
+      "Use randint values, because grid sampling needs integer ranges",
       "Use choice values, because grid sampling supports only choice",
-      "Use more concurrent trials"
+      "Set max_concurrent_trials to 1, because grid trials run in order"
     ],
     "answer": "Use choice values, because grid sampling supports only choice",
     "explanation": "Grid sampling enumerates combinations, so it supports only discrete choice parameters.",
@@ -878,10 +878,10 @@
   {
     "question": "You tune four hyperparameters with Bayesian sampling. How many total trials are recommended at minimum?",
     "options": [
-      "10",
+      "About 40 (10 times the number of hyperparameters)",
       "About 80 (20 times the number of hyperparameters)",
-      "4",
-      "1,000"
+      "About 20 (5 times the number of hyperparameters)",
+      "About 400 (100 times the number of hyperparameters)"
     ],
     "answer": "About 80 (20 times the number of hyperparameters)",
     "explanation": "For best Bayesian results, set max_total_trials to at least 20 times the number of hyperparameters.",
@@ -891,9 +891,9 @@
     "question": "Why does Bayesian sampling often perform better with fewer concurrent trials?",
     "options": [
       "Each new trial can learn from more completed results",
-      "It forces grid search",
-      "It reduces the search space",
-      "Concurrency is not supported at all"
+      "Fewer parallel trials let early termination cancel more runs",
+      "Each trial gets more GPU memory on the shared cluster nodes",
+      "The search space is narrowed to fewer distributions"
     ],
     "answer": "Each new trial can learn from more completed results",
     "explanation": "Bayesian sampling chooses new points based on previous results, so fewer parallel trials means each choice uses more information.",
@@ -902,10 +902,10 @@
   {
     "question": "A sweep sets max_total_trials 100 and timeout 3600 seconds. When does it stop?",
     "options": [
-      "When the best trial reaches the target",
-      "Only after one hour",
+      "When both of the two limits have been reached",
+      "When max_total_trials is reached, ignoring timeout",
       "When the first of the two limits is reached",
-      "Only after 100 trials"
+      "When the timeout is reached, ignoring max_total_trials"
     ],
     "answer": "When the first of the two limits is reached",
     "explanation": "When both limits are set the sweep stops at whichever is reached first.",
@@ -914,10 +914,10 @@
   {
     "question": "A feature pipeline must use the same lookup logic in training and inference. What should you package with the model?",
     "options": [
-      "The training notebook",
-      "The sweep job YAML",
+      "The feature set specification",
+      "The materialization store connection",
       "The feature retrieval specification",
-      "The compute cluster ID"
+      "The offline store snapshot of training data"
     ],
     "answer": "The feature retrieval specification",
     "explanation": "Packaging the feature retrieval specification with the model artifact keeps features consistent between training and serving.",
@@ -926,9 +926,9 @@
   {
     "question": "You log a model with MLflow and want it registered in the same call. What should you pass?",
     "options": [
-      "The datastore URI",
-      "An environment name",
-      "A run tag named register",
+      "artifact_path set to the model name",
+      "registered_model_name in start_run",
+      "await_registration_for in log_model",
       "registered_model_name in log_model"
     ],
     "answer": "registered_model_name in log_model",
@@ -938,10 +938,10 @@
   {
     "question": "A pipeline re-runs an unchanged data-prep step every time and wastes compute. What should you check?",
     "options": [
-      "That the pipeline has a schedule",
+      "That force_rerun is enabled on the pipeline job and the output mode is set to upload",
       "That component reuse is enabled and inputs, code and environment are unchanged",
-      "That MLflow autolog is on",
-      "That the step uses a GPU"
+      "That the step's outputs are registered as data assets with a fixed version number",
+      "That the data-prep step runs on serverless compute rather than on a compute cluster"
     ],
     "answer": "That component reuse is enabled and inputs, code and environment are unchanged",
     "explanation": "Pipelines reuse outputs of steps whose component, inputs and settings have not changed, unless reuse is disabled.",
@@ -950,9 +950,9 @@
   {
     "question": "You create a green deployment on an online endpoint without --all-traffic. What traffic does it receive?",
     "options": [
-      "50 percent",
-      "100 percent",
-      "10 percent by default",
+      "100 percent, replacing the existing blue deployment",
+      "An even split with the existing blue deployment",
+      "10 percent until you promote it on the endpoint",
       "0 percent until you change the endpoint traffic"
     ],
     "answer": "0 percent until you change the endpoint traffic",
@@ -962,10 +962,10 @@
   {
     "question": "Testers must call the green deployment directly while it has 0 percent traffic. How?",
     "options": [
-      "Use a batch endpoint",
+      "Set the mirror traffic for green to 100 percent and read its logs",
       "Send requests with the azureml-model-deployment header set to green",
-      "Temporarily delete blue",
-      "Set traffic to green=1"
+      "Call the green deployment's own scoring URI from its details page",
+      "Set traffic to blue=99 green=1 and filter responses for green"
     ],
     "answer": "Send requests with the azureml-model-deployment header set to green",
     "explanation": "The azureml-model-deployment header (or --deployment-name in the CLI) bypasses traffic rules and targets a specific deployment.",
@@ -975,9 +975,9 @@
     "question": "You try to mirror 70 percent of traffic to green. What happens?",
     "options": [
       "It is rejected, because mirrored traffic is capped at 50 percent",
-      "It works and halves bandwidth",
-      "Mirrored responses replace blue",
-      "Mirroring requires 100 percent"
+      "It is accepted, and clients get green's response 70 percent of the time",
+      "It is accepted, but only if live traffic to green is also 70 percent",
+      "It is rejected, because mirrored traffic is capped at 25 percent"
     ],
     "answer": "It is rejected, because mirrored traffic is capped at 50 percent",
     "explanation": "Mirroring is limited to 50 percent to protect the endpoint bandwidth quota. You can mirror to only one deployment.",
@@ -986,9 +986,9 @@
   {
     "question": "During mirroring, which responses do clients receive?",
     "options": [
-      "Responses from both deployments",
-      "The fastest response",
-      "Responses from the mirrored deployment",
+      "Responses from whichever deployment answers first; the slower one is discarded",
+      "Only responses from the mirrored deployment; live responses go to the logs",
+      "Both responses, merged into one payload with a deployment name for each",
       "Only responses from the live deployment; mirrored responses are discarded"
     ],
     "answer": "Only responses from the live deployment; mirrored responses are discarded",
@@ -999,9 +999,9 @@
     "question": "You set traffic to blue=60 green=30. Why is the update rejected?",
     "options": [
       "Traffic percentages must add up to 0 or 100",
-      "Only two deployments are allowed",
-      "Green must be created with --all-traffic",
-      "Traffic must be in steps of 25"
+      "Traffic must be set in multiples of 25 percent",
+      "Green must first be created with --all-traffic",
+      "The remaining 10 percent must go to a mirror"
     ],
     "answer": "Traffic percentages must add up to 0 or 100",
     "explanation": "Endpoint traffic allocation must total 100 to serve traffic, or 0 to disable it.",
@@ -1010,10 +1010,10 @@
   {
     "question": "Can you mirror traffic on a Kubernetes online endpoint?",
     "options": [
-      "Only with GPU nodes",
+      "Yes, up to 50 percent, the same as on managed online endpoints",
       "No, mirroring is not supported for Kubernetes online endpoints",
-      "Only to two deployments",
-      "Yes, up to 100 percent"
+      "Yes, but only when the cluster runs the Azure Machine Learning extension",
+      "Yes, but only to a deployment that uses the same instance type"
     ],
     "answer": "No, mirroring is not supported for Kubernetes online endpoints",
     "explanation": "Traffic mirroring is a managed online endpoint feature and is not supported on Kubernetes online endpoints.",
@@ -1023,9 +1023,9 @@
     "question": "Which reference data should you use for a prediction drift signal?",
     "options": [
       "Validation data or recent production outputs",
-      "The scoring script",
-      "The training script",
-      "Ground truth labels only"
+      "Ground truth labels joined to production outputs",
+      "The training data features used to build the model",
+      "Feature attribution scores computed on training data"
     ],
     "answer": "Validation data or recent production outputs",
     "explanation": "Prediction drift compares model outputs against validation data or recent production outputs.",
@@ -1035,9 +1035,9 @@
     "question": "You want to track a classification model's accuracy in production. What does that signal require?",
     "options": [
       "Ground truth data joined to production predictions",
-      "A GPU compute",
-      "Only the training data",
-      "Only model inputs"
+      "Training data joined to production model inputs",
+      "Validation outputs compared with production outputs",
+      "Feature attribution scores from the training data"
     ],
     "answer": "Ground truth data joined to production predictions",
     "explanation": "Model performance signals compare predictions to ground truth, which you must collect and supply.",
@@ -1046,10 +1046,10 @@
   {
     "question": "Which data quality metrics does model monitoring compute?",
     "options": [
-      "Groundedness and fluency",
-      "Accuracy, precision and recall",
+      "Jensen-Shannon distance, PSI and normalized Wasserstein distance",
+      "Accuracy, precision and recall against collected ground truth",
       "Null value rate, data type error rate and out-of-bounds rate",
-      "Latency and throughput"
+      "Feature attribution drift and normalized discounted cumulative gain"
     ],
     "answer": "Null value rate, data type error rate and out-of-bounds rate",
     "explanation": "Data quality checks nulls, type mismatches and values outside the reference ranges or categories.",
@@ -1058,10 +1058,10 @@
   {
     "question": "Which drift metrics are available for a numerical feature in data drift monitoring?",
     "options": [
-      "Groundedness and coherence",
+      "Jensen-Shannon distance, PSI, Pearson's chi-squared test and L-infinity distance",
       "Jensen-Shannon distance, PSI, normalized Wasserstein distance and two-sample K-S test",
-      "RMSE and MAE",
-      "BLEU and ROUGE"
+      "Normalized discounted cumulative gain, PSI, mean absolute error and root mean squared error",
+      "Null value rate, data type error rate, out-of-bounds rate and normalized Wasserstein distance"
     ],
     "answer": "Jensen-Shannon distance, PSI, normalized Wasserstein distance and two-sample K-S test",
     "explanation": "Data drift supports distribution distance metrics such as Jensen-Shannon, PSI, normalized Wasserstein and statistical tests such as K-S and chi-squared.",
@@ -1070,10 +1070,10 @@
   {
     "question": "A model deployed on a batch endpoint needs monitoring. How do you get production inference data?",
     "options": [
-      "It is not possible to monitor",
-      "Enable the data collector on the batch endpoint",
+      "Enable the data collector in the batch deployment YAML so inputs are logged to blob",
+      "Turn on Application Insights for the batch endpoint and point the monitor at it",
       "Collect it yourself, because automatic data collection applies to online endpoints",
-      "Monitoring reads it from MLflow"
+      "Use the model's training data asset as production data, since batch jobs replay it"
     ],
     "answer": "Collect it yourself, because automatic data collection applies to online endpoints",
     "explanation": "Automatic model data collection works for online endpoints. For batch endpoints or external deployments you collect inference data yourself.",
@@ -1082,9 +1082,9 @@
   {
     "question": "Monitoring runs weekly with a production lookback window of P7D. Which reference window offset avoids overlap?",
     "options": [
-      "Exactly one day",
-      "P0D",
-      "It cannot be configured",
+      "At least one day, so the windows never share a run",
+      "P0D, so both windows end at the same monitoring run",
+      "Half the production window size, rounded up to P4D",
       "At least the production window size plus its offset"
     ],
     "answer": "At least the production window size plus its offset",
@@ -1095,9 +1095,9 @@
     "question": "After green takes 100 percent of traffic you delete the blue deployment. What happens to green?",
     "options": [
       "Nothing, deleting one deployment does not affect others on the endpoint",
-      "Green is deleted too",
-      "The endpoint is deleted",
-      "Traffic resets to 0 percent"
+      "Green is restarted, because the endpoint is redeployed when blue is removed",
+      "Green's traffic resets to 0 percent until you set the endpoint traffic again",
+      "Green is deleted too, because deployments share the endpoint's compute"
     ],
     "answer": "Nothing, deleting one deployment does not affect others on the endpoint",
     "explanation": "Deleting a deployment removes only that deployment. Deleting the endpoint removes all of its deployments.",
@@ -1106,9 +1106,9 @@
   {
     "question": "A model was logged in a finished run but not registered. Which MLflow call registers it with lineage to the run?",
     "options": [
-      "mlflow.set_experiment",
-      "mlflow.start_run",
-      "mlflow.log_metric",
+      "mlflow.register_model with a models:/<name>/<version> URI",
+      "mlflow.log_model with the run_id of the finished run",
+      "MlflowClient.create_registered_model with the run ID",
       "mlflow.register_model with a runs:/<run_id>/<path> URI"
     ],
     "answer": "mlflow.register_model with a runs:/<run_id>/<path> URI",
@@ -1118,7 +1118,7 @@
   {
     "question": "You need a ready-made environment with common ML frameworks that Microsoft maintains and patches. What should you use?",
     "options": [
-      "A registry component",
+      "A conda specification environment",
       "A compute instance image",
       "A curated environment",
       "A custom Dockerfile environment"
@@ -1131,7 +1131,7 @@
     "question": "A fine-tuning job must keep training data and weights in your region for compliance. Which training type should you choose?",
     "options": [
       "Global",
-      "Any type keeps data in region",
+      "Data Zone",
       "Developer",
       "Standard"
     ],
@@ -1155,9 +1155,9 @@
     "question": "Training loss keeps falling but validation loss starts rising after epoch 2 of 5. What should you do?",
     "options": [
       "Deploy an earlier checkpoint or reduce epochs, because the model is overfitting",
-      "Increase the learning rate multiplier",
-      "Remove the validation set",
-      "Train for more epochs"
+      "Increase the epochs to 10, because validation loss should recover with more training",
+      "Raise the learning rate multiplier, because the model is underfitting the data",
+      "Increase the batch size and keep the last checkpoint, because loss is still falling"
     ],
     "answer": "Deploy an earlier checkpoint or reduce epochs, because the model is overfitting",
     "explanation": "Diverging training and validation loss indicates overfitting. Checkpoints are created per epoch and the last three can be deployed.",
@@ -1166,9 +1166,9 @@
   {
     "question": "A fine-tuned deployment has received no calls for three weeks and has disappeared. Why?",
     "options": [
-      "Fine-tuned models expire after 7 days",
-      "The quota was reduced",
-      "The training data was deleted",
+      "Fine-tuned models expire 7 days after training; the job must be rerun to restore it",
+      "Deployments inactive for more than 15 days are deleted; the model is deleted with it",
+      "Standard deployments are paused after 14 idle days; restart them from the portal",
       "Deployments inactive for more than 15 days are deleted; the model can be redeployed"
     ],
     "answer": "Deployments inactive for more than 15 days are deleted; the model can be redeployed",
@@ -1178,10 +1178,10 @@
   {
     "question": "A user can start fine-tuning jobs but cannot deploy the result. Which permission is missing?",
     "options": [
-      "Storage Blob Data Reader",
-      "Key Vault Secrets User",
+      "Storage Blob Data Contributor on the training data account",
+      "A role with deployments/read, such as Reader on the resource",
       "A role with deployments/write, such as Foundry Owner",
-      "Reader on the subscription"
+      "Key Vault Secrets User on the resource's key vault"
     ],
     "answer": "A role with deployments/write, such as Foundry Owner",
     "explanation": "Deploying a fine-tuned model requires Microsoft.CognitiveServices/accounts/deployments/write, which Foundry Owner includes.",
@@ -1190,9 +1190,9 @@
   {
     "question": "Fine-tuned answers ignore the persona at inference time. Training examples all used a specific system message. What is the likely issue?",
     "options": [
-      "The model is not deployed in a Data Zone",
-      "Prompt caching is on",
-      "Too many epochs",
+      "The fine-tuned deployment uses a Global deployment type",
+      "Training examples were weighted 1 on assistant messages",
+      "Inference temperature is set lower than during training",
       "Inference uses a different system message than training"
     ],
     "answer": "Inference uses a different system message than training",
@@ -1203,9 +1203,9 @@
     "question": "In fine-tuning data, how do you exclude a specific assistant turn in a multi-turn example from training?",
     "options": [
       "Set weight to 0 on that assistant message",
-      "Set temperature to 0",
-      "Mark it as a system message",
-      "Delete the user message"
+      "Set weight to 0 on the preceding user message",
+      "Set the message role to system for that turn",
+      "Set weight to -1 on that assistant message"
     ],
     "answer": "Set weight to 0 on that assistant message",
     "explanation": "Assistant messages can carry a weight of 0 or 1 to control whether they are trained on.",
@@ -1215,9 +1215,9 @@
     "question": "You need reward-based tuning where a grader scores outputs for a reasoning model. Which method fits?",
     "options": [
       "Reinforcement fine-tuning (RFT)",
-      "Prompt caching",
-      "Direct preference optimization",
-      "Supervised fine-tuning"
+      "Direct preference optimization (DPO)",
+      "Supervised fine-tuning (SFT)",
+      "Distillation with stored completions"
     ],
     "answer": "Reinforcement fine-tuning (RFT)",
     "explanation": "Reinforcement fine-tuning uses reward signals from graders and is available for selected reasoning models.",
@@ -1226,10 +1226,10 @@
   {
     "question": "What is the training data format for chat model fine-tuning?",
     "options": [
-      "A single JSON array",
+      "CSV, one prompt and completion pair per row",
       "JSONL, one chat-format conversation per line",
-      "Parquet files",
-      "CSV with prompt and completion columns"
+      "JSON, one array holding all chat conversations",
+      "JSONL, one prompt and completion pair per line"
     ],
     "answer": "JSONL, one chat-format conversation per line",
     "explanation": "Training files are JSONL with one conversation in the chat completions messages format per line, UTF-8 encoded.",
@@ -1238,10 +1238,10 @@
   {
     "question": "Evaluation must check that an agent understood what the user wanted and completed the task within its rules. Which evaluators fit?",
     "options": [
-      "Latency and throughput",
+      "Groundedness and response completeness",
       "Intent resolution and task adherence",
-      "Accuracy and recall",
-      "Fluency and BLEU"
+      "Coherence and fluency of the final reply",
+      "Relevance and retrieval quality"
     ],
     "answer": "Intent resolution and task adherence",
     "explanation": "Agent evaluators include intent resolution, task adherence and tool call accuracy, which assess agent behavior rather than text quality.",
@@ -1250,10 +1250,10 @@
   {
     "question": "A new prompt version passes quality evaluations but its safety evaluation shows more harmful outputs. What should the release gate do?",
     "options": [
-      "Disable the safety evaluator",
+      "Allow the release because the quality gains outweigh the safety regression",
       "Block the release until risk and safety metrics meet the threshold",
-      "Ship because quality improved",
-      "Average the two scores"
+      "Release to a canary group first and re-run the safety evaluation there",
+      "Average quality and safety scores and release if the combined score passes"
     ],
     "answer": "Block the release until risk and safety metrics meet the threshold",
     "explanation": "GenAIOps gates should require both quality and safety thresholds. A safety regression blocks the release even if quality improves.",
@@ -1262,10 +1262,10 @@
   {
     "question": "You want ongoing scoring of a sample of live agent conversations for quality and safety. What should you configure?",
     "options": [
-      "A sweep job",
-      "A nightly fine-tuning job",
+      "A scheduled batch evaluation on the golden test set with Azure Monitor alerts",
+      "Model monitoring data drift signals on the agent deployment with email alerts",
       "Continuous evaluation on production traffic with Application Insights connected",
-      "A larger PTU deployment"
+      "Diagnostic settings that stream agent request logs to a Log Analytics workspace"
     ],
     "answer": "Continuous evaluation on production traffic with Application Insights connected",
     "explanation": "Continuous evaluation samples production interactions and scores them, with results and traces in Application Insights.",
@@ -1274,10 +1274,10 @@
   {
     "question": "Token costs suddenly double after a prompt change. Where would you confirm the cause?",
     "options": [
-      "The model card",
+      "Azure Cost Management budgets for the resource group",
       "Token usage metrics and traces per prompt version",
-      "The registry",
-      "The Key Vault audit log"
+      "The deployment's rate limit and quota settings page",
+      "The provisioned-managed utilization metric over time"
     ],
     "answer": "Token usage metrics and traces per prompt version",
     "explanation": "Tracking tokens per operation and version in traces shows which change increased prompt or completion size.",
@@ -1286,9 +1286,9 @@
   {
     "question": "A provisioned deployment shows high utilization and rising latency but no 429s yet. What should you watch to decide on more PTUs?",
     "options": [
-      "The number of prompt variants",
-      "Index size",
-      "Disk IOPS",
+      "The processed inference tokens metric",
+      "The tokens-per-minute quota on the resource",
+      "The Azure OpenAI Requests count metric",
       "The provisioned-managed utilization metric"
     ],
     "answer": "The provisioned-managed utilization metric",
@@ -1298,9 +1298,9 @@
   {
     "question": "Quantized vectors cut index size but recall drops. Which query setting recovers recall without changing the index?",
     "options": [
-      "Switch to keyword search",
-      "Lower k to 1",
-      "Disable rescoring",
+      "Lower oversampling so fewer compressed candidates add noise to the results",
+      "Set rescoreStorageMethod to discardOriginals so rescoring uses the int8 vectors",
+      "Raise the HNSW m parameter so the graph links more neighbors per node",
       "Raise oversampling so more candidates are rescored with original vectors"
     ],
     "answer": "Raise oversampling so more candidates are rescored with original vectors",
@@ -1310,9 +1310,9 @@
   {
     "question": "With binary quantization you set rescoreStorageMethod to discardOriginals. What is the trade-off?",
     "options": [
-      "Quality improves",
-      "Scalar quantization is enabled",
-      "Queries switch to exhaustive KNN",
+      "Storage drops further, and queries switch to exhaustive KNN over the binary vectors",
+      "Storage drops further, and rescoring then uses the scalar int8 copies of the vectors",
+      "Recall improves, because rescoring runs on full-precision vectors held in memory",
       "Storage drops further, and rescoring and oversampling settings can no longer be used"
     ],
     "answer": "Storage drops further, and rescoring and oversampling settings can no longer be used",
@@ -1322,10 +1322,10 @@
   {
     "question": "Embeddings have 384 dimensions. Which quantization is the safer first choice?",
     "options": [
-      "Binary quantization, which works best below 512 dimensions",
+      "Binary quantization, which suits small embeddings best",
       "Scalar (int8) quantization, testing quality carefully",
-      "No compression is possible",
-      "Truncation to 32 dimensions"
+      "Matryoshka truncation down to 32 dimensions before indexing",
+      "Binary quantization with discardOriginals to save memory"
     ],
     "answer": "Scalar (int8) quantization, testing quality carefully",
     "explanation": "Binary quantization works best above 1,024 dimensions. For smaller embeddings scalar quantization is the safer choice.",
@@ -1334,9 +1334,9 @@
   {
     "question": "You enable rescoring but queries use exhaustive KNN. Why does oversampling have no effect?",
     "options": [
-      "Rescoring needs binary quantization",
-      "Oversampling only works with filters",
-      "Exhaustive KNN needs k=50",
+      "Oversampling applies only to binary quantization, and the index uses scalar int8",
+      "Rescoring needs rescoreStorageMethod set to discardOriginals before it applies",
+      "Exhaustive KNN caps k at 50, so the oversampled candidates are truncated",
       "Exhaustive KNN scans every vector, so rescoring and oversampling do not apply"
     ],
     "answer": "Exhaustive KNN scans every vector, so rescoring and oversampling do not apply",
@@ -1346,10 +1346,10 @@
   {
     "question": "Relevance improves only slightly with the semantic ranker. You use hybrid search with k=5. What should you change first?",
     "options": [
-      "Add orderby",
-      "Lower k to 1",
+      "Lower k to 1 so the ranker focuses on the top match",
+      "Add an orderby clause so results sort by the score field",
       "Raise k to about 50 so the ranker has more candidates",
-      "Remove the vector query"
+      "Remove the keyword query so only vectors reach the ranker"
     ],
     "answer": "Raise k to about 50 so the ranker has more candidates",
     "explanation": "The semantic ranker reranks the top results. A k of 50 gives it enough inputs to improve ordering.",
@@ -1358,10 +1358,10 @@
   {
     "question": "A RAG A/B test compares two chunk sizes. Which metrics make the decision defensible?",
     "options": [
-      "Only the number of chunks",
-      "Only index build time",
+      "Total chunk count and index build time for each configuration, plus storage cost",
+      "BLEU and ROUGE scores of answers against the chunk text, plus token cost",
       "Retrieval relevance and groundedness on the same query set, plus latency and cost",
-      "Only user count"
+      "Fluency and coherence of generated answers on live user queries, plus latency"
     ],
     "answer": "Retrieval relevance and groundedness on the same query set, plus latency and cost",
     "explanation": "Compare retrieval quality, answer groundedness and operational cost on identical queries to decide which configuration wins.",
@@ -1370,9 +1370,9 @@
   {
     "question": "A domain embedding model is fine-tuned and deployed. What must happen before queries use it?",
     "options": [
-      "Only query vectors change",
-      "Increase k",
-      "Nothing, old vectors are compatible",
+      "Re-embed only new queries; existing document vectors stay valid",
+      "Rebuild the HNSW graph from the existing document vectors",
+      "Raise k and oversampling so old vectors still match new queries",
       "Re-embed and re-index all documents with the new model"
     ],
     "answer": "Re-embed and re-index all documents with the new model",
@@ -1382,9 +1382,9 @@
   {
     "question": "Retrieval misses exact error codes but finds conceptually similar text. Which change helps most?",
     "options": [
-      "Use exhaustive KNN only",
-      "Increase vector dimensions",
-      "Lower oversampling",
+      "Switch the vector query to exhaustive KNN",
+      "Increase the embedding vector dimensions",
+      "Raise oversampling on the vector query",
       "Add the keyword side of a hybrid query"
     ],
     "answer": "Add the keyword side of a hybrid query",
@@ -1394,10 +1394,10 @@
   {
     "question": "You need a fixed test set to compare RAG changes over time. What is the best practice?",
     "options": [
-      "Evaluate only in production",
+      "Generate a fresh synthetic query set before each run so the tests stay current with the model",
       "Version a curated query set with expected sources and answers, and rerun evaluations on each change",
-      "Let the model generate new tests each run",
-      "Use whatever queries come in today"
+      "Sample the latest week of production queries for each run and score them with the same evaluators",
+      "Evaluate each change on live traffic with continuous evaluation and compare weekly averages"
     ],
     "answer": "Version a curated query set with expected sources and answers, and rerun evaluations on each change",
     "explanation": "A versioned golden dataset gives repeatable comparisons and detects regressions between changes.",
@@ -1406,10 +1406,10 @@
   {
     "question": "Synthetic Q&A pairs are generated to fine-tune a model. What is a key risk to control?",
     "options": [
-      "It always overfits",
+      "Synthetic pairs are rejected by the fine-tuning service, so convert them to the completions format",
       "Errors or bias from the generator model copied into training data, so review and filter samples",
-      "Synthetic data cannot be JSONL",
-      "It needs a GPU cluster"
+      "Synthetic data overfits faster than real data, so cap training at one epoch with a low learning rate",
+      "Generating pairs needs a dedicated GPU cluster, so reserve provisioned throughput before starting"
     ],
     "answer": "Errors or bias from the generator model copied into training data, so review and filter samples",
     "explanation": "Synthetic data inherits the generator's mistakes. Filter, deduplicate and review samples, and keep a held-out real test set.",
@@ -1418,10 +1418,10 @@
   {
     "question": "Which fine-tuning method needs examples with a preferred and a non-preferred response to the same prompt?",
     "options": [
-      "Continued pretraining",
-      "Supervised fine-tuning",
+      "Reinforcement fine-tuning (RFT)",
+      "Supervised fine-tuning (SFT)",
       "Direct preference optimization (DPO)",
-      "Reinforcement fine-tuning"
+      "Continued pretraining on domain text"
     ],
     "answer": "Direct preference optimization (DPO)",
     "explanation": "DPO learns from preference pairs to align responses with human preferences.",
@@ -1430,9 +1430,9 @@
   {
     "question": "You want to compare prompt variants in CI and fail the build if groundedness drops by more than 5 percent. Which approach fits?",
     "options": [
-      "Check token counts only",
-      "Ask reviewers to read samples",
-      "Deploy both and wait for complaints",
+      "Run continuous evaluation on production traffic and alert when groundedness falls below baseline",
+      "Compare token usage per prompt variant in the pipeline and fail if it grows by 5 percent",
+      "Run a hyperparameter sweep job on the prompt variants and keep the best primary metric",
       "Run the evaluation SDK on a fixed dataset in the pipeline and compare against the baseline"
     ],
     "answer": "Run the evaluation SDK on a fixed dataset in the pipeline and compare against the baseline",

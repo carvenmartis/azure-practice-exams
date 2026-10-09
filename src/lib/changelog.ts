@@ -8,10 +8,21 @@ export interface ChangelogEntry {
 
 /**
  * What changed in each update, shown on the About page. Version numbers come
- * from the CI run, so entries are dated rather than numbered. Add a new entry
- * at the top when you ship something people will notice.
+ * from the CI run, so entries are dated rather than numbered. Every repository
+ * change must be recorded in the newest dated entry, or in a new entry at the
+ * top when it is a distinct update.
  */
 export const changelog: ChangelogEntry[] = [
+  {
+    date: '2026-10-08',
+    title: 'Harder answer choices and less repetitive rounds',
+    changes: [
+      'Wrong answer choices for AZ-104, AZ-204, AZ-304, AZ-400, AI-103, AI-200 and AI-300 were rewritten as close, plausible alternatives checked against Microsoft Learn, so the correct answer no longer stands out by length or detail.',
+      'Practice rounds and study mode still pick questions at random, but spread repeated question wording and repeated correct answers apart.',
+      'Added repository agent guidance, reusable development workflows and a maintained project index so future changes follow the same architecture and validation rules.',
+      'Every repository change must now be recorded in this changelog.'
+    ]
+  },
   {
     date: '2026-10-08',
     title: 'Study notes for every exam',

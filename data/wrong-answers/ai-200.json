@@ -1,602 +1,602 @@
 {
   "2e9984c2e084": {
-    "Azure Key Vault": "Azure Key Vault stores secrets, keys, and certificates. It does not host or version container images.",
-    "Azure App Configuration": "Azure App Configuration centrally manages application settings and feature flags. It cannot store container images.",
-    "Azure Blob Storage static website": "A Blob Storage static website serves static web content like HTML and JavaScript. It is not a container registry and does not support pulling or versioning images."
+    "Azure Blob Storage": "Blob Storage holds unstructured objects but is not an OCI registry, so Docker and Kubernetes cannot push or pull versioned images from it.",
+    "Azure Container Apps": "Container Apps runs containers pulled from a registry. It does not store or version the images itself.",
+    "Azure Artifacts feeds": "Azure Artifacts in Azure DevOps hosts packages such as NuGet, npm and Maven. It does not host container images, which belong in a container registry."
   },
   "26f892bf9a14": {
-    "Azure Event Grid": "Azure Event Grid routes events between services but does not build container images. It could trigger something, but it cannot replace a cloud build service.",
-    "Azure Batch": "Azure Batch runs large-scale parallel compute jobs. It is not designed for building and pushing container images on code commits.",
-    "Azure Functions Premium plan": "The Azure Functions Premium plan hosts serverless functions with prewarmed instances. It does not provide a managed container image build pipeline."
+    "Azure Container Instances": "Container Instances runs existing images on demand. It does not build images from source or trigger on code commits.",
+    "Azure Container Apps jobs": "Container Apps jobs run finite tasks from images that already exist. Building and pushing images on commit is the job of ACR Tasks.",
+    "Azure Container Registry webhooks": "Registry webhooks send notifications when images are pushed or deleted. They do not build images from source code."
   },
   "fb7c28e71652": {
-    "az acr import --name myreg": "az acr import copies an existing image from another registry into your registry. It does not build from a local Dockerfile.",
-    "az acr repository list --name myreg": "az acr repository list only lists repositories in the registry. It neither builds nor pushes images.",
-    "az acr login --name myreg": "az acr login authenticates your local Docker client to the registry. It does not build or push anything by itself and requires a local Docker daemon for later steps."
+    "az acr import --name myreg --source app:v1": "az acr import copies an existing image from another registry. It does not build from a local Dockerfile.",
+    "az acr run --registry myreg --cmd app:v1 .": "az acr run runs a command or multi-step task in a container. With --cmd it runs an image rather than building and pushing one from the Dockerfile.",
+    "az acr task create --registry myreg --image app:v1": "az acr task create defines a task that runs on triggers later, and it also needs a context and --name. It does not build and push the current folder immediately."
   },
   "f2578221aa93": {
-    "Put it in the image label": "Image labels are metadata baked into the image and readable by anyone who can pull it. Storing a connection string there is insecure and still bakes it into the image.",
-    "Store it in a public blob": "A public blob is readable by anyone on the internet, which would expose the database credentials. Secrets should be held in Key Vault or app settings, never publicly.",
-    "Hard-code it in the Dockerfile": "Hard-coding the secret in the Dockerfile bakes it into the image layers, exactly what the question forbids, and exposes it to anyone with image access."
+    "Pass it as a Docker build argument in the image pipeline": "Build arguments are captured at build time and can end up in image layers or history, which is baking the value into the image.",
+    "Mount it from an Azure Files share listed in the Dockerfile": "Storing a secret in a file share and referencing it in the Dockerfile still couples it to the image and lacks secret management. App settings are the supported way.",
+    "Store it as an ENV instruction set in the Dockerfile": "An ENV instruction writes the value into the image configuration, which is exactly what the question wants to avoid."
   },
   "7896b994653c": {
-    "Azure Batch": "Azure Batch runs large-scale parallel and high-performance compute jobs. It does not provide HTTP ingress, revisions, or scale-to-zero microservice hosting.",
-    "Azure Kubernetes Service": "Azure Kubernetes Service (AKS) gives you a managed Kubernetes cluster, but you still manage the cluster, nodes, and Kubernetes objects. The question asks for a platform without managing Kubernetes.",
-    "Azure Virtual Machines": "Virtual Machines require you to manage the operating system and container runtime yourself. They have no built-in revisions, ingress, or scale-to-zero."
+    "Azure Container Instances": "Container Instances runs single container groups without revisions, built-in traffic splitting or scale-to-zero autoscaling.",
+    "Azure Kubernetes Service": "AKS gives revisions and ingress only through Kubernetes objects you manage yourself, so you still operate a Kubernetes cluster.",
+    "Azure App Service for Containers": "App Service runs containers on a plan that does not scale to zero and has no revision model like Container Apps."
   },
   "cfd7c2ce371c": {
-    "A new Container Apps environment": "A new Container Apps environment creates a separate boundary for apps. Traffic splitting between versions happens within a single app across revisions, not by adding environments.",
-    "A Key Vault access policy": "A Key Vault access policy controls who can read secrets. It has nothing to do with routing traffic between app versions.",
-    "Single revision mode": "Single revision mode keeps only one active revision, automatically replacing the old one. You cannot split traffic between versions in this mode."
+    "Single revision mode with a new revision suffix": "In single revision mode the new revision replaces the old one, so you cannot split traffic by percentage.",
+    "Two deployment slots with a 10% routing rule": "Deployment slots and traffic routing are App Service features. Container Apps uses revisions, not slots.",
+    "Multiple replicas with a 10% scale rule": "Scale rules control replica count, not how ingress traffic is split between versions."
   },
   "1b1a42223848": {
-    "An Event Grid filter": "An Event Grid filter selects which events are delivered to subscribers. It does not scale container app replicas based on Service Bus queue length.",
-    "A CPU-only scale rule": "A CPU-only scale rule reacts to processor load, not queue depth. Messages could pile up while CPU stays low, and it cannot scale to zero based on an empty queue.",
-    "Manual replica count of 1": "A fixed replica count of 1 never scales. The app could not keep up when the queue grows, which defeats the requirement."
+    "A KEDA scale rule for Azure Event Hubs": "The Event Hubs scaler measures consumer lag on an event hub, not the length of a Service Bus queue.",
+    "An HTTP scale rule on concurrent requests": "HTTP scale rules react to incoming HTTP requests. A queue consumer gets no HTTP traffic to scale on.",
+    "A custom CPU scale rule set to 70%": "CPU-based rules react to load inside replicas and cannot scale out from zero based on waiting messages."
   },
   "b64032f3c1d1": {
-    "Each revision": "Revisions are immutable snapshots of a single app's version. Networking and logging destinations are shared settings defined at the environment level, not per revision.",
-    "The container registry": "A container registry stores images. It does not define virtual networks or log destinations for running apps.",
-    "The App Configuration store": "Azure App Configuration stores application settings and feature flags. It does not define the virtual network or Log Analytics workspace that container apps share."
+    "The container app's ingress settings": "Ingress settings control how traffic reaches one app. The virtual network and Log Analytics destination are set on the environment.",
+    "Each container app revision template": "Revision templates define containers, scale and volumes for one app. They cannot set the shared network or logging workspace.",
+    "The Azure Monitor diagnostic settings": "Diagnostic settings can route logs, but the shared virtual network and logs destination for the apps are defined on the environment."
   },
   "558da9cef965": {
-    "az acr build deployment.yaml": "az acr build builds a container image from a Dockerfile in Azure Container Registry. It does not deploy Kubernetes manifests to a cluster.",
-    "docker run deployment.yaml": "docker run starts a container locally from an image. It cannot interpret a Kubernetes manifest or deploy to AKS.",
-    "az aks create -f deployment.yaml": "az aks create provisions a new Azure Kubernetes Service (AKS) cluster. It does not take a manifest file to deploy applications to it."
+    "kubectl create -f service.yaml --dry-run": "With --dry-run nothing is created on the cluster, so the app is not deployed.",
+    "az aks command invoke deployment.yaml": "az aks command invoke runs a command through the cluster with --command. Passing a file name alone does not apply a manifest.",
+    "kubectl rollout status -f deployment.yaml": "kubectl rollout status watches the progress of an existing rollout. It does not create or update resources."
   },
   "305a9a3a15cf": {
-    "Service": "A Service provides a stable network endpoint and load balancing for pods. It does not keep a set number of pods running or perform rolling updates.",
-    "ConfigMap": "A ConfigMap stores non-secret configuration data for pods. It does not manage pod counts or updates.",
-    "Namespace": "A Namespace logically groups and isolates resources within a cluster. It does not create or maintain pods."
+    "DaemonSet": "A DaemonSet runs one pod per node rather than a chosen number of identical replicas.",
+    "StatefulSet": "A StatefulSet manages pods with stable identities and ordered updates, used for stateful workloads rather than identical stateless pods.",
+    "Job": "A Job runs pods until they complete successfully. It does not keep a desired pod count running or do rolling updates."
   },
   "48fafd3832b6": {
-    "Make the registry public": "Making the registry public exposes your private images to anyone. It removes security rather than granting the cluster proper access.",
-    "Store the admin password in a ConfigMap": "Storing the admin password in a ConfigMap puts a credential in plain text and still amounts to a pull secret. The admin account is also discouraged in favor of managed identity.",
-    "Copy images to every node": "Manually copying images to every node is impractical, breaks when nodes scale or are replaced, and bypasses the registry instead of granting access to it."
+    "Enable the registry admin user and set it in the pod spec": "The admin user is meant for testing, and using it in pods still requires an image pull secret, which the question rules out.",
+    "Assign the AcrPush role to the cluster's control plane identity": "Pulls are done by the kubelet identity, not the control plane identity, and AcrPush is broader than needed.",
+    "Create a repository-scoped registry token for the cluster nodes": "Repository-scoped tokens are passed as credentials in an image pull secret, which the question wants to avoid."
   },
   "5ad9f69b4a7c": {
-    "kubectl get nodes": "kubectl get nodes lists cluster nodes and their status. It shows nothing about a failing container's output.",
-    "kubectl apply -f pod.yaml": "kubectl apply creates or updates resources from a manifest. It does not display logs from a crashed container.",
-    "az aks list": "az aks list lists Azure Kubernetes Service (AKS) clusters in your subscription. It does not show container logs."
+    "kubectl get pod <pod> -o yaml": "This shows the pod object and status, such as restart count, but not the container's console output.",
+    "kubectl top pod <pod> --containers": "kubectl top shows CPU and memory usage from the metrics server, not container logs.",
+    "kubectl get events --watch": "Events show scheduling and restart reasons but not what the application wrote to stdout before crashing."
   },
   "394396de27fe": {
-    "Azure Advisor": "Azure Advisor gives best-practice recommendations on cost, security, and reliability. It does not show a container app's console output or startup events.",
-    "Azure Cost Management": "Azure Cost Management tracks and analyzes spending. It provides no application logs or system events.",
-    "The registry webhook history only": "Registry webhook history only records events like image pushes. It does not show the running app's console output or start-up failures."
+    "Container Apps revision history and the AppServiceConsoleLogs and AppServicePlatformLogs tables in Log Analytics": "AppServiceConsoleLogs and AppServicePlatformLogs are App Service tables. Container Apps writes to ContainerAppConsoleLogs and ContainerAppSystemLogs.",
+    "Container Apps metrics explorer and the ContainerLogV2 and KubeEvents tables in Log Analytics": "ContainerLogV2 and KubeEvents come from Container insights on AKS. Container Apps uses its own ContainerApp log tables.",
+    "Container Apps ingress logs and the AzureDiagnostics and AzureActivity tables in Log Analytics": "The activity log records control plane operations, not console output, and Container Apps logs go to their own ContainerApp tables."
   },
   "9577b27c71ef": {
-    "kubectl scale deployment": "kubectl scale changes the replica count of a deployment. It does not display pod events or errors.",
-    "kubectl config view": "kubectl config view shows your kubeconfig settings such as clusters and contexts. It has nothing to do with pod events.",
-    "kubectl top nodes": "kubectl top nodes shows CPU and memory usage per node. It does not list pod events like image pull errors."
+    "kubectl get pod <pod>": "kubectl get shows a one-line status such as ErrImagePull, but not the list of recent events with details.",
+    "kubectl logs <pod>": "kubectl logs shows container output. If the image never pulled there is no container output to show.",
+    "kubectl top pod <pod>": "kubectl top shows resource usage from the metrics server, not events."
   },
   "0f36476e978e": {
-    "Bounded staleness": "Bounded staleness guarantees reads lag writes by no more than a set number of versions or time, with ordering. That stronger guarantee costs more latency than eventual.",
-    "Strong": "Strong consistency guarantees reads always return the latest committed write. It has the highest latency and lowest availability, the opposite of what is asked.",
-    "Session": "Session consistency guarantees read-your-own-writes and ordering within a session. It is stronger, with somewhat higher latency than eventual, and does provide ordering guarantees."
+    "Consistent prefix": "Consistent prefix guarantees reads never see out-of-order writes, so it has an ordering guarantee.",
+    "Session": "Session guarantees read-your-own-writes and ordering within a session, at slightly higher cost than eventual.",
+    "Bounded staleness": "Bounded staleness guarantees order and a maximum lag, which costs more latency than eventual."
   },
   "ed2710ce0e2b": {
-    "Strong": "Strong consistency gives linearizable reads but is not the default. It has the highest latency and cost.",
-    "Consistent prefix": "Consistent prefix guarantees reads never see out-of-order writes, but it is not the default and does not guarantee read-your-own-writes.",
-    "Eventual": "Eventual consistency is the weakest level with no ordering or read-your-own-writes guarantee, and it is not the default."
+    "Strong": "Strong gives linearizable reads but is not the default and has higher latency.",
+    "Consistent prefix": "Consistent prefix guarantees ordering but not read-your-own-writes, and it is not the default.",
+    "Bounded staleness": "Bounded staleness limits lag by time or versions. It is not the default level."
   },
   "65ce3f12a055": {
-    "Disable the partition key": "Every Cosmos DB container requires a partition key; it cannot be disabled. The partition key also has nothing to do with indexing cost.",
-    "Switch to Strong consistency": "Strong consistency affects read guarantees and latency, and can increase cost. It does not reduce the request units (RUs) consumed by indexing on writes.",
-    "Increase the item size": "Larger items consume more request units (RUs) to write, not fewer. This would worsen the cost problem."
+    "Add composite indexes for every property you write": "Extra indexes add index maintenance work to each write, so write RU cost goes up, not down.",
+    "Switch the indexing mode from consistent to lazy": "Lazy indexing mode is deprecated for new containers and does not reduce the RU charge of writes.",
+    "Lower the default consistency level to eventual": "Consistency level affects read cost and latency. Write RU cost is driven mainly by item size and indexing."
   },
   "70130ee0db55": {
-    "A time-to-live of zero": "A time-to-live (TTL) controls automatic deletion of items. It has nothing to do with vector search, and a value of zero is not valid for enabling expiry.",
-    "A stored procedure for each query": "Stored procedures run transactional logic within a partition. They do not provide vector indexing or efficient similarity search.",
-    "A unique key policy": "A unique key policy enforces uniqueness of values within a partition. It does not enable vector similarity search."
+    "A composite index on the embedding path and a full-text policy": "Composite indexes serve multi-property ORDER BY queries and full-text policies serve keyword search. Neither enables vector similarity search.",
+    "A spatial index on the embedding path and a geospatial policy": "Spatial indexes support GeoJSON queries such as ST_DISTANCE. They do not index embedding vectors.",
+    "A unique key policy and a range index on the embedding path": "Range indexes and unique keys work on scalar values. Vector search needs a vector embedding policy and vector index."
   },
   "a838f9df857a": {
-    "IS_DEFINED": "IS_DEFINED checks whether a property exists on an item. It does not compare vectors.",
-    "ST_DISTANCE": "ST_DISTANCE computes the geographic distance between geospatial points. It is a spatial function, not a vector similarity function.",
-    "ARRAY_CONTAINS": "ARRAY_CONTAINS checks whether an array contains a given value. It does not compute vector similarity."
+    "ST_DISTANCE": "ST_DISTANCE returns the distance between two GeoJSON points, not between embedding vectors.",
+    "FullTextScore": "FullTextScore ranks items by BM25 keyword relevance, not vector similarity.",
+    "RRF": "RRF combines rankings from multiple scoring functions in hybrid search. It does not compute vector similarity itself."
   },
   "9e593e496772": {
-    "Event Grid custom topic polling": "Event Grid pushes events rather than being polled, and Cosmos DB for NoSQL does not natively publish item changes to a custom topic. The change feed is the built-in mechanism for reacting to changes.",
-    "A scheduled full table scan": "A scheduled full scan reprocesses every item regardless of change, wasting request units and delaying updates. The change feed delivers only new and modified items.",
-    "A unique key constraint": "A unique key constraint enforces uniqueness of values. It does not notify you of inserts or updates."
+    "A Cosmos DB post-trigger defined on the container": "Server-side triggers must be named explicitly on each request and cannot call an external embedding model.",
+    "An Event Grid system topic for the Cosmos DB account": "Cosmos DB Event Grid events cover control plane operations, not item inserts and updates. Item changes come from the change feed.",
+    "Azure Synapse Link with the analytical store enabled": "Synapse Link replicates data for analytics. It does not trigger code for each inserted or updated item."
   },
   "0c0237f7dc7a": {
-    "The shortest property name": "Property name length has no bearing on partitioning quality. What matters is the number of distinct values and how evenly they spread load.",
-    "A boolean flag": "A boolean has only two values, creating at most two logical partitions and severe hot spots. Partition keys need high cardinality.",
-    "A property that never appears in queries": "A key that never appears in queries forces cross-partition queries that cost more. Good keys are often used in filters and spread load evenly."
+    "A property used in every query filter, whatever its cardinality": "A frequently filtered property helps avoid cross-partition queries, but with few distinct values it still creates hot, oversized partitions. Cardinality and even spread come first.",
+    "Low cardinality so related items always share one logical partition": "Few distinct values creates large, hot logical partitions and can hit the 20 GB logical partition limit.",
+    "A property that is updated often so data moves between partitions": "The partition key value of an item cannot be changed in place, and frequent changes do not help distribution."
   },
   "0ff44a38dcd2": {
-    "PostGIS": "PostGIS adds geospatial types and functions for geographic data. It does not provide a vector embedding type or similarity search.",
-    "pg_stat_statements": "pg_stat_statements tracks query execution statistics for performance tuning. It does not add vector data types.",
-    "hstore": "hstore stores sets of key-value pairs in a single column. It has no vector type or similarity search."
+    "azure_ai": "The azure_ai extension calls Azure OpenAI and AI services from SQL, but the vector data type comes from pgvector.",
+    "pg_diskann": "pg_diskann adds a DiskANN index method and depends on the vector extension, which supplies the vector data type.",
+    "postgis": "PostGIS adds geospatial types and functions, not embedding vectors."
   },
   "dca26f5253c5": {
-    "<->": "In pgvector, <-> returns Euclidean (L2) distance, not cosine distance.",
-    "||": "In PostgreSQL || is the concatenation operator. It is not a pgvector distance operator.",
-    "<#>": "In pgvector, <#> returns the negative inner product, not cosine distance."
+    "<->": "In pgvector <-> is Euclidean (L2) distance.",
+    "<#>": "In pgvector <#> is negative inner product.",
+    "<+>": "In pgvector <+> is L1 (taxicab) distance."
   },
   "c75094e6c527": {
-    "A CHECK constraint": "A CHECK constraint validates column values on insert or update. It does not speed up similarity search.",
-    "A B-tree index on the vector column": "B-tree indexes support equality and range comparisons on scalar values. They cannot accelerate nearest neighbor search on vectors.",
-    "A foreign key": "A foreign key enforces referential integrity between tables. It does not index vectors or speed up similarity queries."
+    "A GIN index on the embedding column for fast lookups": "GIN indexes serve arrays, JSONB and full text. They do not support pgvector distance operators.",
+    "A B-tree index on the embedding column plus ANALYZE": "B-tree indexes support equality and range comparisons, not nearest neighbor ordering by distance, and ANALYZE only refreshes statistics.",
+    "A BRIN index on the embedding column for range scans": "BRIN indexes summarize block ranges for ordered data and cannot speed up vector similarity search."
   },
   "e860f5a5b546": {
-    "Create a separate database per query": "Creating a database per query is wildly impractical and does nothing to filter by tenant or rank by similarity.",
-    "Use a full text search only": "Full text search matches keywords rather than semantic similarity. It does not return the documents most similar in meaning to the question.",
-    "Run the vector search, then filter in the app across all rows": "Searching all rows and filtering in the app risks leaking other tenants' data to the app and can return too few results after filtering. The tenant filter belongs in the SQL WHERE clause."
+    "Order the whole table by embedding distance with LIMIT, then filter tenant_id in the app": "Filtering after LIMIT can drop all rows for the tenant and leaks other tenants' rows to the app.",
+    "Combine a GROUP BY on tenant_id with MIN(embedding distance) and HAVING": "GROUP BY with MIN returns one aggregate value per tenant rather than the nearest documents.",
+    "Use a full text tsvector search on tenant_id with ts_rank ordering": "Full text search ranks keyword matches. It does not measure semantic similarity between embeddings."
   },
   "9dc9f89388e0": {
-    "A new server per request": "Creating a server per request is absurdly expensive and slow. The issue is connection overhead, which pooling solves.",
-    "Strong consistency": "Strong consistency is a Cosmos DB concept and does not apply to PostgreSQL connection limits.",
-    "A larger vector dimension": "Vector dimension affects embedding size and search accuracy. It has nothing to do with the number of database connections."
+    "Read replicas, for example with in-region replication": "Read replicas spread read load but each still has its own connection limit, so a connection per request still exhausts it.",
+    "A higher max_connections, for example set to 5000": "max_connections is capped by the compute size and each connection uses memory. It does not fix opening a connection per request.",
+    "Elastic clusters, for example with Citus sharding": "Distributing data across nodes does not stop the app from opening a new connection for each request."
   },
   "3f5301b7f4a5": {
-    "timezone": "timezone sets the session's time zone for displaying timestamps. It has no effect on memory available for index builds.",
-    "max_connections": "max_connections limits how many clients can connect at once. Raising it does not give an index build more memory and can increase overall memory pressure.",
-    "log_statement": "log_statement controls which SQL statements are logged. It does not affect memory for building indexes."
+    "work_mem": "work_mem is used by sort and hash operations in queries. Index builds use maintenance_work_mem.",
+    "shared_buffers": "shared_buffers sets the server-wide page cache and needs a restart. It is not the per-session index build memory.",
+    "effective_cache_size": "effective_cache_size is only a planner estimate and does not allocate memory for index builds."
   },
   "105ac9d4be7c": {
-    "Azure Service Bus": "Azure Service Bus is a message broker for reliable queues and topics. It does not provide fast lookup of previously cached responses.",
-    "Azure Container Registry": "Azure Container Registry stores container images. It is not a cache for application data.",
-    "Azure Blob archive tier": "The Blob archive tier is offline storage with retrieval times of hours. It is the opposite of a low-latency cache."
+    "Azure Cosmos DB analytical store": "The analytical store is a columnar copy for analytics, not a low-latency cache for prompt responses.",
+    "Azure Front Door caching rules": "Front Door caches HTTP responses by URL, typically GET requests. LLM prompts are POST bodies, so it cannot cache answers per prompt.",
+    "Azure API Management rate limits": "Rate limits throttle callers. They do not return a stored answer for a repeated prompt."
   },
   "cea4e1aeda96": {
-    "A larger cache size": "A larger cache holds more data but does not make keys expire after a set time. Keys would remain until evicted under memory pressure.",
-    "Geo-replication": "Geo-replication copies data across regions for availability. It does not remove keys after a time period.",
-    "A Lua script that runs hourly": "An hourly Lua script would delete keys late and at irregular times relative to their creation. Redis TTL handles per-key expiry natively and precisely."
+    "A maxmemory eviction policy": "Eviction removes keys only under memory pressure, not after a fixed 10 minutes.",
+    "A data persistence RDB snapshot": "Persistence saves data to disk. It does not remove keys after a time.",
+    "Keyspace notifications on keys": "Keyspace notifications publish events when keys change or expire. They do not set the expiry."
   },
   "36205363e54e": {
-    "Use a larger eviction policy": "Eviction policies decide which keys to remove under memory pressure. They do not remove stale data when a database record changes.",
-    "Increase the TTL": "Increasing the time-to-live (TTL) keeps stale data in the cache longer, making the problem worse.",
-    "Disable persistence": "Persistence controls whether Redis saves data to disk. Disabling it does not stop stale entries from being served."
+    "Switch the cache to the allkeys-lru eviction policy": "Eviction removes keys only when memory is full, so the stale copy can still be served.",
+    "Enable active geo-replication for the cache keys": "Geo-replication copies data between caches. It does not detect database changes.",
+    "Increase the cache key's expiration time (TTL)": "A longer TTL keeps the stale value longer. The key should be removed when the record changes."
   },
   "e1e74cc0c9e4": {
-    "Pub/Sub channels only": "Pub/Sub channels broadcast messages to subscribers in real time, but they do not store data or index it. They cannot hold embeddings or run similarity searches, so they cannot support semantic caching.",
-    "Geo commands": "Geo commands store longitude and latitude points and query by geographic radius or distance. They work with map coordinates, not high-dimensional embedding vectors, so they cannot run semantic similarity search.",
-    "Keyspace notifications": "Keyspace notifications publish events when keys are changed, expire or are evicted. They help apps react to cache changes but provide no vector storage or similarity querying for semantic caching."
+    "JSON documents with the RedisJSON module": "RedisJSON stores and updates JSON documents. Vector indexing and similarity queries come from RediSearch.",
+    "Probabilistic filters with RedisBloom": "RedisBloom offers Bloom filters and sketches for membership tests, not vector similarity search.",
+    "Time series data with RedisTimeSeries": "RedisTimeSeries stores and aggregates time-stamped samples. It does not run vector similarity search."
   },
   "0e31ad3b3d78": {
-    "Azure Front Door": "Azure Front Door is a global HTTP load balancer and content delivery entry point for web traffic. It routes user requests to back ends but does not queue background jobs for workers to process reliably.",
-    "Azure CDN": "Azure Content Delivery Network (CDN) caches static content at edge locations near users. It speeds up file delivery but has no message queuing, locking or retry features for background summarization jobs.",
-    "Azure Event Grid": "Event Grid pushes lightweight event notifications to subscribers. It is not a work queue with competing consumers, message locks and dead-lettering, so it is a poor fit for long-running jobs that must each be handled once."
+    "Azure Event Hubs": "Event Hubs is a partitioned event stream for high-throughput telemetry, without per-message locks or dead-lettering of individual jobs.",
+    "Azure Event Grid": "Event Grid pushes notifications about events. It is not a work queue with message locks for competing workers.",
+    "Azure Queue Storage": "Queue Storage lacks built-in dead-lettering, duplicate detection and sessions, so it is not the reliable choice the scenario describes."
   },
   "67901eadb343": {
-    "A partitioned queue": "A partitioned queue spreads one queue across several message brokers for higher throughput. It is still a queue, so each message goes to only one consumer rather than giving every service its own copy.",
-    "A single queue": "A queue delivers each message to only one competing consumer. If several services read from one queue, they would split the orders between them instead of each receiving a full copy.",
-    "Duplicate detection": "Duplicate detection discards messages sent again with the same message ID within a time window. It prevents repeated delivery; it does not fan out copies of a message to several independent services."
+    "A queue with one session per service": "Sessions group related messages in a queue, but each message is still received by only one consumer.",
+    "A partitioned queue with duplicate detection": "A queue delivers each message to one consumer. Partitioning and duplicate detection do not create copies.",
+    "Auto-forwarding from one queue to another": "Auto-forwarding moves a message to one destination. It does not give every service its own copy."
   },
   "3dd917cf37f2": {
-    "It is moved to Event Grid": "Service Bus does not hand failed messages to Event Grid. Event Grid is a separate event routing service, and messages that exceed the maximum delivery count stay inside Service Bus in a dead-letter subqueue.",
-    "It is sent back to the sender": "Service Bus has no mechanism to return a message to the original sender. Senders and receivers are decoupled, so a repeatedly failing message is kept in the dead-letter queue for inspection instead.",
-    "It is deleted permanently": "Service Bus does not silently delete messages that keep failing. Once the maximum delivery count is exceeded, it keeps the message in the dead-letter queue so you can inspect and reprocess it."
+    "It is moved to the transfer dead-letter queue": "The transfer dead-letter queue holds messages that failed during auto-forwarding or transfer, not ones exceeding MaxDeliveryCount.",
+    "It is deferred until the consumer requests it": "Deferral happens only when the receiver explicitly defers a message. It is not the automatic result of exceeding the delivery count.",
+    "It is abandoned and its lock is renewed": "Abandoning releases the lock for another attempt. After MaxDeliveryCount the message is dead-lettered instead."
   },
   "7770bd7452fd": {
-    "Auto-forwarding": "Auto-forwarding automatically chains a queue or subscription to another queue or topic in the same namespace. It moves messages between entities and is not a receive mode for safely completing messages after processing.",
-    "Scheduled messages": "Scheduled messages let a sender set a future time at which a message becomes available. This controls when a message appears, not how a consumer locks and removes it after successful processing.",
-    "ReceiveAndDelete": "ReceiveAndDelete removes the message from the queue as soon as it is received. If the consumer crashes during processing, the message is lost, which is the opposite of removing it only after success."
+    "ReceiveAndDelete, then abandon on failure": "ReceiveAndDelete removes the message as soon as it is received, so there is nothing to abandon if processing fails.",
+    "PeekLock, then defer the message": "Deferring sets the message aside for later retrieval by sequence number. It does not remove it after success.",
+    "Peek, then complete the message": "Peek reads a message without locking it, so it cannot be completed."
   },
   "3ca81114e9d0": {
-    "Azure Monitor autoscale": "Azure Monitor autoscale adds or removes instances of a resource based on metrics or schedules. It does not deliver notifications when blobs are uploaded, so it cannot start an embedding pipeline.",
-    "Azure Service Bus polling": "Polling a Service Bus queue is pull-based: the consumer repeatedly checks for messages. Blob Storage also does not publish events directly to Service Bus, so this does not provide the push-based notification required.",
-    "Azure Container Registry": "Azure Container Registry stores and manages container images. It has nothing to do with notifying handlers about new blobs in Blob Storage, so it cannot trigger the embedding pipeline."
+    "Azure Event Hubs": "Event Hubs is a pull-based stream that consumers read from. It is not the service that pushes Blob Storage events to handlers.",
+    "Azure Logic Apps": "A Logic Apps workflow consumes events. The Blob Storage BlobCreated event itself is delivered by Event Grid.",
+    "Azure Storage queues": "Storage queues need consumers to poll for messages, which is not push-based delivery."
   },
   "0979fffbace7": {
-    "A larger retry count": "The retry count controls how many times Event Grid tries to redeliver an event that failed. It does not decide which events are delivered, so it cannot limit delivery to .pdf blobs.",
-    "A KEDA scaler": "A KEDA (Kubernetes Event-driven Autoscaling) scaler scales workloads based on event sources such as queue length. It does not filter which Event Grid events are delivered to a subscriber.",
-    "A Service Bus rule": "A Service Bus rule filters messages for a topic subscription inside Service Bus. It does not apply to Event Grid event subscriptions, where subject filters are the way to restrict events to .pdf files."
+    "An event subscription filter on subject begins with .pdf": "Subject begins with matches the start of the subject, which is the container path, not the file extension.",
+    "A topic input schema mapping on the data.url field": "Input schema mapping applies to custom topics and maps fields. It does not filter Blob Storage events.",
+    "A dead-letter destination for events not ending in .pdf": "Dead-lettering stores events that could not be delivered. It does not filter which events are sent."
   },
   "d1305a8cab7e": {
-    "Drops the event immediately": "Event Grid does not drop events on the first failure. It retries delivery on a schedule with exponential backoff, by default for up to 30 attempts or 24 hours.",
-    "Converts it to email": "Event Grid has no feature that turns undelivered events into emails. Failed deliveries are retried and, if dead-lettering is configured, stored in a storage container.",
-    "Stores it in Cosmos DB": "Event Grid does not write failed events to Cosmos DB. When dead-lettering is enabled, undelivered events are written to a Blob Storage container that you configure."
+    "Retries every 5 minutes for up to 7 days, then moves it to the topic's dead-letter queue": "Event Grid defaults are up to 30 attempts within 24 hours, and dead-lettering goes to a storage container you configure, not a topic queue.",
+    "Holds the event in the topic until the handler acknowledges it, with no expiration time": "Event Grid has a maximum time to live of 24 hours by default. It does not keep events indefinitely.",
+    "Dead-letters it immediately to the subscription's storage container without any retries": "Dead-lettering is off by default and only happens after retries are exhausted or for certain errors."
   },
   "973ba65a8b4d": {
-    "A system topic for Blob Storage": "A system topic represents events published by an Azure service such as Blob Storage, like BlobCreated. Your application cannot publish its own DocumentIndexed events to it.",
-    "An Azure Monitor alert": "An Azure Monitor alert notifies people or actions when metrics or logs cross a threshold. It is not a way for an application to publish its own custom events to other services.",
-    "A Service Bus queue": "A Service Bus queue is a messaging entity in a different service, not something you create in Event Grid. It delivers each message to one consumer instead of letting many subscribers filter and handle published events."
+    "A system topic for your app": "System topics carry events from Azure services, not events your own application publishes.",
+    "A partner topic (or partner namespace)": "Partner topics receive events from third-party SaaS partners, not from your own application.",
+    "An Event Hubs namespace with a consumer group": "Event Hubs is a streaming service, not an Event Grid topic with filtered event subscriptions."
   },
   "2fd6bf4636f7": {
-    "Azure Data Factory pipeline": "Azure Data Factory orchestrates data movement and transformation pipelines. It is not designed to host a lightweight, request-response HTTP API that calls a large language model (LLM).",
-    "Azure Batch pool": "Azure Batch runs large-scale parallel and high-performance compute jobs on pools of virtual machines. It suits batch workloads, not a low-latency serverless HTTP API.",
-    "A dedicated virtual machine": "A virtual machine requires you to manage the operating system, patching and scaling yourself. That contradicts the requirement for an API that scales automatically with no servers to manage."
+    "Azure Functions with a Timer trigger": "A timer trigger runs on a schedule and does not expose an HTTP API.",
+    "Azure Logic Apps Standard on a dedicated plan": "Logic Apps Standard runs on a Workflow Standard plan you size, which is not the lightweight serverless API option.",
+    "Azure App Service on a Basic plan": "A Basic App Service plan has fixed instances that you manage and pay for, and it does not autoscale."
   },
   "6f3bc160dce0": {
-    "A deployment slot": "A deployment slot is a separate live environment, such as staging, used to test and swap releases. It has nothing to do with sending messages to a Service Bus queue.",
-    "An input trigger": "There is no input trigger concept; a trigger starts a function and an input binding reads data into it. Neither writes data out to a Service Bus queue, which is the job of an output binding.",
-    "A host.json log level": "The log level in host.json controls how much logging the function app produces. It does not connect a function to Service Bus or send any messages."
+    "An input binding": "Input bindings read data into a function. Writing to a queue needs an output binding.",
+    "A Service Bus trigger": "A trigger starts the function when a message arrives. It does not send messages.",
+    "A host.json extension": "host.json configures extension behavior such as retries, but the write itself is declared with an output binding."
   },
   "3849fd0cd6e9": {
-    "None": "A function cannot run without a trigger, because the trigger defines how and when it is invoked. Every function must have exactly one.",
-    "Up to five": "There is no limit of five triggers. Each function has exactly one trigger, though it can have several input and output bindings.",
-    "Unlimited": "A function cannot have multiple triggers. It is limited to exactly one trigger; to respond to several event sources you create separate functions."
+    "One or more": "A function cannot have several triggers. Use multiple functions instead.",
+    "Zero or one": "A function must have a trigger to be invoked, so zero is not valid.",
+    "Up to two": "There is no limit of two. Each function has exactly one trigger."
   },
   "4c13aa03dc8e": {
-    "Azure Batch": "Azure Batch is a service for large-scale parallel compute jobs, not a hosting plan for function apps. It does not provide per-execution billing or scale-to-zero for functions.",
-    "Legacy Consumption plan on Windows": "The original Consumption plan does scale to zero with per-execution billing, but it does not support virtual network integration and has no always-ready instances to reduce cold starts.",
-    "Free App Service plan": "The Free App Service plan is a shared, low-resource tier meant for testing. It offers no virtual network integration, does not scale event-driven to zero and does not bill per execution."
+    "Elastic Premium plan": "Elastic Premium keeps at least one instance always running and bills per instance, so it does not scale to zero.",
+    "Consumption plan on Linux": "The legacy Linux Consumption plan does not support virtual network integration and is being retired.",
+    "Dedicated App Service plan": "Dedicated plans bill for allocated instances and do not scale to zero."
   },
   "ace8492203cb": {
-    "package.json": "package.json lists Node.js dependencies and scripts for a JavaScript project. It does not hold Azure Functions host settings such as logging and extension configuration.",
-    "local.settings.json in production": "local.settings.json holds app settings and connection strings for local development only and is not deployed to Azure. App-wide host configuration such as logging lives in host.json.",
-    "function.json of each trigger only": "function.json defines the trigger and bindings for a single function in some programming models. It is per-function, not the place for app-wide settings shared by all functions."
+    "function.json": "function.json holds the trigger and bindings for a single function, not app-wide settings.",
+    "local.settings.json": "local.settings.json holds app settings for local development only and is not deployed to Azure.",
+    "extensions.csproj": "extensions.csproj lists binding extension packages to install, not logging or extension behavior settings."
   },
   "1462ab7fa822": {
-    "From the README": "A README is documentation for developers and is never read by the Functions runtime for configuration. Storing connection strings there would also expose secrets in source control.",
-    "From the function URL": "The function URL is the HTTP endpoint used to invoke a function, possibly with an access key. It is not a source of configuration and would be an insecure place for connection strings.",
-    "From local.settings.json deployed with the code": "local.settings.json is meant only for local development and is excluded from deployment by default. In Azure, connection strings come from application settings exposed as environment variables."
+    "From the function.json binding file as literal connection string values": "Bindings reference the name of an app setting. Putting literal connection strings in function.json is not how production config is read.",
+    "From host.json, which is deployed with the code and applies to all functions": "host.json holds runtime and extension configuration, not connection strings, which come from app settings.",
+    "From local.settings.json, which is published with the code to Azure": "local.settings.json is for local development and is not published to Azure by Core Tools."
   },
   "6ce833c7bb02": {
-    "In the source repository": "Committing an API key to a source repository exposes it to anyone with repository access and its history. Secrets should live in a dedicated secret store such as Key Vault.",
-    "In the container image": "Baking an API key into a container image exposes it to anyone who can pull the image and forces a rebuild to rotate it. A secret store such as Key Vault is the secure choice.",
-    "In an App Configuration plain key-value": "App Configuration plain key-values are intended for non-secret settings and lack secret-specific protections. For a secret, use Key Vault, optionally referenced from App Configuration through a Key Vault reference."
+    "Azure App Configuration": "App Configuration is for non-secret settings and feature flags. Secrets should be in Key Vault, optionally referenced from App Configuration.",
+    "Azure Managed HSM": "Managed HSM stores cryptographic keys only. It does not store secrets such as API keys.",
+    "Azure Storage Table": "Table storage is not a secret store and lacks per-secret access control, versioning and rotation."
   },
   "f6d0932e3ec3": {
-    "The vault access key": "Key Vault has no shared vault access key. Access is granted through Microsoft Entra ID identities with RBAC roles or access policies, and any key you stored would itself be a credential.",
-    "A shared admin password": "A shared admin password is a stored credential that must be protected and rotated, which is exactly what the requirement rules out. Managed identities avoid storing any credentials.",
-    "Anonymous access": "Key Vault does not support anonymous access to secrets. Every request must be authenticated with Microsoft Entra ID and authorized by RBAC or an access policy."
+    "A service principal with a client secret and the Key Vault Reader role": "A client secret is a stored credential, and Key Vault Reader grants management plane access only, not secret values.",
+    "A managed identity with an RBAC role such as Key Vault Certificate User": "Key Vault Certificate User lets an identity read certificate contents, not general secrets.",
+    "A managed identity with the Key Vault Crypto Service Encryption User role": "That role allows wrap and unwrap operations with keys. It does not grant reading secrets."
   },
   "cc5721005945": {
-    "Store two copies in the app": "Keeping two copies of a secret inside the app still embeds the secret in code or configuration and requires redeploying to change it. It does not provide automated rotation every 90 days.",
-    "Disable soft delete": "Soft delete protects deleted vaults and secrets from permanent loss and cannot be turned off on current vaults. It has nothing to do with rotating secrets on a schedule.",
-    "Hard-code the secret and redeploy": "Hard-coding a secret exposes it in source code and forces a redeployment for every change. That maximizes app impact instead of minimizing it during a 90-day rotation."
+    "Key Vault soft delete, and have apps read the deleted version rather than a pinned one": "Soft delete protects deleted secrets for recovery. It does not rotate secrets.",
+    "Key Vault expiration dates, and have apps pin the version that was current at deployment": "An expiration date does not create a new value, and pinning a version means apps never pick up the rotated secret.",
+    "Key Vault backup and restore, and have apps redeploy each time a new backup is created": "Backup and restore copy a secret for recovery. They do not rotate it and redeploying adds app impact."
   },
   "12e69d5d50fa": {
-    "Azure Key Vault only": "Key Vault is designed for secrets, keys and certificates, not general settings or feature flags. Using it alone would not give microservices central feature flag management with labels per environment.",
-    "Azure Container Registry": "Azure Container Registry stores container images and related artifacts. It does not manage application settings or feature flags for microservices.",
-    "Azure Event Grid": "Event Grid routes events between publishers and subscribers. It does not store configuration values or feature flags for applications to read."
+    "Azure Key Vault": "Key Vault is for secrets, keys and certificates. It has no feature flag management.",
+    "Azure API Management": "API Management has named values for policies but is not a central configuration and feature flag store for apps.",
+    "Azure Resource Manager tags": "Tags label resources for organization and billing. Apps do not read feature flags from them."
   },
   "c1a2500e02e1": {
-    "Use tags on the resource group": "Resource group tags are metadata for organizing and billing Azure resources. They do not let a single App Configuration key hold different values per environment.",
-    "Use different regions": "Deploying stores in different regions affects location and resilience, not how one key holds separate values. App Configuration uses labels to distinguish values of the same key.",
-    "Use different key vaults": "Key vaults store secrets, not App Configuration key-values. Using several vaults does not give one App Configuration key separate development and production values; labels do that."
+    "Use snapshots": "Snapshots capture a point-in-time set of key-values. They are not how one key holds per-environment values.",
+    "Use tags on key-values": "Tags add metadata for filtering, but key plus label is what makes separate values of the same key.",
+    "Use feature filters": "Feature filters control when a feature flag is on, not separate values of a regular key."
   },
   "b522eb8336b0": {
-    "A snapshot": "An App Configuration snapshot is an immutable point-in-time set of key-values used for safe releases. It does not link a setting to a secret stored in Key Vault.",
-    "A feature flag": "A feature flag turns application features on or off. It does not point to a database password stored in Key Vault.",
-    "A plain key-value with the password": "A plain key-value would copy the password into App Configuration, which is not designed to protect secrets. A Key Vault reference keeps the password in Key Vault and stores only its URI."
+    "A feature flag with a filter": "A feature flag turns features on or off. It does not point to a Key Vault secret.",
+    "A plain key-value with the URI": "A plain key-value is not resolved by the client library, so the app would just get the URI string.",
+    "A snapshot of the store": "A snapshot is a point-in-time set of key-values. It does not reference a secret in Key Vault."
   },
   "f04e2ac00b8b": {
-    "Syslog only": "Syslog is a protocol for sending system log messages, mainly from Linux and network devices. It does not define distributed traces or context propagation across APIs, functions and databases.",
-    "FTP": "FTP (File Transfer Protocol) moves files between systems. It has no role in emitting or correlating distributed traces.",
-    "SNMP": "SNMP (Simple Network Management Protocol) monitors and manages network devices such as routers and switches. It is not a standard for application distributed tracing."
+    "OpenAPI": "OpenAPI describes REST API contracts. It does not emit traces.",
+    "OpenMetrics": "OpenMetrics is a format for exposing metrics, not for distributed traces across services.",
+    "Fluent Bit": "Fluent Bit is a log processor and forwarder, not the open standard for instrumenting distributed traces."
   },
   "8f235525c872": {
-    "The function app name": "The function app name identifies one service in telemetry, not one request. It cannot link spans from different services such as an API and a database into a single trace.",
-    "The subscription ID": "The subscription ID identifies an Azure billing and management boundary. Many unrelated requests share it, so it cannot correlate spans into one end-to-end request.",
-    "The container image tag": "A container image tag identifies an image version. It says nothing about individual requests and is not propagated between services to correlate spans."
+    "A shared span ID reused by every service in the request": "Each span has its own span ID. The trace ID is what is shared across services.",
+    "A shared session ID stored in the Application Insights cloud role": "Cloud role name identifies a service in the application map, and session ID groups user sessions, not spans of a request.",
+    "A shared operation name set on each dependency telemetry item": "Operation name is a readable label shared by many requests. It does not link the spans of one request."
   },
   "42a557c284a8": {
-    "GET /requests?failed=true": "This is an HTTP REST-style call, not a Kusto Query Language (KQL) query. Application Insights logs are queried with KQL using tables, pipes and where clauses.",
-    "SELECT * FROM requests WHERE failed": "This is SQL syntax, which KQL does not use. KQL starts with the table name and pipes into operators such as where, and it also needs a time filter like ago(1h).",
-    "requests.filter(success=false)": "This resembles a programming-language method call, not Kusto Query Language (KQL). KQL uses the pipe operator and where clauses, and this also lacks the one-hour time filter."
+    "requests | where timestamp > ago(1h) and resultCode == true": "resultCode holds the HTTP status code, not a boolean, so this does not find failures.",
+    "requests | filter timestamp > ago(1h) and success == false": "KQL has no filter operator for this. Rows are filtered with where.",
+    "requests | where timestamp < ago(1h) and success == false": "timestamp < ago(1h) returns requests older than one hour, not the last hour."
   },
   "b4da3d598fc6": {
-    "project count by operation_Name": "project selects, renames or computes columns but does not aggregate rows. Grouping with count requires the summarize operator.",
-    "join count": "join combines rows from two tables on matching columns. It does not count rows grouped by a column, and join count is not valid Kusto Query Language syntax.",
-    "extend group operation_Name": "extend adds calculated columns to each row and has no grouping capability. This syntax is not valid; summarize count() by is used to group and count."
+    "extend count() by operation_Name": "extend adds calculated columns to each row. It cannot aggregate or group.",
+    "project count() by operation_Name": "project selects and computes columns per row and does not group rows.",
+    "make-series count() on operation_Name": "make-series builds time series arrays and needs on a numeric or datetime axis column with by for grouping, so this syntax is wrong."
   },
   "e5281ccc8ec8": {
-    "project duration, 5m": "project only selects or computes columns and does not aggregate. It cannot average duration into five-minute time buckets.",
-    "where duration > 5m": "This filters to requests that took longer than five minutes. It does not group by time or calculate an average, so it cannot produce the bucketed chart.",
-    "top 5 by duration": "top returns the five rows with the highest duration. It does not average values or group them into five-minute time buckets."
+    "summarize avg(duration) by timestamp, 5m": "This groups by each distinct timestamp and treats 5m as another expression, so it does not create 5-minute buckets.",
+    "make-series avg(duration) by bin(5m, timestamp)": "make-series uses on timestamp with a step, and bin takes the value first then the size, so this is invalid.",
+    "extend avg(duration) by bin(timestamp, 5m)": "extend adds per-row columns and cannot aggregate with by."
   },
   "9877f933231a": {
-    "Cost Management": "Microsoft Cost Management tracks and analyzes Azure spending and budgets. It does not collect requests, dependencies or exceptions from application code.",
-    "Azure Advisor": "Azure Advisor gives recommendations on cost, security, reliability and performance for your resources. It does not instrument application code or collect telemetry.",
-    "Azure Policy": "Azure Policy enforces rules and compliance on resource configurations. It does not gather application telemetry such as requests and exceptions."
+    "Container insights": "Container insights collects container and node metrics and logs, not request and dependency telemetry from your code.",
+    "VM insights": "VM insights monitors virtual machine performance and dependencies between processes, not application requests and exceptions.",
+    "Network Watcher": "Network Watcher diagnoses network connectivity. It does not collect application telemetry."
   },
   "40d7cde37372": {
-    "The container registry tags": "Container registry tags label image versions. They hold no runtime timing data and cannot reveal which downstream call slowed a request.",
-    "The Azure status page": "The Azure status page reports broad platform outages across regions. It does not show your application's individual requests or the duration of its dependency calls.",
-    "The Key Vault audit log": "The Key Vault audit log records access to keys and secrets. It does not trace your application's requests or show the duration of calls to the LLM endpoint."
+    "The Live Metrics view in Application Insights": "Live Metrics shows near real-time aggregate rates. It does not break one request into its dependency spans.",
+    "The Usage Funnels view in Application Insights": "Funnels analyze how users move through steps in the app, not dependency durations.",
+    "The Availability tests view in Application Insights": "Availability tests ping endpoints from outside. They do not show which downstream call slowed a request."
   },
   "b5142a568e7c": {
-    "A container registry webhook": "A container registry webhook fires on registry events such as image pushes. It does not monitor your API's exception rate or alert on thresholds.",
-    "An App Configuration label": "An App Configuration label distinguishes values of the same key, for example per environment. It has no monitoring or alerting capability.",
-    "A Key Vault access policy": "A Key Vault access policy grants identities permissions to keys, secrets and certificates. It has nothing to do with detecting or alerting on exceptions."
+    "An Azure Monitor activity log alert on an Application Insights resource health event": "Activity log alerts fire on control plane operations and health events, not on application exception rates.",
+    "An Application Insights availability test with a threshold on failed locations": "Availability tests check whether an endpoint responds. They do not measure the exception rate of the API.",
+    "An Azure Monitor diagnostic setting on an Application Insights metric": "Diagnostic settings export telemetry to destinations. They do not evaluate thresholds or notify anyone."
   },
   "30a7f41ba200": {
-    "A storage account key": "A storage account key grants full access to one storage account only and is a secret that must be stored and protected. It does not adapt to developer sign-in locally and managed identity in Azure.",
-    "A shared access signature in code": "A shared access signature (SAS) grants limited access to storage resources, and placing it in code exposes a secret. It does not work across Azure services or switch credential sources automatically.",
-    "A hard-coded client secret": "A hard-coded client secret exposes a credential in source code and needs manual rotation. It also does not automatically use managed identity in Azure or developer sign-in locally."
+    "ManagedIdentityCredential": "ManagedIdentityCredential works only where a managed identity exists, so it fails on a developer machine.",
+    "AzureCliCredential": "AzureCliCredential needs a signed-in Azure CLI and normally is not available in the hosted Azure environment.",
+    "ClientSecretCredential": "ClientSecretCredential requires a stored client secret and does not adapt to the environment."
   },
   "e5b1f0d9658c": {
-    "No scaling until a rule is added": "Container Apps does not leave apps unscaled when no rule is defined. With ingress enabled, it applies a default HTTP scale rule.",
-    "CPU scaling with 1 to 100 replicas": "The default is not CPU based and does not use these limits. Without a scale rule, Container Apps applies HTTP scaling with a minimum of 0 and a maximum of 10 replicas.",
-    "A fixed single replica": "The app is not pinned to one replica by default. Container Apps applies an HTTP scale rule that can scale between 0 and 10 replicas."
+    "HTTP scaling with 1 to 10 replicas": "The default HTTP rule has a minimum of 0 replicas, not 1, so the app can scale to zero when idle.",
+    "CPU scaling with 0 to 10 replicas": "Container Apps does not add a CPU rule by default. With ingress enabled and no rule, it applies an HTTP rule.",
+    "HTTP scaling with 0 to 30 replicas": "The default HTTP rule caps the app at 10 replicas, not 30. You must set maxReplicas yourself to go higher."
   },
   "b26577e08753": {
-    "It scales on CPU automatically": "Container Apps does not add a CPU rule by default. With ingress disabled there is also no HTTP traffic to scale on, so nothing can wake the app after it scales to zero.",
-    "It runs one replica permanently": "Without minReplicas set, the minimum defaults to zero, so no replica is kept running. The app scales to zero and nothing triggers it to start again.",
-    "Deployment fails validation": "This configuration deploys successfully; it is not rejected. The problem appears at runtime, when the app scales to zero and has no trigger to restart."
+    "It gets a default HTTP rule and scales from 0 to 10": "The default HTTP rule only applies when ingress is enabled. With ingress disabled there is no HTTP traffic to scale on.",
+    "It keeps one replica because minReplicas defaults to 1": "minReplicas defaults to 0, so no replica is kept. The app scales to zero and nothing wakes it up.",
+    "It fails deployment until a scale rule is added": "This configuration deploys without error. The problem appears at runtime, when the app scales to zero with no trigger to restart it."
   },
   "a5e22afc82c5": {
-    "A secretRef to the namespace key": "A secretRef points the rule at a stored connection string or key, which is the credential-based approach the requirement wants to avoid. The identity property enables managed identity authentication instead.",
-    "A Dapr component": "A Dapr (Distributed Application Runtime) component configures building blocks such as pub/sub for app code. It does not provide authentication for a KEDA Service Bus scale rule.",
-    "An HTTP concurrency value": "HTTP concurrency configures HTTP scale rules based on concurrent requests. It is unrelated to Service Bus scaling and provides no authentication."
+    "A secretRef pointing to a secret that holds the namespace connection string": "A secretRef supplies a connection string, which is exactly what the requirement rules out. Managed identity auth uses the identity property on the rule.",
+    "A Dapr pub/sub component that authenticates with the app's managed identity": "A Dapr component handles messaging inside the app, not the scaler's authentication. The scale rule itself needs the identity property.",
+    "A KEDA TriggerAuthentication resource with podIdentity set to azure-workload": "TriggerAuthentication is a KEDA object you create in AKS. Container Apps does not expose it, and you set identity directly on the scale rule instead."
   },
   "cd9ab9a4a214": {
-    "Scale-down is disabled by default": "Scale-down is enabled by default in Container Apps. The delay comes from the 300-second cooldown applied before removing the final replica.",
-    "KEDA polls every 10 minutes": "KEDA (Kubernetes Event-driven Autoscaling) scale rules in Container Apps poll every 30 seconds, not every 10 minutes. The delay is caused by the cooldown period before scaling to zero.",
-    "Replicas only stop on redeploy": "Replicas stop through normal scaling, not only on redeploy. The app does reach zero once the 300-second cooldown for the last replica has passed."
+    "KEDA polls custom rules every 300 seconds before evaluating queue length": "Custom scale rules are polled every 30 seconds. The 300 seconds is the cooldown applied when removing the last replica.",
+    "Scale-down waits for a 10-minute stabilization window on every replica removal": "There is no 10-minute window on every removal. The 300-second cooldown applies only when scaling from the final replica to zero.",
+    "minReplicas defaults to 1, so the last replica is kept until a manual restart": "minReplicas defaults to 0, and the app does reach zero on its own. The delay comes from the 300-second cooldown, not a restart."
   },
   "4dd142f32496": {
-    "A single always-on replica": "An always-on replica runs and bills continuously even when the queue is empty. It does not start one execution per message and run it to completion.",
-    "A container app with HTTP scaling": "HTTP scaling reacts to incoming web requests, not queue messages. A container app also serves long-running processes rather than tasks that run for a time and then exit.",
-    "An App Service WebJob": "WebJobs run background tasks inside an App Service app, which is a different service. The question asks for a Container Apps feature, and event-driven jobs are designed for queue-triggered, run-to-completion work."
+    "A scheduled Container Apps job": "Scheduled jobs run on a cron schedule, not once per queue message. Event-driven jobs start an execution for each event.",
+    "A manual Container Apps job": "Manual jobs start only when you trigger them through the API or CLI. They do not react to queue messages by themselves.",
+    "A container app with a Service Bus scale rule": "Container apps run continuously and restart containers that exit. Tasks that run to completion and exit fit Container Apps jobs."
   },
   "4faf0fbf6501": {
-    "An environment variable with the plain password": "A plain-text environment variable exposes the password in the app definition and never updates when the Key Vault secret rotates.",
-    "A Dapr state store": "A Dapr (Distributed Application Runtime) state store persists application state such as key-value data. It is not the mechanism for pulling a Key Vault secret into a container app.",
-    "A Dockerfile ARG": "A Dockerfile ARG passes values at image build time and can leave secrets in image history. It cannot pick up a rotated password at runtime."
+    "A Container Apps secret holding the password value copied from Key Vault at deploy time": "A copied value is static and does not change when the Key Vault secret rotates. A Key Vault reference through managed identity picks up new values.",
+    "An environment variable with a Key Vault reference using the @Microsoft.KeyVault syntax": "The @Microsoft.KeyVault reference syntax is for App Service and Functions app settings. Container Apps uses secrets that reference Key Vault instead.",
+    "A Key Vault CSI driver volume mounted into the container app with secret rotation enabled": "The Secrets Store CSI driver is an AKS add-on and is not available in Container Apps. Container Apps secrets reference Key Vault directly."
   },
   "8ac5fb3ab67b": {
-    "A KEDA scaler": "A KEDA (Kubernetes Event-driven Autoscaling) scaler is used for scaling in Container Apps or Kubernetes. It is not an App Service setting and does not change which port is probed.",
-    "A new deployment slot": "A deployment slot would run the same container with the same port mismatch. It does not tell App Service that the container listens on port 8080.",
-    "The container image tag": "The image tag selects which image version to run. Changing it does not tell App Service which port the container listens on."
+    "The SCM_DO_BUILD_DURING_DEPLOYMENT setting to true": "This setting controls build automation for code deployments. It does not tell App Service which port a custom container listens on.",
+    "The Always On general setting to On": "Always On keeps the app loaded between requests. It does not change the port App Service sends traffic to.",
+    "The HTTP version general setting to 2.0": "The HTTP version setting changes the protocol for clients, not the container port. WEBSITES_PORT sets the port for custom containers."
   },
   "dcfc52b533f5": {
-    "Event Grid on the container app": "Event Grid events on a container app do not track base image updates in your Dockerfile and do not rebuild images. ACR Tasks provide base image update triggers for this.",
-    "Geo-replication": "Geo-replication copies a registry's images to multiple regions for faster local pulls. It does not rebuild images when a base image changes.",
-    "A nightly kubectl rollout restart": "A rollout restart only restarts pods with the existing image. It does not rebuild the image on the patched base, and a nightly schedule is not triggered by actual base changes."
+    "An ACR task with a timer trigger set to run daily": "A timer trigger rebuilds on a schedule whether or not the base changed. The base image update trigger rebuilds when the base image is updated.",
+    "An ACR webhook that fires on the base image push": "Webhooks only send a notification to an endpoint. They do not rebuild images and do not track base image dependencies.",
+    "An ACR task with a source code commit trigger": "A commit trigger fires when the Git repository changes, not when the base image receives patches."
   },
   "76b97c5816f4": {
-    "Geo-replication, available in Basic": "Geo-replication is the right feature, but it is not available in the Basic tier. It requires the Premium service tier of Azure Container Registry.",
-    "Zone redundancy in Basic": "Zone redundancy spreads a registry across availability zones within one region for resilience; it does not place replicas near teams in other regions. It is also not tied to Basic.",
-    "Content trust in Standard": "Content trust signs images so consumers can verify their publisher and integrity. It does not speed up pulls across regions, and it is a Premium tier feature."
+    "Geo-replication, which requires the Standard tier": "Geo-replication is a Premium tier feature. Standard registries cannot add replicas in other regions.",
+    "Zone redundancy, which requires the Premium tier": "Zone redundancy spreads a registry across availability zones within one region. It does not bring images closer to teams in other regions.",
+    "Artifact cache, which works in the Basic tier": "Artifact cache pulls upstream images into the same registry. It does not create regional replicas, so remote pulls stay slow."
   },
   "8f771c6d4e10": {
-    "Anonymous access": "Key Vault does not allow anonymous access to secrets. Every request must be authenticated with Microsoft Entra ID, which anonymous access cannot provide.",
-    "The node pool admin password": "A node pool admin password is for logging into nodes, not for authenticating to Key Vault. Using it would also be a stored secret, which the requirement rules out.",
-    "A client secret stored in a ConfigMap": "A ConfigMap stores non-sensitive configuration in plain text, so putting a client secret there exposes it. This also mounts a secret in the cluster, which the requirement forbids."
+    "The Secrets Store CSI driver with a service principal secret stored in a Kubernetes secret": "This stores a client secret in the cluster, which the requirement rules out. Workload ID issues tokens through federation with no stored secret.",
+    "Microsoft Entra pod-managed identity with an AzureIdentityBinding for the pod": "Pod-managed identity is deprecated and has been replaced by Microsoft Entra Workload ID for new workloads.",
+    "A Kubernetes service account token mounted into the pod and sent directly to Key Vault": "Key Vault does not accept Kubernetes tokens. The token must be exchanged for an Entra token through a federated credential."
   },
   "c788a2abf5f3": {
-    "More nodes": "Adding nodes increases cluster capacity but does nothing to stop new pods from receiving traffic before the model has loaded.",
-    "A liveness probe with a short timeout": "Liveness probes restart containers that appear unhealthy; they do not hold back traffic. A short timeout could even restart pods repeatedly while the model is still loading.",
-    "A larger image": "A larger image does not delay traffic until the model is ready. It would likely slow startup further without fixing the routing problem."
+    "A liveness probe that fails until the model is loaded": "A failing liveness probe makes the kubelet restart the container, so the model may never finish loading. Readiness controls traffic.",
+    "A preStop lifecycle hook that waits for the model to load": "preStop hooks run when a container is being terminated, not at startup. They do not keep traffic away from a loading pod.",
+    "A PodDisruptionBudget with minAvailable set to the replica count": "A PodDisruptionBudget limits voluntary evictions. It does not stop a Service from sending traffic to pods that are not ready."
   },
   "339dea800216": {
-    "The cluster has too many nodes": "The number of nodes does not prevent the Horizontal Pod Autoscaler from reading CPU metrics. Unknown metrics point to missing CPU resource requests on the containers.",
-    "The image is in ACR": "Pulling images from Azure Container Registry (ACR) has no effect on metrics collection. The autoscaler cannot compute CPU utilization because no CPU requests are set.",
-    "The Service type is ClusterIP": "The Service type controls how pods are exposed on the network. It does not affect the CPU metrics the Horizontal Pod Autoscaler uses."
+    "The containers have no CPU resource limits": "HPA computes CPU utilization against requests, not limits. Missing limits alone do not cause unknown metrics.",
+    "The cluster autoscaler is disabled on the node pool": "The cluster autoscaler adds nodes. It does not provide the CPU metrics that HPA reads, so it does not cause unknown values.",
+    "The deployment has no PodDisruptionBudget defined": "A PodDisruptionBudget controls voluntary evictions and has no effect on HPA metric calculation."
   },
   "0a368e9476ac": {
-    "diskANN": "diskANN supports up to 4,096 dimensions, so 1,536-dimension embeddings can be indexed with it. It is a valid choice here, not the one that cannot be used.",
-    "quantizedFlat": "quantizedFlat supports up to 4,096 dimensions, so it can index 1,536-dimension embeddings. It is usable here, not the excluded option.",
-    "Any type works at any dimension": "Vector index types have dimension limits. The flat index supports at most 505 dimensions, so not every type works for 1,536-dimension embeddings."
+    "diskANN, because it supports at most 512 dimensions": "diskANN supports up to 4,096 dimensions, so 1,536-dimension vectors can use it.",
+    "quantizedFlat, because it supports at most 1,024 dimensions": "quantizedFlat supports up to 4,096 dimensions, so it works for 1,536 dimensions.",
+    "None, since all three types support up to 4,096 dimensions": "Only quantizedFlat and diskANN reach 4,096 dimensions. flat is limited to 505, so it cannot be used here."
   },
   "48b92c836ffd": {
-    "No vector index": "Without a vector index every query must compute distances against all vectors in a full scan, costing more Request Units (RUs) and time. An index such as quantizedFlat is recommended.",
-    "diskANN": "diskANN is recommended for larger search scopes, above roughly 50,000 vectors. For about 5,000 vectors filtered to one tenant, quantizedFlat is the recommended choice.",
-    "flat": "flat performs exact brute-force search and is limited to 505 dimensions, which rules out many common embedding models. quantizedFlat is the recommended index for small, filtered search scopes like this."
+    "flat": "flat is limited to 505 dimensions and is not the recommended choice for filtered search scopes. quantizedFlat fits scopes up to about 50,000 vectors.",
+    "diskANN": "diskANN is recommended for larger search scopes, above roughly 50,000 vectors. For about 5,000 vectors per tenant, quantizedFlat is recommended.",
+    "hnsw": "HNSW is not a vector index type in Azure Cosmos DB for NoSQL. The supported types are flat, quantizedFlat and diskANN."
   },
   "221a2a101fa6": {
-    "Disable vector search on the container": "Vector search cannot be disabled on a container once it is enabled. Changing the distance function requires removing and re-adding the vector policy and index for that path.",
-    "Edit the dimension in place": "Existing vector policy settings cannot be edited in place, and the dimension is not the setting being changed. The policy for that path must be removed and added back with the new distance function.",
-    "Nothing, it updates automatically": "Cosmos DB does not change the distance function on its own. You must drop the existing vector policy and index for that path, then re-add them with dotproduct."
+    "Update the distanceFunction in the vector policy and let the index rebuild in place": "Settings of an existing vector embedding policy cannot be edited in place. You must remove the path's configuration and add it back.",
+    "Change the vector index type to flat first, then edit the distance function in place": "Switching index types does not unlock in-place edits. The vector policy for the path must be dropped and re-added.",
+    "Disable vector search on the container, change the policy, then enable it again": "Vector search cannot be disabled on a container once it is enabled. You drop and re-add the path's policy and index instead."
   },
   "ff565f832fb9": {
-    "The index switches to flat": "Omitting TOP does not change the index type, which is fixed by the indexing policy. The cost comes from returning far more results than needed.",
-    "VectorDistance needs a GROUP BY": "VectorDistance is used with ORDER BY to rank results, not with GROUP BY. The query is costly because it lacks TOP N to limit results.",
-    "TOP is required for the query to compile": "The query runs without TOP, which is why it is expensive rather than failing. TOP N is recommended to limit results and Request Unit (RU) consumption, not required for compilation."
+    "Without TOP N the query falls back to the flat index and scans all vectors": "The index type does not change based on the query. The cost comes from returning far more results than needed.",
+    "Without TOP N the query runs cross-partition and fans out to every partition": "Whether a query is cross-partition depends on the partition key filter, not on TOP. The extra RUs come from returning too many results.",
+    "Without TOP N VectorDistance computes scores with bruteForce set to true": "bruteForce defaults to false and is not changed by omitting TOP. The query costs more because it returns many more results."
   },
   "772dc893c886": {
-    "diskANN does not support cosine": "diskANN does support the cosine distance function, along with dotproduct and euclidean. The higher charges come from having fewer than 1,000 vectors, which forces a full scan.",
-    "Vectors must be float16": "Vectors are not required to be float16; float32, float16, int8 and uint8 are supported. The data type does not explain the extra Request Unit (RU) cost.",
-    "The partition key is wrong": "Nothing suggests a partition key problem. With only 400 vectors, diskANN cannot be used, so the service falls back to a full scan that costs more Request Units (RUs)."
+    "diskANN needs at least 10,000 vectors, otherwise it falls back to a flat index": "The threshold is 1,000 vectors, and below it the service runs a full scan rather than using a flat index.",
+    "diskANN does not support cosine, so the query falls back to a full scan": "diskANN supports cosine, dot product and Euclidean distance. The full scan happens because fewer than 1,000 vectors are indexed.",
+    "diskANN requires float16 vectors, otherwise each query rereads full-precision data": "diskANN works with float32 vectors as well. The higher RU cost comes from having fewer than 1,000 indexed vectors."
   },
   "6f4a6a46f496": {
-    "Use float32 as the vector data type": "float32 is the default, full-precision data type using 4 bytes per value. Choosing it keeps storage the same rather than cutting it in half.",
-    "Increase dimensions": "Increasing dimensions adds more values per vector, which increases storage. It is the opposite of reducing storage by half.",
-    "Switch distance to euclidean": "The distance function only changes how similarity is calculated. It has no effect on how much storage each vector uses."
+    "Use float32 as the vector data type": "float32 is the full-size default, so it does not reduce storage. float16 halves it.",
+    "Use euclidean as the distance function": "The distance function changes how similarity is scored, not how many bytes each vector uses.",
+    "Use flat as the vector index type": "flat stores full vectors for exact search and does not reduce vector storage. Changing the data type to float16 does."
   },
   "f5870542bb3a": {
-    "Latest version mode": "Latest version mode only shows the most recent version of inserted and updated items. It does not capture deletes, so vectors for deleted items would never be removed.",
-    "A higher RU setting": "Raising Request Units (RUs) increases throughput but does not change what the change feed captures. Deletes are only included in all versions and deletes mode.",
-    "The pull model in latest version mode": "The pull model only changes how you read the change feed, not what it contains. In latest version mode, deletes are still not captured."
+    "Latest version mode, which needs continuous backup": "Latest version mode does not capture deletes, and it does not need continuous backup.",
+    "All versions and deletes mode, which needs periodic backup": "All versions and deletes mode requires continuous backup, not periodic backup.",
+    "Latest version mode with the change feed processor and TTL": "Latest version mode does not emit deletes or TTL expirations, whatever consumer reads it."
   },
   "9c4158eb10c9": {
-    "Only when using the pull model": "Ordering behavior is the same for the pull model and the push model, such as the change feed processor. Order is guaranteed only within a partition key in both cases.",
-    "Only in multi-region accounts": "This happens in single-region accounts too. The change feed guarantees order only within a partition key value, regardless of how many regions the account has.",
-    "No, the change feed is globally ordered": "The change feed is not globally ordered across a container. Order is guaranteed only within each partition key value, so updates to different products can appear in any order."
+    "Yes, ordering is guaranteed only within a physical partition": "Order is guaranteed per logical partition key value. Items with different keys in the same physical partition have no guaranteed order.",
+    "No, the change feed is ordered globally by modification time": "The change feed has no global order across partition keys, so out-of-order changes for different products are expected.",
+    "Yes, but only when the pull model is used instead of the processor": "Ordering rules are the same for the pull model and the change feed processor. Order is guaranteed only within a partition key."
   },
   "59268963e39b": {
-    "An Event Hubs namespace": "Event Hubs is a separate big-data streaming service. The Cosmos DB change feed processor does not need it; it coordinates workers and checkpoints through a container in Cosmos DB itself.",
-    "A second database account": "The change feed processor does not require another Cosmos DB account. Its lease container can live in the same account and even the same database as the monitored container.",
-    "A stored procedure": "Stored procedures run transactional JavaScript logic inside a single partition. They play no part in distributing change feed work across workers or storing checkpoints."
+    "An Azure Storage checkpoint container": "Blob storage checkpoints are used by the Event Hubs processor. The Cosmos DB change feed processor stores leases in a Cosmos DB container.",
+    "An Event Hubs consumer group": "Consumer groups belong to Event Hubs. The change feed processor distributes work through a lease container.",
+    "A Durable Functions task hub": "A task hub stores Durable Functions orchestration state. The change feed processor needs a lease container instead."
   },
   "5e78a2c325ba": {
-    "Strong consistency": "Strong consistency controls how fresh reads are across replicas. It does nothing to lift the 20 GB logical partition limit that a single large tenant is hitting.",
-    "A unique key policy": "A unique key policy enforces uniqueness of values within a logical partition. It does not change how data is distributed, so the tenant's partition would still exceed 20 GB.",
-    "A larger item size": "Item size is capped at 2 MB in Cosmos DB and is unrelated to the problem. The issue is the total size of one logical partition, which needs a better partitioning scheme."
+    "A unique key policy on the tenantId and userId paths": "A unique key policy enforces uniqueness within a logical partition. It does not lift the 20 GB logical partition limit.",
+    "A composite index on the tenantId and userId properties": "Composite indexes speed up queries with multiple filters or sorts. They do not change how data is partitioned.",
+    "Partition merge to combine tenants into larger partitions": "Partition merge reduces the number of physical partitions. A logical partition key value is still limited to 20 GB."
   },
   "53b209ec5207": {
-    "Reading the change feed": "The change feed is an ordered log of inserts and updates for processing changes over time. It is not a way to fetch one known item and would cost far more request units (RUs).",
-    "A SELECT query filtered by id": "A query filtered by id still goes through the query engine, so it costs more request units (RUs) than a point read, especially if the partition key is not supplied.",
-    "A cross-partition query": "A cross-partition query fans out to every physical partition and is the most expensive way to find one item. With id and partition key known, it is unnecessary."
+    "A query filtered by id and partition key": "A query goes through the query engine and costs more than a point read, even when it is scoped to one partition.",
+    "A change feed read filtered to that partition key": "The change feed returns changes over time, not a direct lookup of one item, and costs more than a point read.",
+    "A cross-partition query using the id index": "A cross-partition query fans out to many partitions and is far more expensive than a point read."
   },
   "672c67e96098": {
-    "Strong consistency": "Strong consistency is a read-guarantee setting, not a throughput setting. It does not scale request units (RUs) with traffic and actually doubles read cost compared with weaker levels.",
-    "Serverless with a fixed RU limit": "Serverless bills per request unit (RU) consumed and has no configurable floor and maximum to scale between. It suits sporadic, low traffic rather than a defined scaling range.",
-    "Manual throughput at the peak": "Provisioning manual throughput at the peak keeps you paying for maximum request units (RUs) all the time. It does not scale down during quiet periods, which is the requirement."
+    "Autoscale throughput, which scales between 50% and 100% of the max RU/s": "Autoscale scales down to 10% of the configured maximum, not 50%.",
+    "Serverless throughput, which scales between 10% and 100% of the max RU/s": "Serverless accounts have no provisioned floor or maximum to configure. The 10% to 100% range belongs to autoscale.",
+    "Manual throughput with a burst capacity limit set to the max RU/s": "Manual throughput stays fixed. Burst capacity only uses idle accumulated capacity for short spikes, it does not scale between a floor and a maximum."
   },
   "d91601dca9e1": {
-    "IVFFlat only supports L2 distance": "IVFFlat supports L2, inner product and cosine distance operators in pgvector. The distance metric is not why recall is poor after loading data into an empty index.",
-    "The table needs a primary key on the vector": "pgvector does not require a primary key on the vector column. The problem is that IVFFlat clusters were computed when the table had no data.",
-    "pgvector needs a B-tree index too": "pgvector indexes do not depend on a B-tree index. IVFFlat works on its own; recall suffers here because its lists were built from an empty table."
+    "IVFFlat supports only L2 distance, so cosine queries return poor matches": "IVFFlat supports L2, inner product and cosine distance. The poor recall comes from building lists on an empty table.",
+    "IVFFlat needs hnsw.ef_search raised after a large load to restore recall": "hnsw.ef_search applies to HNSW indexes only. IVFFlat recall depends on its lists, which must be built from loaded data.",
+    "IVFFlat rebalances its lists on insert, so recall drops until VACUUM runs": "IVFFlat does not rebalance lists on insert, and VACUUM does not rebuild them. You rebuild the index after loading data."
   },
   "a49dbc06bc66": {
-    "Increase max_connections": "max_connections limits how many client sessions PostgreSQL accepts. It has no effect on how many candidates an HNSW search examines, so recall stays the same.",
-    "Decrease hnsw.ef_search": "Decreasing hnsw.ef_search shrinks the candidate list, making searches faster but returning fewer relevant rows. That is the opposite of what is needed here.",
-    "Lower work_mem": "work_mem sets memory for sorts and hash operations per query. Lowering it does not improve HNSW recall and could slow other parts of the query."
+    "Increase ef_construction": "ef_construction is set when the HNSW index is built, not at query time.",
+    "Increase ivfflat.probes": "ivfflat.probes affects IVFFlat indexes only. It has no effect on HNSW searches.",
+    "Decrease hnsw.ef_search": "A smaller candidate list lowers recall. You increase hnsw.ef_search to improve it."
   },
   "c9c1f8cabc0a": {
-    "hnsw.m": "hnsw.m is not a query-time setting; m is an HNSW build parameter setting the number of connections per node. It does not apply to IVFFlat indexes at all.",
-    "lists": "lists is an IVFFlat parameter, but it is set when the index is built and defines how many clusters exist. It does not control how many lists a query scans.",
-    "ef_construction": "ef_construction is an HNSW build-time parameter controlling the candidate list size while building the graph. It is unrelated to IVFFlat query behavior."
+    "hnsw.ef_search": "hnsw.ef_search controls the HNSW candidate list size and has no effect on IVFFlat lists.",
+    "lists": "lists is an index build option that sets how many lists exist, not how many are scanned per query.",
+    "ivfflat.iterative_scan": "iterative_scan controls whether filtered queries keep scanning to return enough rows. ivfflat.probes sets the number of lists scanned."
   },
   "e250de0ff1e9": {
-    "pg_trgm": "pg_trgm provides trigram-based text similarity and fuzzy matching. It works purely inside PostgreSQL and cannot call Azure OpenAI to generate embeddings.",
-    "pg_cron only": "pg_cron schedules SQL jobs inside PostgreSQL. On its own it has no ability to call Azure OpenAI; it could only schedule work done by another extension.",
-    "postgis": "PostGIS adds geospatial types and functions such as distance on maps. It has nothing to do with calling Azure OpenAI or generating text embeddings."
+    "pg_diskann": "pg_diskann adds the DiskANN vector index. It does not call Azure OpenAI to generate embeddings.",
+    "vector": "The vector (pgvector) extension stores and indexes embeddings but cannot call Azure OpenAI to create them.",
+    "azure_storage": "azure_storage imports and exports data with Azure Blob Storage. Calling Azure OpenAI from SQL needs azure_ai."
   },
   "c1d4a24994ba": {
-    "A bigger IVFFlat lists value only": "Raising the IVFFlat lists value alone does not address memory and recall at 50 million vectors. It is a tuning knob, not an option designed for very large vector sets.",
-    "Disabling autovacuum": "Autovacuum reclaims dead rows and maintains statistics. Disabling it would cause bloat and stale statistics and does nothing to reduce vector index memory needs.",
-    "A B-tree index": "A B-tree index orders scalar values and cannot perform nearest-neighbor vector similarity search, so it is no substitute for a vector index at any scale."
+    "The azure_ai extension with an in-database vector index": "azure_ai calls Azure AI services from SQL. It does not provide a vector index for large data sets.",
+    "The pg_hint_plan extension with an HNSW index hint": "pg_hint_plan only influences query plans. It does not reduce HNSW memory needs at this scale.",
+    "The pg_trgm extension with a GIN index on the vectors": "pg_trgm indexes text for trigram similarity and cannot index vector embeddings."
   },
   "b332cc184c58": {
-    "LIKE disables all indexes in PostgreSQL": "LIKE does not disable indexes in PostgreSQL; B-tree and trigram indexes can serve many LIKE patterns. The issue is that the planner cannot match the condition to the partial index predicate.",
-    "Partial indexes only work with IVFFlat": "Partial indexes work with HNSW as well as other index types. The index exists and is valid; it is skipped because the query's filter differs from its predicate.",
-    "The index needs more lists": "lists is an IVFFlat build parameter and does not apply to HNSW. Index tuning cannot help when the planner refuses the partial index because the predicate does not match."
+    "LIKE comparisons cannot use any index without a pg_trgm GIN index": "The issue is the partial index predicate, not LIKE support in general. The planner uses the index only when the query matches its predicate.",
+    "Partial indexes are supported only for IVFFlat, not for HNSW indexes": "pgvector supports partial HNSW indexes. The query simply has to repeat the index predicate.",
+    "The partial HNSW index must be rebuilt after each batch of new inserts": "HNSW indexes are maintained as rows are inserted. The scan happens because the filter does not match the predicate."
   },
   "1c83c6795cad": {
-    "The column must not declare dimensions": "Declaring dimensions on the vector column is actually required to build an HNSW or IVFFlat index. Removing them would not fix the failure and would block indexing entirely.",
-    "HNSW needs float16 vectors": "HNSW does not require float16 vectors; it indexes standard vector columns. Casting to halfvec is one workaround for high dimensions, but the root cause is the 2,000-dimension index limit.",
-    "HNSW cannot use cosine distance": "HNSW in pgvector supports cosine distance through the vector_cosine_ops operator class. The failure is caused by the dimension count, not the distance metric."
+    "pgvector HNSW indexes support up to 1,536 dimensions for vector columns": "The pgvector HNSW and IVFFlat limit for the vector type is 2,000 dimensions, not 1,536.",
+    "pgvector HNSW indexes require halfvec columns above 1,024 dimensions": "vector columns can be indexed up to 2,000 dimensions. The failure here is that 3,072 exceeds that limit.",
+    "pgvector HNSW indexes support up to 4,000 dimensions for vector columns": "4,000 dimensions is the limit for halfvec. vector columns are limited to 2,000, so 3,072 fails."
   },
   "9a0b45c05ffc": {
-    "Any time from the portal": "Azure Managed Redis does not let you add modules to an existing cache from the portal. Modules such as RediSearch must be chosen when the cache is created.",
-    "After enabling geo-replication": "Geo-replication is a separate feature and does not unlock adding modules later. RediSearch must be selected at cache creation regardless of replication settings.",
-    "Only after scaling up": "Scaling up changes cache size and performance but does not allow modules to be added afterward. The module choice is fixed when the cache is first created."
+    "Any time from the portal": "Modules cannot be added to an existing Azure Managed Redis cache. They are chosen at creation.",
+    "After geo-replication is enabled": "Geo-replication does not unlock module changes. Modules are selected only when the cache is created.",
+    "Only after scaling up the SKU": "Scaling does not let you add modules to an existing cache. You must create a new cache with RediSearch selected."
   },
   "0bb1928bef6c": {
-    "allkeys-lru": "allkeys-lru evicts least recently used keys when memory is full, which could silently remove indexed data. RediSearch requires the NoEviction policy instead.",
-    "volatile-ttl": "volatile-ttl evicts keys with the shortest time to live first, so indexed documents could still disappear. RediSearch does not allow this policy.",
-    "allkeys-random": "allkeys-random evicts arbitrary keys under memory pressure, which would corrupt search results. RediSearch requires that no keys are evicted."
+    "AllKeysLRU": "RediSearch requires NoEviction so index data is not evicted silently. LRU policies evict keys under memory pressure.",
+    "VolatileLRU": "VolatileLRU evicts keys with an expiry under memory pressure, which RediSearch does not allow.",
+    "VolatileTTL": "VolatileTTL evicts keys closest to expiring, which can drop index data. RediSearch needs NoEviction."
   },
   "eeeb45169af7": {
-    "Use a larger cache SKU only": "A larger cache SKU adds memory and throughput but does not change how similar a prompt must be to count as a hit, so wrong answers would still be returned.",
-    "Disable vector indexing": "Disabling vector indexing would break semantic lookups altogether rather than make them more precise. The fix is to require closer similarity before reusing an answer.",
-    "Lower the TTL to zero": "A time to live (TTL) of zero would effectively disable caching, losing all benefit. The problem is match precision, which a stricter similarity threshold addresses."
+    "Lower the similarity threshold for a cache hit": "A lower threshold accepts less similar prompts as hits, which causes more wrong answers, not fewer.",
+    "Increase the cache TTL so entries live longer": "A longer TTL keeps entries around longer and does nothing to stop a wrong entry from matching.",
+    "Switch the vector index from HNSW to FLAT": "FLAT returns the exact nearest entry, which is still the wrong but similar one. The match threshold decides whether it counts as a hit."
   },
   "39a2cfc8851d": {
-    "Event Grid with retries": "Event Grid distributes discrete events with retries but does not guarantee ordered delivery per key. It cannot keep each order's messages strictly in sequence.",
-    "A partitioned queue without sessions": "Without sessions, messages in a partitioned queue can be received by competing consumers in any order, so one order's messages might be processed out of sequence or in parallel.",
-    "Duplicate detection": "Duplicate detection discards repeated messages with the same MessageId. It does not enforce ordering or group related messages to a single receiver."
+    "Service Bus partitioning with the order ID as partition key": "A partition key places messages together but does not give one-at-a-time ordered processing per order. Sessions provide that.",
+    "Service Bus duplicate detection with the order ID as message ID": "Duplicate detection would drop later messages for the same order as duplicates. It does not enforce ordering.",
+    "Event Hubs consumer groups with one group per order ID": "Consumer groups are independent views of the whole stream, not per-key ordered queues. Service Bus sessions fit this pattern."
   },
   "dd555339bb25": {
-    "Dead-lettering": "Dead-lettering moves messages that cannot be processed or have expired to a sub-queue. It does not detect or drop duplicate messages sent by a retrying producer.",
-    "Auto-forwarding": "Auto-forwarding chains a queue or subscription to another entity. It moves messages along but does nothing to identify or discard duplicates.",
-    "Sessions": "Sessions group related messages for ordered processing by one receiver. They do not stop the same message from being enqueued twice after a producer retry."
+    "Duplicate detection based on SessionId within a time window": "Duplicate detection tracks MessageId, not SessionId. Many distinct messages share a SessionId.",
+    "Sessions with the producer ID set as the session ID": "Sessions group and order related messages but do not discard duplicates sent on retry.",
+    "Dead-lettering based on MaxDeliveryCount for each message": "MaxDeliveryCount moves messages that fail processing to the dead-letter queue. It does not stop a sender from enqueuing duplicates."
   },
   "44cb668e51a4": {
-    "Partitioning": "Partitioning spreads a queue across multiple message brokers for throughput. It has no influence on whether expired messages are moved to the dead-letter queue.",
-    "MaxDeliveryCount": "MaxDeliveryCount dead-letters messages after too many failed processing attempts. It does not apply to messages that expire from their time to live (TTL).",
-    "Sessions": "Sessions provide ordered, grouped processing of related messages. They do not control what happens to messages whose time to live (TTL) runs out."
+    "Dead-lettering on filter evaluation exceptions": "This subscription setting handles rule filter errors. Expired messages need dead-lettering on message expiration.",
+    "A MaxDeliveryCount higher than the default": "MaxDeliveryCount governs failed delivery attempts, not expiration. It does not move expired messages to the dead-letter queue.",
+    "Auto-forwarding to a dead-letter queue": "Auto-forwarding moves messages to another entity as they arrive. Expired messages are dead-lettered only with dead-lettering on expiration."
   },
   "cd58a2861358": {
-    "1": "One is not the default and would dead-letter a message after a single failed attempt. The default allows 10 delivery attempts.",
-    "5": "Five is not the default; Service Bus queues allow 10 delivery attempts by default before a message is moved to the dead-letter queue.",
-    "Unlimited": "MaxDeliveryCount is never unlimited; it is a positive number defaulting to 10, after which the message is dead-lettered to prevent endless poison-message loops."
+    "5": "The default MaxDeliveryCount for queues and subscriptions is 10, not 5.",
+    "3": "The default is 10 delivery attempts before a message is dead-lettered, not 3.",
+    "100": "100 is not the default. Service Bus dead-letters a message after 10 failed deliveries by default."
   },
   "c00cfb59a82c": {
-    "Basic": "The Basic tier supports only queues with messages up to 256 KB. It cannot carry 50 MB messages, which require the large-message support in Premium.",
-    "Any tier": "Not every tier supports large messages. Basic and Standard cap messages at 256 KB; only Premium supports messages up to 100 MB.",
-    "Standard": "The Standard tier limits messages to 256 KB. Sending 50 MB payloads requires the Premium tier with large-message support."
+    "Standard": "Standard supports messages up to 256 KB, far below 50 MB.",
+    "Basic": "Basic supports messages up to 256 KB and lacks many features. Large messages need Premium.",
+    "Standard with large message support": "Large message support is a Premium feature. Standard is capped at 256 KB per message."
   },
   "11a44c72c7ac": {
-    "It retries 30 times": "Event Grid does not retry a 400 Bad Request because resending the same malformed event would fail again. Retries apply to transient errors, not this response.",
-    "It retries for 24 hours": "A 24-hour retry window is the default for retryable failures, but 400 is treated as non-retryable, so Event Grid does not keep trying the delivery.",
-    "It converts the event to a Service Bus message": "Event Grid does not convert failed events into Service Bus messages. Without a configured dead-letter storage location, an undeliverable event is simply dropped."
+    "It retries with exponential backoff for up to 24 hours before dead-lettering": "Event Grid does not retry 400 Bad Request responses. It dead-letters at once if configured, otherwise drops the event.",
+    "It retries up to 30 times and then drops the event if no dead-letter is set": "The 30-attempt retry policy does not apply to 400 errors, which are not retried at all.",
+    "It retries once after 10 seconds, then dead-letters if dead-lettering is configured": "There is no single retry for 400 errors. Event Grid skips retries and dead-letters immediately when configured."
   },
   "b08e1d834505": {
-    "It waits indefinitely": "Event Grid does not wait indefinitely; it waits 30 seconds for a response before treating the delivery as failed and scheduling a retry.",
-    "It drops the event": "A slow response does not cause an immediate drop. Event Grid marks the attempt as failed after 30 seconds and retries according to its retry policy.",
-    "It switches to pull delivery": "Event Grid does not switch push subscriptions to pull delivery automatically. Pull delivery is a separate namespace topic model you configure deliberately."
+    "Event Grid waits up to 60 seconds for the response, so the delivery succeeds without any retry": "Event Grid waits 30 seconds, not 60. After that it marks the delivery failed and schedules a retry.",
+    "Event Grid treats the delivery as failed after 30 seconds and dead-letters the event right away": "A timeout is retried, not dead-lettered at once. Dead-lettering happens only after retries are exhausted.",
+    "Event Grid treats the delivery as failed after 10 seconds and drops the event without retrying": "The response timeout is 30 seconds, and a timeout leads to a retry, not to dropping the event."
   },
   "2da9c9daf5e4": {
-    "10 attempts or 1 hour": "These numbers are not Event Grid's defaults. The default retry policy allows up to 30 attempts within a 24-hour (1,440-minute) event time to live.",
-    "Unlimited until dead-lettered": "Retries are not unlimited; the default policy stops after 30 attempts or 24 hours. Dead-lettering is also off by default, so events are dropped after that.",
-    "5 attempts or 7 days": "These values are not Event Grid's defaults. The default retry policy is up to 30 attempts or 24 hours, whichever comes first."
+    "10 attempts or 1 hour, whichever comes first": "The defaults are 30 delivery attempts and a 1,440-minute event time to live, not 10 attempts and 1 hour.",
+    "30 attempts or 7 days, whichever comes first": "The default event time to live is 24 hours (1,440 minutes), not 7 days.",
+    "18 attempts or 24 hours, whichever comes first": "The default maximum is 30 delivery attempts, not 18."
   },
   "32a52e996f50": {
-    "Yes, events go to a hidden queue": "There is no hidden default queue. Dead-lettering is off by default, and undeliverable events are dropped unless you configure a storage blob container.",
-    "Yes, to Service Bus": "Event Grid dead-lettering is not enabled by default and does not target Service Bus. The dead-letter destination is a storage blob container you configure.",
-    "Only for system topics": "System topics do not get dead-lettering automatically either. For any topic type, you must configure a storage blob container as the dead-letter destination."
+    "Yes, undeliverable events go to a built-in dead-letter queue on the topic": "Event Grid has no built-in dead-letter queue. Dead-lettering is off until you set a storage blob container.",
+    "No, you must configure a Service Bus queue as the dead-letter destination": "The dead-letter destination for Event Grid is a storage blob container, not a Service Bus queue.",
+    "Yes, but only for system topics, which use a storage account by default": "Dead-lettering is off by default for system topics too. You must configure a blob container yourself."
   },
   "659d51d32418": {
-    "Azure Event Grid": "Event Grid routes discrete events to handlers in a push model. It is not designed for ingesting millions of telemetry events per second with retention for stream processing.",
-    "Service Bus queues": "Service Bus queues offer transactional, enterprise messaging with features like sessions and dead-lettering. They are not built for millions of events per second of streaming telemetry.",
-    "Azure Functions HTTP trigger": "An HTTP-triggered function processes individual requests and would be costly and fragile at millions of events per second. It provides no partitioned, retained stream for later processing."
+    "Azure Event Grid": "Event Grid routes discrete events to handlers. It is not built for streaming millions of telemetry events per second with retention.",
+    "Azure Service Bus": "Service Bus is for transactional enterprise messaging, not high-throughput telemetry streaming.",
+    "Azure Queue Storage": "Queue Storage is a simple message queue without partitions or stream retention, so it does not fit telemetry streaming at this scale."
   },
   "83ae05eb6bae": {
-    "In-process apps need a premium SKU of Flex": "Flex Consumption has no premium SKU that enables the in-process model. In-process C# is simply not supported there; apps must use the isolated worker model.",
-    "Flex Consumption does not support .NET": "Flex Consumption does support .NET, but only through the isolated worker model. The issue is the in-process model, not the language.",
-    "There is no problem": "There is a real problem: Flex Consumption supports C# only with the isolated worker model, so an in-process app must be migrated before hosting it there."
+    "Flex Consumption supports only the in-process model on Windows": "Flex Consumption runs on Linux only and does not support the in-process model.",
+    "Flex Consumption supports .NET only through custom handlers": "Flex Consumption supports C# natively with the isolated worker model. Custom handlers are not required.",
+    "Flex Consumption requires .NET in-process apps to use always ready instances": "Always ready instances reduce cold starts but do not enable the in-process model, which Flex Consumption does not support."
   },
   "4f7f996ce070": {
-    "Use a Dapr sidecar": "Dapr is a distributed application runtime for service invocation and state management. A Dapr sidecar does not provide zero-downtime deployments for a Flex Consumption app.",
-    "Enable slots in the portal": "Deployment slots cannot be enabled on Flex Consumption because the plan does not support them. Zero-downtime releases rely on its site update strategies instead.",
-    "Move to Windows Flex Consumption": "There is no Windows version of Flex Consumption; the plan runs only on Linux. Changing operating system is not an option and would not add slot support."
+    "Enable deployment slots, because Flex Consumption supports up to two slots": "Flex Consumption does not support deployment slots at all.",
+    "Use slot swap with preview, because Flex Consumption supports staging slots": "Swap with preview needs deployment slots, which Flex Consumption does not support.",
+    "Use zip deploy with WEBSITE_RUN_FROM_PACKAGE, because slots are not supported": "Flex Consumption does not use WEBSITE_RUN_FROM_PACKAGE. Zero-downtime releases use its site update strategies."
   },
   "d0e0ef8ceeaf": {
-    "A NAT gateway only": "A NAT gateway gives a subnet a fixed outbound IP address but does not satisfy the integration requirement. The subnet must be delegated to Microsoft.App/environments.",
-    "A service endpoint for Storage": "A Storage service endpoint lets the subnet reach storage over the Azure backbone. It does not prepare the subnet for Flex Consumption virtual network (VNet) integration, which needs delegation.",
-    "Delegation to Microsoft.Web/serverFarms": "Delegation to Microsoft.Web/serverFarms is used for VNet integration in other App Service and Functions plans. Flex Consumption requires delegation to Microsoft.App/environments instead."
+    "Delegation to Microsoft.Web/serverFarms": "Microsoft.Web/serverFarms delegation is used by other App Service plans. Flex Consumption needs Microsoft.App/environments.",
+    "Delegation to Microsoft.ContainerInstance/containerGroups": "This delegation is for Azure Container Instances. Flex Consumption subnets must be delegated to Microsoft.App/environments.",
+    "A service endpoint for Microsoft.Web": "A service endpoint does not satisfy the integration requirement. The subnet must be delegated to Microsoft.App/environments."
   },
   "a8d9738022ee": {
-    "Deployment slots": "Deployment slots are for staging releases, and Flex Consumption does not support them anyway. They have nothing to do with making a blob trigger fire.",
-    "A Service Bus trigger": "A Service Bus trigger reacts to queue or topic messages, not blob changes. It would need extra plumbing and is not the supported fix for blob triggers on Flex Consumption.",
-    "A timer trigger every second": "Polling storage with a timer every second is inefficient and costly, and timers cannot run that often reliably. Flex Consumption expects the Event Grid-based blob trigger."
+    "The blob trigger with the LogsAndContainerScan source": "LogsAndContainerScan is the polling-based source, which Flex Consumption does not support.",
+    "The blob trigger with a shorter polling interval": "Polling-based blob triggers are not supported on Flex Consumption at any interval. Use the Event Grid source.",
+    "The blob trigger with always ready instances enabled": "Always ready instances reduce cold starts but do not make the polling blob trigger work on Flex Consumption."
   },
   "95c0ff85b543": {
-    "public": "public is not a valid authLevel value for Azure Functions HTTP triggers. The valid levels are anonymous, function and admin.",
-    "none": "none is not a valid authLevel value in Azure Functions. Requiring a key needs the function level; anonymous would allow any caller.",
-    "anonymous": "anonymous lets anyone call the function without supplying a key. That contradicts the requirement that only clients presenting a key can call it."
+    "anonymous": "anonymous means no key is required, so any client could call the function.",
+    "user": "user is not a valid authLevel for an HTTP trigger. The documented values are anonymous, function and admin.",
+    "none": "none is not a valid authLevel value. To require a function key, set authLevel to function."
   },
   "3d8caf27d8a0": {
-    "A timer trigger": "A timer trigger runs a function on a schedule. It has no built-in way to launch hundreds of parallel activities and reliably aggregate their results.",
-    "Event Grid filters": "Event Grid filters choose which events reach a subscriber. They do not orchestrate parallel work or wait for and combine results.",
-    "A single HTTP function with a loop": "A single function looping through work runs sequentially, risks hitting the execution timeout and loses progress on failure. It lacks the checkpointing needed for reliable aggregation."
+    "Durable Functions with the function chaining pattern": "Function chaining runs activities one after another, not in parallel, so it does not fan out work.",
+    "Durable Functions with the monitor pattern": "The monitor pattern polls a condition in a loop. It does not start parallel activities and aggregate results.",
+    "A Service Bus trigger with batch receiving enabled": "Batch receiving processes several messages per call but has no reliable fan-in step to aggregate results."
   },
   "d7a187482899": {
-    "Recreate the vault": "Recreating the vault is unnecessary and would not bring back the deleted secret. With soft delete, the secret is still retained and can be recovered directly.",
-    "Nothing, deletes are immediate": "Deletes are not immediate when soft delete is on. The secret is kept for the retention period, 90 days by default, and can be recovered.",
-    "Restore it only from App Configuration": "App Configuration is a separate service and does not hold backups of Key Vault secrets. Key Vault soft delete lets you recover the secret itself."
+    "Nothing, since purge protection is needed to keep deleted secrets": "Soft delete alone keeps deleted secrets for the retention period. Purge protection only blocks early permanent deletion.",
+    "Recreate it with the same name, since soft delete frees the name at once": "A soft-deleted secret keeps its name reserved until it is purged or recovered, so you recover it instead.",
+    "Restore it from the vault's automatic daily backup in the portal": "Key Vault has no automatic daily backup to restore from. Soft delete recovery is the built-in way back."
   },
   "917cf993960b": {
-    "Secret versioning": "Secret versioning keeps previous values of a secret when it is updated. It does not stop anyone from permanently purging a deleted secret.",
-    "Firewall rules": "Firewall rules restrict which networks can reach the vault. Authorized admins could still purge deleted secrets, so this does not meet the requirement.",
-    "Access policies": "Access policies grant permissions, and admins with purge permission could still permanently delete secrets. Only purge protection blocks purging for everyone until retention ends."
+    "Soft delete": "Soft delete keeps deleted objects for a retention period, but a user with purge permission can still delete them permanently.",
+    "Resource locks": "A resource lock protects the vault resource itself, not the secrets inside it from being purged.",
+    "Azure RBAC authorization": "RBAC decides who can act on secrets but an authorized admin could still purge them. Purge protection blocks purging for everyone."
   },
   "f41550d0ee42": {
-    "${KeyVault:db}": "This placeholder syntax is not recognized by App Service. Key Vault references must use the @Microsoft.KeyVault(...) format in the app setting value.",
-    "keyvault://myvault/db": "keyvault:// is not a supported reference scheme in App Service app settings. The platform resolves only the @Microsoft.KeyVault(...) syntax.",
-    "secret:myvault/db": "secret:myvault/db is not a valid App Service reference format. Key Vault references require the @Microsoft.KeyVault(...) syntax with a SecretUri or VaultName and SecretName."
+    "@KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/db/)": "The reference prefix must be @Microsoft.KeyVault. This shortened form is not recognized by App Service.",
+    "{\"uri\":\"https://myvault.vault.azure.net/secrets/db/\"}": "This JSON is the value format of an App Configuration Key Vault reference, not an App Service app setting reference.",
+    "@Microsoft.AppConfiguration(Endpoint=https://myconfig.azconfig.io; Key=db)": "This syntax references a value in App Configuration, not a secret in Key Vault."
   },
   "a54dd0d22895": {
-    "Restart the app every minute": "Restarting every minute causes constant downtime and still does not coordinate releases. A sentinel key lets apps refresh all settings only when a release is ready.",
-    "Store all values in one key": "Packing everything into one key makes values hard to manage and loses per-key labels and feature flags. The sentinel key pattern keeps keys separate while refreshing them together.",
-    "Poll every key individually": "Polling each key individually picks up changes one at a time, so apps may see a half-finished release. It also generates many more requests than watching one sentinel key."
+    "Watch every key individually and refresh each one when it changes": "Refreshing key by key can load a half-finished set of changes. A sentinel key lets clients reload everything together.",
+    "Set the cache expiration to zero so all keys reload on every request": "This floods the store with requests and still loads changes as they land, not when the release is ready.",
+    "Subscribe to Event Grid and restart the app after each key-value change": "Reacting to every key change still picks up partial updates. The sentinel key marks when the full set is ready."
   },
   "47274003d86f": {
-    "An Event Grid topic": "An Event Grid topic distributes events to subscribers. It provides no mechanism to switch a feature on for a percentage of users or a specific group.",
-    "A separate deployment per user": "Deploying separately per user is costly and unmanageable. A feature flag with a targeting filter controls exposure from one deployment.",
-    "A Key Vault secret": "A Key Vault secret stores sensitive values such as passwords or keys. It cannot target a feature to a group or percentage of users."
+    "An App Configuration feature flag with a time window filter": "A time window filter enables a feature between dates. It cannot target a group or a percentage of users.",
+    "An App Configuration key with a label for the beta group": "Labels separate versions of a key, such as by environment. They do not target individual users or percentages.",
+    "An App Service slot with 10% traffic routing to the beta build": "Slot traffic routing sends a random 10% of all users, not 10% of a beta group, and requires a separate deployment."
   },
   "5dcbce8f3bec": {
-    "requests | top 95 by duration": "top 95 by duration returns the 95 slowest rows, not the 95th percentile. It also does not group results per operation.",
-    "requests | project percentile(95)": "percentile() is an aggregation function that must be used inside summarize. Using it in project is invalid and it also lacks the column to compute on.",
-    "requests | where duration > 95": "This filters requests longer than 95 milliseconds. It returns raw rows rather than calculating the 95th percentile duration for each operation."
+    "requests | summarize percentile(duration, 95) by operation_Id": "operation_Id identifies a single operation instance, so this groups per request, not per operation name.",
+    "requests | top 95 by duration | summarize by operation_Name": "top 95 returns the 95 slowest rows, not a percentile, and summarize by alone computes no duration value.",
+    "requests | summarize percentiles(duration, 5) by operation_Name": "This returns the 5th percentile, not the 95th."
   },
   "ff8198b0842c": {
-    "distinct": "distinct returns unique combinations of columns from one table. It does not combine requests with exceptions.",
-    "union": "union stacks rows from multiple tables one after another without matching them. It does not correlate each failed request with its exceptions by operation.",
-    "extend": "extend adds calculated columns to the existing rows of one table. It cannot bring in matching rows from the exceptions table."
+    "join on operation_Name": "operation_Name is shared by every request to the same route, so it would match unrelated exceptions. operation_Id links one operation.",
+    "union with exceptions": "union stacks the two tables without matching rows, so failed requests are not linked to their exceptions.",
+    "mv-expand operation_Id": "mv-expand expands array values into rows. It does not combine two tables."
   },
   "ba4f0829eccd": {
-    "project count | chart": "This is not valid Kusto Query Language (KQL); chart is not an operator. The correct pattern summarizes by time bins and uses the render operator.",
-    "top 1h | plot": "top requires a count and a sort column, and plot is not a KQL operator. This would fail rather than draw an hourly line chart.",
-    "extend chart = true": "Adding a column named chart only sets a value on each row. It does not group by hour or tell Log Analytics to draw a chart."
+    "summarize count() by bin(timestamp, 1h) | render piechart": "A pie chart shows proportions, not a line over time. render timechart draws a time series.",
+    "summarize count() by bin(timestamp, 1h) | render barchart": "barchart draws horizontal bars, not a line chart over time.",
+    "summarize count() by bin(timestamp, 1d) | render timechart": "bin(timestamp, 1d) groups by day, not by hour."
   },
   "56ff8f81f4a1": {
-    "The legacy instrumentation key SDK only": "The legacy instrumentation-key Application Insights SDKs are being retired, and instrumentation keys are giving way to connection strings. The recommended minimal-code option is the OpenTelemetry Distro.",
-    "A custom HTTP logger": "A custom HTTP logger needs a lot of code and does not provide standard traces, metrics and correlation. The Azure Monitor OpenTelemetry Distro does this in one call.",
-    "Azure Advisor": "Azure Advisor gives best-practice recommendations for Azure resources. It does not instrument applications or send telemetry to Application Insights."
+    "The OpenCensus Azure exporter with the instrumentation key in each handler": "OpenCensus is retired, and instrumentation keys are being replaced by connection strings. The OpenTelemetry Distro is the current option.",
+    "The Azure Monitor Agent with a data collection rule for the Python process": "Azure Monitor Agent collects machine logs and performance data. It does not instrument a Python app for traces and metrics.",
+    "The Azure Monitor Ingestion client with a data collection endpoint and stream name": "The Ingestion client sends custom logs to Log Analytics tables. It does not produce traces and metrics for Application Insights."
   },
   "af65a954f31f": {
-    "Send traces to Key Vault": "Key Vault stores secrets, keys and certificates. It is not a telemetry destination and would not reduce telemetry volume or provide traces.",
-    "Disable dependency tracking entirely": "Disabling dependency tracking removes important data and breaks end-to-end traces. Sampling reduces volume while keeping representative, correlated traces.",
-    "Lower the Log Analytics retention to zero": "Retention cannot be set to zero and shortening it does not reduce ingestion cost, which is the main charge. You would also lose the traces you need."
+    "A daily cap on the Log Analytics workspace": "A daily cap stops ingestion once reached, so later telemetry is lost and the data is not representative.",
+    "Shorter retention on the Log Analytics workspace": "Retention affects how long data is stored, not how much is ingested, so ingestion cost stays the same.",
+    "Live Metrics disabled in the OpenTelemetry configuration": "Live Metrics data is streamed and not stored, so turning it off does not cut ingested volume."
   }
 }

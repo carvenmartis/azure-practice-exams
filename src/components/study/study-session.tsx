@@ -18,6 +18,7 @@ import { recordDailyAnswer } from '@/lib/daily-goal';
 import { exams } from '@/lib/exams';
 import { optionLetters, optionShortcuts, revealFeedback, scrollToTop } from '@/lib/keyboard';
 import { toggleBookmark } from '@/lib/progress-store';
+import { selectVariedQuestions } from '@/lib/question-selection';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
 import { otherTopic, topicFor } from '@/lib/topics';
 import { cn, focusRing } from '@/lib/utils';
@@ -33,9 +34,9 @@ interface StudySessionProps {
 const allTopics = '';
 
 /**
- * Study mode for one exam: every question in a random order, optionally
- * narrowed to one skill area. No timer and no score; picking an option (or
- * Show answer) reveals the answer and explanation straight away, and you
+ * Study mode for one exam: every question in a random, varied order,
+ * optionally narrowed to one skill area. No timer and no score; picking an
+ * option (or Show answer) reveals the answer and explanation straight away, and you
  * can step back and forth. Nothing is saved except bookmarks, and each
  * answer counts towards the daily goal.
  * Keyboard: A-D or 1-4 answer, S shows the answer, Enter goes on, arrows
@@ -57,12 +58,8 @@ export function StudySession({ slug }: StudySessionProps) {
     fetchExamQuestions(slug)
       .then((exam) => {
         if (cancelled) return;
-        const shuffled = [...exam];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        setQuestions(shuffleAllOptions(shuffled).map((question) => ({ ...question, topic: topicFor(slug, question) })));
+        const selected = selectVariedQuestions(exam);
+        setQuestions(shuffleAllOptions(selected).map((question) => ({ ...question, topic: topicFor(slug, question) })));
       })
       .catch(() => {
         if (!cancelled) setLoadError(true);

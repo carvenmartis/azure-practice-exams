@@ -23,6 +23,7 @@ import { cycleFocus, optionLetters, optionShortcuts, revealFeedback, scrollToTop
 import { setLeaveGuard } from '@/lib/leave-guard';
 import { getProgress, recordAnswers, recordAttempt, reviewQueue, toggleBookmark } from '@/lib/progress-store';
 import type { TopicTally } from '@/lib/progress-store';
+import { selectVariedQuestions } from '@/lib/question-selection';
 import { shuffleAllOptions } from '@/lib/shuffle-options';
 import { drillHref, drillSize, topicFor } from '@/lib/topics';
 
@@ -63,9 +64,9 @@ const backGuardKey = 'examBackGuard';
 /**
  * The ExamSession component displays a quiz for a given exam. It
  * downloads the questions from public/exam-data/<slug>.json (generated
- * by scripts/build-exam-data.mjs), randomly selects up to 60 of them
- * and walks the user through them one at a time. After each answer
- * selection the correct answer, explanation and documentation link
+ * by scripts/build-exam-data.mjs), randomly selects up to 60 of them while
+ * spreading out repeated questions, and walks the user through them one at a
+ * time. After each answer selection the correct answer, explanation and documentation link
  * are revealed. When all questions have been answered a score out
  * of 1000 points is calculated and shown. Leaving mid-exam (Exit button,
  * header or menu links, Back) asks first and then shows the results so far.
@@ -108,13 +109,9 @@ export function ExamSession({ slug }: ExamSessionProps) {
             : mode === 'drill'
               ? exam.filter((question) => topicFor(slug, question) === topic)
               : exam.filter((question) => picked.has(question.id));
-        const shuffled = [...pool];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
+        const selected = selectVariedQuestions(pool, mode === 'drill' ? drillSize : questionsPerAttempt);
         // Each question's answers are reshuffled too, so the correct one moves around.
-        setQuestions(shuffleAllOptions(shuffled.slice(0, mode === 'drill' ? drillSize : questionsPerAttempt)));
+        setQuestions(shuffleAllOptions(selected));
         setStartedAt(Date.now());
       })
       .catch(() => {
