@@ -140,22 +140,13 @@
 }
 
 /*
-  Page transition: each page's <main> fades in and rises 6px when it opens
-  (PageLayout), and list rows marked with a --i index follow in a short
-  stagger. Enter only, nothing on exit, so a click never waits. The animation
-  holds no layer once it ends (fill-mode backwards), so nothing composited
-  stays over the scrolling <main>: iOS Safari mis-hits taps on overlays such
-  as the menu drawer when a transformed layer sits inside the scroller.
-  Reduced motion gets a plain fade with no movement and no stagger.
+  List rows marked with a --i index fade in with a short stagger when a page
+  opens. The page itself is faded in by PageTransitionMain (Framer Motion).
+  Fill-mode backwards holds nothing once the animation ends. Reduced motion
+  gets no stagger.
 */
 @layer utilities {
-  .page-enter {
-    animation: page-fade 160ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
-  }
   @media (prefers-reduced-motion: no-preference) {
-    .page-enter {
-      animation: page-enter 220ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
-    }
     .reveal-item {
       animation: page-fade 280ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
       animation-delay: calc(var(--i, 0) * 40ms + 40ms);
@@ -172,9 +163,3 @@
   }
 }
 
-@keyframes page-enter {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-}

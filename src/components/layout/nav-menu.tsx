@@ -19,7 +19,7 @@ function useIsClient() {
 
 /**
  * Burger button that opens a full-height drawer with the site's pages, grouped
- * with counts, plus the theme switch and a backup button (DrawerContent in
+ * with counts, plus a backup button (DrawerContent in
  * nav-drawer.tsx). The drawer slides in from the right edge, fills the width
  * on phones, and closes on navigation, Escape, its Close button or a click
  * outside it. Opening it moves keyboard focus to the first link, and

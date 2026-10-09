@@ -29,7 +29,9 @@ export const metadata: Metadata = {
       { url: '/favicon.ico?v=2', sizes: '48x48' },
       { url: '/icons/icon-192.png?v=2', type: 'image/png', sizes: '192x192' }
     ],
-    apple: '/apple-touch-icon.png?v=2'
+    // A new file name rather than a ?v= query, so iOS can't reuse a cached or failed
+    // fetch. /apple-touch-icon.png and -precomposed.png stay for iOS's own lookups.
+    apple: [{ url: '/icons/apple-touch-icon-180.png', sizes: '180x180', type: 'image/png' }]
   },
   // Home-screen web app: the status bar takes the theme-color with matching text
   appleWebApp: { title: 'Azure Exams', statusBarStyle: 'default' }

@@ -1,57 +1,79 @@
+'use client';
+
 import Link from 'next/link';
 import { StartExamLink } from '@/components/exam/start-exam-link';
 import { Badge } from '@/components/ui/badge';
+import { buttonClasses } from '@/components/ui/button';
 import { cardClasses } from '@/components/ui/card';
 import { splitExamName } from '@/lib/exams';
 import type { Exam } from '@/lib/exams';
-import { getExamNotes } from '@/lib/notes';
-import { cn, focusRing } from '@/lib/utils';
+import { useProgress } from '@/lib/progress-store';
+import { cn } from '@/lib/utils';
+
+/** Microsoft certification exams are passed with 700 out of 1000. */
+const passingScore = 700;
 
 interface ExamCardProps {
   exam: Exam;
+  /** Questions in the exam's bank (src/lib/server/exam-stats.ts). */
+  questionCount: number;
+  hasNotes: boolean;
 }
 
 /**
- * Dashboard card that starts an exam (after a confirm dialog): code badge,
- * title and summary. When the exam has study notes, a second link in the
- * bottom-right corner opens them; it sits on top of the start link, which
- * fills the rest of the card.
+ * One exam on a category page: code, title, summary, the size of the question
+ * bank and this device's attempts and best score, then Start exam (after the
+ * confirm dialog of StartExamLink) and Study notes (Study mode without notes).
  */
-export function ExamCard({ exam }: ExamCardProps) {
+export function ExamCard({ exam, questionCount, hasNotes }: ExamCardProps) {
   const { code, title } = splitExamName(exam);
-  const hasNotes = Boolean(getExamNotes(exam.slug));
+  const attempts = useProgress().attempts.filter((attempt) => attempt.slug === exam.slug);
+  const best = attempts.length ? Math.max(...attempts.map((attempt) => attempt.score)) : null;
 
   return (
-    <div
-      className={cardClasses(
-        'group relative h-full overflow-hidden transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-line-strong hover:shadow-lifted active:scale-[0.99] motion-reduce:transform-none'
-      )}
-    >
-      <StartExamLink slug={exam.slug} className={cn('flex h-full flex-col rounded-2xl p-7', focusRing)}>
-        <Badge className="self-start">{code}</Badge>
-        <h3 className="mt-5 font-display text-lg font-semibold tracking-tight leading-snug">{title}</h3>
-        {exam.description && (
-          <p className="mt-3 mb-6 text-sm leading-relaxed text-ink-muted">{exam.description}</p>
-        )}
-        <span className="mt-auto flex items-center gap-2 border-t border-line pt-5 text-sm font-semibold text-ink transition-colors group-hover:text-accent-strong">
-          Start practice exam
-          <span aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">
-            →
-          </span>
-        </span>
-      </StartExamLink>
-      {hasNotes && (
+    <article className={cardClasses('flex h-full flex-col p-6 sm:p-7')}>
+      <Badge className="self-start">{code}</Badge>
+      <h3 className="mt-4 font-display text-lg leading-snug font-semibold tracking-tight">{title}</h3>
+      {exam.description && <p className="mt-2 text-sm leading-relaxed text-ink-muted">{exam.description}</p>}
+
+      <dl className="mt-6 grid grid-cols-3 divide-x divide-line rounded-xl bg-surface-muted/60 py-3">
+        <div className="px-3 sm:px-4">
+          <dt className="text-xs text-ink-subtle">Questions</dt>
+          <dd className="mt-0.5 text-sm font-semibold tabular-nums">{questionCount}</dd>
+        </div>
+        <div className="px-3 sm:px-4">
+          <dt className="text-xs text-ink-subtle">Attempts</dt>
+          <dd className="mt-0.5 text-sm font-semibold tabular-nums">{attempts.length}</dd>
+        </div>
+        <div className="px-3 sm:px-4">
+          <dt className="text-xs text-ink-subtle">Best score</dt>
+          <dd className="mt-0.5 text-sm font-semibold tabular-nums">
+            {best === null ? (
+              <span className="font-normal text-ink-subtle">None yet</span>
+            ) : (
+              <>
+                {best}
+                <span className={cn('ml-1.5 text-xs font-medium', best >= passingScore ? 'text-success' : 'text-ink-subtle')}>
+                  {best >= passingScore ? 'Pass' : `of ${passingScore}`}
+                </span>
+              </>
+            )}
+          </dd>
+        </div>
+      </dl>
+
+      <div className="mt-auto flex gap-3 pt-6">
+        <StartExamLink slug={exam.slug} className={buttonClasses({ className: 'flex-1' })}>
+          Start exam<span className="sr-only"> {code}</span>
+        </StartExamLink>
         <Link
-          href={`/notes/${exam.slug}`}
-          aria-label={`${code} study notes`}
-          className={cn(
-            'absolute right-7 bottom-7 z-10 text-sm font-semibold text-ink-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-accent-strong hover:decoration-accent',
-            focusRing
-          )}
+          href={hasNotes ? `/notes/${exam.slug}` : `/study/${exam.slug}`}
+          aria-label={`${code} ${hasNotes ? 'study notes' : 'study mode'}`}
+          className={buttonClasses({ variant: 'secondary' })}
         >
-          Study notes
+          {hasNotes ? 'Study notes' : 'Study mode'}
         </Link>
-      )}
-    </div>
+      </div>
+    </article>
   );
 }

@@ -3,11 +3,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
-import { useTheme } from '@/contexts/theme-context';
-import type { ThemePreference } from '@/contexts/theme-context';
 import { shareBackup } from '@/lib/backup';
 import { useOnline } from '@/lib/connection';
-import { exams, siteName } from '@/lib/exams';
+import { examCategories, exams, examsInCategory, siteName } from '@/lib/exams';
 import { canLeave } from '@/lib/leave-guard';
 import { dailyStatus, reviewQueue, useProgress } from '@/lib/progress-store';
 import { useSyncStatus } from '@/lib/sync';
@@ -15,7 +13,7 @@ import type { SyncStatus } from '@/lib/sync';
 import { cn, focusRing } from '@/lib/utils';
 import { appVersion } from '@/lib/version';
 
-type IconName = 'course' | 'progress' | 'review' | 'bookmark' | 'study' | 'guides' | 'notes' | 'settings' | 'about';
+type IconName = 'category' | 'course' | 'progress' | 'review' | 'bookmark' | 'study' | 'guides' | 'notes' | 'settings' | 'about';
 
 interface MenuItem {
   href: string;
@@ -34,6 +32,14 @@ const groups: { label: string; items: MenuItem[] }[] = [
     ]
   },
   {
+    label: 'Categories',
+    items: examCategories.map((category) => ({
+      href: `/categories/${category.id}`,
+      label: category.title,
+      icon: 'category' as const
+    }))
+  },
+  {
     label: 'Study',
     items: [
       { href: '/study', label: 'Study mode', icon: 'study' },
@@ -46,12 +52,6 @@ const groups: { label: string; items: MenuItem[] }[] = [
 const appItems: MenuItem[] = [
   { href: '/settings', label: 'Settings', icon: 'settings' },
   { href: '/about', label: 'About', icon: 'about' }
-];
-
-const themeOptions: { value: ThemePreference; label: string }[] = [
-  { value: 'light', label: 'Light' },
-  { value: 'dark', label: 'Dark' },
-  { value: 'system', label: 'System' }
 ];
 
 /** Small grey heading above a group of rows. */
@@ -88,16 +88,15 @@ interface DrawerContentProps {
 
 /**
  * The inside of the menu drawer (NavMenu in nav-menu.tsx): a top bar with a
- * Close button, a card with the site and sync state, the pages in groups with
- * live counts (questions due for review, saved bookmarks), the theme switch,
- * and a footer with today's daily goal, the version and two quick actions.
+ * Close button, a card with the site and sync state, the pages and exam
+ * categories in groups with
+ * live counts (questions due for review, saved bookmarks), and a footer with today's daily goal, the version and two quick actions.
  * Every count and label comes from what is saved on this device.
  */
 export function DrawerContent({ pathname, visible, onClose, onNavigate }: DrawerContentProps) {
   const progress = useProgress();
   const sync = useSyncStatus();
   const online = useOnline();
-  const { theme, setTheme } = useTheme();
   const [backupNote, setBackupNote] = useState<string | null>(null);
 
   const dueCount = exams.reduce((sum, exam) => sum + reviewQueue(progress, exam.slug).due.length, 0);
@@ -107,6 +106,14 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
   const trailing: Partial<Record<string, ReactNode>> = {
     '/review': dueCount > 0 && (
       <span className="tabular rounded-md bg-danger-soft px-2 py-0.5 text-xs font-medium text-danger">{dueCount} due</span>
+    ),
+    ...Object.fromEntries(
+      examCategories.map((category) => [
+        `/categories/${category.id}`,
+        <span key={category.id} className="tabular text-xs text-ink-subtle">
+          {examsInCategory(category.id).length} exams
+        </span>
+      ])
     ),
     '/bookmarks': bookmarkCount > 0 && (
       <span className="tabular text-xs text-ink-subtle">{bookmarkCount} saved</span>
@@ -218,34 +225,6 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
 
         <div {...stagger(groups.length)}>
           <p className={groupLabelClass}>App</p>
-          <div
-            role="group"
-            aria-label="Theme"
-            className="mb-1 flex items-center justify-between gap-3 rounded-lg bg-surface-muted py-2 pr-2 pl-3"
-          >
-            <span className="flex items-center gap-3 text-[0.95rem] text-ink">
-              <span aria-hidden="true" className="h-1.5 w-1.5" />
-              <Icon name="theme" className="text-ink-subtle" />
-              Theme
-            </span>
-            <span className="flex rounded-md bg-canvas p-0.5">
-              {themeOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  aria-pressed={theme === option.value}
-                  onClick={() => setTheme(option.value)}
-                  className={cn(
-                    'rounded px-2.5 py-1 text-xs font-medium transition-colors',
-                    focusRing,
-                    theme === option.value ? 'bg-surface text-ink shadow-card' : 'text-ink-subtle hover:text-ink'
-                  )}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </span>
-          </div>
           <ul className="space-y-0.5">{appItems.map(row)}</ul>
         </div>
       </div>
@@ -302,7 +281,8 @@ function Kbd({ children, className }: { children: ReactNode; className?: string 
   );
 }
 
-const iconPaths: Record<IconName | 'theme' | 'download' | 'play', ReactNode> = {
+const iconPaths: Record<IconName | 'download' | 'play', ReactNode> = {
+  category: <path d="M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" />,
   course: (
     <>
       <rect x="3" y="3" width="7" height="7" rx="1.5" />
@@ -349,12 +329,6 @@ const iconPaths: Record<IconName | 'theme' | 'download' | 'play', ReactNode> = {
     <>
       <circle cx="12" cy="12" r="9" />
       <path d="M12 11v5M12 8h.01" />
-    </>
-  ),
-  theme: (
-    <>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
     </>
   ),
   download: <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />,

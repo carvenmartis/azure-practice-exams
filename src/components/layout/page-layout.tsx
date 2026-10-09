@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { CourseHeader } from './course-header';
+import { PageTransitionMain } from './page-transition';
 import { SkipLink } from './skip-link';
 
 interface PageLayoutProps {
@@ -18,21 +19,20 @@ interface PageLayoutProps {
  * the screen below the header, so the header never moves. The tab title
  * comes from each page's `metadata` (see src/app/layout.tsx). A "Skip to
  * content" link (SkipLink) jumps past the header. Every page renders its own
- * PageLayout, so <main> mounts again on each navigation and `page-enter`
- * (globals.css) plays the page transition; the header doesn't animate.
+ * PageLayout, so <main> mounts again on each navigation and
+ * PageTransitionMain plays the Framer Motion page transition; the header
+ * doesn't animate.
  */
 export function PageLayout({ headerTitle, eyebrow, className, children }: PageLayoutProps) {
   return (
     <>
       <SkipLink />
       <CourseHeader title={headerTitle} eyebrow={eyebrow} />
-      <main
-        id="main-content"
-        tabIndex={-1}
-        className={cn('page-enter min-h-0 flex-1 overflow-y-auto overscroll-contain focus:outline-none', className)}
+      <PageTransitionMain
+        className={cn('min-h-0 flex-1 overflow-y-auto overscroll-contain focus:outline-none', className)}
       >
         {children}
-      </main>
+      </PageTransitionMain>
     </>
   );
 }

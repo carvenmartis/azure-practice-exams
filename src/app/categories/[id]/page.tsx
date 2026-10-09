@@ -6,6 +6,8 @@ import { PageLayout } from '@/components/layout/page-layout';
 import { PageContainer } from '@/components/ui/page-container';
 import { PageIntro } from '@/components/ui/page-intro';
 import { examCategories, examsInCategory } from '@/lib/exams';
+import { getExamNotes } from '@/lib/notes';
+import { questionCounts } from '@/lib/server/exam-stats';
 import { focusRing } from '@/lib/utils';
 
 interface CategoryPageProps {
@@ -43,10 +45,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               {categoryExams.length} {categoryExams.length === 1 ? 'exam' : 'exams'}
             </p>
           </div>
-          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {categoryExams.map((exam, index) => (
               <li key={exam.slug} className="reveal-item" style={{ '--i': index } as CSSProperties}>
-                <ExamCard exam={exam} />
+                <ExamCard exam={exam} questionCount={questionCounts[exam.slug]} hasNotes={Boolean(getExamNotes(exam.slug))} />
               </li>
             ))}
           </ul>

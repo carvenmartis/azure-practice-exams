@@ -21,8 +21,10 @@ export const changelog: ChangelogEntry[] = [
       'Lists, settings and the Course page use simple rows instead of stacks of cards.',
       'Answers show a check or cross once answered, and the question text is larger.',
       'Pages fade in, buttons respond to a press, and menus open faster and work reliably on iOS.',
-      'A new side menu: pages in groups with icons, how many questions are due and bookmarks saved, sync status, a theme switch, today\'s goal, and buttons to export a backup or jump into review.',
+      'Switching pages fades and slides in only the page itself while the header stays put, and the first page you open appears straight away.',
+      'A new side menu: pages and exam categories in groups with icons, how many questions are due and bookmarks saved, sync status, today\'s goal, and buttons to export a backup or jump into review.',
       'The Dashboard is now called Course.',
+      'The Course page shows a card per category that opens its exams. Each exam card shows its question count, your attempts and best score, with buttons to start the exam or open its study notes. The daily goal has a progress ring, and the review banner says which exams the due questions come from.',
       'Progress, mistakes, bookmarks and the daily goal can sync between your devices through the NAS: create a sync code in Settings and enter it on your other devices. Backups can also be saved to iCloud Drive from the share sheet.',
       'The server now writes what it does to the container log (start-up, syncs, reminders and errors), so problems on the NAS are easier to track down.',
       '31 AZ-104, AZ-204 and AZ-304 answers that no longer matched Microsoft Learn were corrected, 28 explanations were updated to current product names and study guide wording, and leftover citation markers were removed from AZ-104 explanations.'
