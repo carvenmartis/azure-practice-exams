@@ -13,7 +13,7 @@ interface AnswerFeedbackProps {
   nextLabel?: string;
 }
 
-const sectionLabel = 'text-[0.65rem] font-semibold uppercase tracking-[0.18em]';
+const sectionLabel = 'text-xs font-medium';
 
 /**
  * Shown after answering: the correct answer and why, why each other option

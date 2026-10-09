@@ -58,7 +58,7 @@ export function ShortcutHelp({ handlers, shortcuts }: ShortcutHelpProps) {
         aria-haspopup="dialog"
         aria-keyshortcuts="Shift+?"
         className={cn(
-          'hidden items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-semibold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink sm:inline-flex',
+          'hidden items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-semibold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink sm:inline-flex',
           focusRing
         )}
       >
@@ -68,10 +68,8 @@ export function ShortcutHelp({ handlers, shortcuts }: ShortcutHelpProps) {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4 backdrop-blur-[2px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            initial={false}
             onClick={() => setOpen(false)}
           >
             <motion.div
@@ -79,13 +77,9 @@ export function ShortcutHelp({ handlers, shortcuts }: ShortcutHelpProps) {
               aria-modal="true"
               aria-labelledby="shortcut-help-title"
               className="w-full max-w-md rounded-2xl border border-line bg-surface p-7 text-ink shadow-lifted"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.15 }}
               onClick={(event) => event.stopPropagation()}
             >
-              <h2 id="shortcut-help-title" className="font-display text-2xl font-semibold">
+              <h2 id="shortcut-help-title" className="font-display text-xl font-semibold tracking-tight">
                 Keyboard shortcuts
               </h2>
               <dl className="mt-5 divide-y divide-line text-sm">

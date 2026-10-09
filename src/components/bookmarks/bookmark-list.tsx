@@ -51,8 +51,8 @@ export function BookmarkList() {
   return (
     <PageLayout headerTitle="Bookmarks">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Saved questions</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Bookmarks</h1>
+        <p className="text-sm font-medium text-ink-subtle">Saved questions</p>
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Bookmarks</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           Flag a tricky question with Bookmark during an exam and it waits for you here. Bookmarks are saved in this
           browser.
@@ -74,7 +74,7 @@ export function BookmarkList() {
                   <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-4">
                     <div>
                       <Badge>{code}</Badge>
-                      <h2 id={`bookmarks-${slug}`} className="mt-3 font-display text-2xl font-semibold leading-snug">
+                      <h2 id={`bookmarks-${slug}`} className="mt-3 font-display text-xl font-semibold tracking-tight leading-snug">
                         {title}
                       </h2>
                     </div>
@@ -103,7 +103,7 @@ export function BookmarkList() {
                                     <span className="group-open:hidden">Show answer</span>
                                     <span className="hidden group-open:inline">Hide answer</span>
                                   </summary>
-                                  <p className="mt-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-accent">
+                                  <p className="mt-3 text-xs font-medium text-accent-strong">
                                     Correct answer
                                   </p>
                                   <p className="mt-1 font-semibold">{question.options[question.answerIndex]}</p>
@@ -137,7 +137,7 @@ export function BookmarkList() {
           </div>
         ) : (
           <Card className="mt-10 px-6 py-10 text-center">
-            <p className="font-display text-2xl font-semibold">No bookmarks yet</p>
+            <p className="font-display text-xl font-semibold tracking-tight">No bookmarks yet</p>
             <p className="mt-3 text-ink-muted">During an exam, tap Bookmark above a question to save it here.</p>
             <Link href="/" className={buttonClasses({ className: 'mt-6' })}>
               Choose an exam

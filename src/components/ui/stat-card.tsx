@@ -12,8 +12,8 @@ interface StatCardProps {
 export function StatCard({ label, value, className }: StatCardProps) {
   return (
     <Card className={cn('flex flex-col justify-between px-3 py-4 sm:px-6 sm:py-5', className)}>
-      <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-ink-subtle sm:text-xs">{label}</dt>
-      <dd className="mt-2 font-display text-2xl font-semibold text-ink lining-nums sm:text-4xl">{value}</dd>
+      <dt className="text-xs font-medium text-ink-subtle sm:text-sm">{label}</dt>
+      <dd className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink tabular-nums sm:text-3xl">{value}</dd>
     </Card>
   );
 }

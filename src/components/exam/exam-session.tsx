@@ -381,7 +381,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
       <div className="flex w-full max-w-3xl flex-col items-center">
         <div className="mb-8 w-full">
           <div className="flex items-center justify-between gap-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            <p className="text-sm font-medium text-ink-subtle">
               {slug.toUpperCase()}{' '}
               {{ exam: 'practice exam', review: 'mistake review', bookmarks: 'bookmarks', drill: `drill: ${topic}` }[mode]}
             </p>
@@ -414,7 +414,7 @@ export function ExamSession({ slug }: ExamSessionProps) {
             aria-valuenow={answeredCount}
           >
             <div
-              className="h-full rounded-full bg-accent transition-[width] duration-500"
+              className="h-full rounded-full bg-accent transition-[width] duration-300 ease-out"
               style={{ width: `${(answeredCount / questions.length) * 100}%` }}
             />
           </div>

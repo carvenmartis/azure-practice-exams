@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
 import { ServiceWorker } from '@/components/layout/service-worker';
 import { UpdateNotice } from '@/components/layout/update-notice';
@@ -11,14 +11,9 @@ import { themeInitScript } from '@/lib/theme';
 
 // Self-hosted at build time by next/font. The variables are set on <html>, so
 // portalled content (the menu drawer) gets the fonts too; globals.css exposes
-// them to Tailwind as font-sans and font-display.
-const bodyFont = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-body' });
-const headingFont = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['500', '600', '700'],
-  display: 'swap',
-  variable: '--font-heading'
-});
+// them to Tailwind as font-sans, font-display and font-mono.
+const bodyFont = Geist({ subsets: ['latin'], display: 'swap', variable: '--font-body' });
+const codeFont = Geist_Mono({ subsets: ['latin'], display: 'swap', variable: '--font-code' });
 
 /**
  * Tab title, app icons and web manifest for every page. Pages set their own
@@ -53,7 +48,7 @@ interface RootLayoutProps {
  */
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className={`${bodyFont.variable} ${headingFont.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${bodyFont.variable} ${codeFont.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>

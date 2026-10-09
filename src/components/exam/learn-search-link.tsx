@@ -30,7 +30,7 @@ export function LearnSearchLink({ question, className }: LearnSearchLinkProps) {
       aria-label="Search this question on Microsoft Learn (opens a new tab)"
       aria-keyshortcuts="L"
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink',
+        'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink',
         focusRing,
         className
       )}

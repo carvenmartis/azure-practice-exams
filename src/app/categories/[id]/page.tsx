@@ -25,19 +25,18 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <span aria-hidden="true">←</span> All categories
         </Link>
         <section className="mt-8 mb-12 sm:mb-14">
-          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-            <span aria-hidden="true" className="h-px w-8 bg-accent" />
+          <p className="text-sm font-medium text-ink-subtle">
             Category
           </p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-[1.1] font-semibold tracking-tight sm:text-5xl">
+          <h1 className="mt-3 max-w-3xl font-display text-3xl leading-[1.1] font-semibold tracking-tighter sm:text-4xl">
             {category.title}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">{category.description}</p>
         </section>
 
         <section aria-labelledby="category-exams-heading">
-          <div className="mb-6 flex items-end justify-between gap-4 border-b border-line pb-4">
-            <h2 id="category-exams-heading" className="font-display text-2xl font-semibold sm:text-3xl">
+          <div className="mb-6 flex items-baseline justify-between gap-4">
+            <h2 id="category-exams-heading" className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
               Exams
             </h2>
             <p className="text-sm text-ink-subtle">

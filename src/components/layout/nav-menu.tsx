@@ -114,9 +114,9 @@ export function NavMenu() {
                   initial={{ x: '100%' }}
                   animate={{ x: 0 }}
                   exit={{ x: '100%' }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
                 >
-                  <p className="mb-3 px-4 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-ink-subtle">
+                  <p className="mb-3 px-4 text-xs font-medium text-ink-subtle">
                     Menu
                   </p>
                   <ul className="space-y-1">
@@ -125,9 +125,9 @@ export function NavMenu() {
                       return (
                         <motion.li
                           key={item.href}
-                          initial={{ opacity: 0, x: 12 }}
+                          initial={{ opacity: 0, x: 8 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.15 + index * 0.06 }}
+                          transition={{ delay: 0.05 + index * 0.03, duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
                         >
                           <Link
                             href={item.href}
@@ -137,7 +137,7 @@ export function NavMenu() {
                               setOpen(false);
                             }}
                             className={cn(
-                              'block rounded-xl border-l-2 px-4 py-3 text-base font-medium transition-colors',
+                              'block rounded-lg border-l-2 px-4 py-3 text-base font-medium transition-colors',
                               focusRing,
                               active
                                 ? 'border-accent bg-accent-soft text-accent-strong'

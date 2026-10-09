@@ -24,8 +24,8 @@ export function ReviewList() {
   return (
     <PageLayout headerTitle="Review mistakes">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Practice</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Review mistakes</h1>
+        <p className="text-sm font-medium text-ink-subtle">Practice</p>
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Review mistakes</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           Questions you get wrong come back for review {first} days later. Each time you answer one right it comes
           back less often ({rest.join(', ')} and {last} days), and after that it leaves the list. Miss it again and it
@@ -40,7 +40,7 @@ export function ReviewList() {
               return (
                 <li key={exam.slug} className={cardClasses('flex h-full flex-col p-6')}>
                   <Badge className="self-start">{code}</Badge>
-                  <h2 className="mt-4 font-display text-xl font-semibold leading-snug">{title}</h2>
+                  <h2 className="mt-4 font-display text-lg font-semibold tracking-tight leading-snug">{title}</h2>
                   <p className="mt-2 text-sm font-semibold text-ink">
                     {due.length
                       ? `${due.length} question${due.length === 1 ? '' : 's'} due now`
@@ -73,7 +73,7 @@ export function ReviewList() {
           </ul>
         ) : (
           <Card className="mt-10 px-6 py-10 text-center">
-            <p className="font-display text-2xl font-semibold">Nothing to review</p>
+            <p className="font-display text-xl font-semibold tracking-tight">Nothing to review</p>
             <p className="mt-3 text-ink-muted">Questions you get wrong in a practice exam show up here.</p>
             <Link href="/" className={buttonClasses({ className: 'mt-6' })}>
               Choose an exam

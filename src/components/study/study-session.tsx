@@ -174,7 +174,7 @@ export function StudySession({ slug }: StudySessionProps) {
     <PageLayout {...layoutProps} eyebrow={`Study mode · ${index + 1} of ${visible.length}`}>
       <div className="flex w-full max-w-3xl flex-col">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <label className="flex min-w-0 flex-1 flex-col gap-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+          <label className="flex min-w-0 flex-1 flex-col gap-1.5 text-sm font-medium text-ink-subtle">
             Skill area
             <select
               value={topic}

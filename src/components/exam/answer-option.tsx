@@ -5,7 +5,7 @@ import { cn, focusRing } from '@/lib/utils';
 export type AnswerState = 'default' | 'correct' | 'incorrect';
 
 const stateClasses: Record<AnswerState, string> = {
-  default: 'border-line bg-surface enabled:hover:border-accent/60 enabled:hover:shadow-card',
+  default: 'border-line bg-surface shadow-card enabled:hover:border-line-strong enabled:active:scale-[0.99] motion-reduce:enabled:active:scale-100',
   correct: 'border-success bg-success-soft',
   incorrect: 'border-danger bg-danger-soft'
 };
@@ -28,7 +28,7 @@ export function AnswerOption({ state, disabled, onSelect, shortcut, children }: 
       disabled={disabled}
       aria-keyshortcuts={shortcut}
       className={cn(
-        'flex w-full items-start gap-3 rounded-xl border px-5 py-3.5 text-left leading-relaxed transition-all duration-200 disabled:cursor-default',
+        'flex w-full items-start gap-3 rounded-xl border px-5 py-3.5 text-left leading-relaxed transition-[border-color,background-color,transform] duration-150 ease-out disabled:cursor-default',
         focusRing,
         stateClasses[state]
       )}
@@ -36,7 +36,7 @@ export function AnswerOption({ state, disabled, onSelect, shortcut, children }: 
       {shortcut && (
         <kbd
           aria-hidden="true"
-          className="mt-0.5 hidden h-6 min-w-6 shrink-0 items-center justify-center rounded-md border border-line-strong bg-surface-muted px-1.5 font-sans text-xs font-semibold text-ink-muted sm:inline-flex"
+          className="mt-0.5 hidden h-6 min-w-6 shrink-0 items-center justify-center rounded-md border border-line-strong bg-surface-muted px-1.5 font-mono text-xs font-medium text-ink-muted sm:inline-flex"
         >
           {shortcut}
         </kbd>

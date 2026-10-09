@@ -78,7 +78,7 @@ export function ScoreTrend({ attempts }: ScoreTrendProps) {
       </svg>
       {shown && (
         <figcaption className="mt-2 text-xs text-ink-subtle" aria-live="polite">
-          {activeIndex === null ? 'Latest' : `Attempt ${activeIndex + 1}`}: <span className="font-semibold text-ink lining-nums">{shown.score}</span> on{' '}
+          {activeIndex === null ? 'Latest' : `Attempt ${activeIndex + 1}`}: <span className="font-semibold text-ink tabular-nums">{shown.score}</span> on{' '}
           {formatDate(shown.finishedAt)}
           {shown.endedEarly ? ' (ended early)' : ''}
         </figcaption>

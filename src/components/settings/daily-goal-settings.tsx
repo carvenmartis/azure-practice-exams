@@ -123,7 +123,7 @@ export function DailyGoalSettings() {
             type="time"
             value={time}
             onChange={(event) => setTime(event.target.value || defaultReminderTime)}
-            className={cn('rounded-xl border border-line-strong bg-surface px-3 py-2 text-ink lining-nums', focusRing)}
+            className={cn('rounded-xl border border-line-strong bg-surface px-3 py-2 text-ink tabular-nums', focusRing)}
           />
         </label>
         <Button

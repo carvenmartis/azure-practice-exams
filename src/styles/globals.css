@@ -83,12 +83,23 @@
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
 
-  /* Set by next/font in src/pages/_app.tsx */
+  /* Set by next/font in src/app/layout.tsx. Headings use the body family, tighter and heavier. */
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-heading), ui-serif, Georgia, serif;
+  --font-display: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-code), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --shadow-card: 0 1px 2px rgb(var(--shadow-color) / 0.04), 0 4px 16px -4px rgb(var(--shadow-color) / 0.08);
-  --shadow-lifted: 0 2px 4px rgb(var(--shadow-color) / 0.05), 0 18px 40px -12px rgb(var(--shadow-color) / 0.22);
+  /*
+    Motion: strong custom curves (the built-in ones are too weak), so every
+    ease-out utility and default transition starts fast and settles gently.
+    UI transitions stay at 150-250ms; see .claude/skills/emil-design-eng.
+  */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  --default-transition-duration: 160ms;
+
+  --shadow-card: 0 1px 2px rgb(var(--shadow-color) / 0.04), 0 2px 8px -2px rgb(var(--shadow-color) / 0.06);
+  --shadow-lifted: 0 1px 2px rgb(var(--shadow-color) / 0.05), 0 12px 32px -12px rgb(var(--shadow-color) / 0.2);
 }
 
 @layer base {
@@ -109,6 +120,13 @@
   html,
   body {
     @apply h-full overflow-hidden overscroll-none bg-header text-ink antialiased;
+  }
+
+  /* Headings wrap evenly instead of leaving one word on the last line */
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
 
   /*

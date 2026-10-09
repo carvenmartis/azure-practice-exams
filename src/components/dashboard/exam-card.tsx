@@ -24,23 +24,18 @@ export function ExamCard({ exam }: ExamCardProps) {
   return (
     <div
       className={cardClasses(
-        'group relative h-full overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/60 hover:shadow-lifted motion-reduce:transform-none'
+        'group relative h-full overflow-hidden transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-line-strong hover:shadow-lifted active:scale-[0.99] motion-reduce:transform-none'
       )}
     >
-      {/* Gold rule that draws in along the top edge on hover */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100"
-      />
       <StartExamLink slug={exam.slug} className={cn('flex h-full flex-col rounded-2xl p-7', focusRing)}>
         <Badge className="self-start">{code}</Badge>
-        <h3 className="mt-5 font-display text-xl font-semibold leading-snug">{title}</h3>
+        <h3 className="mt-5 font-display text-lg font-semibold tracking-tight leading-snug">{title}</h3>
         {exam.description && (
           <p className="mt-3 mb-6 text-sm leading-relaxed text-ink-muted">{exam.description}</p>
         )}
         <span className="mt-auto flex items-center gap-2 border-t border-line pt-5 text-sm font-semibold text-ink transition-colors group-hover:text-accent-strong">
           Start practice exam
-          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+          <span aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-0.5">
             →
           </span>
         </span>

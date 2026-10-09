@@ -42,7 +42,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
     <PageLayout headerTitle={exam.name} eyebrow="Exam guide">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
         <Badge>{code}</Badge>
-        <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
+        <h1 className="mt-4 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">{title}</h1>
         {exam.description && <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">{exam.description}</p>}
         {guide.note && (
           <p className="mt-6 rounded-xl border border-accent/40 bg-accent-soft px-4 py-3 text-sm leading-relaxed text-ink">
@@ -77,7 +77,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           </li>
         </ul>
 
-        <h2 className="mt-14 border-b border-line pb-4 font-display text-2xl font-semibold sm:text-3xl">
+        <h2 className="mt-14 border-b border-line pb-4 font-display text-xl font-semibold tracking-tight sm:text-2xl">
           Skills measured
         </h2>
         <ol className="mt-6 space-y-5">
@@ -85,8 +85,8 @@ export default async function GuidePage({ params }: GuidePageProps) {
             <li key={area.name}>
               <Card className="p-6 sm:p-7">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                  <h3 className="font-display text-xl font-semibold leading-snug">{area.name}</h3>
-                  <p className="text-sm font-semibold text-accent-strong lining-nums">{area.weight}</p>
+                  <h3 className="font-display text-lg font-semibold tracking-tight leading-snug">{area.name}</h3>
+                  <p className="text-sm font-semibold text-accent-strong tabular-nums">{area.weight}</p>
                 </div>
                 <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-surface-muted" aria-hidden="true">
                   <div

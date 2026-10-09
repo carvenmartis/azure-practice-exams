@@ -15,8 +15,8 @@ export default function NotesIndex() {
   return (
     <PageLayout headerTitle="Study notes">
       <div className="mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Know it by heart</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Study notes</h1>
+        <p className="text-sm font-medium text-ink-subtle">Know it by heart</p>
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Study notes</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           The good-to-knows of each exam: key terms with what they mean, important limits and defaults, and every
           abbreviation used in the questions. Read them before a practice round, then quiz yourself.

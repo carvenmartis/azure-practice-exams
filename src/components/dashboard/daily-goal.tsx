@@ -25,8 +25,8 @@ export function DailyGoal() {
     <Card className="mt-6 px-5 py-5 sm:px-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Daily goal</p>
-          <p className="mt-2 font-display text-2xl font-semibold lining-nums">
+          <p className="text-sm font-medium text-ink-subtle">Daily goal</p>
+          <p className="mt-2 font-display text-xl font-semibold tracking-tight tabular-nums">
             {status.today} <span className="text-ink-subtle">of {status.goal} questions today</span>
           </p>
           <p className={cn('mt-1 text-sm', status.reached ? 'font-semibold text-success' : 'text-ink-muted')}>
@@ -36,8 +36,8 @@ export function DailyGoal() {
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-subtle">Streak</p>
-          <p className="mt-1 font-display text-3xl font-semibold lining-nums">
+          <p className="text-sm font-medium text-ink-subtle">Streak</p>
+          <p className="mt-1 font-display text-3xl font-semibold tabular-nums">
             {status.streak} <span className="text-base text-ink-subtle">day{status.streak === 1 ? '' : 's'}</span>
           </p>
         </div>
@@ -51,7 +51,7 @@ export function DailyGoal() {
         aria-valuenow={Math.min(status.today, status.goal)}
       >
         <div
-          className={cn('h-full rounded-full transition-[width] duration-500', status.reached ? 'bg-success' : 'bg-accent')}
+          className={cn('h-full rounded-full transition-[width] duration-300 ease-out', status.reached ? 'bg-success' : 'bg-accent')}
           style={{ width: `${share * 100}%` }}
         />
       </div>

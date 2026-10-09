@@ -55,10 +55,10 @@ export function ConfirmDialog({
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4 backdrop-blur-[2px]"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] } }}
+          exit={{ opacity: 0, transition: { duration: 0.12 } }}
           onClick={onCancel}
         >
           <motion.div
@@ -67,13 +67,12 @@ export function ConfirmDialog({
             aria-labelledby="confirm-dialog-title"
             aria-describedby="confirm-dialog-message"
             className="w-full max-w-sm rounded-2xl border border-line bg-surface p-7 text-ink shadow-lifted"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1, transition: { duration: 0.2, ease: [0.23, 1, 0.32, 1] } }}
+            exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.12 } }}
             onClick={(event) => event.stopPropagation()}
           >
-            <h2 id="confirm-dialog-title" className="font-display text-2xl font-semibold">
+            <h2 id="confirm-dialog-title" className="font-display text-xl font-semibold tracking-tight">
               {title}
             </h2>
             <p id="confirm-dialog-message" className="mt-3 text-sm leading-relaxed text-ink-muted">

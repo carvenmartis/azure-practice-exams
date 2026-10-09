@@ -23,14 +23,10 @@ export default function Home() {
     <PageLayout>
       <div className="mx-auto max-w-6xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20 sm:pb-24">
         <section className="mb-14 sm:mb-16">
-          <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-            <span aria-hidden="true" className="h-px w-8 bg-accent" />
-            Dashboard
-          </p>
-          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-[1.1] font-semibold tracking-tight sm:text-6xl">
-            Prepare for your Microsoft Azure <span className="text-accent italic">certification</span>
+          <h1 className="max-w-3xl font-display text-4xl leading-[1.05] font-semibold tracking-tighter sm:text-5xl">
+            Prepare for your Microsoft Azure certification
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
+          <p className="mt-5 max-w-[60ch] text-base leading-relaxed text-ink-muted sm:text-lg">
             Pick a category, then an exam to start an untimed practice run. Each question shows the correct
             answer, an explanation and a link to the Microsoft documentation.
           </p>
@@ -44,13 +40,13 @@ export default function Home() {
         </section>
 
         <section aria-labelledby="categories-heading">
-          <div className="mb-6 flex items-end justify-between gap-4 border-b border-line pb-4">
-            <h2 id="categories-heading" className="font-display text-2xl font-semibold sm:text-3xl">
+          <div className="mb-6 flex items-baseline justify-between gap-4">
+            <h2 id="categories-heading" className="font-display text-2xl font-semibold tracking-tight">
               Categories
             </h2>
             <p className="text-sm text-ink-subtle">{categories.length} categories</p>
           </div>
-          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
               <li key={category.id}>
                 <CategoryCard category={category} />

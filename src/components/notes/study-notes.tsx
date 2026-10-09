@@ -84,7 +84,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search terms and meanings"
             className={cn(
-              'w-full rounded-full border border-line-strong bg-surface px-4 py-2.5 text-base text-ink placeholder:text-ink-subtle',
+              'w-full rounded-lg border border-line-strong bg-surface px-4 py-2.5 text-base text-ink placeholder:text-ink-subtle',
               focusRing
             )}
           />
@@ -115,7 +115,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
                 type="button"
                 onClick={() => document.getElementById(sectionId(index))?.scrollIntoView({ behavior: 'smooth' })}
                 className={cn(
-                  'rounded-full border border-line bg-surface px-3 py-1 text-sm text-ink-muted transition-colors hover:border-accent hover:text-accent-strong',
+                  'rounded-lg border border-line bg-surface px-3 py-1 text-sm text-ink-muted transition-colors hover:border-accent hover:text-accent-strong',
                   focusRing
                 )}
               >
@@ -135,7 +135,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
         return (
           <section key={section.title} id={sectionId(index)} className="mt-12 scroll-mt-6">
             <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-1 border-b border-line pb-3">
-              <h2 className="font-display text-2xl font-semibold">{section.title}</h2>
+              <h2 className="font-display text-xl font-semibold tracking-tight">{section.title}</h2>
               {section.studyHref && (
                 <Link href={section.studyHref} className={linkClass}>
                   Practice these questions
@@ -157,7 +157,7 @@ export function StudyNotes({ sections }: StudyNotesProps) {
                           className={cn('w-full text-left', focusRing)}
                         >
                           {term}
-                          <span className="ml-2 align-middle text-xs font-sans font-semibold uppercase tracking-[0.14em] text-accent-strong">
+                          <span className="ml-2 align-middle text-xs font-sans font-medium text-accent-strong">
                             {hidden ? 'Show' : 'Hide'}
                           </span>
                         </button>

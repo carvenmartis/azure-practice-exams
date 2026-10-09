@@ -14,6 +14,16 @@ export interface ChangelogEntry {
  */
 export const changelog: ChangelogEntry[] = [
   {
+    date: '2026-10-09',
+    title: 'A calmer, sharper look',
+    changes: [
+      'New typeface (Geist) replaces the serif headings; the cream, gold and navy colours stay.',
+      'Section labels are plain sentence case, page titles are smaller, and exam codes and answer keys use a monospaced font.',
+      'Buttons, cards and answers give a slight press response; menus and dialogs open faster, and the keyboard shortcuts overlay opens instantly.',
+      'Added CLAUDE.md and the Emil Kowalski and Taste design skills for Claude Code under .claude/skills.'
+    ]
+  },
+  {
     date: '2026-10-08',
     title: 'Harder answer choices and less repetitive rounds',
     changes: [

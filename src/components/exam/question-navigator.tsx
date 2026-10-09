@@ -51,7 +51,7 @@ export function QuestionNavigator({ answered, currentIndex, onJump }: QuestionNa
                       setOpen(false);
                     }}
                     className={cn(
-                      'flex h-9 w-full items-center justify-center rounded-lg border text-xs font-semibold lining-nums transition-colors',
+                      'flex h-9 w-full items-center justify-center rounded-lg border text-xs font-semibold tabular-nums transition-colors',
                       focusRing,
                       current
                         ? 'border-primary bg-primary text-on-primary'

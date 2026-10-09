@@ -20,7 +20,7 @@ export function BookmarkButton({ slug, questionId, className }: BookmarkButtonPr
       aria-pressed={saved}
       onClick={() => toggleBookmark(slug, questionId)}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',
+        'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors',
         focusRing,
         saved ? 'bg-accent-soft text-accent-strong' : 'text-ink-muted hover:bg-surface-muted hover:text-ink',
         className

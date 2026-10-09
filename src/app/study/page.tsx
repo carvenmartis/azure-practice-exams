@@ -14,8 +14,8 @@ export default function StudyIndex() {
   return (
     <PageLayout headerTitle="Study mode">
       <div className="mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Learn at your pace</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Study mode</h1>
+        <p className="text-sm font-medium text-ink-subtle">Learn at your pace</p>
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Study mode</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           Go through every question of an exam, or just one skill area. There is no timer and no score: the answer and
           explanation show as soon as you pick an option, or tap Show answer to skip ahead. Study rounds don&apos;t

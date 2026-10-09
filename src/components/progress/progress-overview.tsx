@@ -31,8 +31,8 @@ export function ProgressOverview() {
   return (
     <PageLayout headerTitle="My progress">
       <div className="mx-auto max-w-4xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Your history</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">My progress</h1>
+        <p className="text-sm font-medium text-ink-subtle">Your history</p>
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">My progress</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           Every practice exam you finish or exit is saved in this browser, so your history stays on this device.
         </p>
@@ -57,7 +57,7 @@ export function ProgressOverview() {
           </>
         ) : (
           <Card className="mt-10 px-6 py-10 text-center">
-            <p className="font-display text-2xl font-semibold">No attempts yet</p>
+            <p className="font-display text-xl font-semibold tracking-tight">No attempts yet</p>
             <p className="mt-3 text-ink-muted">Finish a practice exam and your score and weakest topics appear here.</p>
             <Link href="/" className={buttonClasses({ className: 'mt-6' })}>
               Choose an exam

@@ -60,7 +60,7 @@ export default async function NotesPage({ params }: NotesPageProps) {
         <div className="mt-8">
           <Badge>{code}</Badge>
         </div>
-        <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
+        <h1 className="mt-4 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">{title}</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           The terms, abbreviations and facts worth knowing by heart for {code}, grouped by the skill areas of the
           official outline. Read them through, then use Quiz me to hide the meanings and test yourself.

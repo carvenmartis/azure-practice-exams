@@ -40,17 +40,17 @@ export function ExamResults({
 }: ExamResultsProps) {
   const timeTaken = durationSeconds ? (
     <p className="mt-2 text-sm text-ink-subtle">
-      Time taken: <span className="font-semibold text-ink-muted lining-nums">{formatDuration(durationSeconds)}</span>
+      Time taken: <span className="font-semibold text-ink-muted tabular-nums">{formatDuration(durationSeconds)}</span>
     </p>
   ) : null;
 
   if (mode === 'drill') {
     return (
       <div className="flex w-full max-w-xl flex-col items-center text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+        <p className="text-sm font-medium text-ink-subtle">
           {endedEarly ? 'Topic drill ended early' : 'Topic drill complete'}
         </p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">
           {correctCount} of {answeredCount} right
         </h1>
         <p className="mt-4 leading-relaxed text-ink-muted">
@@ -73,10 +73,10 @@ export function ExamResults({
   if (mode === 'bookmarks') {
     return (
       <div className="flex w-full max-w-xl flex-col items-center text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+        <p className="text-sm font-medium text-ink-subtle">
           {endedEarly ? 'Bookmarks round ended early' : 'Bookmarks round complete'}
         </p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">
           {correctCount} of {answeredCount} right
         </h1>
         <p className="mt-4 leading-relaxed text-ink-muted">
@@ -94,10 +94,10 @@ export function ExamResults({
     const stillWrong = answeredCount - correctCount;
     return (
       <div className="flex w-full max-w-xl flex-col items-center text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+        <p className="text-sm font-medium text-ink-subtle">
           {endedEarly ? 'Review ended early' : 'Review complete'}
         </p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">
           {correctCount} of {answeredCount} right
         </h1>
         <p className="mt-4 leading-relaxed text-ink-muted">
@@ -124,10 +124,10 @@ export function ExamResults({
 
   return (
     <div className="flex w-full max-w-xl flex-col items-center text-center">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+      <p className="text-sm font-medium text-ink-subtle">
         {endedEarly ? 'Exam ended early' : 'Exam complete'}
       </p>
-      <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Your results</h1>
+      <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Your results</h1>
       <p className="mt-4 leading-relaxed text-ink-muted">
         {endedEarly
           ? `You answered ${answeredCount} of ${total} questions, ${correctCount} of them correctly.`
@@ -135,8 +135,8 @@ export function ExamResults({
       </p>
 
       <Card className="mt-8 w-full px-6 py-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-subtle">Score</p>
-        <p className="mt-2 font-display text-6xl font-semibold tracking-tight lining-nums">
+        <p className="text-sm font-medium text-ink-subtle">Score</p>
+        <p className="mt-2 font-display text-6xl font-semibold tracking-tight tabular-nums">
           {score}
           <span className="text-2xl text-ink-subtle"> / 1000</span>
         </p>

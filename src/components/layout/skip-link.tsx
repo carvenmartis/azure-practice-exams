@@ -13,7 +13,7 @@ export function SkipLink() {
         event.preventDefault();
         document.getElementById('main-content')?.focus();
       }}
-      className="sr-only rounded-full bg-primary text-sm font-semibold text-on-primary shadow-lifted focus:not-sr-only focus:fixed focus:px-4 focus:py-2 focus:top-3 focus:left-4 focus:z-[60]"
+      className="sr-only rounded-lg bg-primary text-sm font-semibold text-on-primary shadow-lifted focus:not-sr-only focus:fixed focus:px-4 focus:py-2 focus:top-3 focus:left-4 focus:z-[60]"
     >
       Skip to content
     </a>

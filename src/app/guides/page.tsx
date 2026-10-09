@@ -14,8 +14,8 @@ export default function GuidesIndex() {
   return (
     <PageLayout headerTitle="Exam guides">
       <div className="mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Know the exam</p>
-        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">Exam guides</h1>
+        <p className="text-sm font-medium text-ink-subtle">Know the exam</p>
+        <h1 className="mt-3 font-display text-3xl font-semibold tracking-tighter sm:text-4xl">Exam guides</h1>
         <p className="mt-4 max-w-2xl leading-relaxed text-ink-muted">
           What each exam measures, according to Microsoft&apos;s official study guide, with links to the training on
           Microsoft Learn.

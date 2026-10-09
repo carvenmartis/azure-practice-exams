@@ -32,7 +32,7 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
             if (!canLeave()) event.preventDefault();
           }}
           className={cn(
-            'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-on-primary ring-1 ring-accent/50 ring-offset-2 ring-offset-header transition-colors hover:bg-primary-hover',
+            'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-on-primary transition-[background-color,transform] duration-150 ease-out hover:bg-primary-hover active:scale-[0.96]',
             focusRing
           )}
         >
@@ -40,11 +40,11 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
         </Link>
         <div className="ml-1 min-w-0 flex-1">
           {eyebrow && (
-            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-accent">
+            <p className="text-xs font-medium text-ink-subtle">
               {eyebrow}
             </p>
           )}
-          <p className="truncate font-display text-base font-semibold sm:text-lg" title={title}>
+          <p className="truncate font-display text-[0.95rem] font-semibold tracking-tight sm:text-base" title={title}>
             {title}
           </p>
         </div>
@@ -60,7 +60,7 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
  */
 function GraduationCap() {
   return (
-    <svg viewBox="48 54 416 416" aria-hidden="true" className="h-7 w-7">
+    <svg viewBox="48 54 416 416" aria-hidden="true" className="h-6 w-6">
       <path
         d="M150 262 L150 330 C150 362 205 384 256 384 C307 384 362 362 362 330 L362 262 L256 312 Z"
         fill="currentColor"
