@@ -34,11 +34,6 @@
     "Azure applies a spending limit to the subscription and blocks new resource deployments.": "A budget does not set a spending limit or block deployments. It only sends notifications, optionally calling an action group you configure.",
     "Azure raises a Service Health alert for the subscription owners in the Azure portal.": "Service Health alerts report Azure service issues and maintenance. Budget thresholds trigger budget alert emails to the recipients set on the budget."
   },
-  "9a66a7d67483": {
-    "Enterprise Agreement enrollments only, since MCA billing profiles do not support budgets": "Microsoft Customer Agreement billing accounts, billing profiles, and invoice sections all support budgets, so budget alerts are not limited to Enterprise Agreement.",
-    "Pay-as-you-go subscriptions only, because EA and MCA accounts use quota alerts instead": "Enterprise Agreement and Microsoft Customer Agreement accounts support budget alerts too. Department spending quota alerts are an additional EA feature, not a replacement.",
-    "Microsoft Customer Agreement accounts only, because EA enrollments rely on credit alerts": "Enterprise Agreement accounts support budget alerts as well. Credit alerts are an extra EA alert type for Azure Prepayment, not a replacement for budgets."
-  },
   "55dc7335b834": {
     "Only on the Budgets page in the Azure portal": "In the Azure portal, budgets are defined by cost. Usage-based budgets are defined through the Azure Consumption API instead.",
     "Only by configuring an Azure Monitor metric alert rule": "Azure Monitor metric alerts watch resource metrics, not budget consumption. Usage-based budgets are defined through the Azure Consumption API.",
@@ -449,11 +444,6 @@
     "Read-access geo-redundant storage (RA-GRS)": "RA-GRS adds a secondary region and read access, making it much more expensive than LRS.",
     "Read-access geo-zone-redundant storage (RA-GZRS)": "RA-GZRS is the most expensive option, combining zones, a secondary region and read access."
   },
-  "fb39bbd5c7f7": {
-    "LRS provides 12 nines of durability by replicating across zones, while ZRS provides 11 nines within one datacenter.": "This swaps the two: LRS keeps copies in one datacenter with 11 nines, and ZRS replicates across zones with 12 nines.",
-    "GRS provides only 9 nines of durability because data is replicated asynchronously to the secondary region.": "GRS provides at least 16 nines of durability because it keeps six copies across two regions.",
-    "RA-GRS offers the same 11 nines of durability as LRS because both keep three copies in the primary region.": "RA-GRS adds a secondary region and reaches at least 16 nines, well above LRS."
-  },
   "5bd41db796e6": {
     "Account SAS": "An account SAS is signed with the storage account key, not Microsoft Entra credentials.",
     "Service SAS with stored access policy": "A service SAS, with or without a stored access policy, is signed with the storage account key.",
@@ -494,11 +484,6 @@
     "Whenever you create a user delegation SAS and want to revoke it centrally without rotating the user delegation key.": "User delegation SAS does not support stored access policies.",
     "Whenever you need an account SAS that spans several services and want to manage its permissions centrally.": "Stored access policies work only with service SAS; an account SAS can't reference one."
   },
-  "d71f86544d87": {
-    "Blob storage": "Blob Storage has supported user delegation SAS from the start.",
-    "Data Lake Storage": "Data Lake Storage supports user delegation SAS, as it is built on Blob Storage.",
-    "Azure Queue storage": "Microsoft Learn lists Queue Storage as supporting user delegation SAS."
-  },
   "bfcefe65a3e1": {
     "The signed resource field": "The signed resource field (sr) says which resource type the SAS points to, such as a blob or container, not the operations.",
     "The signed expiry field": "The signed expiry field (se) sets when the SAS stops being valid, not what it allows.",
@@ -533,11 +518,6 @@
     "Azure App Configuration with a managed identity": "App Configuration stores app settings, not encryption keys that Azure Storage can use for customer-managed keys.",
     "Azure Confidential Ledger or Azure Payment HSM": "Neither service is supported as a key store for Azure Storage customer-managed keys.",
     "Microsoft Entra ID application credentials": "Entra ID handles identities, not encryption keys; customer-managed keys live in Key Vault or Managed HSM."
-  },
-  "4347182f32d0": {
-    "CPKs are stored by the client in Azure Key Vault and referenced by the storage account, which retrieves them to encrypt every write in the account.": "That describes customer-managed keys; with CPK the key is sent on each request and Azure Storage does not store it.",
-    "CPKs let clients encrypt data locally before upload, so Azure Storage never receives the key and server‑side encryption is turned off for those blobs.": "Local encryption before upload is client-side encryption; with CPK the key is sent to Azure Storage, which does the encryption.",
-    "CPKs apply one key to the whole storage account at creation time, replacing Microsoft‑managed keys for all blob, file, queue and table data.": "CPK works per request on Blob storage operations, not as an account-wide key for every service."
   },
   "ad98f82d29da": {
     "RSA‑2048": "RSA is an asymmetric algorithm used for key wrapping, not for encrypting stored data in Azure Storage.",
@@ -844,11 +824,6 @@
     "Add the roles to the policy initiative.": "An initiative groups policy definitions; RBAC roles cannot be added to it.",
     "Assign a deny assignment first, then roles.": "You cannot create deny assignments directly; Azure creates them for features like managed apps and deployment stacks."
   },
-  "d2ee6c72e52b": {
-    "It allows the operation to complete but records it as non-compliant in the compliance results.": "That is the Audit effect; DenyAction actually blocks the targeted request.",
-    "It blocks the call only for users who lack RBAC permission, so Owners can still run the operation.": "DenyAction blocks the action even when the user's RBAC permissions would allow it, including Owners.",
-    "It deploys a CanNotDelete lock on matching resources to prevent the operation from running later.": "DenyAction blocks the request itself at Azure Resource Manager; it does not deploy locks or other resources."
-  },
   "1db4fe8f9095": {
     "Initiatives are required to create remediation tasks, which can't be started from an individual policy assignment.": "Remediation tasks can be created for a single Modify or DeployIfNotExists policy assignment as well.",
     "Initiatives are billed as a single assignment, which lowers the per-policy cost of evaluating your Azure resources.": "Azure Policy has no per-policy charge for Azure resources, so grouping into an initiative saves no cost.",
@@ -1033,5 +1008,30 @@
     "It falls back to the system default route, ignoring the user-defined route.": "A route with next hop None is not ignored. It is selected by longest prefix match like any route, and matching traffic is dropped rather than sent along the default route.",
     "It forwards matching traffic to the virtual network gateway for on-premises delivery.": "Sending traffic to a VPN or ExpressRoute gateway requires the Virtual network gateway next hop type. None drops the traffic.",
     "It sends matching traffic straight to the internet without inspection.": "Sending traffic to the internet requires the Internet next hop type. A next hop of None drops matching traffic."
+  },
+  "e229bc572461": {
+    "LRS provides 12 nines of durability by replicating across zones, while ZRS provides 11 nines within one datacenter.": "This reverses the two options. LRS stays in one datacenter with 11 nines, and ZRS spans zones with 12 nines.",
+    "GRS provides only 9 nines of durability because data is replicated asynchronously to the secondary region.": "GRS provides at least 16 nines of durability. Asynchronous replication affects the recovery point, not the durability figure.",
+    "RA-GRS offers the same 11 nines of durability as LRS because both keep three copies in the primary region.": "RA-GRS also replicates to a secondary region and provides at least 16 nines, not the 11 nines of LRS."
+  },
+  "38b832909918": {
+    "Blob storage": "Blob Storage supports both RA-GRS and RA-GZRS, so it can serve reads from the secondary region.",
+    "Data Lake Storage": "Data Lake Storage is part of Blob Storage, and accounts with a hierarchical namespace support RA-GRS and RA-GZRS.",
+    "Azure Queue storage": "Queue Storage is listed as supporting both RA-GRS and RA-GZRS in the redundancy article."
+  },
+  "a626a095c1f7": {
+    "CPKs are stored by the client in Azure Key Vault and referenced by the storage account, which retrieves them to encrypt every write in the account.": "That describes customer-managed keys. With a customer-provided key the client sends the key on each request and the account never retrieves it from Key Vault.",
+    "CPKs let clients encrypt data locally before upload, so Azure Storage never receives the key and server‑side encryption is turned off for those blobs.": "That describes client-side encryption. With a customer-provided key Azure Storage receives the key and still performs the encryption on the server side.",
+    "CPKs apply one key to the whole storage account at creation time, replacing Microsoft‑managed keys for all blob, file, queue and table data.": "A customer-provided key is supplied per request for Blob Storage operations, not configured once for the whole account and all services."
+  },
+  "561a530cbca1": {
+    "It allows the operation to complete but records it as non-compliant in the compliance results.": "That describes the Audit effect. DenyAction stops the request and returns 403 Forbidden.",
+    "It blocks the call only for users who lack RBAC permission, so Owners can still run the operation.": "Azure Policy is evaluated independently of RBAC, so a DenyAction policy blocks the delete even for users with Owner rights.",
+    "It deploys a CanNotDelete lock on matching resources to prevent the operation from running later.": "DenyAction blocks the request when it is made and doesn't create resource locks. Locks are a separate Azure Resource Manager feature."
+  },
+  "44f9a26e664b": {
+    "Enterprise Agreement enrollments only, since MCA billing profiles do not support budgets": "Budgets are supported at Microsoft Customer Agreement scopes, including the billing account, billing profile and invoice section.",
+    "Pay-as-you-go subscriptions only, because EA and MCA accounts use quota alerts instead": "Enterprise Agreement and Microsoft Customer Agreement accounts also support budget alerts. Department spending quota alerts are an extra EA alert type, not a replacement.",
+    "Microsoft Customer Agreement accounts only, because EA enrollments rely on credit alerts": "Enterprise Agreement accounts support budget alerts as well. Credit alerts are an additional EA alert type for Azure Prepayment."
   }
 }

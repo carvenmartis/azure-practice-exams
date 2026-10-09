@@ -23,7 +23,8 @@ export const changelog: ChangelogEntry[] = [
       'Pages fade in, buttons respond to a press, and menus open faster and work reliably on iOS.',
       'The Dashboard is now called Course.',
       'Progress, mistakes, bookmarks and the daily goal can sync between your devices through the NAS: create a sync code in Settings and enter it on your other devices. Backups can also be saved to iCloud Drive from the share sheet.',
-      'The server now writes what it does to the container log (start-up, syncs, reminders and errors), so problems on the NAS are easier to track down.'
+      'The server now writes what it does to the container log (start-up, syncs, reminders and errors), so problems on the NAS are easier to track down.',
+      '31 AZ-104, AZ-204 and AZ-304 answers that no longer matched Microsoft Learn were corrected, 28 explanations were updated to current product names and study guide wording, and leftover citation markers were removed from AZ-104 explanations.'
     ]
   },
   {

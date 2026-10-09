@@ -1898,13 +1898,13 @@
   {
     "question": "Which of the following statements about managed services is correct?",
     "options": [
-      "Other PaaS alternatives include IIS -> Azure App Service; MongoDB -> Cosmos DB for MongoDB; Redis -> Azure Cache for Redis; SQL Server -> Azure SQL Database; File share -> Azure Files.",
+      "Other PaaS alternatives include IIS -> Azure App Service; MongoDB -> Azure DocumentDB; Redis -> Azure Managed Redis; SQL Server -> Azure SQL Database; File share -> Azure Files.",
       "Other PaaS alternatives include IIS -> Azure Virtual Machines; SQL Server -> SQL Server on Azure VMs; File share -> Azure Blob Storage archive tier; Redis -> Azure Container Instances.",
       "Other PaaS alternatives include IIS -> Azure Container Instances; MongoDB -> Azure Table Storage; Redis -> Azure Front Door caching; SQL Server -> Azure Synapse dedicated pools.",
       "PaaS alternatives include Active Directory -> Azure Key Vault; Elasticsearch -> Azure Data Explorer; Hadoop -> Azure Batch; IIS -> Azure Virtual Machine Scale Sets; File share -> Azure Disk Storage."
     ],
-    "answer": "Other PaaS alternatives include IIS -> Azure App Service; MongoDB -> Cosmos DB for MongoDB; Redis -> Azure Cache for Redis; SQL Server -> Azure SQL Database; File share -> Azure Files.",
-    "explanation": "This statement aligns with the recommended guidance for Azure workloads. See the design principle documentation for details【774297834223488†L117-L170】.",
+    "answer": "Other PaaS alternatives include IIS -> Azure App Service; MongoDB -> Azure DocumentDB; Redis -> Azure Managed Redis; SQL Server -> Azure SQL Database; File share -> Azure Files.",
+    "explanation": "The managed services design principle recommends PaaS options in place of self-run software: Azure App Service instead of IIS, Azure DocumentDB instead of MongoDB, Azure Managed Redis instead of Redis, Azure SQL Database instead of SQL Server, and Azure Files instead of a file share.",
     "link": "https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/managed-services"
   },
   {
@@ -2006,13 +2006,13 @@
   {
     "question": "Which of the following statements about managed services is correct?",
     "options": [
+      "PaaS shifts management of the operating system, runtime, and middleware to the provider, reducing the security and compliance burden on customers.",
       "PaaS alternatives include Active Directory -> Azure Key Vault; Elasticsearch -> Azure Data Explorer; Hadoop -> Azure Batch.",
       "Moving from RabbitMQ to Azure Service Bus needs no code changes, because Service Bus implements the RabbitMQ protocol.",
-      "PaaS requires you to design your own high availability and backups, while IaaS includes them built in.",
-      "PaaS ensures security and compliance features are handled by the provider, reducing the compliance burden on customers."
+      "PaaS requires you to design your own high availability and backups, while IaaS includes them built in."
     ],
-    "answer": "PaaS ensures security and compliance features are handled by the provider, reducing the compliance burden on customers.",
-    "explanation": "This statement aligns with the recommended guidance for Azure workloads. See the design principle documentation for details【774297834223488†L117-L170】.",
+    "answer": "PaaS shifts management of the operating system, runtime, and middleware to the provider, reducing the security and compliance burden on customers.",
+    "explanation": "Managed PaaS services let you build apps without managing backups, patching, upgrades, and other administrative tasks. Under the shared responsibility model, Microsoft manages the operating system, runtime, and middleware for PaaS, which reduces the customer's security and compliance work, but customers still own their data, identities, access controls, and configuration.",
     "link": "https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/managed-services"
   },
   {

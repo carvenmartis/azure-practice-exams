@@ -1256,7 +1256,7 @@
       "Configure monitoring in GitHub, including enabling insights and creating and configuring charts"
     ],
     "answer": "Recommend package management tools including GitHub Packages registry and Azure Artifacts",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes tasks such as Recommend package management tools including GitHub Packages registry and Azure Artifacts【33726495554104†L241-L251】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes recommending package management tools, including GitHub Packages and Azure Artifacts. The other options belong to different objectives, such as pipelines, monitoring, security scanning, or branching.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -1268,7 +1268,7 @@
       "Design a branch strategy, including trunk-based, feature branch, and release branch"
     ],
     "answer": "Recommend package management tools including GitHub Packages registry and Azure Artifacts",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes tasks such as Recommend package management tools including GitHub Packages registry and Azure Artifacts【33726495554104†L241-L251】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes recommending package management tools, including GitHub Packages and Azure Artifacts. The other options belong to different objectives, such as pipelines, monitoring, security scanning, or branching.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -1280,7 +1280,7 @@
       "Configure alerts for events in GitHub Actions and Azure Pipelines"
     ],
     "answer": "Recommend package management tools including GitHub Packages registry and Azure Artifacts",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes tasks such as Recommend package management tools including GitHub Packages registry and Azure Artifacts【33726495554104†L241-L251】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes recommending package management tools, including GitHub Packages and Azure Artifacts. The other options belong to different objectives, such as pipelines, monitoring, security scanning, or branching.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -1292,7 +1292,7 @@
       "Design and implement a strategy for job execution order, including parallelism and multi-stage pipelines"
     ],
     "answer": "Recommend package management tools including GitHub Packages registry and Azure Artifacts",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes tasks such as Recommend package management tools including GitHub Packages registry and Azure Artifacts【33726495554104†L241-L251】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a package management strategy' objective includes recommending package management tools, including GitHub Packages and Azure Artifacts. The other options belong to different objectives, such as pipelines, monitoring, security scanning, or branching.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2168,7 +2168,7 @@
       "Implement tests in a pipeline, including configuring test tasks, configuring test agents, and integration of test results"
     ],
     "answer": "Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes tasks such as Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap【33726495554104†L292-L311】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes planning for minimizing downtime during deployments by using load balancing, rolling deployments, and deployment slot usage and swap. Earlier versions of the guide also listed virtual IP address (VIP) swap. The other options belong to different objectives, such as infrastructure as code, pipelines, security, or monitoring.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2180,7 +2180,7 @@
       "Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap"
     ],
     "answer": "Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes tasks such as Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap【33726495554104†L292-L311】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes planning for minimizing downtime during deployments by using load balancing, rolling deployments, and deployment slot usage and swap. Earlier versions of the guide also listed virtual IP address (VIP) swap. The other options belong to different objectives, such as infrastructure as code, pipelines, security, or monitoring.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2192,7 +2192,7 @@
       "Design and implement a GitHub runner or Azure DevOps agent infrastructure, including cost, tool selection, licenses, connectivity, and maintainability"
     ],
     "answer": "Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes tasks such as Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap【33726495554104†L292-L311】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes planning for minimizing downtime during deployments by using load balancing, rolling deployments, and deployment slot usage and swap. Earlier versions of the guide also listed virtual IP address (VIP) swap. The other options belong to different objectives, such as infrastructure as code, pipelines, security, or monitoring.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2204,7 +2204,7 @@
       "Design and implement a GitHub runner or Azure DevOps agent infrastructure, including cost, tool selection, licenses, connectivity, and maintainability"
     ],
     "answer": "Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes tasks such as Plan for minimizing downtime during deployments by using virtual IP address (VIP) swap, load balancing, rolling deployments, and deployment slot usage and swap【33726495554104†L292-L311】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement deployments' objective includes planning for minimizing downtime during deployments by using load balancing, rolling deployments, and deployment slot usage and swap. Earlier versions of the guide also listed virtual IP address (VIP) swap. The other options belong to different objectives, such as infrastructure as code, pipelines, security, or monitoring.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2600,7 +2600,7 @@
       "Design and implement a dependency versioning strategy for code assets and packages, including semantic versioning (SemVer) and date-based (CalVer)"
     ],
     "answer": "Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes tasks such as Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration【33726495554104†L313-L328】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes designing and implementing desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Machine Configuration (formerly Azure Automanage Machine Configuration). The other options belong to the sensitive information, monitoring, and package management objectives.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2612,7 +2612,7 @@
       "Configure collection of telemetry by using Azure Monitor Application Insights, Azure VM Insights, Azure Container Insights, Azure Monitor for Storage, and Azure Monitor for Networks"
     ],
     "answer": "Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes tasks such as Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration【33726495554104†L313-L328】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes designing and implementing desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Machine Configuration (formerly Azure Automanage Machine Configuration).",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2624,7 +2624,7 @@
       "Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration"
     ],
     "answer": "Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes tasks such as Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration【33726495554104†L313-L328】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes designing and implementing desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Machine Configuration (formerly Azure Automanage Machine Configuration).",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2636,7 +2636,7 @@
       "Design and implement a dependency versioning strategy for code assets and packages, including semantic versioning (SemVer) and date-based (CalVer)"
     ],
     "answer": "Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes tasks such as Design and implement desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Automanage Machine Configuration【33726495554104†L313-L328】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement infrastructure as code (IaC)' objective includes designing and implementing desired state configuration for environments, including Azure Automation State Configuration, Azure Resource Manager, Bicep, and Azure Machine Configuration (formerly Azure Automanage Machine Configuration).",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2936,7 +2936,7 @@
       "Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)"
     ],
     "answer": "Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes tasks such as Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)【33726495554104†L347-L363】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes choosing between Microsoft Entra service principals and managed identities for Azure resources (system-assigned and user-assigned).",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2948,7 +2948,7 @@
       "Configure release documentation, including release notes and API documentation"
     ],
     "answer": "Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes tasks such as Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)【33726495554104†L347-L363】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes choosing between Microsoft Entra service principals and managed identities for Azure resources (system-assigned and user-assigned).",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2960,7 +2960,7 @@
       "Design and implement a dashboard, including flow of work, such as cycle times, time to recovery, and lead time"
     ],
     "answer": "Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes tasks such as Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)【33726495554104†L347-L363】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes choosing between Microsoft Entra service principals and managed identities for Azure resources (system-assigned and user-assigned).",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -2972,7 +2972,7 @@
       "Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)"
     ],
     "answer": "Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes tasks such as Choose between Service Principals and Managed Identity (including system-assigned and user-assigned)【33726495554104†L347-L363】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement authentication and authorization methods' objective includes choosing between Microsoft Entra service principals and managed identities for Azure resources (system-assigned and user-assigned).",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3320,7 +3320,7 @@
       "Optimize pipeline concurrency for performance and cost"
     ],
     "answer": "Implement and manage secrets in GitHub Actions and Azure Pipelines",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes tasks such as Implement and manage secrets in GitHub Actions and Azure Pipelines【33726495554104†L371-L372】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes implementing and managing secrets and secretless authentication (for example, workload identity federation/OpenID Connect) in GitHub Actions and Azure Pipelines.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3332,7 +3332,7 @@
       "Implement and manage Azure DevOps service connections and personal access tokens"
     ],
     "answer": "Implement and manage secrets in GitHub Actions and Azure Pipelines",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes tasks such as Implement and manage secrets in GitHub Actions and Azure Pipelines【33726495554104†L371-L372】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes implementing and managing secrets and secretless authentication (for example, workload identity federation/OpenID Connect) in GitHub Actions and Azure Pipelines.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3344,7 +3344,7 @@
       "Design and implement appropriate metrics and queries for testing"
     ],
     "answer": "Implement and manage secrets in GitHub Actions and Azure Pipelines",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes tasks such as Implement and manage secrets in GitHub Actions and Azure Pipelines【33726495554104†L371-L372】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes implementing and managing secrets and secretless authentication (for example, workload identity federation/OpenID Connect) in GitHub Actions and Azure Pipelines.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3356,7 +3356,7 @@
       "Recommend a configuration management technology for application infrastructure"
     ],
     "answer": "Implement and manage secrets in GitHub Actions and Azure Pipelines",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes tasks such as Implement and manage secrets in GitHub Actions and Azure Pipelines【33726495554104†L371-L372】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Design and implement a strategy for managing sensitive information in automation' objective includes implementing and managing secrets and secretless authentication (for example, workload identity federation/OpenID Connect) in GitHub Actions and Azure Pipelines.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3560,7 +3560,7 @@
       "Implement and manage secrets in GitHub Actions and Azure Pipelines"
     ],
     "answer": "Configure GitHub Advanced Security for both GitHub and Azure DevOps",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes tasks such as Configure GitHub Advanced Security for both GitHub and Azure DevOps【33726495554104†L385-L386】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes configuring GitHub Advanced Security for GitHub and GitHub Advanced Security for Azure DevOps.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3572,7 +3572,7 @@
       "Implement and manage secrets, keys, and certificates by using Azure Key Vault"
     ],
     "answer": "Configure GitHub Advanced Security for both GitHub and Azure DevOps",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes tasks such as Configure GitHub Advanced Security for both GitHub and Azure DevOps【33726495554104†L385-L386】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes configuring GitHub Advanced Security for GitHub and GitHub Advanced Security for Azure DevOps.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3584,7 +3584,7 @@
       "Configure GitHub Advanced Security for both GitHub and Azure DevOps"
     ],
     "answer": "Configure GitHub Advanced Security for both GitHub and Azure DevOps",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes tasks such as Configure GitHub Advanced Security for both GitHub and Azure DevOps【33726495554104†L385-L386】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes configuring GitHub Advanced Security for GitHub and GitHub Advanced Security for Azure DevOps.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   },
   {
@@ -3596,7 +3596,7 @@
       "Implement and manage secrets in GitHub Actions and Azure Pipelines"
     ],
     "answer": "Configure GitHub Advanced Security for both GitHub and Azure DevOps",
-    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes tasks such as Configure GitHub Advanced Security for both GitHub and Azure DevOps【33726495554104†L385-L386】.",
+    "explanation": "According to Microsoft's AZ-400 study guide, the 'Automate security and compliance scanning' objective includes configuring GitHub Advanced Security for GitHub and GitHub Advanced Security for Azure DevOps.",
     "link": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400"
   }
 ]

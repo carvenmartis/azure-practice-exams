@@ -789,11 +789,6 @@
     "IaaS is a framework for building and running apps, while PaaS is a box of parts you assemble yourself.": "This swaps the analogy. IaaS is the box of parts you assemble, and PaaS provides a framework for developing and running apps.",
     "PaaS increases operational overhead, because each service must be tuned at the operating system level.": "With PaaS the provider maintains the servers and operating system, which reduces the administrative tasks you handle."
   },
-  "0f0a512bdb26": {
-    "Other PaaS alternatives include IIS -> Azure Virtual Machines; SQL Server -> SQL Server on Azure VMs; File share -> Azure Blob Storage archive tier; Redis -> Azure Container Instances.": "VMs and SQL Server on VMs are IaaS, not PaaS. The guidance maps IIS to App Service, SQL Server to Azure SQL Database, file shares to Azure Files, and Redis to a managed Redis service.",
-    "Other PaaS alternatives include IIS -> Azure Container Instances; MongoDB -> Azure Table Storage; Redis -> Azure Front Door caching; SQL Server -> Azure Synapse dedicated pools.": "These pairings aren't the guidance's mappings. It maps IIS to App Service, MongoDB and Redis to managed MongoDB and Redis services, and SQL Server to Azure SQL Database.",
-    "PaaS alternatives include Active Directory -> Azure Key Vault; Elasticsearch -> Azure Data Explorer; Hadoop -> Azure Batch; IIS -> Azure Virtual Machine Scale Sets; File share -> Azure Disk Storage.": "These pairings are wrong. The guidance maps Active Directory to Microsoft Entra ID, Elasticsearch to Azure AI Search, Hadoop to HDInsight, IIS to App Service, and file shares to Azure Files."
-  },
   "e236b48a5d1f": {
     "Use IaaS when your workload doesn't require fine-grained control, since VMs are easier to configure than PaaS.": "The guidance says the opposite: when a workload doesn't need the control of IaaS, use PaaS, which is easier to configure and administer.",
     "Moving from RabbitMQ to Azure Service Bus needs no code changes, because Service Bus implements the RabbitMQ protocol.": "Service Bus has its own client SDK and uses AMQP 1.0, not RabbitMQ's protocol, so application code calls the Service Bus SDK.",
@@ -833,11 +828,6 @@
     "Use IaaS when your workload doesn't require fine-grained control, since VMs are easier to configure than PaaS.": "The guidance says the opposite: when a workload doesn't need the control of IaaS, use PaaS, which is easier to configure and administer.",
     "IaaS is a framework for building and running apps, while PaaS is a box of parts you assemble yourself.": "This swaps the analogy. IaaS is the box of parts you assemble, and PaaS provides a framework for developing and running apps.",
     "Service Bus namespaces can't be created in deployment scripts, so create them manually in the portal.": "The guidance notes you can create a Service Bus namespace as part of a deployment script and call it through a client SDK."
-  },
-  "f74c48d9cf85": {
-    "PaaS alternatives include Active Directory -> Azure Key Vault; Elasticsearch -> Azure Data Explorer; Hadoop -> Azure Batch.": "The guidance maps Active Directory to Microsoft Entra ID, Elasticsearch to Azure AI Search, and Hadoop to Azure HDInsight.",
-    "Moving from RabbitMQ to Azure Service Bus needs no code changes, because Service Bus implements the RabbitMQ protocol.": "Service Bus has its own client SDK and uses AMQP 1.0, not RabbitMQ's protocol, so application code calls the Service Bus SDK.",
-    "PaaS requires you to design your own high availability and backups, while IaaS includes them built in.": "This reverses the models. PaaS includes built-in availability and backup features, while on IaaS you design and run them yourself."
   },
   "f20c35221179": {
     "IaaS provides a managed platform with lifecycle tools; the provider handles backups, security solutions, and upgrades for you.": "That describes PaaS. IaaS offers raw computing resources such as servers, storage, and networks that you assemble and manage yourself.",
@@ -1498,5 +1488,15 @@
     "Each storage account can hold one encryption scope, so tenant isolation in multitenant scenarios needs a separate account per tenant.": "A storage account can have multiple encryption scopes, which lets you create secure boundaries between tenants within one account.",
     "Customer-managed keys must be stored in a key vault in the storage account's secondary region so that geo-failover can decrypt data.": "There is no requirement to place the key vault in the secondary region. The guidance is to make sure the key vault is resilient and available across regions so storage can always reach the key.",
     "Choose the key management option based on the storage account's redundancy setting, since GRS accounts support Microsoft-managed keys.": "Key management choice is based on control, responsibilities and compliance needs. Customer-managed keys work with all redundancy options, including GRS."
+  },
+  "58e869268062": {
+    "Other PaaS alternatives include IIS -> Azure Virtual Machines; SQL Server -> SQL Server on Azure VMs; File share -> Azure Blob Storage archive tier; Redis -> Azure Container Instances.": "Virtual machines and SQL Server on Azure VMs are IaaS, not PaaS alternatives; the guidance maps IIS to App Service, SQL Server to Azure SQL Database, and file shares to Azure Files.",
+    "Other PaaS alternatives include IIS -> Azure Container Instances; MongoDB -> Azure Table Storage; Redis -> Azure Front Door caching; SQL Server -> Azure Synapse dedicated pools.": "The guidance maps IIS to Azure App Service, MongoDB to Azure DocumentDB, Redis to Azure Managed Redis, and SQL Server to Azure SQL Database.",
+    "PaaS alternatives include Active Directory -> Azure Key Vault; Elasticsearch -> Azure Data Explorer; Hadoop -> Azure Batch; IIS -> Azure Virtual Machine Scale Sets; File share -> Azure Disk Storage.": "The guidance maps Active Directory to Microsoft Entra ID, Elasticsearch to Azure AI Search, Hadoop to Azure HDInsight, IIS to App Service, and file shares to Azure Files."
+  },
+  "3f8045bc8d4d": {
+    "PaaS alternatives include Active Directory -> Azure Key Vault; Elasticsearch -> Azure Data Explorer; Hadoop -> Azure Batch.": "The guidance maps Active Directory to Microsoft Entra ID, Elasticsearch to Azure AI Search, and Hadoop to Azure HDInsight.",
+    "Moving from RabbitMQ to Azure Service Bus needs no code changes, because Service Bus implements the RabbitMQ protocol.": "Service Bus is a different service that you call through its own client SDK, so moving from RabbitMQ requires code changes.",
+    "PaaS requires you to design your own high availability and backups, while IaaS includes them built in.": "It's the other way around: managed PaaS services handle tasks such as backups and patching for you, while with IaaS you manage them yourself."
   }
 }
