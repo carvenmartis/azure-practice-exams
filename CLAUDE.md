@@ -7,8 +7,8 @@
 - Code conventions: `.claude/skills/frontend-conventions` (the `senior-nextjs-frontend`
   agent loads it). Add an exam with `/add-exam`.
 - UI work: apply `.claude/skills/emil-design-eng` for motion and interaction polish, and the
-  anti-generic rules in `design-taste-frontend` and `redesign-existing-projects`. Those two
-  target landing pages; here use their type, colour and AI-tell rules, not their layouts.
+  anti-generic rules in `design-taste-frontend`. It targets landing pages; here use its type
+  and AI-tell rules, not its layouts. Both are managed by `npx skills` (see skills-lock.json).
 - Design system: Geist (Geist Mono for codes and keys) on the cream, gold `accent` and navy
   `primary` palette in globals.css (Carven chose to keep it). Controls `rounded-lg`, cards and dialogs
   `rounded-2xl`. Sentence-case labels, no tracked uppercase eyebrows, no em-dashes in UI copy.
