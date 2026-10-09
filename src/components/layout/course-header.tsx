@@ -55,7 +55,7 @@ export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
 }
 
 /**
- * The graduation cap from the app icon (public/icons), drawn in the current
+ * The graduation cap that the app icons (public/icons) are drawn from, in the current
  * text colour so it follows the light and dark themes.
  */
 function GraduationCap() {
