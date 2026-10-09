@@ -3,6 +3,7 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { emptyProgress, normalizeProgress, normalizeSyncCode } from '@/lib/progress-data';
 import type { SyncCopy } from '@/lib/progress-data';
+import { log } from '@/lib/server/log';
 
 /**
  * Progress sync (server side). There are no accounts: a device picks a sync
@@ -30,6 +31,11 @@ export function profileFor(code: string | null) {
   return path.join(dataDir, `${createHash('sha256').update(normalized).digest('hex')}.json`);
 }
 
+/** A short name for a profile in the log: the start of its hash, never the code. */
+export function profileId(file: string) {
+  return path.basename(file).slice(0, 8);
+}
+
 async function readCopy(file: string): Promise<SyncCopy> {
   try {
     const saved = JSON.parse(await readFile(file, 'utf8')) as Partial<SyncCopy>;
@@ -38,7 +44,9 @@ async function readCopy(file: string): Promise<SyncCopy> {
       updatedAt: typeof saved.updatedAt === 'string' ? saved.updatedAt : null,
       progress: normalizeProgress(saved.progress)
     };
-  } catch {
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') log.info('sync new profile', { profile: profileId(file) });
+    else log.warn('sync profile unreadable, starting empty', { profile: profileId(file), dir: dataDir, code: (error as NodeJS.ErrnoException).code ?? 'invalid JSON' });
     return { revision: 0, updatedAt: null, progress: emptyProgress };
   }
 }

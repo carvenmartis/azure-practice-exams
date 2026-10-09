@@ -1,3 +1,4 @@
+import { log } from '@/lib/server/log';
 import { isProgressReport, pushErrorDetail, sendTest } from '@/lib/server/reminders';
 
 /** Sends one reminder right away, for the test button in Settings. */
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
     return found ? new Response(null, { status: 204 }) : Response.json({ error: 'Unknown device' }, { status: 404 });
   } catch (error) {
     const detail = pushErrorDetail(error);
-    console.error('Test reminder failed:', detail);
+    log.error('test reminder failed', { detail });
     return Response.json({ error: `The push service refused the reminder (${detail}).` }, { status: 502 });
   }
 }

@@ -2,6 +2,7 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import webpush from 'web-push';
 import type { PushSubscription } from 'web-push';
+import { log } from '@/lib/server/log';
 
 /**
  * Daily goal reminders (server side). Each device that turns the reminder on
@@ -84,6 +85,7 @@ function vapidKeys() {
     if (saved?.publicKey && saved.privateKey) return saved;
     const made = webpush.generateVAPIDKeys();
     await writeJson(keysFile, made);
+    log.info('reminders: made new VAPID keys, devices must turn reminders on again', { dir: dataDir });
     return made;
   })().catch((error) => {
     keys = null;
@@ -97,8 +99,21 @@ export async function publicKey() {
 }
 
 function loadReminders() {
-  reminders ??= readJson<Reminder[]>(remindersFile).then((saved) => (Array.isArray(saved) ? saved : []));
+  reminders ??= readJson<Reminder[]>(remindersFile).then((saved) => {
+    const list = Array.isArray(saved) ? saved : [];
+    log.info('reminders loaded', { devices: list.length, dir: dataDir });
+    return list;
+  });
   return reminders;
+}
+
+/** The push service a device uses (e.g. web.push.apple.com), for the log; the full endpoint is secret. */
+function pushService(endpoint: string) {
+  try {
+    return new URL(endpoint).host;
+  } catch {
+    return 'unknown';
+  }
 }
 
 /** Changes the saved reminders; calls run one at a time. */
@@ -145,6 +160,7 @@ export function isTimeZone(value: unknown): value is string {
 }
 
 export function saveReminder(subscription: PushSubscription, time: string, timeZone: string, progress?: ProgressReport) {
+  log.info('reminder saved', { service: pushService(subscription.endpoint), time, timeZone });
   return updateReminders((list) => {
     const existing = list.find((item) => item.subscription.endpoint === subscription.endpoint);
     const others = list.filter((item) => item !== existing);
@@ -153,6 +169,7 @@ export function saveReminder(subscription: PushSubscription, time: string, timeZ
 }
 
 export function removeReminder(endpoint: string) {
+  log.info('reminder removed', { service: pushService(endpoint) });
   return updateReminders((list) => list.filter((item) => item.subscription.endpoint !== endpoint));
 }
 
@@ -243,9 +260,13 @@ export async function reminderStatus(endpoint: string) {
 /** Sends a reminder now, for the Settings test button. */
 export async function sendTest(endpoint: string, progress?: ProgressReport) {
   const reminder = (await loadReminders()).find((item) => item.subscription.endpoint === endpoint);
-  if (!reminder) return false;
+  if (!reminder) {
+    log.warn('test reminder: device not registered', { service: pushService(endpoint) });
+    return false;
+  }
   const today = localNow(reminder.timeZone, new Date()).day;
   await send({ ...reminder, progress: progress ?? reminder.progress }, today);
+  log.info('test reminder sent', { service: pushService(endpoint) });
   return true;
 }
 
@@ -264,9 +285,13 @@ async function sendDueReminders() {
     try {
       await send(reminder, local.day);
       sent.set(reminder.subscription.endpoint, local.day);
+      log.info('reminder sent', { service: pushService(reminder.subscription.endpoint), time: reminder.time, timeZone: reminder.timeZone });
     } catch (error) {
-      if (isExpired(error)) expired.add(reminder.subscription.endpoint);
-      else console.error('Daily reminder failed:', pushErrorDetail(error));
+      const service = pushService(reminder.subscription.endpoint);
+      if (isExpired(error)) {
+        expired.add(reminder.subscription.endpoint);
+        log.info('reminder subscription expired, removing it', { service });
+      } else log.error('reminder failed', { service, detail: pushErrorDetail(error) });
     }
   }
   if (!sent.size && !expired.size) return;
@@ -286,7 +311,8 @@ const schedulerKey = Symbol.for('azure-practice-exams.reminder-scheduler');
 export function startReminderScheduler() {
   const global = globalThis as typeof globalThis & { [schedulerKey]?: NodeJS.Timeout };
   if (global[schedulerKey]) return;
-  const tick = () => sendDueReminders().catch((error) => console.error('Daily reminders failed:', error));
+  const tick = () => sendDueReminders().catch((error) => log.error('reminder check failed', { dir: dataDir }, error));
   global[schedulerKey] = setInterval(tick, 60_000);
   global[schedulerKey].unref();
+  log.info('reminder scheduler started');
 }

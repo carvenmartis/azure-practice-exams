@@ -17,6 +17,9 @@ services:
     environment:
       # Contact address sent to Apple and Google with each reminder.
       VAPID_SUBJECT: "https://hub.docker.com/r/carvenmartisit/azure-practice-exams"
+      # How much goes to the container log: debug, info (default), warn or error.
+      # debug adds a line for every sync check.
+      LOG_LEVEL: "info"
     restart: unless-stopped
     labels:
       # Lets watchtower pull new :latest images and restart this container,
