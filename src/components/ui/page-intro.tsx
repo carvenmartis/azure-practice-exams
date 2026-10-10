@@ -18,8 +18,8 @@ interface PageIntroProps {
  */
 export function PageIntro({ title, lede, actions, back, className }: PageIntroProps) {
   return (
-    <header className={cn('mb-10 sm:mb-12', className)}>
-      {back && <div className="mb-6 text-sm">{back}</div>}
+    <header className={cn('mb-10 sm:mb-12 lg:mb-8', className)}>
+      {back && <div className="mb-6 text-sm lg:mb-4">{back}</div>}
       <h1 className="max-w-3xl font-display text-3xl leading-[1.1] font-semibold tracking-tighter sm:text-4xl">
         {title}
       </h1>

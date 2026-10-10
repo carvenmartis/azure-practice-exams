@@ -12,13 +12,16 @@ const lineTransition = { duration: 0.25, ease: 'easeInOut' } as const;
 
 const subscribeNever = () => () => {};
 
+/** Tailwind's lg breakpoint, from which SideNav (side-nav.tsx) replaces this menu. */
+const desktopQuery = '(min-width: 64rem)';
+
 /** False during the server render and hydration, true afterwards (document exists). */
 function useIsClient() {
   return useSyncExternalStore(subscribeNever, () => true, () => false);
 }
 
 /**
- * Burger button that opens a full-height drawer with the site's pages, grouped
+ * Burger button, shown below desktop width (lg), that opens a full-height drawer with the site's pages, grouped
  * with counts, plus a backup button (DrawerContent in
  * nav-drawer.tsx). The drawer slides in from the right edge, fills the width
  * on phones, and closes on navigation, Escape, its Close button or a click
@@ -78,7 +81,16 @@ export function NavMenu() {
       buttonRef.current?.focus({ preventScroll: true });
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    // Widening the window to desktop shows the side navigation instead, so the drawer closes.
+    const desktop = window.matchMedia(desktopQuery);
+    const handleDesktop = () => {
+      if (desktop.matches) setOpenOn(null);
+    };
+    desktop.addEventListener('change', handleDesktop);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      desktop.removeEventListener('change', handleDesktop);
+    };
   }, [open, mounted]);
 
   return (
@@ -91,7 +103,7 @@ export function NavMenu() {
         aria-controls="site-menu"
         onClick={() => setOpen(!open)}
         className={cn(
-          'relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] hover:bg-surface-muted',
+          'relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors [-webkit-tap-highlight-color:transparent] hover:bg-surface-muted lg:hidden',
           focusRing
         )}
       >
@@ -117,7 +129,7 @@ export function NavMenu() {
       {isClient &&
         mounted &&
         createPortal(
-          <div className="pointer-events-none absolute inset-x-0 top-(--header-height) bottom-0 z-50 overflow-clip">
+          <div className="pointer-events-none absolute inset-x-0 top-(--header-height) bottom-0 z-50 overflow-clip lg:hidden">
             {/* Dims the page below the header only, so the header keeps matching the status bar. The wrapper
                 clips the off-screen drawer so it can never widen or scroll the page. */}
             <div

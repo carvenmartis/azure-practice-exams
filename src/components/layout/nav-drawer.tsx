@@ -80,15 +80,16 @@ interface DrawerContentProps {
   pathname: string;
   /** True once the drawer has slid in; drives the row stagger. */
   visible: boolean;
-  /** Close button: closes and puts focus back on the burger. */
-  onClose: () => void;
+  /** Close button: closes and puts focus back on the burger. Left out in the desktop side navigation, which has no Close bar. */
+  onClose?: () => void;
   /** Called when a link is followed, so the drawer closes. */
-  onNavigate: () => void;
+  onNavigate?: () => void;
 }
 
 /**
- * The inside of the menu drawer (NavMenu in nav-menu.tsx): a top bar with a
- * Close button, a card with the site and sync state, the pages and exam
+ * The inside of the menu drawer (NavMenu in nav-menu.tsx) and of the permanent
+ * desktop side navigation (SideNav in side-nav.tsx): a top bar with a
+ * Close button (drawer only), a card with the site and sync state, the pages and exam
  * categories in groups with
  * live counts (questions due for review, saved bookmarks), and a footer with today's daily goal, the version and two quick actions.
  * Every count and label comes from what is saved on this device.
@@ -122,7 +123,7 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
 
   const follow = (event: MouseEvent) => {
     if (!canLeave()) event.preventDefault();
-    onNavigate();
+    onNavigate?.();
   };
 
   // Groups fade and slide in one after another once the drawer is open.
@@ -174,23 +175,25 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
   return (
     <>
       <div className="flex shrink-0 flex-col gap-4 px-5 pt-5 pb-3">
-        <div className="flex items-center justify-between">
-          <span className="flex items-center gap-2 text-xs font-medium text-ink-subtle">
-            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
-            Navigation
-          </span>
-          <button
-            type="button"
-            onClick={onClose}
-            className={cn(
-              'flex items-center gap-1.5 rounded-md bg-surface-muted px-2.5 py-1 text-xs font-medium text-ink-muted transition-colors hover:text-ink active:scale-[0.97] motion-reduce:active:scale-100',
-              focusRing
-            )}
-          >
-            Close
-            <Kbd className="hidden [@media(hover:hover)]:inline-block">Esc</Kbd>
-          </button>
-        </div>
+        {onClose && (
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-2 text-xs font-medium text-ink-subtle">
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+              Navigation
+            </span>
+            <button
+              type="button"
+              onClick={onClose}
+              className={cn(
+                'flex items-center gap-1.5 rounded-md bg-surface-muted px-2.5 py-1 text-xs font-medium text-ink-muted transition-colors hover:text-ink active:scale-[0.97] motion-reduce:active:scale-100',
+                focusRing
+              )}
+            >
+              Close
+              <Kbd className="hidden [@media(hover:hover)]:inline-block">Esc</Kbd>
+            </button>
+          </div>
+        )}
 
         <div className="flex items-center gap-3 rounded-xl bg-surface-muted p-3.5">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-on-primary">

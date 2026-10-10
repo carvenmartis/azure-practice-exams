@@ -16,7 +16,7 @@ interface PageContainerProps {
  */
 export function PageContainer({ width = 'wide', className, children }: PageContainerProps) {
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 pt-10 pb-20 sm:px-6 sm:pt-16 sm:pb-24">
+    <div className="mx-auto w-full max-w-6xl px-4 pt-10 pb-20 sm:px-6 sm:pt-16 sm:pb-24 lg:pt-8 lg:pb-10">
       <div className={cn(width === 'reading' && 'max-w-3xl', className)}>{children}</div>
     </div>
   );

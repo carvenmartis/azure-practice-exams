@@ -24,21 +24,21 @@ export function CategoryCard({ category, questionCount }: CategoryCardProps) {
       href={`/categories/${category.id}`}
       className={cn(
         cardClasses(
-          'group flex h-full flex-col p-6 transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-line-strong hover:shadow-lifted active:scale-[0.99] motion-reduce:transform-none sm:p-7'
+          'group flex h-full flex-col p-6 transition-[border-color,box-shadow,transform] duration-200 ease-out hover:border-line-strong hover:shadow-lifted active:scale-[0.99] motion-reduce:transform-none sm:p-7 lg:p-6'
         ),
         focusRing
       )}
     >
       <h3 className="font-display text-xl leading-snug font-semibold tracking-tight">{category.title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-ink-muted">{category.description}</p>
-      <ul className="mt-5 mb-6 flex flex-wrap gap-2">
+      <ul className="mt-5 mb-6 flex flex-wrap gap-2 lg:mt-4 lg:mb-5">
         {categoryExams.map((exam) => (
           <li key={exam.slug}>
             <Badge>{splitExamName(exam).code}</Badge>
           </li>
         ))}
       </ul>
-      <span className="mt-auto flex items-center justify-between gap-4 border-t border-line pt-5 text-sm">
+      <span className="mt-auto flex items-center justify-between gap-4 border-t border-line pt-5 text-sm lg:pt-4">
         <span className="text-ink-subtle tabular-nums">
           {categoryExams.length} {categoryExams.length === 1 ? 'exam' : 'exams'} · {questionCount.toLocaleString('en-US')}{' '}
           questions

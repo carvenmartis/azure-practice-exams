@@ -14,7 +14,9 @@ interface CourseHeaderProps {
 }
 
 /**
- * Top bar that names the current course, with the site menu on the right.
+ * Top bar that names the current course, with the site menu burger on the
+ * right below desktop width. From lg the menu is the side navigation
+ * (SideNav), so the bar spans the window.
  * It is neither fixed nor sticky: the page itself never scrolls, only the
  * <main> below it does (see PageLayout). iOS 26 Safari misplaces fixed and
  * sticky bars while scrolling, and lets content show through the status bar,
@@ -24,7 +26,7 @@ interface CourseHeaderProps {
 export function CourseHeader({ title = siteName, eyebrow }: CourseHeaderProps) {
   return (
     <header className="relative z-40 shrink-0 border-b border-line bg-header">
-      <div className="relative mx-auto flex h-(--header-height) max-w-6xl items-center gap-3 px-4 sm:px-6">
+      <div className="relative mx-auto flex h-(--header-height) max-w-6xl items-center gap-3 px-4 sm:px-6 lg:max-w-none">
         <Link
           href="/"
           aria-label={`${siteName} home`}

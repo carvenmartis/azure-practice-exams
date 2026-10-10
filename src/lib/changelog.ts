@@ -14,6 +14,13 @@ export interface ChangelogEntry {
  */
 export const changelog: ChangelogEntry[] = [
   {
+    date: '2026-10-10',
+    title: 'Tighter desktop pages',
+    changes: [
+      'On desktop the Course and category pages are more compact, so they fit in the window without scrolling on most screens.'
+    ]
+  },
+  {
     date: '2026-10-09',
     title: 'Every page redesigned',
     changes: [
@@ -23,6 +30,7 @@ export const changelog: ChangelogEntry[] = [
       'Pages fade in, buttons respond to a press, and menus open faster and work reliably on iOS.',
       'Switching pages fades and slides in only the page itself while the header stays put, and the first page you open appears straight away.',
       'A new side menu: pages and exam categories in groups with icons, how many questions are due and bookmarks saved, sync status, today\'s goal, and buttons to export a backup or jump into review.',
+      'On desktop windows the side menu now stays open on the right of the page; tablets and phones keep the menu button.',
       'The Dashboard is now called Course.',
       'The Course page shows a card per category that opens its exams. Each exam card shows its question count, your attempts and best score, with buttons to start the exam or open its study notes. The daily goal has a progress ring, and the review banner says which exams the due questions come from.',
       'Progress, mistakes, bookmarks and the daily goal can sync between your devices through the NAS: create a sync code in Settings and enter it on your other devices. Backups can also be saved to iCloud Drive from the share sheet.',

@@ -37,7 +37,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         />
 
         <section aria-labelledby="category-exams-heading">
-          <div className="mb-6 flex items-baseline justify-between gap-4">
+          <div className="mb-6 flex items-baseline justify-between gap-4 lg:mb-4">
             <h2 id="category-exams-heading" className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
               Exams
             </h2>
@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               {categoryExams.length} {categoryExams.length === 1 ? 'exam' : 'exams'}
             </p>
           </div>
-          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 min-[90rem]:grid-cols-3">
             {categoryExams.map((exam, index) => (
               <li key={exam.slug} className="reveal-item" style={{ '--i': index } as CSSProperties}>
                 <ExamCard exam={exam} questionCount={questionCounts[exam.slug]} hasNotes={Boolean(getExamNotes(exam.slug))} />

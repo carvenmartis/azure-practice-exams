@@ -25,16 +25,16 @@ export default function Home() {
   return (
     <PageLayout>
       <PageContainer>
-        <section className="mb-12 grid gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-end lg:gap-16">
+        <section className="mb-12 grid gap-10 lg:mb-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] 2xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:items-end lg:gap-10 2xl:gap-16">
           <div>
-            <h1 className="max-w-3xl font-display text-4xl leading-[1.05] font-semibold tracking-tighter sm:text-5xl">
+            <h1 className="max-w-3xl font-display text-4xl leading-[1.05] font-semibold tracking-tighter sm:text-5xl lg:text-4xl 2xl:text-5xl">
               Prepare for your Microsoft Azure certification
             </h1>
-            <p className="mt-5 max-w-[60ch] text-base leading-relaxed text-ink-muted sm:text-lg">
+            <p className="mt-5 max-w-[60ch] text-base leading-relaxed text-ink-muted sm:text-lg lg:mt-4 lg:text-base">
               Untimed practice exams where every question shows the correct answer, an explanation and a link to the
               Microsoft documentation. Missed questions come back for review, and everything works offline.
             </p>
-            <dl className="mt-8 flex divide-x divide-line">
+            <dl className="mt-8 flex divide-x divide-line lg:mt-6">
               {facts.map((fact) => (
                 <div key={fact.label} className="px-4 first:pl-0 sm:px-6">
                   <dd className="font-display text-2xl font-semibold tracking-tight tabular-nums sm:text-3xl">
@@ -50,8 +50,8 @@ export default function Home() {
 
         <ReviewDueBanner />
 
-        <section aria-labelledby="categories-heading" className="mt-12">
-          <div className="mb-6 flex items-baseline justify-between gap-4">
+        <section aria-labelledby="categories-heading" className="mt-12 lg:mt-8">
+          <div className="mb-6 flex items-baseline justify-between gap-4 lg:mb-4">
             <h2 id="categories-heading" className="font-display text-2xl font-semibold tracking-tight">
               Categories
             </h2>
