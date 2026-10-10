@@ -84,6 +84,14 @@ interface DrawerContentProps {
   onClose?: () => void;
   /** Called when a link is followed, so the drawer closes. */
   onNavigate?: () => void;
+  /**
+   * The burger drawer: on short screens (the `short` variant in globals.css) it
+   * drops the Close bar (the burger in the header closes it too), shrinks the
+   * site card, rows and footer, and puts the Practice, Study and App rows in two
+   * columns, so every item fits without scrolling on phones. On the smallest
+   * phones (`tiny`) the site card goes too and its sync line moves to the footer.
+   */
+  compact?: boolean;
 }
 
 /**
@@ -94,7 +102,10 @@ interface DrawerContentProps {
  * live counts (questions due for review, saved bookmarks), and a footer with today's daily goal, the version and two quick actions.
  * Every count and label comes from what is saved on this device.
  */
-export function DrawerContent({ pathname, visible, onClose, onNavigate }: DrawerContentProps) {
+export function DrawerContent({ pathname, visible, onClose, onNavigate, compact = false }: DrawerContentProps) {
+  /** Classes that only apply in the compact drawer. */
+  const short = (classes: string) => (compact ? classes : '');
+  const twoColumns = short('short:grid short:grid-cols-2 short:gap-0.5 short:space-y-0');
   const progress = useProgress();
   const sync = useSyncStatus();
   const online = useOnline();
@@ -106,7 +117,10 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
 
   const trailing: Partial<Record<string, ReactNode>> = {
     '/review': dueCount > 0 && (
-      <span className="tabular rounded-md bg-danger-soft px-2 py-0.5 text-xs font-medium text-danger">{dueCount} due</span>
+      <span className="tabular rounded-md bg-danger-soft px-2 py-0.5 text-xs font-medium text-danger">
+        {dueCount}
+        <span className={short('short:sr-only')}> due</span>
+      </span>
     ),
     ...Object.fromEntries(
       examCategories.map((category) => [
@@ -117,7 +131,10 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
       ])
     ),
     '/bookmarks': bookmarkCount > 0 && (
-      <span className="tabular text-xs text-ink-subtle">{bookmarkCount} saved</span>
+      <span className="tabular text-xs text-ink-subtle">
+        {bookmarkCount}
+        <span className={short('short:sr-only')}> saved</span>
+      </span>
     )
   };
 
@@ -145,16 +162,17 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
           onClick={follow}
           className={cn(
             'group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors',
+            short('short:gap-2.5 short:px-2.5 short:py-2 tiny:py-1.5'),
             focusRing,
             active ? 'bg-surface-muted text-ink' : 'text-ink-muted hover:bg-surface-muted/70 hover:text-ink'
           )}
         >
           <span
             aria-hidden="true"
-            className={cn('h-1.5 w-1.5 shrink-0 rounded-full', active ? 'bg-accent' : 'bg-transparent')}
+            className={cn('h-1.5 w-1.5 shrink-0 rounded-full', active ? 'bg-accent' : 'bg-transparent', short('short:hidden'))}
           />
           <Icon name={item.icon} className={active ? 'text-accent' : 'text-ink-subtle group-hover:text-ink'} />
-          <span className={cn('min-w-0 flex-1 truncate text-[0.95rem]', active && 'font-medium')}>{item.label}</span>
+          <span className={cn('min-w-0 flex-1 truncate text-[0.95rem]', short('short:text-sm'), active && 'font-medium')}>{item.label}</span>
           {trailing[item.href] || null}
         </Link>
       </li>
@@ -174,9 +192,9 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
 
   return (
     <>
-      <div className="flex shrink-0 flex-col gap-4 px-5 pt-5 pb-3">
+      <div className={cn('flex shrink-0 flex-col gap-4 px-5 pt-5 pb-3', short('short:pt-3 short:pb-2 tiny:hidden'))}>
         {onClose && (
-          <div className="flex items-center justify-between">
+          <div className={cn('flex items-center justify-between', short('short:hidden'))}>
             <span className="flex items-center gap-2 text-xs font-medium text-ink-subtle">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
               Navigation
@@ -195,8 +213,13 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
           </div>
         )}
 
-        <div className="flex items-center gap-3 rounded-xl bg-surface-muted p-3.5">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-on-primary">
+        <div className={cn('flex items-center gap-3 rounded-xl bg-surface-muted p-3.5', short('short:p-2.5'))}>
+          <span
+            className={cn(
+              'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-on-primary',
+              short('short:h-8 short:w-8')
+            )}
+          >
             <Icon name="study" className="text-on-primary" />
           </span>
           <span className="min-w-0 flex-1">
@@ -218,29 +241,43 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-5 py-2">
+      <div
+        className={cn(
+          'min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-5 py-2',
+          short('short:space-y-2.5 short:py-1')
+        )}
+      >
         {groups.map((group, index) => (
           <div key={group.label} {...stagger(index)}>
-            <p className={groupLabelClass}>{group.label}</p>
-            <ul className="space-y-0.5">{group.items.map(row)}</ul>
+            <p className={cn(groupLabelClass, short('short:mb-1'))}>{group.label}</p>
+            <ul className={cn('space-y-0.5', group.label !== 'Categories' && twoColumns)}>{group.items.map(row)}</ul>
           </div>
         ))}
 
         <div {...stagger(groups.length)}>
-          <p className={groupLabelClass}>App</p>
-          <ul className="space-y-0.5">{appItems.map(row)}</ul>
+          <p className={cn(groupLabelClass, short('short:mb-1'))}>App</p>
+          <ul className={cn('space-y-0.5', twoColumns)}>{appItems.map(row)}</ul>
         </div>
       </div>
 
-      <div className="shrink-0 border-t border-line bg-surface-muted px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-        <div className="mb-3 flex items-center justify-between text-xs text-ink-subtle">
+      <div
+        className={cn(
+          'shrink-0 border-t border-line bg-surface-muted px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]',
+          short('short:pt-2.5 short:pb-[max(0.75rem,env(safe-area-inset-bottom))]')
+        )}
+      >
+        <div className={cn('mb-3 flex items-center justify-between text-xs text-ink-subtle', short('short:mb-2'))}>
           <span className="tabular">
             Today {daily.today} of {daily.goal}
             {daily.streak > 0 && ` · ${daily.streak} day streak`}
           </span>
-          <span className="tabular" aria-live="polite">
+          <span className={cn('tabular', short('tiny:hidden'))} aria-live="polite">
             {backupNote ?? (appVersion && `v${appVersion}`)}
           </span>
+          {compact && (
+            // The site card with the sync state is hidden on the smallest phones, so its line moves here.
+            <span className="hidden truncate pl-3 tiny:inline">{backupNote ?? syncLine(sync, online)}</span>
+          )}
         </div>
         <div className="grid grid-cols-2 gap-2">
           <button
@@ -248,6 +285,7 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
             onClick={() => void exportBackup()}
             className={cn(
               'flex items-center justify-center gap-1.5 rounded-lg border border-line bg-surface px-3 py-2.5 text-sm font-medium text-ink shadow-card transition-[background-color,transform] hover:bg-canvas active:scale-[0.97] motion-reduce:active:scale-100',
+              short('short:py-2'),
               focusRing
             )}
           >
@@ -259,6 +297,7 @@ export function DrawerContent({ pathname, visible, onClose, onNavigate }: Drawer
             onClick={follow}
             className={cn(
               'flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2.5 text-sm font-medium text-on-primary shadow-card transition-[background-color,transform] hover:bg-primary-hover active:scale-[0.97] motion-reduce:active:scale-100',
+              short('short:py-2'),
               focusRing
             )}
           >

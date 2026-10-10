@@ -4,6 +4,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
+  short: screens too low for the menu drawer's full layout (nav-drawer.tsx);
+  tiny: the smallest phones, where the drawer also drops its site card.
+*/
+@custom-variant short (@media (max-height: 64rem));
+@custom-variant tiny (@media (max-height: 42.5rem));
+
+/*
   Design tokens. Components use these names (bg-canvas, text-ink, border-line,
   text-accent, ...) instead of raw palette colours, so each colour is chosen
   once per theme here. The header colour must match themeColors in

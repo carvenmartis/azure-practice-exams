@@ -148,7 +148,13 @@ export function NavMenu() {
                 visible ? 'translate-x-0' : 'translate-x-full'
               )}
             >
-              <DrawerContent pathname={pathname} visible={visible} onClose={closeAndFocusButton} onNavigate={() => setOpen(false)} />
+              <DrawerContent
+                pathname={pathname}
+                visible={visible}
+                compact
+                onClose={closeAndFocusButton}
+                onNavigate={() => setOpen(false)}
+              />
             </nav>
           </div>,
           document.getElementById('app-shell') ?? document.body

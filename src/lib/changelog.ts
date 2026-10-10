@@ -17,7 +17,8 @@ export const changelog: ChangelogEntry[] = [
     date: '2026-10-10',
     title: 'Tighter desktop pages',
     changes: [
-      'On desktop the Course and category pages are more compact, so they fit in the window without scrolling on most screens.'
+      'On desktop the Course and category pages are more compact, so they fit in the window without scrolling on most screens.',
+      'On phones the menu is more compact, with two columns for short items, so everything fits without scrolling, even on small screens.'
     ]
   },
   {
